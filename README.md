@@ -25,25 +25,32 @@ One player acts as the **Threat Orchestrator** (facilitator), while other player
 
 **Key Mechanics:**
 - 1d20 roll-based investigation and defense actions
-- Budget-constrained resource allocation (starting at 100 Budget)
+- Budget-constrained resource allocation
 - Technical justification bonuses for strategic decisions
 - Uncontained Threats penalties that escalate pressure
-- Three optional phases: Incident Response, Hardening, and Disaster Recovery
+- Flexible, modular gameplay structure
 
-### Game Modes
+### Game Modules: 5 Ways to Play
 
-**Three Mini-Games (30-45 minutes each):**
-- **Phase 1: Incident Response** - Detect and investigate hidden attack chains
-- **Phase 2: Hardening** - Build layered defenses against known threats
-- **Phase 2: Disaster Recovery** - Manage a breach crisis with stakeholder communication
+Incident Zero features **5 interchangeable modules** that educators can play solo or combine in any sequence:
 
-**Two Full Campaigns (90-120 minutes each):**
-- **Campaign A: Detect & Defend** - Win Phase 1 → Transition to Hardening
-- **Campaign B: Attack & Recover** - Lose Phase 1 → Transition to Disaster Recovery
+**The 5 Core Modules (30-45 minutes each):**
+1. **Incident Response** - Detect and investigate hidden attack chains
+2. **Hardening** - Build layered defenses against known threats
+3. **Disaster Recovery** - Manage a breach crisis with stakeholder communication
+4. **Network Building** - Design and secure network infrastructure
+5. **Audit & Compliance** - Conduct security assessments and compliance audits
 
-**Tournament Mode** - Multiple teams compete simultaneously with split brackets
+**Recommended Combinations:**
+- **Solo Play:** Any single module (30-45 min)
+- **Detect & Defend:** Incident Response → Hardening (60-90 min)
+- **Attack & Recover:** Incident Response → Disaster Recovery → Audit (90-120 min)
+- **Build, Test, Fix:** Network Building → Incident Response → Hardening (90-120 min)
+- **Complete Lifecycle:** All 5 modules in sequence (2+ hours)
 
-See [Gameplay Modes](docs/gameplay-modes.md) for detailed descriptions.
+Each module can also be **generated procedurally** (dice rolls, cards) when played solo, so modules connect seamlessly in any educator-chosen sequence.
+
+See [Framework](docs/FRAMEWORK.md) and [Gameplay Modes](docs/gameplay-modes.md) for detailed guidance on combining modules.
 
 ## Project Structure
 
@@ -55,24 +62,30 @@ incident-zero/
 ├── .gitignore
 │
 ├── docs/
-│   ├── gameplay-modes.md              # All play variations (6 ways to play)
+│   ├── FRAMEWORK.md                   # Module philosophy & flexibility guide
+│   ├── gameplay-modes.md              # Recommended module combinations & tournaments
 │   ├── rules/
-│   │   ├── core-rules.md              # Complete game specification (v2.1)
-│   │   ├── phase-network-building.md  # Network-building phase rules
-│   │   ├── phase-audit.md             # Audit phase rules
-│   │   └── phase-disaster-recovery.md # Disaster recovery rules
+│   │   ├── core-rules.md              # Core mechanics (v2.1)
+│   │   ├── module-incident-response.md # Incident Response rules (full)
+│   │   ├── module-hardening.md        # Hardening module rules (full)
+│   │   ├── module-disaster-recovery.md # Disaster Recovery rules (full)
+│   │   ├── module-network-building.md # Network Building rules (full)
+│   │   └── module-audit-compliance.md # Audit & Compliance rules (full)
 │   └── standalone-games/
-│       ├── network-building.md        # Standalone network-building mini-game
-│       └── audit-variations.md        # Audit phase variations
+│       ├── incident-response.md       # Incident Response solo setup & play
+│       ├── hardening.md               # Hardening module solo setup & play
+│       ├── disaster-recovery.md       # Disaster Recovery solo setup & play
+│       ├── network-building.md        # Network Building solo setup & play
+│       └── audit-compliance.md        # Audit & Compliance solo setup & play
 │
 ├── cards/
 │   ├── core-deck/
-│   │   └── threat-defense-cards.md    # 12 threat cards + 24 defense cards (with ASCII layouts)
+│   │   └── threat-defense-cards.md    # 12 threat cards + 24 defense cards (printable)
 │   ├── expansion-decks/
-│   │   ├── advanced-threats.md        # 8 modern threat scenarios (supply chain, insider, IoT, cloud, DNS, physical)
-│   │   └── advanced-defenses.md       # Advanced defense cards for expansion threats
+│   │   ├── advanced-threats.md        # 8 modern threat cards (supply chain, IoT, cloud, DNS, physical)
+│   │   └── advanced-defenses.md       # Advanced defense cards for expansion
 │   └── print-templates/
-│       └── a4-layout-guide.md         # A4 printing instructions and specifications
+│       └── a4-layout-guide.md         # A4 card printing instructions
 │
 └── assets/
     └── [Placeholder for future images, templates, and digital assets]
@@ -80,17 +93,19 @@ incident-zero/
 
 ## Getting Started
 
-### For Players
-1. **First time?** Start with [Core Rules](docs/rules/core-rules.md)
-2. **Choose your game mode:** [Gameplay Modes](docs/gameplay-modes.md) describes 6 ways to play
-3. **Get the cards:** Print from [Card Decks](cards/core-deck/threat-defense-cards.md)
-4. **Read the scenarios:** Each game mode includes detailed setup instructions
+### For Educators
+1. **Understand the framework:** Read [FRAMEWORK.md](docs/FRAMEWORK.md) to understand the 5 modules and how they combine
+2. **Choose your modules:** Decide which modules serve your learning objectives and in what sequence
+3. **Set up your game:** Follow standalone setup instructions for your chosen module(s)
+4. **Print cards:** Download and print from [Card Decks](cards/core-deck/threat-defense-cards.md)
+5. **Run the session:** Each module includes gameplay loops and debrief guidance
 
 ### For Threat Orchestrators
-1. Review [Threat Orchestrator Tips](docs/rules/core-rules.md#tips-for-the-threat-orchestrator) in core rules
-2. Build your first attack chain using the [12 sample threat cards](cards/core-deck/threat-defense-cards.md)
-3. Use one of the [provided scenarios](docs/rules/core-rules.md#sample-attack-chain-with-full-details)
-4. Optionally add [expansion threat cards](cards/expansion-decks/advanced-threats.md) for advanced groups
+1. Review [Core Rules](docs/rules/core-rules.md) for core mechanics (v2.1)
+2. Choose the module(s) you want to run (see [Gameplay Modes](docs/gameplay-modes.md) for recommendations)
+3. Build your scenario using the [12 core threat cards](cards/core-deck/threat-defense-cards.md) or [8 expansion threats](cards/expansion-decks/advanced-threats.md)
+4. Follow the module-specific rules and setup procedures
+5. Use debrief questions to reinforce learning
 
 ## Game Components
 
@@ -106,12 +121,13 @@ incident-zero/
 
 ## Key Features
 
-✅ **Flexible:** 3 mini-games, 2 campaigns, tournament mode, or custom scenarios
-✅ **Scalable:** Difficulty levels for beginner to advanced players
-✅ **Educational:** Teaches real-world cybersecurity concepts and decision-making
-✅ **Engaging:** Competitive and cooperative play options
-✅ **Modern:** Covers current threats (supply chain, cloud, IoT, insider risks)
-✅ **Discussion-Based:** Built-in debrief moments for reflection and learning
+✅ **Modular:** 5 interchangeable modules educators can play solo or combine in any sequence
+✅ **Flexible:** Procedural generation (dice/cards) ensures modules connect seamlessly
+✅ **Scalable:** Difficulty levels for beginner to advanced players (3-card to 5-card chains)
+✅ **Educational:** Teaches real-world cybersecurity concepts grounded in MITRE ATT&CK
+✅ **Engaging:** Competitive and cooperative play modes with meaningful decisions
+✅ **Modern:** Covers current threats (supply chain, cloud, IoT, insider threats)
+✅ **Discussion-Based:** Built-in debrief moments reinforce learning objectives
 
 ## Printing Your Deck
 
