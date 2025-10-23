@@ -1,6 +1,17 @@
 # Module Combinations: Quick Reference Guide for Educators
 
-This guide provides quick reference combinations for the 5 modules and recommended time allocations.
+This guide provides quick reference combinations for the 6 modules and recommended time allocations.
+
+---
+
+## The Six Modules (v2.1)
+
+1. **Network Building** - Design and secure infrastructure
+2. **Hardening** - Build defense-in-depth against known threats
+3. **Incident Response** - Detect and investigate hidden attacks
+4. **Disaster Recovery** - Manage breach crisis and recovery
+5. **Forensics** - Investigate compromised systems and attribute attacks
+6. **Audit & Compliance** - Assess security posture and control effectiveness
 
 ---
 
@@ -11,10 +22,11 @@ Pick ONE module and play it solo with generated modifiers.
 
 | Module | Focus | Setup | Gameplay | Debrief |
 |--------|-------|-------|----------|---------|
-| **Incident Response** | Attack detection | 5 min | 25-35 min | 5-10 min |
-| **Hardening** | Defense-in-depth | 5 min | 25-35 min | 5-10 min |
-| **Disaster Recovery** | Crisis management | 5 min | 25-35 min | 5-10 min |
 | **Network Building** | Infrastructure design | 5 min | 25-35 min | 5-10 min |
+| **Hardening** | Defense-in-depth | 5 min | 25-35 min | 5-10 min |
+| **Incident Response** | Attack detection | 5 min | 25-35 min | 5-10 min |
+| **Disaster Recovery** | Crisis management | 5 min | 25-35 min | 5-10 min |
+| **Forensics** | Investigation & attribution | 5 min | 25-35 min | 5-10 min |
 | **Audit & Compliance** | Security assessment | 5 min | 25-35 min | 5-10 min |
 
 **Setup Note:** Generate all modifiers (dice rolls, scenario cards) during setup phase.
@@ -53,6 +65,22 @@ Pick ONE module and play it solo with generated modifiers.
 - Audit identifies gaps and violations
 - **Modifiers Flow:** Network design determines audit findings
 - **Learning:** Compliance integration into design phase
+- **Total Time:** 10 min setup + 55-70 min gameplay + 10 min debrief
+
+### Path E: Detect & Investigate (NEW with Forensics)
+**Incident Response (Win) → Forensics**
+- Attack detected successfully in IR phase
+- Forensic investigation to understand and attribute attack
+- **Modifiers Flow:** Discovered attack chain guides forensic analysis
+- **Learning:** How investigation reveals attacker techniques and identity
+- **Total Time:** 10 min setup + 55-70 min gameplay + 10 min debrief
+
+### Path F: Crisis & Investigation (NEW with Forensics)
+**Disaster Recovery → Forensics**
+- Crisis response to major breach (from IR failure)
+- Forensic investigation to understand scope and attribution
+- **Modifiers Flow:** DR outcomes inform forensic investigation priorities
+- **Learning:** How investigation informs future hardening decisions
 - **Total Time:** 10 min setup + 55-70 min gameplay + 10 min debrief
 
 ---
@@ -95,6 +123,24 @@ Pick ONE module and play it solo with generated modifiers.
 - **Learning:** How design affects attack success/failure
 - **Total Time:** 15 min setup + 80-100 min gameplay + 10-15 min debrief
 
+### Path E: Response, Crisis & Investigation (NEW with Forensics)
+**Incident Response (Loss) → Disaster Recovery → Forensics**
+- Detection fails; breach occurs
+- Crisis management and response
+- Forensic investigation for lessons learned
+- **Modifiers Flow:** IR outcome → DR decisions → Forensic findings
+- **Learning:** Complete failure response lifecycle with attribution
+- **Total Time:** 15 min setup + 80-100 min gameplay + 10-15 min debrief
+
+### Path F: Detection, Investigation & Hardening (NEW with Forensics)
+**Incident Response (Win) → Forensics → Hardening**
+- Attack detected and contained
+- Forensic investigation reveals techniques and attribution
+- Hardening built specifically against discovered attack
+- **Modifiers Flow:** Detected threats → Forensic findings → Defense priorities
+- **Learning:** Complete investigation-to-hardening workflow
+- **Total Time:** 15 min setup + 80-100 min gameplay + 10-15 min debrief
+
 ---
 
 ## 2+ Hours: Four or Five Module Combinations
@@ -118,13 +164,36 @@ Pick ONE module and play it solo with generated modifiers.
 - **Best For:** Advanced learners, crisis + recovery + compliance
 - **Total Time:** 25 min setup + 160-190 min gameplay + 20 min debrief
 
-### Path C: All Five Modules (Flexible)
-**[Educator chooses sequence]**
-- Any 5-module combination
-- Educators sequence based on learning objectives
-- All modifiers generated or flowed from prior modules
-- **Best For:** Research, curriculum design, teacher training
-- **Total Time:** 25-30 min setup + 180-210 min gameplay + 20-25 min debrief
+### Path C: Complete Lifecycle with Forensics (Investigation Focus)
+**Network Building → Incident Response (Loss) → Disaster Recovery → Forensics → Hardening**
+- Design network
+- Attack detection fails
+- Crisis response
+- Forensic investigation and attribution
+- Build hardening based on forensic findings
+- **Best For:** Advanced learners, investigation-focused curriculum
+- **Total Time:** 25 min setup + 165-190 min gameplay + 20 min debrief
+
+### Path D: Complete Lifecycle with Forensics (Success Focus)
+**Network Building → Incident Response (Win) → Forensics → Hardening → Audit**
+- Design network
+- Attack detected and contained
+- Forensic investigation reveals techniques
+- Hardening against discovered threats
+- Audit of final security posture
+- **Best For:** Advanced learners, successful response workflow
+- **Total Time:** 25 min setup + 165-190 min gameplay + 20 min debrief
+
+### Path E: All Six Modules (Complete Security Lifecycle)
+**Network Building → Hardening → Incident Response → Disaster Recovery → Forensics → Audit & Compliance**
+- Design secure network
+- Build proactive defenses
+- Test against attack
+- Handle breach crisis (if IR fails)
+- Investigate for lessons learned
+- Audit overall security posture
+- **Best For:** Research, comprehensive security curriculum, teacher training
+- **Total Time:** 30 min setup + 210-240 min gameplay + 25 min debrief
 
 ---
 
@@ -237,6 +306,10 @@ Example: "Teach incident response AND hardening in 90 minutes"
 
 **High Compatibility (Strong modifier flow):**
 - ✓✓ Incident Response + Hardening
+- ✓✓ Incident Response + Forensics (if IR successful)
+- ✓✓ Disaster Recovery + Forensics (if IR fails)
+- ✓✓ Forensics + Hardening (forensic findings guide hardening)
+- ✓✓ Forensics + Audit (forensic findings inform compliance)
 - ✓✓ Network Building + Hardening
 - ✓✓ Network Building + Audit
 - ✓✓ Disaster Recovery + Audit
@@ -247,6 +320,7 @@ Example: "Teach incident response AND hardening in 90 minutes"
 - ✓ Hardening + Disaster Recovery
 - ✓ Network Building + Disaster Recovery
 - ✓ Incident Response + Network Building
+- ✓ Forensics + Network Building (investigation reveals architecture needs)
 
 ---
 

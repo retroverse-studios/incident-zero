@@ -12,12 +12,14 @@
 
 - **📚 Core Rules**
   - [Core Game Rules](docs/rules/core-rules.md)
+  - [Variable Game Length System](docs/VARIABLE_GAME_LENGTH_SYSTEM.md)
 
 - **🎮 Module Rules**
   - [Hardening Module](docs/rules/module-hardening.md)
   - [Incident Response Module](docs/rules/module-incident-response.md)
   - [Network Building Module](docs/rules/module-network-building.md)
   - [Disaster Recovery Module](docs/rules/module-disaster-recovery.md)
+  - [Forensics Module](docs/rules/module-forensics.md)
   - [Audit & Compliance Module](docs/rules/module-audit-compliance.md)
 
 - **🎲 Standalone Games**
@@ -25,6 +27,7 @@
   - [Incident Response (Standalone)](docs/standalone-games/incident-response.md)
   - [Network Building (Standalone)](docs/standalone-games/network-building.md)
   - [Disaster Recovery (Standalone)](docs/standalone-games/disaster-recovery.md)
+  - [Forensics (Standalone)](docs/standalone-games/forensics.md)
   - [Audit & Compliance (Standalone)](docs/standalone-games/audit-compliance.md)
 
 - **🃏 Card Decks**
@@ -71,6 +74,14 @@
     - Expansion Deck
       - [Advanced Scenarios (SCENARIO-01 to SCENARIO-08)](cards/disaster-recovery/expansion-deck/advanced-scenarios.md)
 
+  - **Forensics Module**
+    - [Module Overview](cards/forensics/README.md)
+    - Core Deck
+      - [Investigation Action Cards (12 cards)](cards/forensics/core-deck/investigation-cards.md)
+      - [Evidence & Findings Cards (16 cards)](cards/forensics/core-deck/evidence-cards.md)
+    - Expansion Deck
+      - [Advanced Investigation & Evidence (16 cards)](cards/forensics/expansion-deck/advanced-cards.md)
+
   - **Audit & Compliance Module**
     - [Module Overview](cards/audit-compliance/README.md)
     - Core Deck
@@ -81,3 +92,5 @@
 - **🔗 Resources**
   - [GitHub Repository](https://github.com/retroverse-studios/incident-zero)
   - [License (CC BY-NC-SA 4.0)](LICENSE)
+  - [Session Summary (v2.1 Complete)](SESSION_SUMMARY.md)
+  - [Future Work & Development Roadmap](FUTURE_WORK.md)

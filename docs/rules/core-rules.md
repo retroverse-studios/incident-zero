@@ -11,15 +11,16 @@
 
 ### How It Works
 
-Players choose which **module** to play based on learning objectives:
+Players choose which **module(s)** to play based on learning objectives:
 
-1. **Incident Response Module** - Detect and investigate hidden attack chains (30-45 min)
+1. **Network Building Module** - Design and secure infrastructure (30-45 min)
 2. **Hardening Module** - Build defense-in-depth (30-45 min)
-3. **Disaster Recovery Module** - Manage breach crisis (30-45 min)
-4. **Network Building Module** - Design secure networks (30-45 min)
-5. **Audit & Compliance Module** - Conduct security assessments (30-45 min)
+3. **Incident Response Module** - Detect and investigate hidden attack chains (30-45 min)
+4. **Disaster Recovery Module** - Manage breach crisis (30-45 min)
+5. **Forensics Module** - Investigate and attribute attacks (30-45 min) **NEW in v2.1**
+6. **Audit & Compliance Module** - Conduct security assessments (30-45 min)
 
-Modules can be played **solo** or **combined in any sequence** using the modifier generation procedures documented in [FRAMEWORK.md](../FRAMEWORK.md).
+Modules can be played **solo** or **combined in any sequence** using the modifier generation procedures documented in [FRAMEWORK.md](../FRAMEWORK.md) and [Module Combinations](../module-combinations.md).
 
 ---
 
@@ -166,12 +167,165 @@ Abstract resource representing time, money, personnel, and tools. Spent to take 
 3. **Action Phase:** Execute chosen action, resolve rolls
 4. **End of Turn:** Advance tracker, draw card, check events
 
-**Turn Limits by Module:**
-- **Incident Response:** 10 turns (hard limit)
-- **Hardening:** 5-7 turns
-- **Disaster Recovery:** 7 turns (hard limit, represents 48 hours)
-- **Network Building:** 5-8 turns
-- **Audit & Compliance:** 6-8 turns
+---
+
+### 3a. Variable Game Length System (v2.1 - New!)
+
+**Philosophy:** In real incident response, some attacks move fast (hours), some take months. Fixed turn lengths feel unrealistic. This system adds realism without requiring complex calculations.
+
+#### For Beginners & Quick Play: Default Formula
+
+**Default Formula: (Attack Chain Cards × 2) + 1**
+
+This gives attackers enough time to progress realistically while keeping games manageable:
+
+| Attack Chain | Formula | Turn Count | Session Duration |
+|--------------|---------|-----------|------------------|
+| 3 cards | (3 × 2) + 1 | **7 turns** | 30-40 min play |
+| 4 cards | (4 × 2) + 1 | **9 turns** | 35-45 min play |
+| 5 cards | (5 × 2) + 1 | **11 turns** | 40-50 min play |
+| 6 cards | (6 × 2) + 1 | **13 turns** | 45-55 min play |
+
+**How to Use Default Formula:**
+1. Choose number of threat cards in attack chain (3, 4, 5, or 6)
+2. Apply formula: (Cards × 2) + 1 = Turn Count
+3. Announce turn count to Blue Team
+4. Play game normally with that turn limit
+
+**Example Setup:**
+> "I've created a 4-card attack chain. That's (4 × 2) + 1 = 9 turns. You have 9 turns to detect all four threats. Go!"
+
+---
+
+#### For Advanced Players: Complexity Tiers (v2.1)
+
+Advanced Threat Orchestrators can use a **Tier + d4 system** for more control and variability:
+
+**Step 1: Select Attack Complexity Tier**
+
+| Tier | Turn Base | Attack Profile | Example |
+|------|-----------|----------------|---------|
+| **TIER 1** | 5-7 | Simple & obvious | Script kiddie using public tools |
+| **TIER 2** | 8-10 | Standard sophistication | Organized cybercriminal group |
+| **TIER 3** | 11-13 | Highly sophisticated | APT with operational security |
+| **TIER 4** | 14-16 | Expert/Nation-state | State-sponsored group |
+
+**Step 2: Add Randomness (Optional)**
+
+Roll 1d4 for variation:
+- **Roll 1:** -1 turn (tight timeline)
+- **Roll 2 or 3:** ±0 turns (no change)
+- **Roll 4:** +1 turn (extended dwell time)
+
+**Final Turn Count = Tier Base + d4 Result**
+
+**Example Advanced Setup:**
+> "This is a TIER 2 attack (organized cybercriminals). Base is 8-10 turns. I'll roll d4 for variation... [rolls 4, +1 turn]. Final turn count: 9-11 turns."
+
+---
+
+#### Critical Game Integrity Rules (v2.1)
+
+These rules protect game balance and prevent metagaming:
+
+##### Rule 1: Accept Any Roll (Even If It Feels Wrong)
+
+**The Rule:** Threat Orchestrators MUST accept the random result, even if it feels impossibly tight or loose.
+
+**Why:** Real incident response is unpredictable. Sometimes attacks happen faster or slower than expected.
+
+**Example Scenarios:**
+- TIER 3 attack (11-13 base) + d4 roll of 1 = 10-12 turns (tighter than expected, but realistic)
+- TIER 1 attack (5-7 base) + d4 roll of 4 = 6-8 turns (easier conditions, but acceptable)
+
+**When Chaos Feels Realistic:**
+- Tight timeline: "The attacker worked faster than expected—they had prior knowledge"
+- Loose timeline: "The attacker was cautious, spending weeks in reconnaissance before striking"
+
+**Implementation:** Lean into the randomness as realistic incident variability.
+
+---
+
+##### Rule 2: Players Cannot Question Tier Based on Turn Count
+
+**The Rule:** Blue Team CANNOT deduce the attack tier from the announced turn count. They cannot ask "Is this TIER 2?" or "Is this TIER 4?" based on how many turns they have.
+
+**Why:** Real incident response doesn't come with difficulty labels. Attackers don't advertise sophistication. Players should discover complexity through gameplay (attack chain complexity, defender evasion, tool sophistication, etc.).
+
+**What Players CAN Ask:**
+- "What are the suspicious network events?" (leads to understanding threats)
+- "Can we analyze the malware?" (reveals attacker sophistication through findings)
+- "Why did this attack succeed?" (post-game discussion)
+
+**What Players CANNOT Ask:**
+- "Is this a TIER 2 attack?" (deriving tier from turn count)
+- "This looks like a TIER 1 because we have 7 turns" (meta-gaming difficulty)
+
+**Implementation:** Respond to difficulty questions by saying "Investigate and find out!" Players discover sophistication through evidence, not from turn counts.
+
+---
+
+##### Rule 3: TO Modifier Authority (Rare & Optional)
+
+**The Rule:** ONLY after rolling d4, the Threat Orchestrator may apply an optional ±1 turn adjustment IF the rolled result feels genuinely unreasonable for the scenario.
+
+**When to Use (Rare):**
+- Scenario setup is unusually complex (multiple attack vectors, coordination across systems)
+- Player group is new and needs slightly easier conditions
+- Real-world incident being taught had specific timeline constraints
+
+**When NOT to Use (Prefer Random):**
+- "The roll feels unlucky" (accept the chaos)
+- "I want this exactly 10 turns" (let dice decide)
+- "The attack chain is long so it should take longer" (that's what TIER system handles)
+
+**Implementation:**
+1. Roll d4 normally
+2. Announce rolled result
+3. ONLY IF genuinely unreasonable, apply ±1 modifier and explain why
+4. Document the override for consistency in future scenarios
+
+**Example Valid Use:**
+> "TIER 2 base 8-10, rolled -1 = 7-9 turns. That's tight given we have 5-card attack chain, so I'm adding +1 modifier (explaining the discovery is methodical). Final: 8-10 turns."
+
+**Example Invalid Use:**
+> "I rolled 8-10 but I want 10-12, so I'm adding +2." (NO - use the roll as-is)
+
+---
+
+#### Implementation Checklist
+
+**For Beginners (Use Default Formula):**
+- [ ] Choose attack chain length (3, 4, 5, or 6 cards)
+- [ ] Calculate: (Cards × 2) + 1
+- [ ] Announce turn count
+- [ ] Play
+
+**For Advanced (Use Tier + d4):**
+- [ ] Select TIER (1, 2, 3, or 4)
+- [ ] Announce TIER basis (not the number, just why it's that complexity)
+- [ ] Roll d4 for variation (hidden or public, your choice)
+- [ ] Calculate final turn count
+- [ ] Apply Rule 3 modifier if genuinely needed (rare)
+- [ ] Announce final turn count WITHOUT revealing tier
+
+---
+
+#### Quick Reference Card
+
+**Default Formula:** Turn Count = (Attack Cards × 2) + 1
+
+**Tier System:**
+- TIER 1: 5-7 turns (simple)
+- TIER 2: 8-10 turns (standard)
+- TIER 3: 11-13 turns (advanced)
+- TIER 4: 14-16 turns (expert)
+- Add d4 roll: -1, 0, 0, or +1
+
+**Golden Rules:**
+1. Accept any roll (embrace chaos)
+2. Never reveal tier to players
+3. Modifier authority only when truly needed (rare)
 
 ---
 
