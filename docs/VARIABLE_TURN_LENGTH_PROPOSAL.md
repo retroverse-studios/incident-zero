@@ -208,6 +208,128 @@ Understanding the tier gives you strategic information:
 
 ---
 
+## Critical Rules: Protecting Game Integrity
+
+### Rule 1: Threat Orchestrator Can Accept Any Roll (Even if Feels Wrong)
+
+**The Real-World Reason:**
+In actual incidents, sometimes the unexpected happens:
+- A "simple" phishing attack goes deeper than expected (roll +1 = longer game)
+- A "complex" supply chain attack is discovered and contained faster (roll -1 = shorter game)
+- Attackers are caught in 5 turns when 15 were expected
+- A breach takes 15 turns to fully contain when 5 were planned
+
+**The Rule:**
+The Threat Orchestrator is **allowed (and encouraged)** to accept the result of the d4 roll as-is, even if:
+- The result feels too tight/hard to accomplish in that many turns
+- The result feels longer than necessary for the attack complexity
+- The result creates an unexpected game dynamic
+
+**This is intentional.** Real breach response is messy, unpredictable, and rarely goes exactly to plan.
+
+**Example:**
+- TO designs a TIER 2 (8-10 turns) credential theft attack
+- Roll d4: Result = 1 (modifier: -1) = 7-9 turns (tighter than planned!)
+- TO can say: "Your team's faster response than expected. You have 8 turns. Good luck."
+- This creates tension and requires different strategy
+
+**Counter-Example (What NOT to Do):**
+- TO should NOT say: "That roll feels too tight. Let me re-roll."
+- TO should NOT adjust the result after seeing what it is
+- Accept the chaos - that's incident response!
+
+---
+
+### Rule 2: Players Do NOT Get to Question Attack Tier Based on Turn Length
+
+**The Problem This Prevents:**
+If Blue Team could guess the tier from the turn count, they could reverse-engineer attack difficulty:
+- 6 turns → "Oh, this is just TIER 1, probably just phishing"
+- 14 turns → "This is TIER 4, must be APT, let's plan for persistence"
+
+This removes the uncertainty that makes incident response interesting.
+
+**The Rule:**
+Blue Teams:
+- ✅ CAN ask: "What's the threat narrative?" (TO explains scenario)
+- ✅ CAN see: The turn count
+- ✅ CAN infer: Some strategy based on scenario
+- ❌ CANNOT ask: "What tier is this?" (directly)
+- ❌ CANNOT deduce: Tier from turn count
+- ❌ CANNOT second-guess: Whether the tier matches the turns
+
+**Why This Matters:**
+Turn count is just **one piece of information**. Forcing Blue Team to work with:
+1. The attack narrative (provided by TO)
+2. Turn count (they can see it)
+3. Cards/threats drawn
+4. Their own strategy and experience
+
+This creates realistic uncertainty. In real incidents, you don't know if a breach is simple or complex until you investigate.
+
+**Example:**
+- TO: "You have 8 turns. A user reported a suspicious email from 'your IT department' asking for password reset."
+- Player: "Is this TIER 1 or TIER 2?"
+- TO: "I'm not telling. You have 8 turns to figure it out. Is it just phishing, or did someone get deeper access? Investigate and decide."
+
+**Another Example:**
+- TO: "You have 14 turns. Your monitoring detected unusual database queries from a contractor's VPN."
+- Player: "That's a long game... must be TIER 4?"
+- TO: "Or maybe TIER 3 that felt longer than expected. Or TIER 4 that you'll solve faster. You'll figure it out as you investigate."
+
+**The Teaching Moment:**
+Real incident response doesn't come with difficulty labels. You get:
+- Symptoms (suspicious email, unusual queries, etc.)
+- Time (however many turns the dice provide)
+- Your skills and tools
+- That's it
+
+Players must investigate, not assume.
+
+---
+
+### Rule 3: TO Modifier Authority (Bonus Rule)
+
+**Additional Authority for Threat Orchestrator:**
+
+The TO can also decide to apply a small modifier themselves if they feel the random roll misses the mark, but this should be rare:
+
+| Situation | Allowed Modifier |
+|-----------|------------------|
+| Roll feels genuinely unreasonable | ±1 turn max (after dice roll) |
+| Player morale concerns | ±1 turn max |
+| Time constraint for session | Announce before rolling |
+| Too complex to resolve in time | Add 1-2 turns |
+
+**When to Use (Rarely):**
+- You rolled -1 on a TIER 3 complex attack, now it's 10 turns, but you have massive second-stage persistence planned that needs 12+ turns to fully resolve
+- You rolled 5 turns for a TIER 2, but a new player group needs more experience to resolve it
+
+**When NOT to Use:**
+- Because you "like" the original plan better
+- To guarantee a specific outcome
+- To punish players
+- Multiple times in one session (use dice result instead!)
+
+**Format:**
+"I rolled a [1], which gives us [10-12] turns. Actually, this persistence attack needs more time. I'm adding 1 turn. Final: **13 turns total**."
+
+---
+
+### Summary: The Philosophy
+
+**Accept Chaos.** Real incident response is unpredictable:
+- Sometimes you get lucky and discover a breach quickly (short game)
+- Sometimes an attack is more entrenched than expected (long game)
+- Sometimes your response is faster/slower than planned
+- **This is realism, not a bug.**
+
+The dice represent real-world uncertainty. The TO's tier represents their attack complexity. Together, they create a realistic incident response scenario.
+
+**Players don't get to "game" the system** by trying to deduce difficulty from turn count. They have to actually respond to the threat, not the meta-game.
+
+---
+
 ## Why This Works
 
 ### Narrative Authenticity
