@@ -1,11 +1,13 @@
-# Incident Zero: Disaster Recovery Phase
-## Post-Breach Crisis Management & Aftermath
+# Disaster Recovery Module: Rules & Mechanics
+
+**Version:** 2.1 - Balanced & Refined Edition
+**Last Updated:** October 2025
 
 ---
 
-## Overview: When Phase 1 Fails
+## Module Overview
 
-When a Blue Team **fails to reveal all cards before losing budget or reaching turn 10**, they enter **Phase 2: Disaster Recovery (DR)** instead of the optional Hardening phase.
+The **Disaster Recovery Module** teaches crisis management and breach response when incident detection fails. This module is typically entered after losing an Incident Response module (representing an undetected or uncontained breach) but can also be played standalone to teach DR concepts.
 
 This is not a "second chance" to solve the attack chain. Instead, it simulates the real-world consequences of a successful breach:
 - **Crisis management** under pressure

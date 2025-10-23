@@ -458,7 +458,7 @@ For complete card descriptions and images, see:
 
 For complete rules on each module:
 
-- **Incident Response Module:** [module-incident-response.md](module-incident-response.md) (future)
+- **Incident Response Module:** [module-incident-response.md](module-incident-response.md)
 - **Hardening Module:** [module-hardening.md](module-hardening.md)
 - **Disaster Recovery Module:** [module-disaster-recovery.md](module-disaster-recovery.md)
 - **Network Building Module:** [module-network-building.md](module-network-building.md)
