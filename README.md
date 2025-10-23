@@ -93,6 +93,10 @@ incident-zero/
 
 ## Getting Started
 
+### 📚 Documentation
+- **[GitHub Pages Documentation](https://retroverse-studios.github.io/incident-zero/)** - Full game documentation with searchable sidebar
+- **[DeepWiki Documentation](https://deepwiki.com/retroverse-studios/incident-zero)** - Alternative self-documenting wiki format
+
 ### For Educators
 1. **Understand the framework:** Read [FRAMEWORK.md](docs/FRAMEWORK.md) to understand the 5 modules and how they combine
 2. **Choose your modules:** Decide which modules serve your learning objectives and in what sequence
@@ -174,6 +178,11 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ## Community & Support
 
+### Documentation
+- **[GitHub Pages Documentation](https://retroverse-studios.github.io/incident-zero/)** - Searchable game rules, modules, and card decks
+- **[DeepWiki Documentation](https://deepwiki.com/retroverse-studios/incident-zero)** - Self-documenting wiki alternative
+
+### Get Involved
 - **Issues & Suggestions:** [GitHub Issues](https://github.com/retroverse-studios/incident-zero/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/retroverse-studios/incident-zero/discussions)
 - **Scenarios:** Share your custom scenarios in Discussions
