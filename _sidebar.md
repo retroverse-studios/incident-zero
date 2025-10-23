@@ -6,6 +6,10 @@
   - [Gameplay Modes](docs/gameplay-modes.md)
   - [Module Combinations](docs/module-combinations.md)
 
+  - **Documentation Site**
+    - [Docsify Setup Guide](docs/DOCSIFY_SETUP.md)
+    - [Docsify Status & Implementation](docs/DOCSIFY_STATUS.md)
+
 - **📚 Core Rules**
   - [Core Game Rules](docs/rules/core-rules.md)
 
@@ -26,6 +30,10 @@
 - **🃏 Card Decks**
   - [Card System Overview](cards/README.md)
   - [Card Reference Index](cards/CARD_REFERENCE.md)
+
+  - **Card Design & Contribution**
+    - [Card Layout Template](docs/CARD_DESIGN/CARD_LAYOUT_TEMPLATE.md)
+    - [Card Consistency Model](docs/CARD_DESIGN/CARD_CONSISTENCY_MODEL.md)
 
   - **Hardening Module**
     - [Module Overview](cards/hardening/README.md)
