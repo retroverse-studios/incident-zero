@@ -1,5 +1,9 @@
 # Incident Zero
 
+<!-- BADGES:START -->
+[![board-game](https://img.shields.io/badge/-board-game-blue?style=flat-square)](https://github.com/topics/board-game) [![cybersecurity](https://img.shields.io/badge/-cybersecurity-f44336?style=flat-square)](https://github.com/topics/cybersecurity) [![education](https://img.shields.io/badge/-education-blue?style=flat-square)](https://github.com/topics/education) [![educational-game](https://img.shields.io/badge/-educational-game-blue?style=flat-square)](https://github.com/topics/educational-game) [![game-based-learning](https://img.shields.io/badge/-game-based-learning-blue?style=flat-square)](https://github.com/topics/game-based-learning) [![html](https://img.shields.io/badge/-html-e34f26?style=flat-square)](https://github.com/topics/html) [![incident-response](https://img.shields.io/badge/-incident-response-blue?style=flat-square)](https://github.com/topics/incident-response) [![mitre-attack](https://img.shields.io/badge/-mitre-attack-blue?style=flat-square)](https://github.com/topics/mitre-attack) [![security-training](https://img.shields.io/badge/-security-training-blue?style=flat-square)](https://github.com/topics/security-training) [![tabletop-game](https://img.shields.io/badge/-tabletop-game-blue?style=flat-square)](https://github.com/topics/tabletop-game)
+<!-- BADGES:END -->
+
 > A cooperative/competitive cybersecurity board game for educational environments
 
 **Incident Zero** is a hands-on, engaging tabletop game that teaches cybersecurity concepts through gameplay. Players take on the roles of security professionals responding to cyberattacks, managing incident response, and building defensive strategies.
