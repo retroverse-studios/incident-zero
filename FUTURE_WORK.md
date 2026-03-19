@@ -771,6 +771,56 @@ ADDITIONAL FEEDBACK
 
 ---
 
+## RetroVerse Digital Edition Roadmap
+
+Incident Zero is part of the [RetroVerse Studios](https://retroverse.studio) portfolio — the studio's only multiplayer title. The digital edition will coexist with the tabletop game, sharing the same card definitions and rules as a single source of truth.
+
+**Architecture:** One repo, two interfaces.
+
+```
+incident-zero/
+├── cards/              ← single source of truth (both versions read from here)
+├── docs/rules/         ← canonical rules (both versions implement these)
+├── tabletop/           ← print templates, cutting guides, PDF generation
+└── digital/            ← web app (the RetroVerse product)
+```
+
+### Phase A: Retro Rebrand + Tabletop Polish
+
+Align visual identity with the RetroVerse aesthetic (8-bit pixel art, terminal/hacker/WarGames theme, CRT scanlines, neon accents) while keeping the game mechanically identical.
+
+- [ ] 8-bit pixel art card templates for print
+- [ ] Retro-themed print-ready PDF generation from card markdown
+- [ ] Marketing positioning: lead with "game", education as a feature
+- [ ] Update card art, box/cover design, component styling
+
+### Phase B: Solo Digital Version (AI Threat Orchestrator)
+
+Build a web app where AI replaces the human Threat Orchestrator role. This proves the digital format without requiring multiplayer networking.
+
+- [ ] Web app with retro terminal UI
+- [ ] AI generates attack chains and adapts difficulty based on player performance
+- [ ] AI creates contextual scenarios (industry-specific, difficulty-scaled)
+- [ ] Single-player mode: one defender vs. AI attacker
+- [ ] Card data loaded directly from markdown definitions in `cards/`
+- [ ] d20 resolution, budget tracking, turn management in browser
+- [ ] Offline-capable (PWA, following SwipeVerse pattern)
+
+### Phase C: Multiplayer Digital Version
+
+Add real-time multiplayer — the full tabletop experience online.
+
+- [ ] WebSocket lobbies, real-time or async turns
+- [ ] One player as TO (human or AI), 2-6 Blue Team defenders
+- [ ] Role-based UI (TO sees attack chain, defenders see investigation tools)
+- [ ] Cross-module campaigns (chain modules with outcome modifiers)
+- [ ] Community scenario sharing (custom attack chains, card sets)
+- [ ] Integration with learning management systems for classroom use
+
+**Note:** Phase B and C build on the database system described in item #4 above. The SQLite migration and automated card generator (#4, #5) become prerequisites for the digital edition.
+
+---
+
 ## Version History & Tracking
 
 - **v2.1** (October 2025) - Initial Future Work document
