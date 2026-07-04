@@ -111,7 +111,8 @@ incident-zero/
 ## Getting Started
 
 ### 📚 Documentation
-- **[GitHub Pages Documentation](https://retroverse-studios.github.io/incident-zero/)** - Full game documentation with searchable sidebar
+- **[Game Landing Page](https://retroverse-studios.github.io/incident-zero/)** - Download print-and-play bundles per module or the complete game
+- **[Documentation Site](https://retroverse-studios.github.io/incident-zero/docs.html)** - Full game documentation with searchable sidebar
 - **[DeepWiki Documentation](https://deepwiki.com/retroverse-studios/incident-zero)** - Alternative self-documenting wiki format
 
 ### New to the game? Start here
@@ -159,7 +160,9 @@ Read **[How to Play](docs/HOW_TO_PLAY.md)** — a 15-minute learn-to-play manual
 ## Printing Your Deck
 
 ### Quick Start
-Print the cards from the [card decks](cards/README.md) on cardstock, cut along dotted lines, and optionally sleeve them.
+**Easiest path:** download a single print-and-play bundle from the [landing page](https://retroverse-studios.github.io/incident-zero/) (or the [downloads/](downloads/) folder) — each is one printable HTML file with rules, cards, and trackers. Bundles are rebuilt with `python3 tools/build_bundles.py`.
+
+Or print the cards from the [card decks](cards/README.md) on cardstock, cut along dotted lines, and optionally sleeve them.
 
 ### For A4 Printing (9 cards per sheet)
 See [A4 Layout Guide](cards/print-templates/a4-layout-guide.md) for detailed instructions on:
@@ -208,7 +211,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 ## Community & Support
 
 ### Documentation
-- **[GitHub Pages Documentation](https://retroverse-studios.github.io/incident-zero/)** - Searchable game rules, modules, and card decks
+- **[Game Landing Page](https://retroverse-studios.github.io/incident-zero/)** - Downloads + [documentation site](https://retroverse-studios.github.io/incident-zero/docs.html) with searchable rules, modules, and card decks
 - **[DeepWiki Documentation](https://deepwiki.com/retroverse-studios/incident-zero)** - Self-documenting wiki alternative
 
 ### Get Involved
