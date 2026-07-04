@@ -7,6 +7,7 @@
   - [Module Combinations](docs/module-combinations.md)
 
 - **📚 Core Rules**
+  - [How to Play (Start Here)](docs/HOW_TO_PLAY.md)
   - [Core Game Rules](docs/rules/core-rules.md)
   - [Variable Game Length System](docs/VARIABLE_GAME_LENGTH_SYSTEM.md)
 

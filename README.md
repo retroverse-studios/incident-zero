@@ -114,6 +114,9 @@ incident-zero/
 - **[GitHub Pages Documentation](https://retroverse-studios.github.io/incident-zero/)** - Full game documentation with searchable sidebar
 - **[DeepWiki Documentation](https://deepwiki.com/retroverse-studios/incident-zero)** - Alternative self-documenting wiki format
 
+### New to the game? Start here
+Read **[How to Play](docs/HOW_TO_PLAY.md)** — a 15-minute learn-to-play manual with a fully scripted first game (beginner Incident Response). Everything else below is reference material.
+
 ### For Educators
 1. **Understand the framework:** Read [FRAMEWORK.md](docs/FRAMEWORK.md) to understand the 6 modules and how they combine
 2. **Review Variable Game Length:** Read [VARIABLE_GAME_LENGTH_SYSTEM.md](docs/VARIABLE_GAME_LENGTH_SYSTEM.md) for game pacing options
