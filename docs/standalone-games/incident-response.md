@@ -1,5 +1,6 @@
 # Incident Response Module: Standalone Play Guide
 
+**Version:** 2.2 - Playtest Edition
 **Duration:** 30-45 minutes
 **Players:** 1 Threat Orchestrator + 2-4 Blue Team members
 **Best For:** Incident response training, attack detection practice, SOC operations

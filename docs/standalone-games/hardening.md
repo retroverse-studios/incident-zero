@@ -1,5 +1,6 @@
 # Hardening Module: Standalone Play Guide
 
+**Version:** 2.2 - Playtest Edition
 **Duration:** 30-45 minutes
 **Players:** 1 Threat Orchestrator + 2-4 Blue Team members
 **Best For:** Defense architecture training, security design, proactive hardening practice
