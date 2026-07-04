@@ -8,6 +8,7 @@
 
 - **📚 Core Rules**
   - [How to Play (Start Here)](docs/HOW_TO_PLAY.md)
+  - [Threat Orchestrator's Guide](docs/TO_GUIDE.md)
   - [Core Game Rules](docs/rules/core-rules.md)
   - [Variable Game Length System](docs/VARIABLE_GAME_LENGTH_SYSTEM.md)
 

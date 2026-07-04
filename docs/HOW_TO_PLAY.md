@@ -87,6 +87,7 @@ Every module runs on the same engine:
 
 | You want... | Read |
 |-------------|------|
+| **You're the Threat Orchestrator** | [The TO Guide](TO_GUIDE.md) — the role, judging justifications, per-module screens |
 | Exact rules for a module | [docs/rules/](rules/core-rules.md) — core + one file per module |
 | Solo/standalone setup for any module | [docs/standalone-games/](standalone-games/incident-response.md) |
 | Every card, indexed | [cards/CARD_REFERENCE.md](../cards/CARD_REFERENCE.md) |

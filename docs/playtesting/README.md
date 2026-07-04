@@ -12,7 +12,7 @@ v2.2 is a **consistency + balance pass** over v2.1: every module's rules, standa
 
 **Before (15 min):**
 1. Pick ONE module for your first session — recommended: **Incident Response** (most developed) or **Audit & Compliance** (simplest to run)
-2. Read: [core rules](../rules/core-rules.md) + your module's rules doc + its standalone guide
+2. Read: [How to Play](../HOW_TO_PLAY.md) + the [TO Guide](../TO_GUIDE.md) (facilitator) + your module's rules doc
 3. Print: [tracker sheets](../../cards/print-templates/tracker-sheets.md) (universal + your module's sheet) and cards per the [A4 guide](../../cards/print-templates/a4-layout-guide.md) — index cards are fine for a first run
 4. Print one [session notes form](session-notes-form.md) (facilitator) and one [feedback form](feedback-form.md) (group)
 5. Bring: one d20, one d4, one d6, pencils
