@@ -651,6 +651,37 @@ SQLite Database (source of truth)
 
 ---
 
+### 16. Facilitation Aids (High Value, Near-Term — do before/during playtesting)
+
+**Rationale:** The biggest remaining facilitation burden is that every Threat Orchestrator must invent clue delivery and adjudication from raw card text. These aids lower TO skill requirements and improve playtest consistency.
+
+- [ ] **Pre-built Scenario Packs** — 3-5 ready-to-run attack chains per difficulty with *scripted clue text* (ideally fake log excerpts/artifacts as handouts, not just prose). Biggest single authenticity + facilitation win; cheap to write.
+- [ ] **TO Screen** — one page per module: turn sequence, costs, DCs, penalty triggers. Rules are now consistent (v2.2), so this is mechanical condensation. Companion to `cards/print-templates/tracker-sheets.md`.
+- [ ] **True-Solo Tabletop Rules** — a flowchart/dice-table "automated TO" so one person can play IR or Forensics unassisted. Doubles as the design spec for the digital/IF TO logic below.
+- [ ] **Playtest Issue Template** — GitHub issue template mirroring `docs/playtesting/feedback-form.md` so reports arrive structured.
+- [ ] **Role Cards (anti-quarterbacking)** — optional Blue Team roles (e.g., Lead Analyst, Comms Lead, Budget Owner) that give each player final say over one decision type. Standard co-op fix for one player dominating table talk; playtest first to confirm quarterbacking is actually a problem.
+- [ ] **Graduated Justification Rubric ("Expert Mode")** — at higher difficulty the TO awards +2 only for justifications naming specific ATT&CK technique IDs, artifacts, or detection logic. Raises the challenge ceiling for practitioner groups without touching card math.
+
+---
+
+### 17. Interactive Fiction Edition (Ink) — Solo Campaign Mode
+
+**Concept:** A browser-playable IF version where scripted narrative replaces the human TO — either standalone episodes or one epic "whole-of-life" saga (one fictional company played through all 6 modules, state carried between episodes exactly like the existing modifier-flow system).
+
+**Why it fits:** The module/modifier-flow design is already an episodic save-state structure; the TO requirement is the game's biggest solo-play blocker; and the justification mechanic translates well to multiple-choice reasoning (wrong-but-plausible options become teachable moments).
+
+**Architecture decision:** Ink + inkjs embedded in a web page (consistent with the PWA pattern). **Mechanics live in JavaScript** (d20, budget, meters — via inkjs external functions); **narrative lives in Ink**. This split avoids combinatorial explosion in Ink and lets the Ink layer become the scenario/content layer of the Phase B web app (shared mechanics engine with the AI-TO version).
+
+**Sequencing (important):**
+1. Playtest tabletop v2.2 first — IF prose hard-codes rule numbers; don't write against unvalidated numbers
+2. Prototype ONE episode: a 3-card beginner IR chain as a self-contained "case file" (~30-45 min play) — proves the Ink/JS split, doubles as a try-before-you-print onboarding artifact
+3. Full 6-episode saga is v3.0-scale (each episode ≈ novella of branching prose); decide after the prototype lands, ideally after the Phase A retro rebrand so it ships with the visual identity
+4. Real-incident scenarios (#12: SolarWinds, Colonial Pipeline) make excellent IF episodes
+
+**Relationship to RetroVerse Digital Edition:** the IF edition is a stepping stone to (not a replacement for) Phase B — Phase B's AI TO can reuse the same mechanics engine and scenario format.
+
+---
+
 ## Implementation Priority Matrix
 
 Use this matrix to decide what to work on next:

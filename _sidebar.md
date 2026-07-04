@@ -18,6 +18,7 @@
   - [Playtest Guide](docs/playtesting/README.md)
   - [Feedback Form](docs/playtesting/feedback-form.md)
   - [Session Notes Form](docs/playtesting/session-notes-form.md)
+  - [Design Review v2.2 (Hypotheses)](docs/playtesting/design-review-v2.2.md)
 
 - **🎮 Module Rules**
   - [Hardening Module](docs/rules/module-hardening.md)
