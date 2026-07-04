@@ -1,0 +1,4145 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Zero — Audit & Compliance (Print &amp; Play)</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.5;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem; color: #1a1a1a; }
+h1, h2, h3, h4 { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.25; }
+h1 { border-bottom: 3px solid #1a1a1a; padding-bottom: .3rem; }
+h2 { border-bottom: 1px solid #999; padding-bottom: .2rem; margin-top: 2.2rem; }
+pre, code { font-family: 'Courier New', monospace; font-size: .85em; }
+pre { background: #f4f4f4; border: 1px solid #ddd; padding: .8rem;
+      overflow-x: auto; white-space: pre; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92em; }
+th, td { border: 1px solid #888; padding: .35rem .55rem; text-align: left; vertical-align: top; }
+th { background: #eee; }
+blockquote { border-left: 4px solid #888; margin-left: 0; padding-left: 1rem; color: #444; }
+hr { border: none; border-top: 1px solid #bbb; margin: 2rem 0; }
+a { color: #0b5394; }
+.doc-break { page-break-before: always; break-before: page; border-top: 6px double #1a1a1a;
+             margin-top: 3rem; padding-top: 1rem; }
+.doc-src { font-family: 'Courier New', monospace; font-size: .75rem; color: #777;
+           text-transform: uppercase; letter-spacing: .08em; }
+.bundle-cover { text-align: center; padding: 4rem 0 2rem; page-break-after: always; }
+.bundle-cover h1 { border: none; font-size: 2.6rem; }
+.bundle-cover .toc { text-align: left; display: inline-block; margin-top: 2rem; }
+@media print {
+  body { max-width: none; padding: 0; font-size: 11pt; }
+  a { color: inherit; text-decoration: none; }
+  pre { white-space: pre-wrap; }
+}
+</style></head><body>
+<div class="bundle-cover">
+  <h1>INCIDENT ZERO</h1>
+  <p><strong>Audit & Compliance</strong> — Print &amp; Play Bundle · v2.2 Playtest Edition</p>
+  <p>A cybersecurity board game by RetroVerse Studios · CC BY-NC-SA 4.0</p>
+  <p>Print this file (Ctrl/Cmd+P) or read on screen. Card pages print best on cardstock.</p>
+  <div class="toc"><strong>Contents:</strong><ol><li>docs/HOW_TO_PLAY.md</li><li>docs/TO_GUIDE.md</li><li>docs/rules/core-rules.md</li><li>docs/rules/module-audit-compliance.md</li><li>docs/standalone-games/audit-compliance.md</li><li>cards/audit-compliance/core-deck/audit-domain-cards.md</li><li>cards/audit-compliance/expansion-deck/compliance-frameworks.md</li><li>cards/print-templates/tracker-sheets.md</li></ol></div>
+</div>
+<section class=""><p class="doc-src">docs/HOW_TO_PLAY.md</p><h1>How to Play Incident Zero</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Read time: ~15 minutes. First game: ~45 minutes.</strong></p>
+<p>This is the learn-to-play manual — read it once, run your first game, then use the module rules as reference during play. Exact tables and numbers live in the reference docs; this manual teaches the flow.</p>
+<hr />
+<h2>1. What Is This Game?</h2>
+<p><strong>Incident Zero</strong> is a cybersecurity board game for classrooms and training rooms. One player is the <strong>Threat Orchestrator (TO)</strong> — part facilitator, part adversary, part narrator. Everyone else is the <strong>Blue Team</strong>: security defenders making decisions under budget and time pressure.</p>
+<p>The game's signature rule: <strong>you get better dice odds by explaining your reasoning like a real analyst.</strong> Say "we investigate suspicious activity" and you roll flat. Say "we pull the mail gateway logs to check the sender's real IP against threat intel" and you roll at +3. Talking like a professional is literally how you win — that's the point.</p>
+<p>There are <strong>6 modules</strong> covering the security lifecycle. Each is a standalone 30-45 minute game; they also chain together (the outcome of one feeds the setup of the next). This manual teaches <strong>Incident Response</strong> first — it's the flagship and the best hook.</p>
+<h2>2. What You Need</h2>
+<ul>
+<li><strong>People:</strong> 2-7 (1 TO + 1-6 defenders; 3-5 total is the sweet spot)</li>
+<li><strong>Dice:</strong> one d20 (plus a d4 and d6 for advanced options)</li>
+<li><strong>Printed:</strong> the Tracker Sheets, and the card deck for your module — for Incident Response that's the Threat &amp; Defense cards (see the A4 Print Guide; index cards with titles written on them are fine for a first game)</li>
+<li><strong>Pencil</strong> for the trackers</li>
+</ul>
+<h2>3. The Core Loop (all modules)</h2>
+<p>Every module runs on the same engine:</p>
+<ol>
+<li><strong>Turns.</strong> A fixed number of turns (announced at setup). Each turn: start-of-turn penalties → 2-3 minutes of team discussion → ONE team action → end of turn.</li>
+<li><strong>Budget.</strong> One shared pool representing money, staff, and time. Every action costs Budget. Run dry and you can't act.</li>
+<li><strong>The d20 roll.</strong> Uncertain actions need <code>roll + modifiers ≥ 11</code>.</li>
+<li><strong>Justification modifiers.</strong> <strong>+2</strong> for strong technical reasoning (methodology — <em>why</em> this approach works), <strong>+1</strong> for naming real tools or techniques (Wireshark, EDR, Mimikatz, a MITRE technique). The TO judges honestly; vague = +0.</li>
+<li><strong>Debrief.</strong> Every session ends with 5-10 minutes of "what happened, why, what would you do differently." This is where the learning locks in — don't skip it.</li>
+</ol>
+<h2>4. Your First Game: Incident Response (Beginner)</h2>
+<p><strong>The setup (TO does this privately, 5 min):</strong> An attacker is inside the fictional company's network. The TO secretly builds a 3-card <strong>attack chain</strong> in kill-chain order and keeps it face-down:</p>
+<blockquote>
+<p><strong>Suggested first chain:</strong> T-01 Phishing Campaign (INITIAL COMPROMISE / SOCIAL ENGINEERING) → T-04 Lateral Movement via SMB (PIVOT &amp; ESCALATE / NETWORK) → T-07 Scheduled Task Persistence (PERSISTENCE / MALWARE)</p>
+</blockquote>
+<ul>
+<li>Turn limit: <strong>(3 cards × 2) + 1 = 7 turns.</strong> Announce it.</li>
+<li>Blue Team Budget: <strong>100.</strong> The team draws a shared hand of <strong>5 Defense cards</strong>.</li>
+<li>Blue Team wins by <strong>revealing all 3 chain cards</strong> (in order — you always work on the earliest unrevealed card) before turn 7 ends.</li>
+</ul>
+<p><strong>The three actions (Blue Team picks ONE per turn):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Cost</th>
+<th>On success (roll+mods ≥ 11)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Investigate</strong></td>
+<td>5</td>
+<td>1st success on a link = the TO gives a clue. 2nd success on the same link = <strong>card revealed!</strong></td>
+</tr>
+<tr>
+<td><strong>Deploy Defense</strong></td>
+<td>10/15/25 by tier</td>
+<td>If the card's vector AND chain step match the hidden card = <strong>revealed immediately.</strong> Partial match = defense stays on the table and gives <strong>+2</strong> to future rolls against any link matching its vector</td>
+</tr>
+<tr>
+<td><strong>Emergency Response</strong></td>
+<td>15</td>
+<td>No roll. Contain one already-revealed threat (removes its ongoing penalty)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pressure (TO applies at the START of each turn):</strong>
+- <strong>Active Breach Cost:</strong> -5 Budget while <em>any</em> chain card is still unrevealed (the breach is burning money whether you see it or not)
+- <strong>Uncontained Threats:</strong> -5 Budget per revealed-but-uncontained threat (revealing the <em>next</em> card in the chain auto-contains the previous one)</p>
+<p><strong>When a card is revealed,</strong> the team immediately picks ONE reward: draw 2 Defense cards, <strong>+10 Budget</strong>, or Fast-Track (next Investigate succeeds on 5+).</p>
+<h3>Scripted opening — read this at the table</h3>
+<p><strong>TURN 1.</strong> <em>TO:</em> "Start of turn: one attacker action is still hidden — Active Breach Cost, minus 5. Budget: 95. Something is wrong at Meridian Logistics: the helpdesk queue is full of password-reset complaints. What do you do?"
+<em>Team (after discussion):</em> "Investigate. We pull the mail gateway logs and check sender domains against our threat-intel feed — if this is phishing, the return-path won't match the display name." <em>TO:</em> "That's a real methodology and a real tool — <strong>+2 and +1.</strong> Roll." <em>Rolls 9. 9+3 = 12 ≥ 11 — success.</em> <em>TO reads a clue from T-01:</em> "Several employees received emails claiming to be from IT, asking them to 're-authenticate'. The link goes to a look-alike domain registered 4 days ago." <em>(First success on this link — clue only. Budget: 95 - 5 = 90.)</em></p>
+<p><strong>TURN 2.</strong> <em>TO:</em> "Active Breach Cost, minus 5. Budget: 85."
+<em>Team:</em> "Keep digging on the phishing — we check the mail gateway for who <em>clicked</em>, and pull those workstations' proxy logs." <em>TO:</em> "+2, +1. Roll." <em>Rolls 10. 13 ≥ 11 — second success on the same link.</em> <em>TO flips T-01 face-up:</em> "<strong>Phishing Campaign — revealed!</strong> Three users entered credentials on the fake page. This threat is now uncontained. Choose a reward." <em>Team takes Budget Grant: 85 - 5 + 10 = 90.</em></p>
+<p><strong>TURN 3.</strong> <em>TO:</em> "Two cards still hidden: Active Breach minus 5. One uncontained threat: minus 5. Budget: 80. You know how they got in — you don't yet know where they went."
+<em>From here, you're on your own.</em> (A strong play: Deploy the Network Segmentation defense — if the next hidden card is network lateral movement, vector + step match reveals it instantly <em>and</em> auto-contains the phishing.)</p>
+<h3>How it ends</h3>
+<ul>
+<li><strong>All 3 cards revealed by end of turn 7</strong> → win. Count remaining Budget for bragging rights.</li>
+<li><strong>Turn 7 ends with cards still hidden</strong> → the attack completes. Read the unrevealed cards' "Why This Works" text aloud — that's the real lesson — and go to debrief. (Losses are teachable; the debrief is identical either way.)</li>
+</ul>
+<p><strong>Debrief prompts:</strong> What did you spend the most on, and was it worth it? Which clue actually changed your next decision? What one defense, bought before turn 1, would have changed everything?</p>
+<h2>5. The Other Five Modules (one paragraph each)</h2>
+<ul>
+<li><strong>Network Building</strong> — <em>before the attack.</em> Design a company network under a hard budget: which servers, which security devices, what architecture. Business Requirement and Operational Event cards stress the design. Teaches trade-offs — you can't afford everything, and the gaps you leave matter later.</li>
+<li><strong>Hardening</strong> — <em>build defense-in-depth.</em> Deploy and upgrade layered defenses over 7 turns, then a <strong>pentester attacks</strong> (Pentester Tactic cards, each stating which defenses help). Teaches which control blunts which technique — and that signature antivirus won't save you.</li>
+<li><strong>Disaster Recovery</strong> — <em>the breach happened.</em> A crisis-management exercise on an 8-turn clock: advance Investigation/Remediation/Communication tracks, keep five stakeholder trust meters alive, hit the GDPR 72-hour notification deadline, and face the ransom decision. The most "real tabletop exercise" module.</li>
+<li><strong>Forensics</strong> — <em>after the fire is out.</em> Run investigations (disk, memory, logs, network, malware) to collect Evidence cards and push four meters: Attribution, Timeline, Attack Chain, Chain of Custody. Sloppy evidence handling costs you the case. Teaches actual forensic discipline.</li>
+<li><strong>Audit &amp; Compliance</strong> — <em>prove it.</em> Assess six security domains PASS/FAIL against real framework criteria (NIST CSF, CIS, PCI DSS). Or play <strong>Variation C</strong>, the debate format: argue risk acceptance vs. negligence in front of judges — the best large-group mode in the box.</li>
+</ul>
+<p><strong>Chaining modules:</strong> outcomes carry forward (audit gaps raise your DR costs; an IR loss sets up DR; IR's revealed chain seeds Forensics). See Module Combinations. Full lifecycle = all six in sequence, 4-5 hours across sessions.</p>
+<h2>6. Where to Go Next</h2>
+<table>
+<thead>
+<tr>
+<th>You want...</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>You're the Threat Orchestrator</strong></td>
+<td>The TO Guide — the role, judging justifications, per-module screens</td>
+</tr>
+<tr>
+<td>Exact rules for a module</td>
+<td>docs/rules/ — core + one file per module</td>
+</tr>
+<tr>
+<td>Solo/standalone setup for any module</td>
+<td>docs/standalone-games/</td>
+</tr>
+<tr>
+<td>Every card, indexed</td>
+<td>cards/CARD_REFERENCE.md</td>
+</tr>
+<tr>
+<td>To run a playtest and report back</td>
+<td>docs/playtesting/</td>
+</tr>
+<tr>
+<td>Variable game length &amp; difficulty tiers</td>
+<td>core-rules §3a</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Quick Reference (photocopy this)</h2>
+<p><strong>Roll:</strong> d20 + modifiers ≥ 11 · <strong>+2</strong> strong justification · <strong>+1</strong> real tool/technique named · <strong>+2</strong> matching deployed defense (IR)
+<strong>IR costs:</strong> Investigate 5 · Deploy 10/15/25 · Emergency Response 15
+<strong>IR start-of-turn:</strong> -5 while any card hidden · -5 per uncontained revealed threat
+<strong>Reveal:</strong> 2 successful Investigates on a link, or 1 full-match Deploy (vector + step) · always the earliest unrevealed card
+<strong>Reward per reveal (pick 1):</strong> 2 Defense cards / +10 Budget / next Investigate succeeds on 5+
+<strong>Turn limit:</strong> (chain cards × 2) + 1 → 3 cards = 7 turns
+<strong>Budgets:</strong> NB 40-60 · DR 50 · Forensics 75 · IR 100 · Audit 100 · Hardening 150</p></section><section class="doc-break"><p class="doc-src">docs/TO_GUIDE.md</p><h1>The Threat Orchestrator's Guide</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Audience:</strong> anyone about to run Incident Zero — teacher, trainer, or the friend who volunteered.</p>
+<hr />
+<h2>1. The Role</h2>
+<p>The <strong>Threat Orchestrator (TO)</strong> is Incident Zero's dungeon master. You wear three hats, usually in the same minute:</p>
+<ul>
+<li><strong>The Adversary</strong> — you built the hidden attack chain; you know what the Blue Team doesn't. You want them challenged, not beaten.</li>
+<li><strong>The Narrator</strong> — you turn card text into a story. "You failed the roll" is a rules outcome; "the log archive was rotated last night — whatever was there is gone" is a game.</li>
+<li><strong>The Teacher</strong> — you award the justification bonuses, ask "why?", and run the debrief. Every roll is a chance to make someone articulate real security reasoning.</li>
+</ul>
+<p>If you've ever run a tabletop RPG, you already have 80% of this. The remaining 20% is the adjudication rubric in §4 — it's the part that makes this game educational rather than just thematic.</p>
+<p><strong>A good TO makes the game.</strong> The same scenario is flat or unforgettable depending on how you deliver clues and how honestly you judge reasoning. That's why this guide exists.</p>
+<h2>2. Golden Rules</h2>
+<ol>
+<li><strong>Be fair, not nice.</strong> Never fudge dice — in either direction. The rules already give you legitimate difficulty dials (§5); use those, not your thumb on the d20.</li>
+<li><strong>Never block on ignorance.</strong> If players are stuck, sell them a hint through the fiction ("your SOC junior suggests looking at outbound traffic...") rather than letting three turns die in silence.</li>
+<li><strong>Announce costs before actions.</strong> "That's 15 Budget — confirm?" prevents every argument you'd otherwise have.</li>
+<li><strong>Explain outcomes.</strong> Success or failure, say <em>why</em> in security terms. The explanation is the lesson; the roll is just pacing.</li>
+<li><strong>Keep the clock.</strong> 2-3 minutes of planning per turn, firmly. Deliberation past that point is quarterbacking, not strategy.</li>
+<li><strong>Let them be wrong.</strong> A confidently wrong plan that fails teaches more than a corrected plan that succeeds. Save the correction for the debrief.</li>
+</ol>
+<h2>3. Session Prep (15 minutes)</h2>
+<ul>
+<li>[ ] Pick the module; skim its rules doc and its <strong>v2.2 Playtest Edition Changes</strong> section</li>
+<li>[ ] Build your scenario (IR: choose the chain; Hardening: threat profile; DR: pick scenario + place scheduled events on the timeline; Forensics: pick tier; Audit: pick sample org; NB: shuffle REQ/EVT decks)</li>
+<li>[ ] Print/lay out: tracker sheets, the module's cards, one d20 (d4/d6 where the module calls for them)</li>
+<li>[ ] <strong>Rehearse your first clue out loud once.</strong> Seriously — the first clue sets the session's tone.</li>
+<li>[ ] Decide your difficulty posture (§5) based on who's at the table</li>
+<li>[ ] First time running anything? Use the fully scripted opening in How to Play §4</li>
+</ul>
+<h2>4. Judging Justifications (the heart of the job)</h2>
+<p>The +2/+1 modifiers are the game's teaching engine. Your consistency is what makes them meaningful.</p>
+<p><strong>+2 — Strong technical justification.</strong> The player explains <em>methodology</em>: what they'll look at, and why that would reveal or stop this specific thing.
+- ✅ "We pull the mail gateway logs and compare the return-path against the display-name domain — spoofed senders won't match." <em>(mechanism stated)</em>
+- ✅ "Deploy EDR because living-off-the-land attacks won't trip signature AV — we need behavioral detection." <em>(threat-to-control logic)</em>
+- ❌ "We investigate the email server thoroughly." <em>(a location is not a method)</em></p>
+<p><strong>+1 — Real tool or technique named.</strong> Wireshark, Splunk queries, Mimikatz, a MITRE technique ID, an actual CVE.
+- ✅ "Check LSASS access events — that's Mimikatz behavior, T1003."
+- ❌ "We use our security tools." <em>(no it isn't)</em></p>
+<p><strong>Rulings that keep it fair:</strong>
+- <strong>Judge the reasoning, not the vocabulary.</strong> A beginner saying "check if the email really came from who it says" in plain words has the mechanism — award the +2. A buzzword salad without a mechanism gets +0.
+- <strong>Consistency beats generosity.</strong> Whatever bar you set on turn 1 is the bar all game.
+- <strong>Escalate the bar as the group learns</strong> — by session three, "we check the SIEM" that earned +1 in session one should need a specific query. Announce the escalation openly ("you're professionals now — I want specifics").
+- <strong>Expert groups ("Expert Mode"):</strong> award +2 only for named artifacts, ATT&amp;CK technique IDs, or detection logic. This is the challenge ceiling for practitioner tables — the card math never has to change.
+- <strong>One player monologuing every justification?</strong> Ask a different player to give it each turn ("Sam, you're on comms — why does this matter to the regulator?").</p>
+<h2>5. Difficulty Dials (live, legitimate)</h2>
+<p><strong>Signs it's too easy:</strong> no failed rolls; goal in sight with 40+ Budget spare; players bored.
+<strong>Signs it's too hard:</strong> no progress for 3+ turns; consecutive failures; frustration replacing discussion.</p>
+<table>
+<thead>
+<tr>
+<th>Easier (pick 1-2)</th>
+<th>Harder (pick 1-2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Richer clues (more specific detail per success)</td>
+<td>Vaguer clues (accurate but terse)</td>
+</tr>
+<tr>
+<td>Suggest an angle through the fiction</td>
+<td>Expert-mode justification bar</td>
+</tr>
+<tr>
+<td>Shorter chain / lower tier next game</td>
+<td>Longer chain, expansion cards</td>
+</tr>
+<tr>
+<td>Beginner budgets (module max)</td>
+<td>Minimum budgets</td>
+</tr>
+</tbody>
+</table>
+<p>Never adjust by fudging a roll or changing a printed number mid-game — players smell it, and it teaches that outcomes are arbitrary.</p>
+<h2>6. Failure Modes (yours, not theirs)</h2>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Encyclopedia</td>
+<td>You lecture after every roll</td>
+<td>One sentence of "why," save the rest for debrief</td>
+</tr>
+<tr>
+<td>The Softie</td>
+<td>Everyone always gets +2</td>
+<td>Re-read §4; require the mechanism</td>
+</tr>
+<tr>
+<td>The Sphinx</td>
+<td>Clues so cryptic nobody moves</td>
+<td>Clues must be <em>actionable</em>: each should suggest at least one sensible next investigation</td>
+</tr>
+<tr>
+<td>The Railroader</td>
+<td>You steer them to <em>your</em> solution</td>
+<td>Multiple paths are valid; score the outcome, not the route</td>
+</tr>
+<tr>
+<td>The Accountant</td>
+<td>You narrate numbers, not events</td>
+<td>Lead with fiction, then state the numbers</td>
+</tr>
+<tr>
+<td>The Rusher</td>
+<td>Debrief skipped because time ran out</td>
+<td>Protect the last 10 minutes like it's the win condition — it is</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Module Panels (your screen, one per module)</h2>
+<h3>🔎 Incident Response — you are the hidden attacker</h3>
+<ul>
+<li><strong>Setup:</strong> secret chain in kill-chain order (3-5 cards) · turns = (chain × 2) + 1 → 7/9/11 · Budget 100 · team draws 5 Defense cards</li>
+<li><strong>Start of every turn, announce:</strong> -5 Active Breach (any card hidden) · -5 per uncontained revealed threat · then current Budget</li>
+<li><strong>Actions:</strong> Investigate 5 (1st success on a link = clue, 2nd = reveal) · Deploy 10/15/25 (vector+step match = reveal; partial = stays, +2 later vs its vector) · Emergency Response 15 (contain, no roll)</li>
+<li><strong>Always target the earliest unrevealed card.</strong> On reveal: +1 uncontained, previous auto-contains, team picks reward (2 cards / +10 Budget / next Investigate 5+)</li>
+<li><strong>Your craft:</strong> progressive clues — first success is a symptom, second-to-last is nearly a name. Announce "your deployed defenses are helping here" when the +2 persistence applies — it's a clue in itself.</li>
+</ul>
+<h3>🛡️ Hardening — you become the pentester mid-game</h3>
+<ul>
+<li><strong>Setup:</strong> threat profile via 1d6 across all 6 vectors · 7 turns · Budget 150 (or IR carryover)</li>
+<li><strong>Actions (one/turn):</strong> Deploy defense 10/15/25 (two BASIC may be one action) · Upgrade 5 (+2 on that defense) · Playbook 10 (+3, <strong>max 2 per game</strong>) · Test &amp; Drill (roll)</li>
+<li><strong>Pentester Challenge (turns 3-4):</strong> draw PT cards. Resolution: d20 + printed bonus of the ONE chosen defense + its upgrades + relevant playbook ≥ the card's DC. No stacking across defenses. Multi-vector tactics = separate rolls, one defense each.</li>
+<li><strong>Victory gate:</strong> score ≥60 AND ≥4 defenses deployed AND majority of tactics defended. Score = defenses×5 + upgrades×2 + playbooks×10 + tactics defended×5 + (Budget left/150)×10.</li>
+<li><strong>Your craft:</strong> narrate the pentester as a person with a plan; read the card's teaching point after each resolution, win or lose.</li>
+</ul>
+<h3>🏗️ Network Building — you are the demanding business</h3>
+<ul>
+<li><strong>Setup:</strong> Budget 60/50/40 (easier→harder) · 5 turns = design-review phases · REQ deck (1/turn) + EVT events between turns</li>
+<li><strong>Turn rule:</strong> place ANY number of affordable components. Required: Email, Web, Database, Identity (DC), Backup. Overload = +1 Budget per extra service over capacity.</li>
+<li><strong>Scoring:</strong> max 40 · tiers 32-40 / 22-31 / 12-21 / &lt;12 · smart utilization beats hoarding (5-15 left is the sweet spot)</li>
+<li><strong>Your craft:</strong> play the CFO and the auditor — every REQ card is a stakeholder with a voice. "Legal called: we're in PCI scope now."</li>
+</ul>
+<h3>🚨 Disaster Recovery — you are the crisis itself</h3>
+<ul>
+<li><strong>Setup:</strong> 8 turns (~72h) · Budget 50 · 3 tracks (Investigation/Remediation/Communication) + 5 stakeholder trust meters at start values · place scheduled events: EVENT-01 T2, 04 T3, 03+09 T5, 02 T6, 12 T7; triggered events fire on conditions</li>
+<li><strong>Turn:</strong> one ACTION card (0-20 Budget; Holding Statement is free). Advances are deterministic — <strong>dice only for</strong>: optional Justification bonus (strong reasoning → d20, 11+ = +5% on that advance) and ACTION-13's pay-the-ransom reliability roll (1-5 = keys fail)</li>
+<li><strong>Deadlines:</strong> customers by T5 · regulator penalties from T6, hard GDPR line T8 · <strong>Loss: any trust meter hits 0%</strong> · final Reputation computed at game end (tiers 85/70/55/40)</li>
+<li><strong>Your craft:</strong> you are the ringing phone. Open every turn in-fiction: "The journalist calls again. The board wants a number. What do you do?"</li>
+</ul>
+<h3>🔬 Forensics — you are the evidence</h3>
+<ul>
+<li><strong>Setup:</strong> tier sets turns (TIER 2 ≈ 8-10, TIER 3 = 11-13, +d4 variation) · Budget 75 · 4 meters at 0%</li>
+<li><strong>Actions:</strong> Investigation card (printed cost/DC; Duration N = results arrive N turns later, one in flight) · Analyze evidence 5 (DC 10, once per card, only two meters) · Follow lead 5</li>
+<li><strong>Key rulings:</strong> evidence card's printed impacts replace the investigation's advance line (no double counting) · +5% Chain of Custody each time evidence is discovered AND the team states preservation (hash/image/export) · partial success band = DC-2 to DC-1 · haste -2</li>
+<li><strong>Victory (checked first, at game end):</strong> V1 Attribution≥90+Timeline≥80 · V2 Timeline≥80+Chain≥80+CoC≥70 · V3 any two ≥70. Budget-out is NOT a loss.</li>
+<li><strong>Your craft:</strong> describe evidence sensorily ("the timestamp is three hours <em>before</em> the alert"). Ask "how are you preserving that?" every single time — that question IS the chain-of-custody lesson.</li>
+</ul>
+<h3>📋 Audit &amp; Compliance — you are the organization under review</h3>
+<ul>
+<li><strong>Setup:</strong> pick sample org (or the debate Variation C) · no budget during assessment (100 only for optional remediation cards)</li>
+<li><strong>Scoring:</strong> 6 domains, PASS/FAIL against printed criteria (stars: 1-2★=FAIL, 3★+=PASS, PARTIAL=FAIL) → X/6 · gap penalties for later modules capped at -30 total</li>
+<li><strong>Ruling discipline:</strong> the printed criteria decide, not vibes — untested backups FAIL even if the team likes the org. Disagreement about a borderline call is not a problem; it's the lesson. Let them argue, then apply the criterion.</li>
+<li><strong>Your craft:</strong> in Variation C you're the judge panel — score arguments on risk reasoning, not rhetoric.</li>
+</ul>
+<h2>8. Running the Debrief (10 minutes, non-negotiable)</h2>
+<p>Three rounds, in order: <strong>What happened?</strong> (players narrate, you correct only facts) → <strong>Why did it work that way?</strong> (connect two or three key moments to real-world security — this is where you finally get to lecture, briefly) → <strong>What would you do differently?</strong> (go around the table; everyone answers). Losses debrief better than wins: read any unrevealed cards' "Why This Works" text aloud — it's the payoff for losing.</p>
+<h2>9. First Session? Do This</h2>
+<ol>
+<li>Run beginner <strong>Incident Response</strong> with the scripted opening in How to Play §4 — your first two turns are literally written out</li>
+<li>Keep the tracker sheet visible to everyone; public state builds trust in your fairness</li>
+<li>Log frictions on the session notes form — your confusion is playtest data too</li>
+<li>Forgive yourself one rules mistake per session; announce it, fix it forward, don't replay</li>
+</ol></section><section class="doc-break"><p class="doc-src">docs/rules/core-rules.md</p><h1>Incident Zero: Core Rules &amp; Mechanics</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> October 2025</p>
+<hr />
+<h2>Core Concept 🎯</h2>
+<p><strong>Incident Zero</strong> is a modular cybersecurity board game for 2+ players designed for educational environments. One player acts as the <strong>Threat Orchestrator (TO)</strong> (the facilitator), while all other players form <strong>Blue Teams</strong> (the Defenders).</p>
+<h3>How It Works</h3>
+<p>Players choose which <strong>module(s)</strong> to play based on learning objectives:</p>
+<ol>
+<li><strong>Network Building Module</strong> - Design and secure infrastructure (30-45 min)</li>
+<li><strong>Hardening Module</strong> - Build defense-in-depth (30-45 min)</li>
+<li><strong>Incident Response Module</strong> - Detect and investigate hidden attack chains (30-45 min)</li>
+<li><strong>Disaster Recovery Module</strong> - Manage breach crisis (30-45 min)</li>
+<li><strong>Forensics Module</strong> - Investigate and attribute attacks (30-45 min) <strong>NEW in v2.1</strong></li>
+<li><strong>Audit &amp; Compliance Module</strong> - Conduct security assessments (30-45 min)</li>
+</ol>
+<p>Modules can be played <strong>solo</strong> or <strong>combined in any sequence</strong> using the modifier generation procedures documented in FRAMEWORK.md and Module Combinations.</p>
+<hr />
+<h2>Game Components (Universal)</h2>
+<h3>Card Types</h3>
+<h4>Threat Cards</h4>
+<p>Represent attacker actions. Each card includes:
+- <strong>Title:</strong> e.g., "Phishing Campaign"
+- <strong>Attack Chain Step:</strong> <code>INITIAL COMPROMISE</code>, <code>PIVOT &amp; ESCALATE</code>, <code>PERSISTENCE</code>, or <code>C2 &amp; EXFIL</code>
+- <strong>Attack Vector:</strong> <code>SOCIAL ENGINEERING</code>, <code>WEB EXPLOIT</code>, <code>CREDENTIAL ABUSE</code>, <code>MALWARE</code>, <code>NETWORK</code>, or <code>DATA EXFIL</code>
+- <strong>Clue:</strong> Descriptive text for the Threat Orchestrator
+- <strong>Why This Works:</strong> Educational explanation (revealed after discovery)</p>
+<p><strong>Deck Composition:</strong>
+- <strong>12 Base Threat Cards</strong> (see cards/incident-response/core-deck/threat-defense-cards.md)
+- <strong>8 Expansion Threat Cards</strong> (see cards/incident-response/expansion-deck/advanced-threats.md)</p>
+<hr />
+<h4>Defense Cards</h4>
+<p>Represent security controls. Each card includes:
+- <strong>Title:</strong> e.g., "Multi-Factor Authentication"
+- <strong>Countermeasure Vector:</strong> One of the six attack vectors
+- <strong>Tier:</strong> BASIC (10 Budget), ADVANCED (15 Budget), or ELITE (25 Budget)
+- <strong>Description:</strong> What the defense does and when it applies</p>
+<p><strong>Deck Composition:</strong>
+- <strong>24 Base Defense Cards</strong> (see cards/incident-response/core-deck/threat-defense-cards.md)
+- <strong>19 Expansion Defenses</strong> (see cards/incident-response/expansion-deck/advanced-defenses.md)</p>
+<p><strong>Examples:</strong>
+- BASIC: Email Authentication Setup, User Security Training, Firewall Rules (10 Budget)
+- ADVANCED: Multi-Factor Authentication, EDR, Network Segmentation (15 Budget)
+- ELITE: Threat Hunting, Memory Forensics, Deception Technology (25 Budget)</p>
+<hr />
+<h4>Pentester Tactic Cards</h4>
+<p>Represent sophisticated attack techniques used in Hardening module (and potentially others).</p>
+<p><strong>8 Core Tactics (PT-01 to PT-08):</strong>
+1. PT-01: Social Engineering - Pretexting Attack
+2. PT-02: Malware Evasion - Living-off-the-Land Technique
+3. PT-03: Credential Dumping - Mimikatz Attack
+4. PT-04: Lateral Movement - Network Traversal
+5. PT-05: Privilege Escalation - Unpatched Kernel Exploit
+6. PT-06: Data Exfiltration - Unmonitored Channel
+7. PT-07: Supply Chain Compromise - Trusted Software Update
+8. PT-08: Insider Threat - Malicious Administrator</p>
+<p>See cards/hardening/core-deck/pentester-tactic-cards.md for full card text, plus 8 expansion tactics (PT-09 to PT-16) in advanced-tactics.md.</p>
+<hr />
+<h4>Asset Cards</h4>
+<p>Simple cards providing scenario context. Examples:
+- Email Server
+- Customer Database
+- Domain Controller
+- Web Application
+- Backup System
+- Developer Workstation</p>
+<hr />
+<h3>Game Materials Required</h3>
+<p><strong>Physical Components:</strong>
+- One 20-sided die (d20)
+- Turn Tracker (paper or board, counts 1-12+)
+- Budget Tracker (shows 0-150+)
+- Reputation/Security Score Tracker (shows 0-100)
+- Uncontained Threats Tracker (shows 0-5)
+- Tokens or counters (for tracking upgrades, penalties)</p>
+<p><strong>Optional:</strong>
+- Score sheets (printable or paper)
+- Playbook tracking sheet
+- Stakeholder communication log (for Disaster Recovery)</p>
+<hr />
+<h2>Universal Game Mechanics</h2>
+<h3>1. The d20 Roll System</h3>
+<p><strong>When Used:</strong> Investigation, Defense Deployment, Negotiation, and similar actions that have uncertain outcomes.</p>
+<p><strong>How It Works:</strong>
+1. Player announces action and parameters
+2. Player rolls 1d20 (one 20-sided die)
+3. Compare result to target number (usually 11+) plus modifiers
+4. Success if: <code>roll + modifiers ≥ target number</code></p>
+<p><strong>Example:</strong></p>
+<pre><code>Action: Investigate email headers
+Target: 11+
+Roll: 7
+Modifiers: +2 (technical justification) +1 (referenced Splunk)
+Calculation: 7 + 2 + 1 = 10
+Result: FAIL (10 &lt; 11)
+</code></pre>
+<hr />
+<h3>2. Budget System (Universal)</h3>
+<p><strong>What is Budget?</strong>
+Abstract resource representing time, money, personnel, and tools. Spent to take actions, buy defenses, or conduct investigations.</p>
+<p><strong>Budget Allocation by Module:</strong>
+- <strong>Network Building:</strong> Start at 40-60 (by difficulty; see module rules)
+- <strong>Hardening:</strong> Start at 150 (or carry over from IR)
+- <strong>Incident Response:</strong> Start at 100
+- <strong>Disaster Recovery:</strong> Start at 50 (emergency fund)
+- <strong>Forensics:</strong> Start at 75
+- <strong>Audit &amp; Compliance:</strong> Start at 100 (used only for optional remediation cards)</p>
+<p><strong>Budget Spending:</strong>
+- <strong>Investigate action:</strong> 5 Budget
+- <strong>Deploy Defense:</strong> 10/15/25 Budget (by tier)
+- <strong>Emergency Response (IR):</strong> 15 Budget (v2.2; was 25)
+- <strong>Active Breach Cost (IR, v2.2):</strong> -5 Budget at start of each turn while any chain card remains unrevealed
+- <strong>Harden Upgrade (Hardening):</strong> 5 Budget
+- <strong>Create Playbook (Hardening):</strong> 10 Budget
+- <strong>Crisis Action cards (DR):</strong> 5-20 Budget per card (ACTION-01 to ACTION-12; the free "Holding Statement" costs 0)
+- <strong>Ransom Decision (DR, ACTION-13):</strong> Pay 20 / Negotiate 5 / Refuse 0</p>
+<p><strong>Budget = 0:</strong> Team loses (cannot take further actions)</p>
+<p><em>Exception (Disaster Recovery, v2.2): Budget floor is 0 and the free Holding Statement action remains available — DR is never lost by running out of Budget; DR's loss condition is any stakeholder trust reaching 0%.</em></p>
+<hr />
+<h3>3. Turn System (Universal)</h3>
+<p><strong>Turns represent:</strong> Time passing in the game world (6 hours, 30 minutes, or abstract unit depending on module)</p>
+<p><strong>Turn Sequence:</strong>
+1. <strong>Start of Turn:</strong> Penalties applied, trackers announced
+2. <strong>Planning Phase:</strong> Team discusses strategy (2-3 min)
+3. <strong>Action Phase:</strong> Execute chosen action, resolve rolls
+4. <strong>End of Turn:</strong> Advance tracker, draw card, check events</p>
+<hr />
+<h3>3a. Variable Game Length System (v2.1 - New!)</h3>
+<p><strong>Philosophy:</strong> In real incident response, some attacks move fast (hours), some take months. Fixed turn lengths feel unrealistic. This system adds realism without requiring complex calculations.</p>
+<h4>For Beginners &amp; Quick Play: Default Formula</h4>
+<p><strong>Default Formula: (Attack Chain Cards × 2) + 1</strong></p>
+<p>This gives attackers enough time to progress realistically while keeping games manageable:</p>
+<table>
+<thead>
+<tr>
+<th>Attack Chain</th>
+<th>Formula</th>
+<th>Turn Count</th>
+<th>Session Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3 cards</td>
+<td>(3 × 2) + 1</td>
+<td><strong>7 turns</strong></td>
+<td>30-40 min play</td>
+</tr>
+<tr>
+<td>4 cards</td>
+<td>(4 × 2) + 1</td>
+<td><strong>9 turns</strong></td>
+<td>35-45 min play</td>
+</tr>
+<tr>
+<td>5 cards</td>
+<td>(5 × 2) + 1</td>
+<td><strong>11 turns</strong></td>
+<td>40-50 min play</td>
+</tr>
+<tr>
+<td>6 cards</td>
+<td>(6 × 2) + 1</td>
+<td><strong>13 turns</strong></td>
+<td>45-55 min play</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to Use Default Formula:</strong>
+1. Choose number of threat cards in attack chain (3, 4, 5, or 6)
+2. Apply formula: (Cards × 2) + 1 = Turn Count
+3. Announce turn count to Blue Team
+4. Play game normally with that turn limit</p>
+<p><strong>Example Setup:</strong></p>
+<blockquote>
+<p>"I've created a 4-card attack chain. That's (4 × 2) + 1 = 9 turns. You have 9 turns to detect all four threats. Go!"</p>
+</blockquote>
+<hr />
+<h4>For Advanced Players: Complexity Tiers (v2.1)</h4>
+<p>Advanced Threat Orchestrators can use a <strong>Tier + d4 system</strong> for more control and variability:</p>
+<p><strong>Step 1: Select Attack Complexity Tier</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Turn Base</th>
+<th>Attack Profile</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TIER 1</strong></td>
+<td>5-7</td>
+<td>Simple &amp; obvious</td>
+<td>Script kiddie using public tools</td>
+</tr>
+<tr>
+<td><strong>TIER 2</strong></td>
+<td>8-10</td>
+<td>Standard sophistication</td>
+<td>Organized cybercriminal group</td>
+</tr>
+<tr>
+<td><strong>TIER 3</strong></td>
+<td>11-13</td>
+<td>Highly sophisticated</td>
+<td>APT with operational security</td>
+</tr>
+<tr>
+<td><strong>TIER 4</strong></td>
+<td>14-16</td>
+<td>Expert/Nation-state</td>
+<td>State-sponsored group</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2: Add Randomness (Optional)</strong></p>
+<p>Roll 1d4 for variation:
+- <strong>Roll 1:</strong> -1 turn (tight timeline)
+- <strong>Roll 2 or 3:</strong> ±0 turns (no change)
+- <strong>Roll 4:</strong> +1 turn (extended dwell time)</p>
+<p><strong>Final Turn Count = Tier Base + d4 Result</strong></p>
+<p><strong>Example Advanced Setup:</strong></p>
+<blockquote>
+<p>"This is a TIER 2 attack (organized cybercriminals). Base is 8-10 turns. I'll roll d4 for variation... [rolls 4, +1 turn]. Final turn count: 9-11 turns."</p>
+</blockquote>
+<hr />
+<h4>Critical Game Integrity Rules (v2.1)</h4>
+<p>These rules protect game balance and prevent metagaming:</p>
+<h5>Rule 1: Accept Any Roll (Even If It Feels Wrong)</h5>
+<p><strong>The Rule:</strong> Threat Orchestrators MUST accept the random result, even if it feels impossibly tight or loose.</p>
+<p><strong>Why:</strong> Real incident response is unpredictable. Sometimes attacks happen faster or slower than expected.</p>
+<p><strong>Example Scenarios:</strong>
+- TIER 3 attack (11-13 base) + d4 roll of 1 = 10-12 turns (tighter than expected, but realistic)
+- TIER 1 attack (5-7 base) + d4 roll of 4 = 6-8 turns (easier conditions, but acceptable)</p>
+<p><strong>When Chaos Feels Realistic:</strong>
+- Tight timeline: "The attacker worked faster than expected—they had prior knowledge"
+- Loose timeline: "The attacker was cautious, spending weeks in reconnaissance before striking"</p>
+<p><strong>Implementation:</strong> Lean into the randomness as realistic incident variability.</p>
+<hr />
+<h5>Rule 2: Players Cannot Question Tier Based on Turn Count</h5>
+<p><strong>The Rule:</strong> Blue Team CANNOT deduce the attack tier from the announced turn count. They cannot ask "Is this TIER 2?" or "Is this TIER 4?" based on how many turns they have.</p>
+<p><strong>Why:</strong> Real incident response doesn't come with difficulty labels. Attackers don't advertise sophistication. Players should discover complexity through gameplay (attack chain complexity, defender evasion, tool sophistication, etc.).</p>
+<p><strong>What Players CAN Ask:</strong>
+- "What are the suspicious network events?" (leads to understanding threats)
+- "Can we analyze the malware?" (reveals attacker sophistication through findings)
+- "Why did this attack succeed?" (post-game discussion)</p>
+<p><strong>What Players CANNOT Ask:</strong>
+- "Is this a TIER 2 attack?" (deriving tier from turn count)
+- "This looks like a TIER 1 because we have 7 turns" (meta-gaming difficulty)</p>
+<p><strong>Implementation:</strong> Respond to difficulty questions by saying "Investigate and find out!" Players discover sophistication through evidence, not from turn counts.</p>
+<hr />
+<h5>Rule 3: TO Modifier Authority (Rare &amp; Optional)</h5>
+<p><strong>The Rule:</strong> ONLY after rolling d4, the Threat Orchestrator may apply an optional ±1 turn adjustment IF the rolled result feels genuinely unreasonable for the scenario.</p>
+<p><strong>When to Use (Rare):</strong>
+- Scenario setup is unusually complex (multiple attack vectors, coordination across systems)
+- Player group is new and needs slightly easier conditions
+- Real-world incident being taught had specific timeline constraints</p>
+<p><strong>When NOT to Use (Prefer Random):</strong>
+- "The roll feels unlucky" (accept the chaos)
+- "I want this exactly 10 turns" (let dice decide)
+- "The attack chain is long so it should take longer" (that's what TIER system handles)</p>
+<p><strong>Implementation:</strong>
+1. Roll d4 normally
+2. Announce rolled result
+3. ONLY IF genuinely unreasonable, apply ±1 modifier and explain why
+4. Document the override for consistency in future scenarios</p>
+<p><strong>Example Valid Use:</strong></p>
+<blockquote>
+<p>"TIER 2 base 8-10, rolled -1 = 7-9 turns. That's tight given we have 5-card attack chain, so I'm adding +1 modifier (explaining the discovery is methodical). Final: 8-10 turns."</p>
+</blockquote>
+<p><strong>Example Invalid Use:</strong></p>
+<blockquote>
+<p>"I rolled 8-10 but I want 10-12, so I'm adding +2." (NO - use the roll as-is)</p>
+</blockquote>
+<hr />
+<h4>Implementation Checklist</h4>
+<p><strong>For Beginners (Use Default Formula):</strong>
+- [ ] Choose attack chain length (3, 4, 5, or 6 cards)
+- [ ] Calculate: (Cards × 2) + 1
+- [ ] Announce turn count
+- [ ] Play</p>
+<p><strong>For Advanced (Use Tier + d4):</strong>
+- [ ] Select TIER (1, 2, 3, or 4)
+- [ ] Announce TIER basis (not the number, just why it's that complexity)
+- [ ] Roll d4 for variation (hidden or public, your choice)
+- [ ] Calculate final turn count
+- [ ] Apply Rule 3 modifier if genuinely needed (rare)
+- [ ] Announce final turn count WITHOUT revealing tier</p>
+<hr />
+<h4>Quick Reference Card</h4>
+<p><strong>Default Formula:</strong> Turn Count = (Attack Cards × 2) + 1</p>
+<p><strong>Tier System:</strong>
+- TIER 1: 5-7 turns (simple)
+- TIER 2: 8-10 turns (standard)
+- TIER 3: 11-13 turns (advanced)
+- TIER 4: 14-16 turns (expert)
+- Add d4 roll: -1, 0, 0, or +1</p>
+<p><strong>Golden Rules:</strong>
+1. Accept any roll (embrace chaos)
+2. Never reveal tier to players
+3. Modifier authority only when truly needed (rare)</p>
+<hr />
+<h3>4. Roll Modifiers (Universal)</h3>
+<p>All modules use the same modifier system for consistency:</p>
+<h4>+2 Bonus: Strong Technical Justification</h4>
+<p>Awarded when a player provides clear, specific reasoning for their action using real security concepts.</p>
+<p><strong>Examples:</strong>
+- "We're analyzing email headers in the mail gateway logs to identify the true sender IP and check it against threat intelligence feeds"
+- "We're deploying EDR on all endpoints because it can detect living-off-the-land techniques"
+- "We're querying our SIEM for scheduled task creation events because attackers use them for persistence"</p>
+<p><strong>Criteria:</strong>
+- References specific tools (Splunk, EDR, SIEM, etc.)
+- Explains methodology (why this approach works)
+- Shows understanding of the threat being addressed</p>
+<hr />
+<h4>+1 Bonus: Real Tools or Techniques Referenced</h4>
+<p>Awarded when player references actual security tools or real attack/defense techniques.</p>
+<p><strong>Examples:</strong>
+- "We'll use Wireshark to analyze the network traffic"
+- "We're checking for Mimikatz usage in memory"
+- "We're reviewing EDR telemetry"
+- "We're looking for this specific CVE exploitation pattern"</p>
+<p><strong>Criteria:</strong>
+- References real tools (Wireshark, EDR, Splunk, etc.)
+- References real techniques (MITRE ATT&amp;CK, specific CVEs)
+- Shows awareness of how things actually work</p>
+<hr />
+<h3>5. Uncontained Threats Penalty (Incident Response Module)</h3>
+<p><strong>When Applied:</strong> Incident Response module only, applied at START of each turn</p>
+<p><strong>How It Works:</strong>
+1. When a threat card is <strong>revealed</strong>, add 1 to Uncontained Threats Tracker
+2. At START of each turn, deduct <strong>5 Budget per uncontained threat</strong>
+3. When <strong>next card in chain is revealed</strong>, previous threat is auto-mitigated (-1 from tracker)
+4. When <strong>Emergency Response action is used</strong> (15 Budget), remove a revealed threat (-1 from tracker)</p>
+<p><strong>Companion rule — Active Breach Cost (v2.2):</strong> while at least one chain card remains <strong>unrevealed</strong>, deduct an additional flat -5 Budget at the start of each turn. Hidden attackers cost money too.</p>
+<p><strong>Purpose:</strong> Creates urgency - dwell time costs money, whether you've found the attacker yet or not. Teaches real-world incident response costs.</p>
+<p><strong>Example (uncontained penalty only; Active Breach Cost also applies while cards remain hidden):</strong></p>
+<pre><code>Turn 1: Phishing revealed → Uncontained Threats = 1
+Turn 2: START → Deduct 5 Budget (95 remaining from 100)
+Turn 3: Lateral Movement revealed → Phishing auto-mitigated (Uncontained = 1)
+Turn 3: START → Deduct 5 Budget
+Turn 4: Emergency Response on Lateral Movement (15 Budget) → Uncontained Threats = 0
+</code></pre>
+<hr />
+<h2>Common Roles &amp; Responsibilities</h2>
+<h3>Threat Orchestrator (Facilitator)</h3>
+<p><strong>Responsibilities:</strong>
+- Manage game state and track turns/budget
+- Describe scenarios and outcomes
+- Roll dice when action outcomes are uncertain
+- Guide the narrative</p>
+<p><strong>During Incident Response:</strong>
+- Create and manage hidden attack chain
+- Provide clues based on successful investigations
+- Control Uncontained Threats penalties
+- Be fair but challenging</p>
+<p><strong>During Other Modules:</strong>
+- Describe threat context and defenses
+- Draw Pentester Tactic cards (Hardening)
+- Manage timeline and deadlines (Disaster Recovery)
+- Guide debrief questions</p>
+<p><strong>Universal Tips:</strong>
+- Explain <em>why</em> actions succeed or fail
+- Ask clarifying questions about player strategy
+- Balance challenge with learning
+- Provide constructive feedback</p>
+<hr />
+<h3>Blue Team (Defenders)</h3>
+<p><strong>Responsibilities:</strong>
+- Discuss strategy as a team
+- Choose one action per turn
+- Justify your decisions (gain +2 modifier)
+- Manage budget carefully
+- Learn from success and failure</p>
+<hr />
+<h2>Modifier Stacking Rules</h2>
+<p><strong>Key Rule:</strong> Modifiers are <strong>additive</strong> and can stack.</p>
+<p><strong>Example (Hardening Module, canonical formula — v2.2):</strong></p>
+<pre><code>Pentester Tactic: PT-02 Living-off-the-Land (DC 13)
+
+Defense roll = d20
+  + printed bonus for the ONE defense chosen (D-08 EDR vs PT-02: +3)
+  + hardening upgrades on that defense (+2 each; one upgrade: +2)
+  + relevant playbook (+3)
+
+Team rolls 8:
+8 + 3 (EDR) + 2 (upgrade) + 3 (playbook) = 16 ≥ 13 = SUCCESS
+</code></pre>
+<p>Only the single chosen defense's printed bonus applies — deployed defenses do not stack with each other against one tactic.</p>
+<hr />
+<h2>Difficulty &amp; Scaling</h2>
+<h3>By Attack Chain Length</h3>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3 cards</strong></td>
+<td>Beginner</td>
+<td>Learning mechanics, 30 min sessions</td>
+</tr>
+<tr>
+<td><strong>4 cards</strong></td>
+<td>Intermediate</td>
+<td>Standard play, 40 min sessions</td>
+</tr>
+<tr>
+<td><strong>5 cards</strong></td>
+<td>Advanced</td>
+<td>Challenge play, full kill chain</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>By Starting Budget</h3>
+<table>
+<thead>
+<tr>
+<th>Budget</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>60</strong></td>
+<td>Hard</td>
+<td>Resource scarcity, tough choices</td>
+</tr>
+<tr>
+<td><strong>100</strong></td>
+<td>Standard</td>
+<td>Balanced play, most scenarios</td>
+</tr>
+<tr>
+<td><strong>150+</strong></td>
+<td>Easy</td>
+<td>Strategic depth, multiple options</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>By Turn Limit</h3>
+<table>
+<thead>
+<tr>
+<th>Turns</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>8</strong></td>
+<td>Hard</td>
+<td>Time pressure, fast play</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>Standard</td>
+<td>Balanced, most scenarios</td>
+</tr>
+<tr>
+<td><strong>12</strong></td>
+<td>Easy</td>
+<td>Exploration, learning</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note (v2.2): Incident Response derives its turn limit from the Variable Game Length formula — (Attack Chain Cards × 2) + 1 → 7/9/11 turns (see §3a). The table above is for modules with educator-set limits.</em></p>
+<hr />
+<h2>Educational Objectives</h2>
+<h3>By Module</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Primary Learning</th>
+<th>Secondary Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Incident Response</strong></td>
+<td>Cyber kill chain, attack detection, investigation</td>
+<td>Resource prioritization, incident response</td>
+</tr>
+<tr>
+<td><strong>Hardening</strong></td>
+<td>Defense-in-depth, layering, proactive security</td>
+<td>Cost-benefit analysis, security architecture</td>
+</tr>
+<tr>
+<td><strong>Disaster Recovery</strong></td>
+<td>Crisis management, stakeholder communication</td>
+<td>Risk assessment, incident cost</td>
+</tr>
+<tr>
+<td><strong>Network Building</strong></td>
+<td>Network design, asset security, architecture</td>
+<td>Infrastructure hardening, threat modeling</td>
+</tr>
+<tr>
+<td><strong>Forensics</strong></td>
+<td>Digital forensics, chain of custody, attribution</td>
+<td>Evidence handling, MITRE ATT&amp;CK mapping</td>
+</tr>
+<tr>
+<td><strong>Audit &amp; Compliance</strong></td>
+<td>Security assessment, governance, compliance</td>
+<td>Risk identification, remediation prioritization</td>
+</tr>
+</tbody>
+</table>
+<h3>By Game Mechanic</h3>
+<table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>What It Teaches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d20 roll system</td>
+<td>Uncertainty, risk, informed decision-making</td>
+</tr>
+<tr>
+<td>Budget constraints</td>
+<td>Resource allocation, prioritization</td>
+</tr>
+<tr>
+<td>Justification bonuses</td>
+<td>Technical reasoning, tools/techniques knowledge</td>
+</tr>
+<tr>
+<td>Uncontained Threats penalty</td>
+<td>Urgency, cost of dwell time</td>
+</tr>
+<tr>
+<td>Pentester Tactics</td>
+<td>Attacker sophistication, defense limitations</td>
+</tr>
+<tr>
+<td>Playbook system</td>
+<td>Preparation, incident response planning</td>
+</tr>
+<tr>
+<td>Scoring systems</td>
+<td>Outcome measurement, quality assessment</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Cooperative vs. Competitive Play</h2>
+<h3>Cooperative Mode</h3>
+<ul>
+<li><strong>Single Blue Team</strong> vs. challenges</li>
+<li>Team wins or loses together</li>
+<li>Encourages discussion and consensus</li>
+<li>Better for learning</li>
+<li>Better for mixed experience levels</li>
+</ul>
+<h3>Competitive Mode</h3>
+<ul>
+<li><strong>Multiple Blue Teams</strong> solving same challenge</li>
+<li>First to achieve objective wins</li>
+<li>Creates urgency and engagement</li>
+<li>Better for tournaments</li>
+<li>Better for same-level players</li>
+</ul>
+<p><strong>Implementation:</strong>
+- Same setup for all teams
+- Teams cannot share information (Incident Response)
+- Score comparison determines winner (Hardening)
+- Reputation comparison (Disaster Recovery)</p>
+<hr />
+<h2>Debrief &amp; Reflection (Universal)</h2>
+<p><strong>Every module should include a 5-15 minute debrief</strong> with three sections:</p>
+<h3>Part 1: What Happened?</h3>
+<ul>
+<li>Summarize the scenario and outcome</li>
+<li>Highlight key decisions</li>
+<li>Acknowledge successes and failures</li>
+</ul>
+<h3>Part 2: Why Did That Happen?</h3>
+<ul>
+<li>Discuss the mechanisms (why the rule works that way)</li>
+<li>Connect to real-world security</li>
+<li>Explain attacker/defender motivation</li>
+</ul>
+<h3>Part 3: What Would You Do Differently?</h3>
+<ul>
+<li>Reflect on strategy</li>
+<li>Discuss trade-offs</li>
+<li>Plan for next playthrough</li>
+</ul>
+<hr />
+<h2>Tips for Threat Orchestrators (Universal)</h2>
+<h3>Before the Game</h3>
+<ol>
+<li><strong>Read the module rules completely</strong> - Know what's coming</li>
+<li><strong>Prepare your scenario</strong> - Pre-build attack chain or threat context</li>
+<li><strong>Organize materials</strong> - Sort cards, prepare trackers</li>
+<li><strong>Know your balancing points</strong> - Be ready to adjust difficulty if needed</li>
+<li><strong>Practice reading clues</strong> - Deliver them dramatically!</li>
+</ol>
+<h3>During Gameplay</h3>
+<ol>
+<li><strong>Be clear about costs</strong> - Announce Budget before action</li>
+<li><strong>Resolve rolls immediately</strong> - Announce target, let player roll, resolve</li>
+<li><strong>Ask clarifying questions</strong> - "Why are you investigating email headers?"</li>
+<li><strong>Be fair but challenging</strong> - Give honest difficulty, don't fudge rolls</li>
+<li><strong>Narrate outcomes</strong> - Describe what happens, not just success/failure</li>
+<li><strong>Manage pacing</strong> - Keep turns moving (2-3 min discussion max)</li>
+<li><strong>Track penalties accurately</strong> - Keep budget, turn, and threat trackers visible</li>
+</ol>
+<h3>Balancing Difficulty</h3>
+<p><strong>Too Easy Signs:</strong>
+- Team reveals all cards/achieves goal with 40+ budget remaining
+- No failed rolls
+- No meaningful decisions required
+- Team is bored</p>
+<p><strong>Too Hard Signs:</strong>
+- Team is stuck/making no progress after 5 turns
+- Multiple consecutive failed rolls
+- Team frustrated rather than challenged
+- No learning happening</p>
+<p><strong>Adjustment Options:</strong>
+- <strong>Easier:</strong> Provide better clues, more starting budget, fewer tactics
+- <strong>Harder:</strong> Less specific clues, lower budget, more tactics
+- <strong>Faster:</strong> Shorter turn limits, simpler scenarios
+- <strong>Slower:</strong> More turns, more complex scenarios</p>
+<hr />
+<h2>Card Reference</h2>
+<p>For complete card descriptions, see:
+- <strong>Base Threat &amp; Defense Cards</strong> cards/incident-response/core-deck/threat-defense-cards.md
+- <strong>Expansion Threats</strong> cards/incident-response/expansion-deck/advanced-threats.md
+- <strong>Expansion Defenses</strong> cards/incident-response/expansion-deck/advanced-defenses.md
+- <strong>All decks indexed</strong> cards/CARD_REFERENCE.md</p>
+<hr />
+<h2>Module-Specific Rules</h2>
+<p>For complete rules on each module:</p>
+<ul>
+<li><strong>Network Building Module:</strong> module-network-building.md</li>
+<li><strong>Hardening Module:</strong> module-hardening.md</li>
+<li><strong>Incident Response Module:</strong> module-incident-response.md</li>
+<li><strong>Disaster Recovery Module:</strong> module-disaster-recovery.md</li>
+<li><strong>Forensics Module:</strong> module-forensics.md</li>
+<li><strong>Audit &amp; Compliance Module:</strong> module-audit-compliance.md</li>
+</ul>
+<hr />
+<h2>Quick Reference: Universal Mechanics</h2>
+<h3>d20 Roll System</h3>
+<ul>
+<li><strong>Base target:</strong> 11+ (varies by action)</li>
+<li><strong>+2 modifier:</strong> Strong technical justification</li>
+<li><strong>+1 modifier:</strong> Real tools/techniques referenced</li>
+<li><strong>Modifiers stack:</strong> All bonuses add together</li>
+</ul>
+<h3>Budget System</h3>
+<ul>
+<li><strong>Spent on:</strong> Actions, defenses, investigations</li>
+<li><strong>Cannot go below:</strong> 0 (team loses)</li>
+<li><strong>Tracked per turn:</strong> Budget available announced at start of turn</li>
+</ul>
+<h3>Turn System</h3>
+<ul>
+<li><strong>Sequence:</strong> Start → Planning → Action → End</li>
+<li><strong>Planning:</strong> 2-3 minutes discussion</li>
+<li><strong>End of turn:</strong> Advance tracker, draw card, apply effects</li>
+</ul>
+<h3>Penalties &amp; Bonuses</h3>
+<ul>
+<li><strong>Uncontained Threats:</strong> -5 Budget per revealed-uncontained threat per turn (IR only)</li>
+<li><strong>Active Breach Cost (v2.2):</strong> -5 Budget per turn while any chain card is unrevealed (IR only)</li>
+<li><strong>Pentester Tactics:</strong> Add difficulty/modify actions (Hardening)</li>
+<li><strong>Reputation:</strong> Track 0-100, affects outcome (DR)</li>
+</ul>
+<hr />
+<h2>Continuing to Next Steps</h2>
+<p><strong>For your first game:</strong>
+1. Choose a module from Module Combinations
+2. Read the module-specific rules
+3. Read the standalone setup guide
+4. Prepare your scenario
+5. Play!</p>
+<p><strong>For multiple modules:</strong>
+1. Refer to Module Combinations for recommended sequences
+2. Refer to FRAMEWORK.md for modifier generation procedures
+3. Play first module, generate modifiers for next
+4. Continue as desired</p>
+<hr />
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Want to combine modules?</strong> See Module Combinations</li>
+<li><strong>Understanding module flexibility?</strong> See FRAMEWORK.md</li>
+<li><strong>Specific module rules?</strong> See module-*.md files</li>
+<li><strong>How to play solo?</strong> See standalone guide for your chosen module</li>
+</ul>
+<hr />
+<p><em>Incident Zero: Core Rules &amp; Mechanics</em>
+<em>v2.1 - Balanced &amp; Refined Edition</em>
+<em>Universal rules for all modules</em></p></section><section class="doc-break"><p class="doc-src">docs/rules/module-audit-compliance.md</p><h1>Audit &amp; Compliance Module: Rules &amp; Mechanics</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> October 2025</p>
+<blockquote>
+<p><strong>v2.2:</strong> this document's modifier table is <strong>canonical</strong> — the tables in <code>cards/audit-compliance/</code> are generated from it. See <strong>v2.2 Playtest Edition Changes</strong> at the bottom.</p>
+</blockquote>
+<hr />
+<h2>Module Overview</h2>
+<p>The <strong>Audit &amp; Compliance Module</strong> teaches players how security assessments reveal vulnerabilities that attackers will eventually exploit. Teams conduct a simulated third-party audit of their IT infrastructure, discovering gaps that will matter later.</p>
+<p><strong>Key Concept:</strong> "Auditors find what attackers will exploit." The findings from this module either inform hardening decisions (if successful) or create additional costs (if incident occurs).</p>
+<p><strong>Module Teaches:</strong>
+- <strong>Primary:</strong> Security assessment, compliance frameworks (NIST, CIS, PCI-DSS), vulnerability discovery
+- <strong>Secondary:</strong> Risk prioritization, remediation planning, audit-to-action translation</p>
+<p><strong>Integration Point:</strong>
+- Can be played standalone (teams audit a pre-built network)
+- OR as setup for Incident Response/Disaster Recovery (audit findings modify those modules)
+- See module-combinations.md for recommended sequences</p>
+<hr />
+<h2>Module Setup (10 minutes)</h2>
+<h3>1. Choose Assessment Framework</h3>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Focus</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NIST Cybersecurity Framework</strong></td>
+<td>5 Core Functions</td>
+<td>General organizations</td>
+</tr>
+<tr>
+<td><strong>CIS Critical Controls</strong></td>
+<td>18 Controls (CIS v8)</td>
+<td>Defense-focused</td>
+</tr>
+<tr>
+<td><strong>PCI-DSS</strong></td>
+<td>Payment card security</td>
+<td>Retail/e-commerce</td>
+</tr>
+<tr>
+<td><strong>HIPAA</strong></td>
+<td>Healthcare data</td>
+<td>Healthcare organizations</td>
+</tr>
+<tr>
+<td><strong>Multi-Framework</strong></td>
+<td>Mix of above</td>
+<td>Realistic compliance</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Point:</strong> Framework choice determines which audit domains are tested.</p>
+<p><strong>Budget note (v2.2):</strong> core-rules gives the Audit module a starting Budget of 100 — <strong>Budget (100) applies only when playing the optional Remediation follow-up cards</strong> (see <code>cards/audit-compliance/expansion-deck/compliance-frameworks.md</code>, remediation section); <strong>the assessment itself costs nothing.</strong></p>
+<h3>2. Choose Assessment Scope</h3>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Time</th>
+<th>Networks Evaluated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic</strong></td>
+<td>5 min</td>
+<td>One pre-built network</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>10 min</td>
+<td>One network from Network Building OR pre-built</td>
+</tr>
+<tr>
+<td><strong>Comprehensive</strong></td>
+<td>15+ min</td>
+<td>Multiple networks / multiple locations</td>
+</tr>
+</tbody>
+</table>
+<h3>3. Network Input</h3>
+<p><strong>Option A: Use Pre-Built Network</strong>
+- Threat Orchestrator provides a sample network
+- Teams audit it without having built it
+- Focuses on audit skills, not network design</p>
+<p><strong>Option B: Use Network from Network Building Module</strong>
+- Teams audit the network they just built
+- Directly see consequences of earlier decisions
+- More integrated experience</p>
+<p><strong>Option C: Create Fictional Network via Narrative</strong>
+- Threat Orchestrator describes a scenario: "Your organization has email, web, database, and domain controller servers. Some are on-prem, some in cloud. You have a firewall but no IDS."
+- Teams audit based on description
+- Faster, requires less setup</p>
+<hr />
+<h2>Gameplay Loop (10 minutes)</h2>
+<h3>Audit Structure</h3>
+<p><strong>Threat Orchestrator (Acting as External Auditor)</strong> reviews the network and assesses <strong>6 audit domains</strong>:</p>
+<h3>Domain 1: Network Segmentation &amp; Isolation</h3>
+<p><strong>Audit Question:</strong>
+"Does your network properly isolate critical systems from untrusted networks?"</p>
+<p><strong>Pass Criteria:</strong>
+- Implemented segmented architecture (3+ zones), AND
+- Deployed firewall between zones, AND
+- Critical systems (Database, Domain Controller) in separate zone from internet-facing systems</p>
+<p><strong>Fail Criteria:</strong>
+- Flat network (no segmentation), OR
+- Segmentation without firewall, OR
+- Critical systems on same zone as untrusted systems</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Network Segmentation Gap
+- <strong>Risk Level:</strong> CRITICAL
+- <strong>Consequence in IR:</strong> Lateral movement easier (-1 to defending against NETWORK attacks)
+- <strong>Consequence in DR:</strong> Attacker access spreads to more systems (-10 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"All of your systems are on the same network segment. Once an attacker gains access to one system, they can move freely between others."</p>
+<hr />
+<h3>Domain 2: Access Control &amp; Identity Management</h3>
+<p><strong>Audit Question:</strong>
+"Is your identity system (directory services, authentication, authorization) properly secured?"</p>
+<p><strong>Pass Criteria:</strong>
+- Domain Controller deployed, AND
+- Domain Controller on separate network segment, AND
+- Domain Controller not overloaded (≤2 services)</p>
+<p><strong>Fail Criteria:</strong>
+- No Domain Controller deployed, OR
+- Domain Controller on same segment as untrusted systems, OR
+- Domain Controller overloaded (3+ services)</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Identity System Vulnerability
+- <strong>Risk Level:</strong> CRITICAL
+- <strong>Consequence in IR:</strong> Credential-based attacks easier (-1 to defending against CREDENTIAL_ABUSE attacks)
+- <strong>Consequence in DR:</strong> Full credential compromise; all user accounts compromised (-15 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"Your identity system is overloaded with too many services and insufficient hardening. If compromised, attackers will have broad access to all user credentials."</p>
+<hr />
+<h3>Domain 3: Threat Detection &amp; Incident Response</h3>
+<p><strong>Audit Question:</strong>
+"Can you detect attacks when they happen? Do you have monitoring and alerting?"</p>
+<p><strong>Pass Criteria:</strong>
+- IDS or IPS deployed, AND/OR
+- SIEM system deployed, AND/OR
+- Email Gateway + Honeypot deployed (detection alternatives)</p>
+<p><strong>Fail Criteria:</strong>
+- None of the above detection systems deployed, OR
+- Only basic security devices with no central logging</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Detection &amp; Monitoring Gap
+- <strong>Risk Level:</strong> HIGH
+- <strong>Consequence in IR:</strong> Investigations slower (-1 to Investigation rolls; 12+ instead of 11+)
+- <strong>Consequence in DR:</strong> Breach undetected longer; more data stolen (-10 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"You have no centralized logging or monitoring. When an attack happens, you won't know about it until data is already compromised."</p>
+<hr />
+<h3>Domain 4: Backup &amp; Disaster Recovery</h3>
+<p><strong>Audit Question:</strong>
+"Do you have functional backups? Can you recover from data loss or ransomware?"</p>
+<p><strong>Pass Criteria:</strong>
+- Backup System deployed, AND
+- Backup isolated on separate network, OR
+- Cloud backup configured, OR
+- Multiple hosting locations (on-prem + cloud redundancy)</p>
+<p><strong>Fail Criteria:</strong>
+- No Backup System deployed, OR
+- Single point of failure (all on-prem or all cloud)</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Backup &amp; Recovery Gap
+- <strong>Risk Level:</strong> CRITICAL (for ransomware/DR only)
+- <strong>Consequence in IR:</strong> None (network gap, not detection issue)
+- <strong>Consequence in DR:</strong> Ransomware unrecoverable; full rebuild required (-25 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"You have no backup strategy. If ransomware hits, you cannot recover your data. You must either pay ransom or rebuild from scratch."</p>
+<hr />
+<h3>Domain 5: Third-Party Risk &amp; Cloud Security</h3>
+<p><strong>Audit Question:</strong>
+"Are your cloud systems and third-party integrations properly secured and isolated?"</p>
+<p><strong>Pass Criteria:</strong>
+- Cloud systems isolated on private network (VPN), AND
+- Cloud systems monitored/managed, AND
+- Credentials for cloud access securely managed</p>
+<p><strong>Fail Criteria:</strong>
+- Cloud systems internet-exposed, OR
+- No monitoring of cloud services, OR
+- Credentials stored locally for cloud access</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Cloud Security Gap
+- <strong>Risk Level:</strong> HIGH
+- <strong>Consequence in IR:</strong> Cloud-based attacks easier (-1 to defending against WEB_EXPLOIT attacks)
+- <strong>Consequence in DR:</strong> Cloud compromise requires cloud provider recovery; slow remediation (-20 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"Your cloud systems are internet-accessible without protection. Any attacker can directly target your cloud infrastructure."</p>
+<hr />
+<h3>Domain 6: Security Operations &amp; Monitoring</h3>
+<p><strong>Audit Question:</strong>
+"Do you have centralized logging, monitoring, and security operations capability?"</p>
+<p><strong>Pass Criteria:</strong>
+- SIEM system deployed, OR
+- Email Gateway + IDS deployed (combined monitoring)</p>
+<p><strong>Fail Criteria:</strong>
+- No SIEM or equivalent centralized logging</p>
+<p><strong>If FAIL - Finding:</strong>
+- <strong>Name:</strong> Security Operations Gap
+- <strong>Risk Level:</strong> MEDIUM
+- <strong>Consequence in IR:</strong> Investigations slower (-1 to Investigation rolls)
+- <strong>Consequence in DR:</strong> Forensic analysis slow; can't determine breach scope (-5 DR budget penalty)</p>
+<p><strong>Narrative for Teams:</strong>
+"You have no centralized place to view security events. When an attack happens, investigators must pull data from multiple sources manually."</p>
+<hr />
+<h2>Audit Report Generation</h2>
+<h3>Creating the Formal Findings Report</h3>
+<p>After all 6 domains are assessed, <strong>Threat Orchestrator produces an Audit Findings Report</strong>:</p>
+<pre><code>SECURITY AUDIT FINDINGS REPORT
+
+Organization: [Name]
+Assessment Date: [Date]
+Framework: [Framework used]
+Auditor: [Your name / External firm]
+
+═══════════════════════════════════════════
+
+DOMAIN ASSESSMENT SUMMARY:
+
+✓ PASS - Network Segmentation &amp; Isolation
+  Observation: Network properly segmented with firewalls between zones.
+  Assessment: Risk is LOW for lateral movement.
+
+✗ FAIL - Access Control &amp; Identity Management
+  Finding: Domain Controller overloaded with excessive services.
+  Risk: If DC compromised, entire identity system at risk.
+  Severity: CRITICAL
+  Recommendation: Isolate DC to minimal required services.
+
+✓ PASS - Threat Detection &amp; Incident Response
+  Observation: SIEM system deployed with centralized logging.
+  Assessment: Good detection capability.
+
+✗ FAIL - Backup &amp; Disaster Recovery
+  Finding: No backup system deployed.
+  Risk: Data loss unrecoverable; ransomware response limited to ransom/rebuild.
+  Severity: CRITICAL
+  Recommendation: Deploy backup system immediately.
+
+✓ PASS - Third-Party Risk &amp; Cloud Security
+  Observation: Cloud systems properly isolated on private network.
+  Assessment: Cloud security posture adequate.
+
+✗ FAIL - Security Operations &amp; Monitoring
+  Finding: No centralized logging platform.
+  Risk: Incident investigation will be slow and manual.
+  Severity: HIGH
+  Recommendation: Deploy SIEM or equivalent centralized logging.
+
+═══════════════════════════════════════════
+
+FINAL SCORE: 3/6 DOMAINS PASS
+
+Overall Assessment: CONCERNING GAPS IDENTIFIED
+
+Summary: Organization has adequate network and cloud security but lacks:
+1. Proper identity system isolation
+2. Backup/recovery capability
+3. Centralized monitoring
+
+Impact Estimate:
+- If attack occurs: Detection delayed, recovery impossible without ransom
+- Estimated cost to remediate findings: ~$40K (modest investment)
+- Estimated cost of breach due to these gaps: ~$500K+ (significant exposure)
+
+Recommendation Priority:
+1. Deploy backup system (prevent ransomware catastrophe)
+2. Isolate Domain Controller (prevent credential compromise)
+3. Centralize logging (speed up incident response)
+</code></pre>
+<hr />
+<h2>Audit Scoring</h2>
+<h3>One Rubric (v2.2): PASS/FAIL is primary</h3>
+<p><strong>PASS/FAIL per domain (X/6) is the primary score.</strong> Star ratings (1-5★) are flavor for narrative reports, with this fixed mapping:</p>
+<blockquote>
+<p><strong>1-2★ = FAIL · 3★+ = PASS · "PARTIAL" counts as FAIL</strong></p>
+</blockquote>
+<p><strong>Optional (v2.2):</strong> a 5★ (exemplary) rating in Detection grants +1 to Incident Response investigation rolls if IR is played later.</p>
+<h3>Final Audit Score</h3>
+<p>Teams receive a score reflecting their infrastructure quality:</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Assessment</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>6/6 PASS</strong></td>
+<td>Enterprise-Grade</td>
+<td>No modifiers carried into later modules; strong foundation</td>
+</tr>
+<tr>
+<td><strong>5/6 PASS</strong></td>
+<td>Strong Security</td>
+<td>-1 modifier to one attack type in IR</td>
+</tr>
+<tr>
+<td><strong>4/6 PASS</strong></td>
+<td>Adequate Security</td>
+<td>-1 modifier to two attack types in IR</td>
+</tr>
+<tr>
+<td><strong>3/6 PASS</strong></td>
+<td>Concerning Gaps</td>
+<td>-1 modifier to three attack types; IR easier</td>
+</tr>
+<tr>
+<td><strong>Below 3/6</strong></td>
+<td>High Risk</td>
+<td>Multiple -1 modifiers; IR much easier; DR much costlier</td>
+</tr>
+</tbody>
+</table>
+<h3>Narrative Interpretation</h3>
+<p><strong>6/6 Pass:</strong>
+"Your organization demonstrates strong security practices across all domains. While no system is perfect, you have implemented key controls and best practices."</p>
+<p><strong>4-5/6 Pass:</strong>
+"Your organization has good foundational security but should prioritize remediation of identified gaps. Most critical systems are protected, but some exposure remains."</p>
+<p><strong>3/6 Pass:</strong>
+"Your organization has significant security gaps that create real risk. Multiple critical domains require attention. If an incident occurs, you will face challenges."</p>
+<p><strong>Below 3/6:</strong>
+"Your organization has critical gaps across multiple domains. Significant investment needed to meet baseline security standards."</p>
+<hr />
+<h2>Audit Findings as Attack Modifiers</h2>
+<h3>How Audit Failures Affect Other Modules</h3>
+<p><strong>When audit findings exist and other modules are played:</strong></p>
+<h4>In Incident Response Module:</h4>
+<p>Each FAIL finding creates a <strong>-1 modifier</strong> (one per gap — canonical, v2.2) to the relevant roll:</p>
+<table>
+<thead>
+<tr>
+<th>Audit Finding</th>
+<th>IR Modifier</th>
+<th>Affected Threat Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Segmentation Gap</strong></td>
+<td>-1 to NETWORK defenses</td>
+<td>Lateral movement attacks easier</td>
+</tr>
+<tr>
+<td><strong>Identity Gap</strong></td>
+<td>-1 to CREDENTIAL_ABUSE defenses</td>
+<td>Credential attacks easier</td>
+</tr>
+<tr>
+<td><strong>Detection Gap</strong></td>
+<td>-1 to Investigation rolls</td>
+<td>Finding threats takes longer (11+ becomes 12+)</td>
+</tr>
+<tr>
+<td><strong>Backup Gap</strong></td>
+<td>No IR effect</td>
+<td>(Matters in Disaster Recovery)</td>
+</tr>
+<tr>
+<td><strong>Cloud Gap</strong></td>
+<td>-1 to WEB_EXPLOIT defenses</td>
+<td>Web/API attacks easier</td>
+</tr>
+<tr>
+<td><strong>Operations Gap</strong></td>
+<td>-1 to Investigation rolls</td>
+<td>Forensic investigation slower</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example: Segmentation Gap Active in IR</strong></p>
+<pre><code>INCIDENT RESPONSE PHASE:
+
+Team's Threat: Lateral Movement via SMB
+Base roll needed: 11+
+Audit Modifier: -1 (Segmentation Gap)
+Effective roll needed: 12+
+
+Team's Defense: Network Segmentation (newly deployed)
+Roll: 14 + 2 (justification) = 16
+Result: SUCCESS (16 ≥ 12)
+
+TO Narrative: &quot;Your network segmentation worked perfectly, stopping the
+lateral movement that would have been trivial in an unsegmented network.&quot;
+</code></pre>
+<h4>In Disaster Recovery Module:</h4>
+<p>Each FAIL finding is a penalty subtracted from the DR starting budget (this table is <strong>canonical</strong> — v2.2):</p>
+<table>
+<thead>
+<tr>
+<th>Audit Finding</th>
+<th>DR Budget Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Segmentation Gap</strong></td>
+<td>-10 Budget (attacker spreads to more systems)</td>
+</tr>
+<tr>
+<td><strong>Identity Gap</strong></td>
+<td>-15 Budget (full credential compromise)</td>
+</tr>
+<tr>
+<td><strong>Detection Gap</strong></td>
+<td>-10 Budget (dwell time longer; more data stolen)</td>
+</tr>
+<tr>
+<td><strong>Backup Gap</strong></td>
+<td>-25 Budget (no recovery option; expensive rebuild)</td>
+</tr>
+<tr>
+<td><strong>Cloud Gap</strong></td>
+<td>-20 Budget (cloud provider recovery needed)</td>
+</tr>
+<tr>
+<td><strong>Operations Gap</strong></td>
+<td>-5 Budget (forensic investigation slow)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cap (v2.2):</strong> the total gap penalty applied to a subsequent module's budget is <strong>capped at -30</strong>.</p>
+<p><strong>Example: Multiple Gaps in DR (v2.2)</strong></p>
+<pre><code>DISASTER RECOVERY PHASE:
+
+Teams start with 50 crisis budget (DR 50; for reference, IR starts at 100).
+
+Audit Failures from earlier assessment:
+- Segmentation Gap: -10
+- Detection Gap: -10
+- Backup Gap: -25
+
+Raw Gap Penalty: -45 -&gt; capped at -30
+
+Available Crisis Budget: 50 - 30 = 20
+
+With 20 Budget the team can still afford the mandatory beats
+(cheapest mandatory path is 29 -&gt; they must lean on the free
+Holding Statement and skip actions), but the response will be
+thin. Outcome: heavy pressure, likely reputation damage.
+</code></pre>
+<hr />
+<h2>Integration with Other Modules</h2>
+<h3>Audit as Setup for Incident Response</h3>
+<p><strong>Recommended Flow: Audit → Incident Response</strong></p>
+<ol>
+<li><strong>Conduct Audit</strong> (10 minutes)</li>
+<li>
+<p>Identify 3-5 gaps in network</p>
+</li>
+<li>
+<p><strong>Generate Modifiers</strong> (2 minutes)</p>
+</li>
+<li>
+<p>Each gap becomes a -1 modifier to relevant defense in IR</p>
+</li>
+<li>
+<p><strong>Play Incident Response</strong> (35-40 minutes)</p>
+</li>
+<li>Teams discover that audit findings predicted attack vectors</li>
+<li>Audit gaps make IR harder</li>
+<li>
+<p>Teams gain appreciation for audit value</p>
+</li>
+<li>
+<p><strong>Debrief</strong> (10 minutes)</p>
+</li>
+<li>Discuss how audit findings manifested as attack vectors</li>
+<li>Real-world connection to breach investigations</li>
+</ol>
+<h3>Audit as Setup for Disaster Recovery</h3>
+<p><strong>Recommended Flow: Audit → [Incident Response] → Disaster Recovery</strong></p>
+<ol>
+<li><strong>Conduct Audit</strong> (10 minutes)</li>
+<li>
+<p>Identify gaps (particularly Backup Gap and Detection Gap)</p>
+</li>
+<li>
+<p><strong>Skip or Lose IR</strong> (optional)</p>
+</li>
+<li>
+<p>Assume attackers breached and incident was NOT detected</p>
+</li>
+<li>
+<p><strong>Play Disaster Recovery</strong> (30-35 minutes)</p>
+</li>
+<li>Each audit gap increases crisis costs</li>
+<li>Teams discover backup gap = ransomware unrecoverable</li>
+<li>
+<p>Teams discover detection gap = dwell time was 48+ hours</p>
+</li>
+<li>
+<p><strong>Debrief</strong> (10 minutes)</p>
+</li>
+<li>Discuss financial impact of audit failures</li>
+<li>Calculate total incident cost</li>
+</ol>
+<h3>Audit as Learning Tool (Standalone)</h3>
+<p><strong>Play Just the Audit Module</strong> (as independent learning)</p>
+<ul>
+<li>Teams audit a provided network</li>
+<li>Discuss what each finding means</li>
+<li>Plan hypothetical remediation</li>
+<li>Estimate costs and timeline</li>
+</ul>
+<hr />
+<h2>Tips for Threat Orchestrators</h2>
+<h3>Before the Audit</h3>
+<ol>
+<li><strong>Choose framework</strong> - NIST/CIS/PCI-DSS based on organization/industry</li>
+<li><strong>Select network</strong> - Pre-built OR from Network Building OR fictional</li>
+<li><strong>Prepare assessment checklist</strong> - Know pass/fail criteria for each domain</li>
+<li><strong>Have findings report template</strong> - For consistent, professional output</li>
+</ol>
+<h3>During the Audit</h3>
+<ol>
+<li><strong>Walk through systematically</strong> - Each domain, one at a time</li>
+<li><strong>Explain reasoning</strong> - "You passed segmentation because you have firewalls between zones"</li>
+<li><strong>Use NIST/CIS language</strong> - Frame findings in recognized compliance framework</li>
+<li><strong>Be fair</strong> - Audit findings should be accurate, not arbitrary</li>
+<li><strong>Take notes</strong> - Document what you see for the formal report</li>
+</ol>
+<h3>After the Audit</h3>
+<ol>
+<li><strong>Create findings report</strong> - Professional document teams can reference</li>
+<li><strong>Calculate score</strong> - X/6 domains pass</li>
+<li><strong>Identify modifiers</strong> - Which audit gaps will affect Incident Response</li>
+<li><strong>Estimate remediation costs</strong> - Budget and timeline to fix findings</li>
+<li><strong>Explain real-world connections</strong> - Compare audit process to actual assessments (SOC 2, ISO 27001, etc.)</li>
+</ol>
+<hr />
+<h2>Sample Scenarios</h2>
+<h3>Scenario 1: "Startup Audit" (Beginner)</h3>
+<p><strong>Network Characteristics:</strong>
+- Flat network (no segmentation)
+- Email, web, database on same servers (overloaded)
+- No backup system
+- No SIEM or monitoring
+- All on-premises</p>
+<p><strong>Expected Audit Result:</strong>
+- 1-2/6 domains pass
+- Multiple CRITICAL findings
+- High remediation cost
+- Team learns value of basics (backup, monitoring)</p>
+<hr />
+<h3>Scenario 2: "Mid-Market Audit" (Intermediate)</h3>
+<p><strong>Network Characteristics:</strong>
+- Segmented network with firewall
+- Dedicated servers for critical functions
+- Backup system present
+- IDS deployed but no SIEM
+- Hybrid on-prem/cloud</p>
+<p><strong>Expected Audit Result:</strong>
+- 4/6 domains pass
+- 2 MEDIUM findings (monitoring, cloud config)
+- Moderate remediation cost
+- Team learns importance of comprehensive monitoring</p>
+<hr />
+<h3>Scenario 3: "Enterprise Audit" (Advanced)</h3>
+<p><strong>Network Characteristics:</strong>
+- Fully isolated network architecture
+- Dedicated hardened servers
+- Comprehensive backup strategy
+- SIEM + IDS deployed
+- Cloud properly secured</p>
+<p><strong>Expected Audit Result:</strong>
+- 5-6/6 domains pass
+- 0-1 minor findings
+- Low remediation cost
+- Team learns value of comprehensive program</p>
+<hr />
+<h2>Extensions &amp; Variations</h2>
+<h3>Variation 1: Regulatory Compliance Specific</h3>
+<p>Focus audit on specific compliance requirement:
+- <strong>PCI-DSS:</strong> Focus on payment card handling, encryption, access control
+- <strong>HIPAA:</strong> Focus on healthcare data protection, audit logs, access management
+- <strong>SOC 2:</strong> Focus on security, availability, confidentiality controls
+- <strong>GDPR:</strong> Focus on data protection, breach notification, privacy</p>
+<p>Each framework has different pass/fail criteria.</p>
+<hr />
+<h3>Variation 2: Continuous Auditing</h3>
+<p>Run audit multiple times with team improvements:
+1. Initial audit (baseline)
+2. Team makes improvements based on findings
+3. Follow-up audit (measure improvement)
+4. Calculate improvement % and cost-benefit</p>
+<hr />
+<h3>Variation 3: Threat Model Audit</h3>
+<p>Instead of compliance framework, audit against specific threat profile:
+- "This organization faces nation-state threat" → Audit for advanced detection
+- "This organization handles PHI data" → Audit for healthcare security
+- "This organization processes credit cards" → Audit for PCI-DSS
+- "This organization is critical infrastructure" → Audit for resilience</p>
+<hr />
+<h2>Quick Reference: Audit Domains &amp; Consequences (canonical, v2.2)</h2>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>PASS Meaning</th>
+<th>FAIL Consequence (IR)</th>
+<th>FAIL Consequence (DR)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Segmentation</strong></td>
+<td>Good isolation</td>
+<td>-1 to NETWORK defense</td>
+<td>-10 budget</td>
+</tr>
+<tr>
+<td><strong>Identity</strong></td>
+<td>Proper AC</td>
+<td>-1 to CREDENTIAL_ABUSE defense</td>
+<td>-15 budget</td>
+</tr>
+<tr>
+<td><strong>Detection</strong></td>
+<td>Good monitoring</td>
+<td>-1 to Investigation</td>
+<td>-10 budget</td>
+</tr>
+<tr>
+<td><strong>Backup</strong></td>
+<td>Recovery capable</td>
+<td>None</td>
+<td>-25 budget</td>
+</tr>
+<tr>
+<td><strong>Cloud</strong></td>
+<td>Secure cloud</td>
+<td>-1 to WEB_EXPLOIT defense</td>
+<td>-20 budget</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Good logging</td>
+<td>-1 to Investigation</td>
+<td>-5 budget</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cap (v2.2):</strong> total DR budget penalty capped at <strong>-30</strong>. Star flavor mapping: 1-2★ = FAIL, 3★+ = PASS, PARTIAL = FAIL.</p>
+<hr />
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Questions about universal rules?</strong> See Core Rules</li>
+<li><strong>Want to combine modules?</strong> See Module Combinations</li>
+<li><strong>How does this integrate with Incident Response?</strong> See module-incident-response.md</li>
+<li><strong>How does this integrate with Network Building?</strong> See module-network-building.md</li>
+<li><strong>Standalone play guide?</strong> See Standalone Play Guide</li>
+</ul>
+<hr />
+<h2>v2.2 Playtest Edition Changes</h2>
+<ol>
+<li><strong>One canonical modifier table.</strong> This document's table is authoritative: DR budget penalties Segmentation -10 / Identity -15 / Detection -10 / Backup -25 / Cloud -20 / Ops -5, and one -1 IR modifier per gap. The tables in <code>cards/audit-compliance/core-deck/audit-domain-cards.md</code> and <code>cards/audit-compliance/README.md</code> are regenerated from it. One-off mechanics that existed nowhere else ("+5 turn penalty", "+1 escalation point", "-2 modifier", "+1 difficulty") are deleted or folded into the canonical -1-per-gap rule.</li>
+<li><strong>Cap added:</strong> the total gap penalty applied to a subsequent module's budget is capped at <strong>-30</strong>. The unexplained "from 120 to 190" example was replaced with real budgets (DR 50, IR 100).</li>
+<li><strong>One scoring rubric:</strong> PASS/FAIL per domain (X/6) is primary. Stars are flavor with a fixed mapping — 1-2★ = FAIL, 3★+ = PASS, "PARTIAL" counts as FAIL — printed here, on the domain cards, and in the standalone guide. Optional: 5★ in Detection grants +1 to IR investigation rolls if IR is played later.</li>
+<li><strong>Budget note:</strong> the module's core-rules Budget (100) applies only to the optional Remediation follow-up cards; the assessment itself costs nothing.</li>
+<li><strong>Fact corrections:</strong> CIS "20 Core Controls" → 18 (CIS v8) everywhere; NIST CSF category codes corrected in the expansion deck (Protect = PR.AC/PR.AT/PR.DS/PR.IP/PR.MA/PR.PT; Respond = RS.RP/RS.CO/RS.AN/RS.MI/RS.IM); segmentation cites PR.AC-5; vendor risk cites ID.SC; incident response is CIS Control 17 (v8).</li>
+<li><strong>Card counts corrected:</strong> expansion deck is 19 cards (11 framework + 8 remediation); CIS section is 3 cards; HIPAA/SOC 2 moved to "Planned".</li>
+<li><strong>Play aids:</strong> scoring reference card, audit worksheet, and judge guide are moving to the print pack (coming); an inline text audit worksheet is included in the standalone guide so it is playable today.</li>
+</ol>
+<hr />
+<p><em>Audit &amp; Compliance Module - Rules &amp; Mechanics</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">docs/standalone-games/audit-compliance.md</p><h1>Incident Zero: Compliance Audit Standalone Mini-Games</h1>
+<h2>Three Variations of Security Assessment Gameplay</h2>
+<p><strong>Version:</strong> 2.2 - Playtest Edition — answer keys now follow the printed criteria; PASS/FAIL (X/6) is the primary score (stars: 1-2★ = FAIL, 3★+ = PASS, PARTIAL = FAIL). See <code>docs/rules/module-audit-compliance.md</code> for the canonical modifier table.</p>
+<hr />
+<h2>Overview</h2>
+<p><strong>Compliance Audit Standalone</strong> offers <strong>three distinct game modes</strong> that can be played independently:</p>
+<ol>
+<li><strong>Variation A: Pre-Built Networks</strong> (15-25 minutes) - Audit existing networks</li>
+<li><strong>Variation B: Random Network Generation</strong> (25-35 minutes) - Generate network, then audit</li>
+<li><strong>Variation C: Audit the Auditor Debate</strong> (20-30 minutes) - Interactive audit challenge</li>
+</ol>
+<p><strong>Common Theme:</strong> Teams understand how audits find vulnerabilities that attackers will exploit.</p>
+<p><strong>Best For:</strong>
+- Standalone 20-35 minute sessions
+- Teaching audit frameworks
+- Understanding security gaps
+- Before/after comparison with the Incident Response module
+- Competitive assessment skills</p>
+<hr />
+<h1>VARIATION A: PRE-BUILT NETWORKS</h1>
+<h2>"Audit the Sample Networks"</h2>
+<p><strong>Duration:</strong> 15-25 minutes<br />
+<strong>Players:</strong> 1-4 teams<br />
+<strong>Difficulty:</strong> Easy (low cognitive load)<br />
+<strong>Best For:</strong> Quick session, first-time audit introduction</p>
+<hr />
+<h2>Concept</h2>
+<p><strong>"Three organizations have submitted their infrastructure for audit. Review each one and score their security posture. Which has the best design? Which is most vulnerable?"</strong></p>
+<p>Teams receive 3 pre-built network descriptions and audit them against a 6-domain framework. Compare results and discuss why vulnerabilities matter.</p>
+<hr />
+<h2>Game Materials</h2>
+<h3>Pre-Built Sample Networks (3 total)</h3>
+<h4>SAMPLE NETWORK 1: "StartUp Tech"</h4>
+<pre><code>INFRASTRUCTURE DESCRIPTION:
+
+Startup Tech is a 50-person web development company.
+Cloud-first approach, minimal on-premises systems.
+
+DEPLOYMENT:
+- Web Server (Cloud - AWS): Hosts company website and app portal
+- Database Server (Cloud - AWS RDS): Customer data, 100K records
+- Development Server (Cloud - AWS EC2): Dev/test environment
+- Domain Controller (On-Prem): AD for user identity (1 small server)
+- File Server (On-Prem): Shared documents
+- Email Server (Cloud - Microsoft 365): Email via SaaS provider
+
+SECURITY DEVICES:
+- Email Gateway: None (using Microsoft 365 default)
+- Firewall: AWS Security Groups (cloud provider native)
+- IDS/IPS: None
+- SIEM: None
+- WAF: None
+- Backup: AWS automated snapshots + Microsoft 365 retention
+- VPN: None (all cloud-native, no remote access needed)
+
+NETWORK ARCHITECTURE:
+- Hybrid (50% Cloud, 50% On-Prem)
+- Cloud systems accessible via internet (all public IP)
+- On-prem systems on isolated LAN
+- No network segmentation between cloud and on-prem
+
+HOSTING:
+- 50% AWS (web, database, dev)
+- 50% On-Premises (AD, file sharing)
+
+SECURITY POSTURE:
+- No perimeter firewall monitoring
+- Cloud infrastructure: AWS default security (basic)
+- On-prem infrastructure: Minimal controls
+- Identity: Single AD instance (critical point)
+- No incident detection
+- Backups functional but not tested
+</code></pre>
+<h4>SAMPLE NETWORK 2: "Mid-Market Corp"</h4>
+<pre><code>INFRASTRUCTURE DESCRIPTION:
+
+Mid-Market Corp is a 200-person financial services company.
+Balanced on-premises and cloud, mature IT operations.
+
+DEPLOYMENT:
+- Email Server (On-Prem): Exchange 2019
+- Web Server (Cloud - Azure): Public website + customer portal
+- Database Server (On-Prem): SQL Server, customer data, 1M records
+- File Server (On-Prem): Network file shares, active collaboration
+- Domain Controller (On-Prem): AD + LDAP, 200 users
+- Development Server (Cloud - Azure): Dev/test
+- Backup System (On-Prem): Backup appliance, off-site replication
+- Legacy System (On-Prem): 15-year-old accounting system
+
+SECURITY DEVICES:
+- Firewall: Cisco ASA (perimeter) + internal segmentation firewall
+- Email Gateway: Proofpoint (phishing/malware filter)
+- IDS: Suricata (network-based detection)
+- IPS: None (IDS only)
+- SIEM: Splunk (centralized logging)
+- WAF: AWS WAF (in front of web server)
+- VPN: Cisco AnyConnect (remote access)
+- Honeypot: None
+
+NETWORK ARCHITECTURE:
+- Segmented (3 zones: DMZ, Internal, Finance)
+- Firewalls enforce zone boundaries
+- On-prem systems segregated from cloud
+- Cloud systems on private network (not public internet)
+
+HOSTING:
+- 40% On-Premises (core business systems)
+- 60% Cloud (web, dev, supplementary)
+
+SECURITY POSTURE:
+- Perimeter monitoring active (IDS)
+- Email filtering active
+- Centralized logging (SIEM)
+- Remote access controlled (VPN)
+- Backup and recovery tested
+- Legacy system isolated but unpatched
+</code></pre>
+<h4>SAMPLE NETWORK 3: "Enterprise Bank"</h4>
+<pre><code>INFRASTRUCTURE DESCRIPTION:
+
+Enterprise Bank is a 1000+ person financial institution.
+Highly regulated (PCI-DSS, HIPAA), on-premises focused.
+
+DEPLOYMENT:
+- Email Server (On-Prem): Custom hardened system + redundancy
+- Web Server (Cloud/Hybrid): DMZ layer for customer portal
+- Database Server (On-Prem): Oracle RAC, 500M+ records, air-gapped
+- File Server (On-Prem): Multiple redundant file servers by department
+- Domain Controller (On-Prem): Multiple DCs, LDAP + Kerberos, hardened
+- Development Server (On-Prem): Isolated dev network, no access to prod
+- Backup System (On-Prem): Multiple backup systems, offline vault, geographically distant
+- Cloud Workload (Limited): Only non-sensitive workloads
+
+SECURITY DEVICES:
+- Firewall: Multiple Palo Alto networks (perimeter + internal + cloud boundary)
+- Email Gateway: Proofpoint + internal inspection
+- IDS: Multiple IDS systems (network + host-based)
+- IPS: Palo Alto IPS (active blocking)
+- SIEM: Splunk + IBM QRadar (redundant)
+- WAF: F5 WAF (multi-layer)
+- VPN: Multiple VPN concentrators, MFA required
+- Honeypot: Internal honeypot network (3 decoy systems)
+- Network Segmentation: Microsegmentation between critical systems
+- Intrusion Prevention: Advanced threat prevention
+
+NETWORK ARCHITECTURE:
+- Fully Isolated (10+ security zones)
+- Each zone has firewall enforcement
+- Zero-trust network access
+- Air-gapped critical systems
+- Private clouds only (no public internet access)
+
+HOSTING:
+- 95% On-Premises (regulatory requirement)
+- 5% Cloud (non-critical, isolated)
+
+SECURITY POSTURE:
+- Comprehensive logging (multiple SIEM)
+- Advanced threat detection (IDS/IPS + honeypot)
+- Incident response ready
+- Backup and recovery tested quarterly
+- All systems hardened per NIST guidelines
+- Compliance audited annually (PCI-DSS, SOX)
+</code></pre>
+<hr />
+<h2>Audit Assessment Framework</h2>
+<h3>The 6-Domain Audit</h3>
+<p>Teams assess each network using this framework. <strong>Scoring (v2.2):</strong> PASS/FAIL per domain (X/6) is the primary score. If you use star ratings for flavor, the fixed mapping is <strong>1-2★ = FAIL, 3★+ = PASS, "PARTIAL" counts as FAIL</strong>.</p>
+<h4><strong>Domain 1: Network Segmentation</strong></h4>
+<p><strong>Question:</strong> "Are critical systems isolated?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>Firewall between zones OR microsegmentation active</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>Flat network OR segmentation without enforcement</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Domain 2: Access Control &amp; Identity</strong></h4>
+<p><strong>Question:</strong> "Is identity management secure?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>Dedicated Domain Controller, MFA for remote access, minimal over-privilege</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>No DC OR DC overloaded OR no MFA OR broad admin access</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Domain 3: Incident Detection &amp; Response</strong></h4>
+<p><strong>Question:</strong> "Can you detect attacks?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>IDS/IPS or SIEM deployed, covering all critical segments</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>No IDS/IPS and no SIEM, OR a critical segment sits outside detection coverage</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Domain 4: Backup &amp; Disaster Recovery</strong></h4>
+<p><strong>Question:</strong> "Can you recover from failure?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>Backup system deployed + tested + geographically diverse</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>No backup OR untested backup OR single location</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Domain 5: Third-Party Risk Management</strong></h4>
+<p><strong>Question:</strong> "Are cloud/vendor systems managed?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>Cloud systems isolated OR not handling critical data</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>Cloud systems on internet + handling sensitive data + no WAF</td>
+</tr>
+</tbody>
+</table>
+<h4><strong>Domain 6: Security Operations &amp; Monitoring</strong></h4>
+<p><strong>Question:</strong> "Do you have centralized visibility?"</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PASS</strong></td>
+<td>SIEM deployed + centralized logging active</td>
+</tr>
+<tr>
+<td><strong>FAIL</strong></td>
+<td>No SIEM OR no centralized logging</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Audit Worksheet (inline version — copy onto paper; printed sheet: see print pack, coming)</h2>
+<pre><code>AUDIT WORKSHEET
+Organization audited: ______________________   Auditing team: ______________________
+
+Domain                              PASS/FAIL   Key finding (one line)
+1. Network Segmentation             [    ]      ______________________________________
+2. Access Control &amp; Identity        [    ]      ______________________________________
+3. Incident Detection &amp; Response    [    ]      ______________________________________
+4. Backup &amp; Disaster Recovery       [    ]      ______________________________________
+5. Third-Party Risk Management      [    ]      ______________________________________
+6. Security Ops &amp; Monitoring        [    ]      ______________________________________
+
+SCORE: ____ / 6 PASS      (PARTIAL counts as FAIL; stars: 1-2* = FAIL, 3*+ = PASS)
+
+TOP 3 RECOMMENDATIONS:
+1. ___________________________________________________________________________
+2. ___________________________________________________________________________
+3. ___________________________________________________________________________
+</code></pre>
+<hr />
+<h2>Gameplay (20-25 minutes)</h2>
+<h3>Turn Structure</h3>
+<h4><strong>Phase 1: Introduction (2 minutes)</strong></h4>
+<p><strong>TO explains:</strong>
+"You're security auditors reviewing three organizations' infrastructure designs. For each, you'll score them on a 6-domain framework. Your goal: Identify which has the strongest security posture and which is most vulnerable."</p>
+<h4><strong>Phase 2: Audit Each Network (5 minutes per network = 15 minutes)</strong></h4>
+<p><strong>For each network (Startup, Mid-Market, Enterprise):</strong></p>
+<ol>
+<li><strong>TO reads network description</strong> (2 minutes)</li>
+<li><strong>Teams discuss and score</strong> (2 minutes)</li>
+<li>Vote on PASS/FAIL for each domain</li>
+<li>Record scores on the audit worksheet (inline version below; printed version: see print pack, coming)</li>
+<li><strong>TO reveals "correct" audit</strong> (1 minute)</li>
+<li>Teams compare their assessment to expert audit</li>
+<li>Discuss differences</li>
+</ol>
+<h4><strong>Phase 3: Comparative Analysis (5 minutes)</strong></h4>
+<p><strong>Teams answer:</strong>
+1. "Which organization is most secure?"
+2. "Which is most vulnerable to attack?"
+3. "If you HAD to use one network, which would you choose?"</p>
+<hr />
+<h2>Pre-Built Audit Results</h2>
+<h3>Startup Tech - Audit Results (v2.2 — the answer key now follows its own criteria)</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Score</th>
+<th>Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Segmentation</td>
+<td><strong>FAIL</strong></td>
+<td>No firewall between cloud and on-prem; cloud accessible from internet</td>
+</tr>
+<tr>
+<td>Access Control</td>
+<td><strong>FAIL</strong></td>
+<td>Dedicated AD exists, but <strong>no MFA anywhere</strong> (cloud consoles are remote access) — "no MFA" is a FAIL condition</td>
+</tr>
+<tr>
+<td>Detection</td>
+<td><strong>FAIL</strong></td>
+<td>No IDS/IPS or SIEM</td>
+</tr>
+<tr>
+<td>Backup &amp; Recovery</td>
+<td><strong>FAIL</strong></td>
+<td>AWS snapshots + M365 retention exist but are <strong>untested</strong> — "untested backup" is a FAIL condition</td>
+</tr>
+<tr>
+<td>Third-Party Risk</td>
+<td><strong>FAIL</strong></td>
+<td>Cloud systems public internet-accessible, holding customer data, no WAF</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td><strong>FAIL</strong></td>
+<td>No centralized monitoring</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Score: 0/6 PASS</strong> (strict). A lenient auditor might award Access Control a narrow PASS — dedicated, single-purpose DC and no VPN/remote-access paths to on-prem — for <strong>1/6</strong>. Either reading lands in the same tier: <strong>Below 3/6, HIGH RISK.</strong> (The judgment call itself is a great Variation C debate.)</p>
+<p><strong>Risk Rating: HIGH / CRITICAL</strong>
+- <strong>Vulnerabilities:</strong> No network segmentation, no detection capability, no MFA, untested backups, cloud systems exposed
+- <strong>Attack Scenario:</strong> Attacker compromises cloud web server → lateral movement to on-prem AD → full network access; if ransomware hits, the untested backups may not restore
+- <strong>Cost of Breach:</strong> Very high (no detection, no segmentation to contain, recovery uncertain)</p>
+<hr />
+<h3>Mid-Market Corp - Audit Results (v2.2 — table and score now agree)</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Score</th>
+<th>Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Segmentation</td>
+<td><strong>PASS</strong></td>
+<td>Firewalls between DMZ, Internal, Finance zones</td>
+</tr>
+<tr>
+<td>Access Control</td>
+<td><strong>PASS</strong></td>
+<td>AD hardened, VPN with MFA</td>
+</tr>
+<tr>
+<td>Detection</td>
+<td><strong>FAIL</strong></td>
+<td>IDS + SIEM deployed, but detection-only (no IPS blocking) and the isolated <strong>legacy accounting segment sits outside IDS coverage</strong> — a blind spot at the highest-risk, unpatched system</td>
+</tr>
+<tr>
+<td>Backup &amp; Recovery</td>
+<td><strong>PASS</strong></td>
+<td>Backup appliance with off-site replication, tested</td>
+</tr>
+<tr>
+<td>Third-Party Risk</td>
+<td><strong>PASS</strong></td>
+<td>Cloud systems on private network, WAF in place</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td><strong>PASS</strong></td>
+<td>SIEM + centralized logging</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Score: 5/6 PASS</strong></p>
+<p><strong>Risk Rating: MEDIUM</strong>
+- <strong>Strengths:</strong> Good segmentation, logging, backups
+- <strong>Weaknesses:</strong> Legacy accounting system (unpatched, and unmonitored — the Detection FAIL)
+- <strong>Attack Scenario:</strong> Attacker may get into DMZ but segmentation blocks lateral movement; an attack routed through the legacy segment, however, could go undetected
+- <strong>Cost of Breach:</strong> Moderate (segmentation limits damage; the legacy blind spot is the residual risk)</p>
+<hr />
+<h3>Enterprise Bank - Audit Results</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Score</th>
+<th>Finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Segmentation</td>
+<td><strong>PASS</strong></td>
+<td>Microsegmentation between all critical systems</td>
+</tr>
+<tr>
+<td>Access Control</td>
+<td><strong>PASS</strong></td>
+<td>Hardened DCs, MFA, minimal over-privilege</td>
+</tr>
+<tr>
+<td>Detection</td>
+<td><strong>PASS</strong></td>
+<td>IDS/IPS + dual SIEM + honeypot</td>
+</tr>
+<tr>
+<td>Backup &amp; Recovery</td>
+<td><strong>PASS</strong></td>
+<td>Multiple offline vaults, quarterly testing</td>
+</tr>
+<tr>
+<td>Third-Party Risk</td>
+<td><strong>PASS</strong></td>
+<td>Cloud only for non-critical, extensive monitoring</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td><strong>PASS</strong></td>
+<td>Dual SIEM, air-gapped logging</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Score: 6/6 PASS</strong></p>
+<p><strong>Risk Rating: LOW</strong>
+- <strong>Strengths:</strong> Defense-in-depth across all domains
+- <strong>Weaknesses:</strong> Very expensive to operate; regulatory complexity
+- <strong>Attack Scenario:</strong> Multiple layers would have to be bypassed; honeypot would alert SOC immediately
+- <strong>Cost of Breach:</strong> Lower (but incident response costs are high due to complexity)</p>
+<hr />
+<h2>Scoring &amp; Comparison</h2>
+<h3>Audit Score Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Assessment</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>6/6 PASS</strong></td>
+<td>Enterprise-grade</td>
+<td>Highest security, highest cost</td>
+</tr>
+<tr>
+<td><strong>5/6 PASS</strong></td>
+<td>Strong security</td>
+<td>Balanced security &amp; cost</td>
+</tr>
+<tr>
+<td><strong>3-4/6 PASS</strong></td>
+<td>Adequate but gapped</td>
+<td>Risk exposure present</td>
+</tr>
+<tr>
+<td><strong>Below 3/6</strong></td>
+<td>High risk</td>
+<td>Vulnerabilities likely exploited</td>
+</tr>
+</tbody>
+</table>
+<h3>Team Competition</h3>
+<p><strong>Which team's audit assessment was most accurate?</strong>
+- Teams that scored Startup as high-risk: +1 point
+- Teams that scored Enterprise as low-risk: +1 point
+- Teams that identified Legacy System as Mid-Market's weakness: +1 point</p>
+<p><strong>Winner:</strong> Team with most accurate audit assessments</p>
+<hr />
+<h2>Debrief (5 minutes)</h2>
+<h3>Discussion Questions</h3>
+<ol>
+<li><strong>"Why would Startup Tech be attractive to attackers?"</strong></li>
+<li>
+<p>Answer: No detection, no segmentation, cloud exposed</p>
+</li>
+<li>
+<p><strong>"If you had to recommend improvements to Startup, what's priority #1?"</strong></p>
+</li>
+<li>
+<p>Answer: Network segmentation OR IDS/SIEM (detection)</p>
+</li>
+<li>
+<p><strong>"Why is Enterprise Bank so expensive?"</strong></p>
+</li>
+<li>
+<p>Answer: Redundancy, microsegmentation, multiple layers of defense</p>
+</li>
+<li>
+<p><strong>"Which organization would you actually want to work for?"</strong></p>
+</li>
+<li>Answer: Mid-Market (good balance of security and usability)</li>
+</ol>
+<hr />
+<h1>VARIATION B: RANDOM NETWORK GENERATION</h1>
+<h2>"Build-Then-Audit Mini-Game"</h2>
+<p><strong>Duration:</strong> 25-35 minutes<br />
+<strong>Players:</strong> 1-4 teams<br />
+<strong>Difficulty:</strong> Medium (requires both building and auditing)<br />
+<strong>Best For:</strong> Combined learning, deeper understanding</p>
+<hr />
+<h2>Concept</h2>
+<p><strong>"Each team builds a simplified network by drawing random infrastructure cards. Then you audit each other's networks. Better auditors find more gaps."</strong></p>
+<p>This combines elements of Network Building (simplified) with Audit mechanics. Teams make trade-off decisions, then their network design is audited by competitors.</p>
+<hr />
+<h2>Game Flow</h2>
+<h3>Phase 1: Rapid Network Generation (10 minutes)</h3>
+<p><strong>Each team builds a network using a simplified card deck:</strong></p>
+<h4>Simplified Network Generation Cards</h4>
+<p><strong>SERVER CARDS (Draw 5 cards, must include certain types):</strong>
+- Email Server (must have)
+- Web Server (must have)
+- Database Server (must have)
+- Domain Controller (should have)
+- Backup System (optional)
+- Development Server (optional)
+- File Server (optional)
+- Cloud Workload (optional)</p>
+<p><strong>SECURITY DEVICE CARDS (Draw 3 cards, choose to deploy or skip):</strong>
+- Firewall
+- IDS
+- SIEM
+- Email Gateway
+- WAF
+- Honeypot</p>
+<p><strong>ARCHITECTURE CARD (Draw 1, determines layout):</strong>
+- Flat Network (budget-friendly, weak)
+- Segmented Network (balanced)
+- Fully Isolated (expensive, strong)</p>
+<p><strong>Rules:</strong>
+- Must have: Email, Web, Database
+- Can choose: Others
+- Budget: Implicit (each card represents a choice; no money tracking)
+- Time: 10 minutes to decide and document on "Network Card"</p>
+<p><strong>Each team creates a Network Card:</strong></p>
+<pre><code>TEAM A'S NETWORK:
+
+SERVERS:
+✓ Email Server
+✓ Web Server
+✓ Database Server
+✓ Domain Controller
+✓ Backup System
+✓ File Server
+✗ Development Server (skipped)
+
+SECURITY DEVICES:
+✓ Firewall
+✓ IDS
+✗ SIEM (skipped)
+✓ Email Gateway
+✗ WAF (skipped)
+✗ Honeypot (skipped)
+
+ARCHITECTURE:
+→ Segmented (3 zones)
+</code></pre>
+<h3>Phase 2: Cross-Team Audit (15 minutes)</h3>
+<p><strong>Each team audits a different team's network (round-robin):</strong></p>
+<ol>
+<li><strong>Auditing Team Receives Network Card</strong></li>
+<li><strong>Auditing Team Scores Network on 6 Domains</strong></li>
+<li>PASS or FAIL for each domain</li>
+<li>Write findings</li>
+<li><strong>Present Audit Results to Building Team</strong></li>
+</ol>
+<p><strong>Example Audit of Team A:</strong></p>
+<pre><code>AUDIT OF TEAM A'S NETWORK:
+
+Domain 1: Network Segmentation
+  Decision: Segmented (3 zones) → PASS
+  Finding: Good segmentation between DMZ, Internal, Sensitive
+
+Domain 2: Access Control
+  Decision: Domain Controller present → PASS
+  Finding: Identity management in place
+
+Domain 3: Detection
+  Decision: IDS present but NO SIEM → PARTIAL FAIL
+  (v2.2: &quot;PARTIAL&quot; counts as FAIL for the score)
+  Finding: Can detect network attacks but no centralized logging for correlation
+
+Domain 4: Backup &amp; Recovery
+  Decision: Backup System present → PASS
+  Finding: Can recover from data loss
+
+Domain 5: Third-Party Risk
+  Decision: No WAF on Web Server → FAIL
+  Finding: Web server vulnerable to application attacks
+
+Domain 6: Operations
+  Decision: No SIEM → FAIL
+  Finding: No centralized monitoring; incident response slower
+
+AUDIT SCORE: 3/6 PASS
+
+CRITICAL FINDINGS:
+1. Missing SIEM (no centralized logging)
+2. No WAF (web server unprotected)
+3. IDS without SIEM (detection blindspot)
+</code></pre>
+<h3>Phase 3: Auditor Scoring (5 minutes)</h3>
+<p><strong>Accuracy of Audits is Scored:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Audit Accuracy</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identified all major gaps</td>
+<td>+5</td>
+</tr>
+<tr>
+<td>Identified some gaps</td>
+<td>+3</td>
+</tr>
+<tr>
+<td>Missed critical gap</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>Incorrect assessment</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Team Scores:</strong>
+- <strong>Building Teams:</strong> Score = (6 - number of fails) × 5
+  - Example: 3/6 PASS = 3 fails → 3 × 5 = 15 points
+- <strong>Auditing Teams:</strong> Score = accuracy of audit assessment</p>
+<p><strong>Winner:</strong> Highest combined score OR winner of each category</p>
+<hr />
+<h2>Debrief (5 minutes)</h2>
+<ol>
+<li><strong>"What gaps did auditors find in your network?"</strong></li>
+<li><strong>"Did the auditors miss anything you're concerned about?"</strong></li>
+<li><strong>"What would you fix if you had to improve?"</strong></li>
+</ol>
+<hr />
+<h1>VARIATION C: "AUDIT THE AUDITOR" DEBATE</h1>
+<h2>Interactive Challenge &amp; Discussion Game</h2>
+<p><strong>Duration:</strong> 20-30 minutes<br />
+<strong>Players:</strong> 2-4 teams<br />
+<strong>Difficulty:</strong> High (requires critical thinking &amp; argumentation)<br />
+<strong>Best For:</strong> Advanced teams, strong discussion-based learning</p>
+<hr />
+<h2>Concept</h2>
+<p><strong>"You're given a network design and audit findings. As a team, debate whether the auditor's findings are FAIR, HARSH, or MISSING SOMETHING. Win by making the most convincing argument."</strong></p>
+<p>This is a <strong>debate game</strong> where teams argue the merits of audit findings, teaching that audits are interpretable and that defending infrastructure requires understanding the rationale.</p>
+<hr />
+<h2>Game Materials</h2>
+<h3>Audit Finding Scenarios (3 total)</h3>
+<h4>SCENARIO 1: "The Startup Defense"</h4>
+<p><em>(Same fictional company as Variation A's "Startup Tech": 50 people, cloud-first, no VPN.)</em></p>
+<pre><code>SCENARIO:
+Startup Tech built this network:
+- Email (Cloud), Web (Cloud), Database (Cloud),
+  Domain Controller (On-Prem), Backup (Cloud snapshots)
+- No Firewall between cloud and on-prem
+- No IDS or SIEM
+- No VPN (all cloud-native; cloud consoles protected by
+  provider logins only, no MFA)
+
+AUDITOR'S FINDINGS:
+Domain 1: Network Segmentation → FAIL
+  &quot;No firewall between cloud and on-prem represents 
+   uncontrolled lateral movement risk.&quot;
+
+Domain 3: Detection → FAIL
+  &quot;No IDS/SIEM means attacks go undetected.&quot;
+
+OVERALL: HIGH RISK
+
+STARTUP'S COUNTERARGUMENT:
+&quot;We use cloud providers (AWS/Azure) which have built-in
+firewalls at the cloud level. Cloud provider security
+groups mean only the services we expose are reachable.
+Our small team (50 people) means we're faster to respond.
+This audit is too harsh for a startup.&quot;
+
+YOUR JOB:
+- Is the auditor FAIR? (reasonable standards)
+- Is the auditor HARSH? (too strict for context)
+- Is the auditor MISSING gaps? (what should they have found?
+  Hint: no MFA, untested backups)
+- Vote: Fair / Harsh / Missing / Balanced
+</code></pre>
+<h4>SCENARIO 2: "The Legacy System Dilemma"</h4>
+<pre><code>SCENARIO:
+Mid-Market Corp has this system:
+- 15-year-old Accounting System (on-prem)
+- Runs on Windows Server 2003 (unsupported, unpatched)
+- Handles $2B in transactions annually
+- Cannot be replaced for 2+ years (licensing/training)
+- Isolated on separate network segment but bridged for 
+  month-end consolidation
+
+AUDITOR'S FINDINGS:
+Domain 2: Access Control → FAIL
+  &quot;Legacy system runs on unsupported OS. Vulnerability 
+   present = critical risk.&quot;
+
+Domain 4: Backup &amp; Recovery → PARTIAL
+  &quot;System backed up but no tested recovery procedure.&quot;
+
+OVERALL: CRITICAL RISK (specifically legacy system)
+
+CORP'S COUNTERARGUMENT:
+&quot;The system is air-gapped except for 3 days per month.
+We have detective controls (IDS) watching for suspicious 
+access. The cost of replacement ($2M) is greater than 
+our risk tolerance. This system is a known risk we're 
+accepting.&quot;
+
+YOUR JOB:
+- Is the auditor RIGHT to flag this?
+- Is the corporation taking reasonable risk?
+- How would you rate this scenario? Risk Acceptance vs. Negligence?
+- Vote: Auditor Correct / Corp Reasonable / Need More Controls / Acceptable Risk
+</code></pre>
+<h4>SCENARIO 3: "The Over-Engineering Question"</h4>
+<pre><code>SCENARIO:
+Enterprise Bank built this network:
+- 10+ security zones with microsegmentation
+- Dual SIEM systems (Splunk + QRadar)
+- IDS + IPS on every zone
+- Honeypot network with decoys
+- All systems hardened per NIST
+- Quarterly disaster recovery testing
+- Air-gapped offline backups in vault
+- Annual compliance audit (PCI-DSS, SOX)
+
+COST: $5M annual IT security budget
+
+AUDITOR'S FINDINGS:
+Domain 1-6: ALL PASS ✓
+
+AUDITOR'S COMMENT:
+&quot;Exceptional security posture. Well-engineered 
+defense-in-depth. Highly resilient. Recommended 
+best practices for financial institution.&quot;
+
+STAKEHOLDER QUESTION:
+&quot;Is this over-engineered? Could we achieve 80% 
+of the security with 30% of the cost?&quot;
+
+YOUR JOB:
+- Is defense-in-depth always justified?
+- What's the cost-benefit breakpoint?
+- For different organization types (startup vs. bank), 
+  what's appropriate?
+- Vote: Over-Engineered / Justified / Right for Context / Too Expensive
+</code></pre>
+<hr />
+<h2>Gameplay (25-30 minutes)</h2>
+<h3>Turn Structure</h3>
+<h4><strong>Phase 1: Present Scenario (3 minutes)</strong></h4>
+<p><strong>TO reads:</strong>
+1. Organization and network design
+2. Auditor's findings
+3. Organization's counterargument
+4. Debate question</p>
+<h4><strong>Phase 2: Debate Preparation (5 minutes)</strong></h4>
+<p><strong>Each team gets assigned a position:</strong>
+- <strong>Team A:</strong> Defend the Auditor (findings are fair/necessary)
+- <strong>Team B:</strong> Defend the Organization (counterargument is valid)
+- <strong>Team C:</strong> Play Neutral Assessor (judge fairness of both)</p>
+<p><strong>Teams prepare arguments:</strong>
+- 2-3 key points supporting their position
+- Anticipate opponent's counterarguments
+- Use security/business logic</p>
+<h4><strong>Phase 3: Debate Round (5 minutes)</strong></h4>
+<p><strong>Structure:</strong>
+1. <strong>Auditor Position:</strong> 1 minute opening (Team A)
+2. <strong>Organization Position:</strong> 1 minute opening (Team B)
+3. <strong>Cross-Examination:</strong> 2 minutes (back-and-forth)
+4. <strong>Neutral Assessment:</strong> Team C (judge who had better argument)</p>
+<h4><strong>Phase 4: Judge's Decision &amp; Scoring (2 minutes)</strong></h4>
+<p><strong>Team C Scores:</strong>
+- <strong>Most convincing argument:</strong> +3 points
+- <strong>Better use of logic:</strong> +2 points
+- <strong>Anticipated counterarguments:</strong> +2 points
+- <strong>Clearer presentation:</strong> +1 point</p>
+<p><strong>Repeat for each scenario (3 scenarios = 3 rounds)</strong></p>
+<hr />
+<h2>Example Debate</h2>
+<h3>SCENARIO 1: Startup Defense</h3>
+<p><strong>AUDITOR POSITION (Team A):</strong>
+"The findings are fair because:
+1. Network security standards apply to all organizations
+2. Cloud provider firewalls don't replace organizational controls
+3. No IDS means breaches go undetected for weeks
+4. A $10M breach destroys a startup; prevention is essential"</p>
+<p><strong>ORGANIZATION POSITION (Team B):</strong>
+"The counterargument is valid because:
+1. Startups operate under different constraints than enterprises
+2. Cloud provider security groups limit what's exposed
+3. Our cloud provider has better security than we could build
+4. For 50 employees, a $50K security investment is proportional
+5. We're risk-accepting; this is a known trade-off"</p>
+<p><strong>CROSS-EXAMINATION (back and forth):</strong></p>
+<p><strong>A:</strong> "But if you get compromised, your customer data is exposed. Isn't that a problem?"</p>
+<p><strong>B:</strong> "Yes, but our cloud provider's controls AND limited data make that less likely than you're suggesting."</p>
+<p><strong>A:</strong> "What about detection? If you're breached, you won't know for months."</p>
+<p><strong>B:</strong> "True, but adding SIEM costs $5K/month that we don't have. We're choosing early detection (IDS) instead of centralized logging."</p>
+<p><strong>C (NEUTRAL):</strong> "Who made the better argument?"
+- Team A cited industry standards
+- Team B cited resource constraints
+- Both had merit</p>
+<p><strong>VERDICT:</strong> Team B made slightly more convincing argument (better contextualization of risk)
+- Team B: +3 points
+- Team A: +2 points</p>
+<hr />
+<h2>Debate Scoring &amp; Winner</h2>
+<p><strong>After 3 scenarios:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Team</th>
+<th>Scenario 1</th>
+<th>Scenario 2</th>
+<th>Scenario 3</th>
+<th>TOTAL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Team A (Auditor)</strong></td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Team B (Organization)</strong></td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr>
+<td><strong>Team C (Neutral)</strong></td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Winner:</strong> Team C (Neutral Assessor)</p>
+<p><strong>Award:</strong> "Best Critical Thinking"</p>
+<hr />
+<h2>Debrief (5 minutes)</h2>
+<h3>Key Learning Questions</h3>
+<ol>
+<li><strong>"Are all audit findings equally valid?"</strong></li>
+<li>
+<p>Answer: No; context matters (startup vs. bank)</p>
+</li>
+<li>
+<p><strong>"How would you defend an audit finding to the board?"</strong></p>
+</li>
+<li>
+<p>Teaching point: Audits need business justification, not just technical standards</p>
+</li>
+<li>
+<p><strong>"What's the difference between a 'critical finding' and a 'risk we're accepting'?"</strong></p>
+</li>
+<li>
+<p>Teaching point: Risk management is nuanced; not all gaps are equally important</p>
+</li>
+<li>
+<p><strong>"How does this change how you think about the attacks in Incident Response?"</strong></p>
+</li>
+<li>Connection: "Auditors find gaps that attackers exploit"</li>
+</ol>
+<hr />
+<h1>USING ALL THREE VARIATIONS</h1>
+<h2>Which Variation When?</h2>
+<h3>Variation A: Pre-Built Networks (Quickest)</h3>
+<p><strong>Use When:</strong>
+- Limited time (&lt; 30 min session)
+- First exposure to audit concepts
+- Want to compare different infrastructure strategies
+- Non-competitive, educational focus</p>
+<p><strong>Learning Value:</strong>
+- Understand how audit domains work
+- See difference between good/bad designs
+- Low setup time</p>
+<h3>Variation B: Random Generation (Balanced)</h3>
+<p><strong>Use When:</strong>
+- Want to combine building + auditing
+- 30-40 minute session
+- Teams benefit from designing then being audited
+- Competitive element desired</p>
+<p><strong>Learning Value:</strong>
+- Teams make trade-off decisions
+- See consequences of choices reflected in audit
+- "This gap I chose to accept was exactly what the auditor found!"</p>
+<h3>Variation C: Debate Game (Most Interactive)</h3>
+<p><strong>Use When:</strong>
+- Advanced/experienced teams
+- Want deep critical thinking
+- Discussion-based learning preferred
+- Comfortable with argumentation/debate format</p>
+<p><strong>Learning Value:</strong>
+- Audit findings are interpretable
+- Context matters (startup vs. bank)
+- Security decisions involve trade-offs
+- Preparation for defending security to board/leadership</p>
+<hr />
+<h1>SAMPLE PLAY SESSIONS</h1>
+<hr />
+<h2>Session 1: Pre-Built Networks Only (20 minutes)</h2>
+<pre><code>Setup: 3 min
+Audit Startup Tech: 4 min
+Audit Mid-Market: 4 min
+Audit Enterprise: 4 min
+Comparison &amp; Discussion: 3 min
+Debrief: 2 min
+
+Total: 20 minutes
+</code></pre>
+<p><strong>Perfect for:</strong> Intro to audit concepts</p>
+<hr />
+<h2>Session 2: Random Generation + Audit (35 minutes)</h2>
+<pre><code>Setup: 3 min
+Teams build networks (simplified): 10 min
+Teams audit each other: 15 min
+Score &amp; announce winner: 3 min
+Debrief: 4 min
+
+Total: 35 minutes
+</code></pre>
+<p><strong>Perfect for:</strong> Combined learning, competitive</p>
+<hr />
+<h2>Session 3: Debate Game Intensive (30 minutes)</h2>
+<pre><code>Setup &amp; brief: 2 min
+
+SCENARIO 1:
+- Presentation: 1 min
+- Prep: 3 min
+- Debate: 5 min
+- Scoring: 1 min
+- Subtotal: 10 min
+
+SCENARIO 2: 10 min
+SCENARIO 3: 10 min
+
+Debrief: 3 min
+
+Total: 30 minutes
+</code></pre>
+<p><strong>Perfect for:</strong> Advanced critical thinking</p>
+<hr />
+<h2>Session 4: Combination Play (60 minutes)</h2>
+<pre><code>Variation A (Pre-Built): 20 min
+- Understand audit domains via 3 sample networks
+
+Variation B (Random Gen): 25 min
+- Build network, get audited
+- See your choices reflected in audit findings
+
+Variation C (Debate): 10 min
+- Single debate scenario to reinforce learning
+
+Debrief &amp; Connection: 5 min
+- &quot;Now you understand how audits work&quot;
+- &quot;In Incident Response, attackers will exploit these gaps&quot;
+
+Total: 60 minutes
+</code></pre>
+<p><strong>Perfect for:</strong> Comprehensive audit education</p>
+<hr />
+<h1>CONNECTING TO INCIDENT RESPONSE (Attack Chain)</h1>
+<p>After playing Audit Standalone, teams can transition to the Incident Response module:</p>
+<p><strong>Narrative Bridge:</strong></p>
+<p>"You just audited how well different organizations designed their security. Now let's see what happens when an attacker encounters those same networks. The gaps you found in the audit? Attackers will find them too.</p>
+<p><strong>Your audit findings were:</strong>
+- Startup Tech: HIGH RISK (no segmentation, no detection)
+- Mid-Market: MEDIUM RISK (strong foundation, legacy gap)
+- Enterprise: LOW RISK (defense-in-depth)</p>
+<p>Now, if an attacker targets each of these networks, how will it go?"</p>
+<hr />
+<h1>MATERIALS CHECKLIST</h1>
+<p>Everything needed to play today is <strong>in this document</strong>: the three network descriptions, the 6-domain framework, the answer keys, the inline audit worksheet, and the three debate scenarios. Printed play aids (scoring reference card, audit worksheet, judge guide, scoring sheets): <strong>see print pack (coming)</strong>.</p>
+<h3>Variation A: Pre-Built Networks</h3>
+<ul>
+<li>[ ] Scenario descriptions (3 networks — in this document)</li>
+<li>[ ] 6-domain audit framework (in this document)</li>
+<li>[ ] Pre-filled audit results (for TO reference — in this document)</li>
+<li>[ ] Audit worksheet (inline version above; printed: see print pack, coming)</li>
+</ul>
+<h3>Variation B: Random Generation</h3>
+<ul>
+<li>[ ] Simplified server / security device / architecture card lists (in this document)</li>
+<li>[ ] Network summary template (in this document)</li>
+<li>[ ] Audit worksheet (inline version above)</li>
+<li>[ ] Accuracy scoring table (in this document)</li>
+</ul>
+<h3>Variation C: Audit the Auditor</h3>
+<ul>
+<li>[ ] Scenario 1: Startup Defense (in this document)</li>
+<li>[ ] Scenario 2: Legacy System (in this document)</li>
+<li>[ ] Scenario 3: Over-Engineering (in this document)</li>
+<li>[ ] Debate scoring rubric (in this document, Phase 4)</li>
+<li>[ ] Judge guide: see print pack (coming) — until then, Team C uses the Phase 4 rubric</li>
+</ul>
+<hr />
+<h1>QUICK REFERENCE</h1>
+<table>
+<thead>
+<tr>
+<th>Variation</th>
+<th>Duration</th>
+<th>Complexity</th>
+<th>Competition</th>
+<th>Setup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A: Pre-Built</strong></td>
+<td>15-25 min</td>
+<td>Low</td>
+<td>Low</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td><strong>B: Random Gen</strong></td>
+<td>25-35 min</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td><strong>C: Debate</strong></td>
+<td>20-30 min</td>
+<td>High</td>
+<td>High</td>
+<td>Moderate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1>DEBRIEF CONNECTIONS TO INCIDENT ZERO</h1>
+<p>After any Audit Standalone variation, teams should understand:</p>
+<ol>
+<li><strong>Audits find real vulnerabilities</strong> - Same gaps auditors find, attackers will exploit</li>
+<li><strong>Context matters</strong> - Startup vs. bank = different risk tolerance</li>
+<li><strong>Trade-offs are real</strong> - Can't afford everything; must prioritize</li>
+<li><strong>Detection vs. Prevention</strong> - Strong IDS/SIEM matters as much as hardening</li>
+<li><strong>Incident response starts with audit</strong> - Knowing your gaps speeds detection</li>
+</ol>
+<p><strong>Key Teaching:</strong> "In Incident Response, auditors played the role of the security team. Attackers play the same role, but with opposite intent. They're looking for exactly what auditors find."</p>
+<hr />
+<p><em>Incident Zero: Compliance Audit Standalone Mini-Games</em><br />
+<em>Three variations of security assessment gameplay</em><br />
+<em>Teach how audits find vulnerabilities that attackers will exploit</em></p></section><section class="doc-break"><p class="doc-src">cards/audit-compliance/core-deck/audit-domain-cards.md</p><h1>Audit &amp; Compliance Module: Audit Domain Assessment Cards</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> October 2025</p>
+<hr />
+<h2>Overview</h2>
+<p><strong>Audit Domain Assessment Cards</strong> represent six critical security domains that an organization must have controls for. Each domain is assessed independently, with findings recorded on a standard audit report.</p>
+<ul>
+<li><strong>Total Cards:</strong> 6 (DOMAIN-01 to DOMAIN-06)</li>
+<li><strong>Used In:</strong> Audit &amp; Compliance module (primary gameplay)</li>
+<li><strong>Assessment Method:</strong> Auditor reviews evidence, scores domain (1-5 stars)</li>
+<li><strong>Purpose:</strong> Identify gaps that become modifiers in other modules</li>
+</ul>
+<hr />
+<h2>Assessment Methodology</h2>
+<h3>The Audit Process</h3>
+<ol>
+<li><strong>Assessment:</strong> Auditor reviews domain for evidence of controls</li>
+<li><strong>Scoring:</strong> Rate domain 1-5 stars based on maturity</li>
+<li>⭐ (1 star): No controls, critical findings</li>
+<li>⭐⭐ (2 stars): Minimal controls, major findings</li>
+<li>⭐⭐⭐ (3 stars): Adequate controls, minor findings</li>
+<li>⭐⭐⭐⭐ (4 stars): Strong controls, few findings</li>
+<li>⭐⭐⭐⭐⭐ (5 stars): Excellent controls, no findings</li>
+<li><strong>Findings:</strong> Record specific gaps (vulnerabilities, non-compliance)</li>
+<li><strong>Remediation:</strong> Recommend actions to address findings</li>
+<li><strong>Report:</strong> Compile audit findings and recommendations</li>
+</ol>
+<h3>Star → PASS/FAIL Mapping (v2.2)</h3>
+<p><strong>PASS/FAIL per domain (X/6) is the primary score.</strong> Stars are flavor, with this fixed mapping:</p>
+<blockquote>
+<p><strong>1-2★ = FAIL · 3★+ = PASS · "PARTIAL" counts as FAIL</strong></p>
+</blockquote>
+<h3>Scoring Impact</h3>
+<p><strong>Domain Score determines:</strong>
+- Audit Grade (1-5 stars, flavor)
+- PASS/FAIL status (primary — via the mapping above)
+- Findings Severity (critical/major/minor)
+- Modifiers for other modules (IR, DR get harder if audit failed — see the canonical table in <code>docs/rules/module-audit-compliance.md</code>)</p>
+<hr />
+<h2>Audit Domain Cards</h2>
+<h3>DOMAIN-01: Network Segmentation &amp; Isolation</h3>
+<p><strong>Focus:</strong> How well is network divided into protected segments?
+<strong>Critical For:</strong> Preventing lateral movement
+<strong>Regulatory References:</strong> PCI-DSS (network segmentation), NIST (zero trust)</p>
+<p><strong>What's Assessed:</strong>
+- Is network flat (1 segment) or segmented (multiple segments)?
+- Are sensitive systems isolated (DMZ, database segment, admin segment)?
+- Are firewall rules enforced between segments?
+- Is network architecture documented?
+- Are VLANs/subnets properly configured?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> Flat network, no segmentation, everything can talk to everything
+- <strong>Major (2-3 star):</strong> Basic segmentation exists, but enforcement is weak
+- <strong>Minor (3-4 star):</strong> Segmentation exists, few rule violations
+- <strong>Compliant (4-5 star):</strong> Strong segmentation, zero-trust architecture</p>
+<p><strong>Real-World Question:</strong>
+"If one system is compromised, how far can the attacker spread?"
+- Flat network: Entire organization immediately
+- 3-zone network: Blocked by firewalls
+- Zero-trust: Individual systems isolated</p>
+<p><strong>Audit Evidence:</strong>
+- Network diagram (shows segments)
+- Firewall rule documentation
+- Network ACL lists
+- Proof of implementation (switch configs)
+- Test results (can systems cross segments? No)</p>
+<p><strong>Compliance Standards:</strong>
+- PCI-DSS Requirement 1: Network segmentation for cardholder data
+- NIST CSF: PR.AC-5 (Network integrity protected via segmentation)
+- CIS Control 12: Network Infrastructure Management (v8)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Network segmentation inadequate
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: The network is [flat/minimally segmented], allowing [lateral movement/unauthorized access]
+RECOMMENDATION: Implement [VLAN/firewall rules/zero-trust] to segment [database/admin/sensitive systems]
+EFFORT: [1-5] weeks
+COST: [Moderate/High/Very High]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Implement network segmentation (ARCH-02, ARCH-03 in Network Building)
+- ✓ Deploy firewall with segmentation rules (SEC-08)
+- ✓ Implement zero-trust architecture (ARCH-03)
+- ✓ Test segmentation enforcement</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- T-04 (Lateral Movement) becomes trivial for attackers
+- Incident Response: -1 to NETWORK defenses (canonical modifier)
+- Disaster Recovery: -10 DR budget penalty (attacker spreads widely)</p>
+<hr />
+<h3>DOMAIN-02: Access Control &amp; Identity Management</h3>
+<p><strong>Focus:</strong> How are user identities managed and access controlled?
+<strong>Critical For:</strong> Preventing unauthorized access
+<strong>Regulatory References:</strong> HIPAA (access controls), GDPR (access management)</p>
+<p><strong>What's Assessed:</strong>
+- Is there centralized identity management (Domain Controller/Azure AD)?
+- Is multi-factor authentication (MFA) enabled for sensitive access?
+- Are access permissions based on least privilege?
+- Are access reviews performed (verify who has access)?
+- Are privileged accounts managed (admin accounts, service accounts)?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> No centralized identity, weak passwords, no MFA
+- <strong>Major (2-3 star):</strong> Some identity management, MFA not universal
+- <strong>Minor (3-4 star):</strong> Good identity management, minor gaps
+- <strong>Compliant (4-5 star):</strong> Strong identity, MFA everywhere, privilege management</p>
+<p><strong>Real-World Question:</strong>
+"How easily can an attacker use stolen credentials?"
+- Weak: No MFA, can use stolen password immediately
+- Medium: MFA only for some systems
+- Strong: MFA everywhere, weak credentials are useless</p>
+<p><strong>Audit Evidence:</strong>
+- AD/directory configuration
+- MFA enrollment status
+- Access policy documentation
+- Privileged account audit (who has admin?)
+- Account review records (periodic access verification)</p>
+<p><strong>Compliance Standards:</strong>
+- PCI-DSS Requirement 8: User identification and authentication
+- HIPAA Rule 164.308(a)(4): Unique user identification
+- NIST CSF: PR.AC-1 (Physical &amp; logical access controls)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Multi-factor authentication not universally enforced
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: MFA is [not implemented/optional] for [VPN/email/admin access]
+RECOMMENDATION: Deploy [MFA solution] to [affected systems]
+EFFORT: [2-4] weeks
+COST: [Low/Moderate/High]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Deploy MFA (D-07 in Hardening)
+- ✓ Implement password vault (D-12)
+- ✓ Credential Guard for privileged access (D-16)
+- ✓ Access reviews quarterly</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- T-03 (Compromised Credentials), T-06 (Mimikatz) become likely
+- Incident Response: -1 to CREDENTIAL_ABUSE defenses (canonical modifier)
+- Disaster Recovery: -15 DR budget penalty (attacker can restore themselves with stolen creds)</p>
+<hr />
+<h3>DOMAIN-03: Threat Detection &amp; Incident Response</h3>
+<p><strong>Focus:</strong> Can the organization detect and respond to attacks?
+<strong>Critical For:</strong> Finding breaches quickly
+<strong>Regulatory References:</strong> GDPR (breach detection), HIPAA (log monitoring)</p>
+<p><strong>What's Assessed:</strong>
+- Are logs being collected centrally (SIEM or similar)?
+- Is there 24/7 monitoring of critical systems?
+- Are alerts configured to detect suspicious activity?
+- Is there incident response plan documented?
+- Are incident responders trained?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> No logging, no monitoring, no incident response plan
+- <strong>Major (2-3 star):</strong> Some logging, limited monitoring
+- <strong>Minor (3-4 star):</strong> Good logging, some gaps in alerting
+- <strong>Compliant (4-5 star):</strong> Comprehensive logging, active monitoring, trained team</p>
+<p><strong>Real-World Question:</strong>
+"How quickly will you detect an active attacker?"
+- Poor: Days/weeks (after data is already stolen)
+- Medium: Hours (after attacker has spread)
+- Strong: Minutes (catch attacker early)</p>
+<p><strong>Audit Evidence:</strong>
+- SIEM/logging configuration
+- Alert rules documentation
+- Incident response plan
+- Training records (who's trained?)
+- Incident history (how did you detect past incidents?)</p>
+<p><strong>Compliance Standards:</strong>
+- GDPR Article 33: Breach notification timing (72 hours)
+- HIPAA Rule 164.308(a)(6): Incident response procedures
+- NIST CSF: DE.AE-3 (Event detection processes)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Insufficient threat detection and monitoring
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: [SIEM/monitoring] is [not deployed/inadequately configured]
+RECOMMENDATION: Deploy [SIEM] with [alert rules] to detect [attack patterns]
+EFFORT: [4-8] weeks
+COST: [Moderate/High]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Deploy SIEM (D-09, D-22)
+- ✓ Configure log centralization (D-05)
+- ✓ Create SIEM correlation rules (D-10)
+- ✓ Threat hunting program (D-13)</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- Breach detection is late (attacker has time to steal data)
+- Incident Response: -1 to Investigation rolls (canonical modifier; late detection)
+- Disaster Recovery: -10 DR budget penalty (dwell time longer; more data stolen)</p>
+<p><strong>Optional (v2.2):</strong> a 5-star rating in this domain grants +1 to Incident Response investigation rolls if IR is played later.</p>
+<hr />
+<h3>DOMAIN-04: Backup &amp; Disaster Recovery</h3>
+<p><strong>Focus:</strong> Can the organization recover from attacks/disasters?
+<strong>Critical For:</strong> Ransomware resilience
+<strong>Regulatory References:</strong> Most breach laws mention recovery</p>
+<p><strong>What's Assessed:</strong>
+- Is there a documented backup strategy (frequency, retention)?
+- Are backups tested regularly (restore actually works)?
+- Is backup storage off-site (geographically separated)?
+- Are backups immutable (cannot be deleted/encrypted)?
+- Is recovery time objective (RTO) documented for each system?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> No backups or untested backups (may not restore)
+- <strong>Major (2-3 star):</strong> Backups exist but not properly tested
+- <strong>Minor (3-4 star):</strong> Backups exist and tested, gaps in immutability
+- <strong>Compliant (4-5 star):</strong> 3-2-1 strategy, tested, immutable, offsite</p>
+<p><strong>Real-World Question:</strong>
+"Can you recover from ransomware?"
+- Poor: No (backups are encrypted too)
+- Medium: Yes but slowly (days to recover)
+- Strong: Yes quickly (hours to recover, immutable backups)</p>
+<p><strong>Audit Evidence:</strong>
+- Backup schedule/documentation
+- Backup test results (prove restore works)
+- Off-site backup location documentation
+- Immutable backup configuration
+- Recovery time estimates</p>
+<p><strong>Compliance Standards:</strong>
+- Most breach laws assume backups exist (no recovery = massive damage)
+- HIPAA Rule 164.308(a)(7): Data backup procedures
+- NIST CSF: PR.IP-4 (Resilience practices documented)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Backup and recovery procedures inadequate
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: Backups are [not tested/not off-site/not immutable]
+RECOMMENDATION: Implement [3-2-1 strategy] with [immutable storage]
+EFFORT: [2-4] weeks
+COST: [Moderate]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Implement 3-2-1 backup strategy (D-19)
+- ✓ Test backups quarterly (prove restore works)
+- ✓ Immutable storage (WORM, cloud versioning)
+- ✓ Off-site backup location</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- Ransomware attacks cannot be recovered from
+- Disaster Recovery: -25 DR budget penalty (no recovery option; expensive rebuild)
+- Business interruption is long (days vs hours)
+- No IR effect (matters in Disaster Recovery)</p>
+<hr />
+<h3>DOMAIN-05: Third-Party Risk &amp; Cloud Security</h3>
+<p><strong>Focus:</strong> How well are vendors and cloud services managed?
+<strong>Critical For:</strong> Managing supply chain risk
+<strong>Regulatory References:</strong> GDPR (processor accountability), PCI-DSS (vendor security)</p>
+<p><strong>What's Assessed:</strong>
+- Is there a vendor management program?
+- Are vendors required to meet security standards?
+- Are vendor assessments conducted (security questionnaires, audits)?
+- Are cloud configurations secured (IAM, encryption, monitoring)?
+- Is data residency managed (where is customer data stored)?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> No vendor management, cloud misconfigured
+- <strong>Major (2-3 star):</strong> Basic vendor management, cloud gaps
+- <strong>Minor (3-4 star):</strong> Vendor management exists, minor gaps
+- <strong>Compliant (4-5 star):</strong> Strong vendor program, cloud security</p>
+<p><strong>Real-World Question:</strong>
+"Is your vendor secure?"
+- Poor: No idea (never asked them)
+- Medium: They said they're secure (took their word)
+- Strong: Assessed and monitored (ongoing verification)</p>
+<p><strong>Audit Evidence:</strong>
+- Vendor management policy
+- Vendor security questionnaires
+- Cloud configuration documentation
+- IAM policies for cloud access
+- Data residency mapping</p>
+<p><strong>Compliance Standards:</strong>
+- GDPR Article 28: Processor agreements (vendor security required)
+- PCI-DSS Requirement 12.8: Service provider agreements
+- NIST CSF: ID.SC (Supply Chain Risk Management)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Vendor and cloud security assessment inadequate
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: [Vendor/Cloud] security is [not assessed/misconfigured]
+RECOMMENDATION: Implement [vendor assessment process/cloud security hardening]
+EFFORT: [3-6] weeks
+COST: [Low/Moderate]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Vendor management program (SLAs, security requirements)
+- ✓ Cloud security posture management (CSPM tools)
+- ✓ Cloud IAM hardening (least privilege)
+- ✓ Regular vendor assessments</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- SCENARIO-03 (Supply Chain Compromise) becomes likely in Disaster Recovery
+- Vendor breach affects your customers
+- Liability disputes (who's responsible?)
+- Incident Response: -1 to WEB_EXPLOIT defenses (canonical modifier)
+- Disaster Recovery: -20 DR budget penalty (cloud provider recovery needed)</p>
+<hr />
+<h3>DOMAIN-06: Security Operations &amp; Monitoring</h3>
+<p><strong>Focus:</strong> How is security operationalized (day-to-day)?
+<strong>Critical For:</strong> Sustained security posture
+<strong>Regulatory References:</strong> Most frameworks mention continuous monitoring</p>
+<p><strong>What's Assessed:</strong>
+- Is there a dedicated security team (CISO, analysts)?
+- Are security meetings held regularly?
+- Is vulnerability scanning done regularly?
+- Are patches applied timely?
+- Is security training conducted?</p>
+<p><strong>Typical Findings:</strong>
+- <strong>Critical (1-2 star):</strong> No security team, no updates, no training
+- <strong>Major (2-3 star):</strong> Small security team, infrequent patching
+- <strong>Minor (3-4 star):</strong> Security team exists, good operations
+- <strong>Compliant (4-5 star):</strong> Mature security operations, continuous improvement</p>
+<p><strong>Real-World Question:</strong>
+"Is security a priority for the organization?"
+- Poor: No dedicated resources
+- Medium: Part-time effort
+- Strong: Dedicated team, empowered leadership</p>
+<p><strong>Audit Evidence:</strong>
+- Org chart (is CISO position filled?)
+- Security meeting minutes
+- Vulnerability scan reports
+- Patch management records
+- Training records</p>
+<p><strong>Compliance Standards:</strong>
+- Most frameworks require security leadership
+- NIST CSF: PR.IP-1 (Security policy established &amp; communicated)
+- CIS Control 17: Incident Response Management (v8)</p>
+<p><strong>Findings Template:</strong></p>
+<pre><code>FINDING: Security operations maturity inadequate
+SEVERITY: [Critical/Major/Minor]
+DESCRIPTION: [Security team/training/patching] is [insufficient]
+RECOMMENDATION: [Hire/train/increase resources] for [security function]
+EFFORT: [Ongoing]
+COST: [Varies]
+</code></pre>
+<p><strong>Remediation Actions:</strong>
+- ✓ Hire CISO (if missing)
+- ✓ Establish security team
+- ✓ Regular vulnerability scanning
+- ✓ Patch management program
+- ✓ Security awareness training</p>
+<p><strong>Impact if Failed (1-2 stars):</strong>
+- Security functions are reactive (not proactive)
+- Incident Response: -1 to Investigation rolls (canonical modifier)
+- Disaster Recovery: -5 DR budget penalty (forensic investigation slow)
+- Vulnerabilities accumulate (PT-10 Zero-Day risk increases)</p>
+<hr />
+<h2>Audit Domain Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Focus</th>
+<th>Critical Finding</th>
+<th>Remediation Effort</th>
+<th>Compliance Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOMAIN-01</td>
+<td>Network Segmentation</td>
+<td>Flat network</td>
+<td>Moderate (2-4 wk)</td>
+<td>Lateral movement prevented</td>
+</tr>
+<tr>
+<td>DOMAIN-02</td>
+<td>Access Control</td>
+<td>No MFA</td>
+<td>Low (2-4 wk)</td>
+<td>Credential attacks harder</td>
+</tr>
+<tr>
+<td>DOMAIN-03</td>
+<td>Threat Detection</td>
+<td>No SIEM</td>
+<td>High (4-8 wk)</td>
+<td>Breach detection enabled</td>
+</tr>
+<tr>
+<td>DOMAIN-04</td>
+<td>Backup &amp; DR</td>
+<td>No backups</td>
+<td>Moderate (2-4 wk)</td>
+<td>Ransomware resilience</td>
+</tr>
+<tr>
+<td>DOMAIN-05</td>
+<td>Vendor Risk</td>
+<td>No assessment</td>
+<td>Low (3-6 wk)</td>
+<td>Supply chain risk managed</td>
+</tr>
+<tr>
+<td>DOMAIN-06</td>
+<td>Security Ops</td>
+<td>No security team</td>
+<td>High (ongoing)</td>
+<td>Sustained security posture</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Audit Scoring &amp; Findings</h2>
+<h3>Standard Audit Report Format</h3>
+<pre><code>AUDIT REPORT - [Organization Name]
+Audit Date: [Date]
+Domains Assessed: 6
+Overall Score: 2/6 PASS (stars are flavor: 1-2* = FAIL, 3*+ = PASS)
+
+DOMAIN SCORES:
+1. Network Segmentation: ⭐⭐ (2 stars) - FAIL
+2. Access Control: ⭐⭐⭐ (3 stars) - PASS
+3. Threat Detection: ⭐ (1 star) - FAIL (CRITICAL)
+4. Backup &amp; DR: ⭐⭐ (2 stars) - FAIL
+5. Vendor Risk: ⭐⭐ (2 stars) - FAIL
+6. Security Ops: ⭐⭐⭐⭐ (4 stars) - PASS
+
+CRITICAL FINDINGS (must fix immediately):
+- No SIEM or threat monitoring
+- Network is completely flat (no segmentation)
+
+MAJOR FINDINGS (fix within 30 days):
+- No backup strategy
+- Vendor security not assessed
+- MFA not implemented
+
+MINOR FINDINGS (fix within 90 days):
+- Security training curriculum needs update
+
+RECOMMENDATIONS:
+1. Deploy SIEM immediately (critical)
+2. Implement network segmentation
+3. Establish backup program
+4. Implement MFA
+5. Develop vendor management program
+</code></pre>
+<hr />
+<h2>Modifiers for Other Modules (generated from the canonical table in <code>docs/rules/module-audit-compliance.md</code>, v2.2)</h2>
+<h3>Incident Response Modifiers</h3>
+<p><strong>For each failed domain (FAIL = 1-2 stars): one -1 modifier.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Failed Domain</th>
+<th>IR Modifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOMAIN-01 Segmentation</td>
+<td>-1 to NETWORK defenses</td>
+</tr>
+<tr>
+<td>DOMAIN-02 Identity</td>
+<td>-1 to CREDENTIAL_ABUSE defenses</td>
+</tr>
+<tr>
+<td>DOMAIN-03 Detection</td>
+<td>-1 to Investigation rolls</td>
+</tr>
+<tr>
+<td>DOMAIN-04 Backup</td>
+<td>None (matters in DR)</td>
+</tr>
+<tr>
+<td>DOMAIN-05 Vendor/Cloud</td>
+<td>-1 to WEB_EXPLOIT defenses</td>
+</tr>
+<tr>
+<td>DOMAIN-06 Security Ops</td>
+<td>-1 to Investigation rolls</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> if 3 domains fail, IR carries three separate -1 modifiers.</p>
+<h3>Disaster Recovery Modifiers</h3>
+<p><strong>For each failed domain (FAIL = 1-2 stars): a penalty subtracted from the DR starting budget.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Failed Domain</th>
+<th>DR Budget Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOMAIN-01 Segmentation</td>
+<td>-10</td>
+</tr>
+<tr>
+<td>DOMAIN-02 Identity</td>
+<td>-15</td>
+</tr>
+<tr>
+<td>DOMAIN-03 Detection</td>
+<td>-10</td>
+</tr>
+<tr>
+<td>DOMAIN-04 Backup</td>
+<td>-25</td>
+</tr>
+<tr>
+<td>DOMAIN-05 Vendor/Cloud</td>
+<td>-20</td>
+</tr>
+<tr>
+<td>DOMAIN-06 Security Ops</td>
+<td>-5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cap (v2.2):</strong> the total gap penalty applied to a subsequent module's budget is <strong>capped at -30</strong>.</p>
+<p><strong>Example (real budgets: DR starts at 50, IR at 100):</strong> if all 6 domains fail, the raw penalty is -85, capped at -30 — the team enters Disaster Recovery with 50 - 30 = <strong>20 Budget</strong>.</p>
+<hr />
+<h2>Gameplay Notes</h2>
+<h3>Playing Audit Standalone</h3>
+<ol>
+<li>Assess all 6 domains</li>
+<li>Score each domain (1-5 stars)</li>
+<li>Record findings</li>
+<li>Compile audit report</li>
+<li><strong>Game ends:</strong> Audit complete, recommendations provided</li>
+</ol>
+<h3>Playing Audit as Module Lead-In</h3>
+<ol>
+<li>Play Audit first (establish baseline)</li>
+<li>Get audit report with findings</li>
+<li>Play Incident Response (audit failures become modifiers)</li>
+<li>Play Disaster Recovery (audit failures increase costs)</li>
+<li><strong>Narrative:</strong> Poor audit = harder subsequent modules</li>
+</ol>
+<h3>Audit Remediation Follow-Up (Optional)</h3>
+<ol>
+<li>After audit report, teams can remediate findings</li>
+<li>Spend Budget to fix findings</li>
+<li>Re-assess domain (did remediation work?)</li>
+<li>Update modifiers for downstream modules</li>
+</ol>
+<hr />
+<h2>Print Instructions</h2>
+<ol>
+<li>Print on cardstock (250 gsm minimum)</li>
+<li>Color-code by domain function:</li>
+<li><strong>Blue (Infrastructure):</strong> DOMAIN-01 (Segmentation)</li>
+<li><strong>Purple (Access):</strong> DOMAIN-02 (Identity)</li>
+<li><strong>Red (Detection):</strong> DOMAIN-03 (Detection)</li>
+<li><strong>Green (Resilience):</strong> DOMAIN-04 (Backup)</li>
+<li><strong>Orange (Supply Chain):</strong> DOMAIN-05 (Vendor)</li>
+<li><strong>Yellow (Operations):</strong> DOMAIN-06 (Ops)</li>
+<li>Include assessment rubric (1-5 star descriptions and the star → PASS/FAIL mapping)</li>
+<li>Include finding templates on back of card</li>
+<li>Cut along dotted lines</li>
+<li>Audit scoring reference card: see print pack (coming)</li>
+</ol>
+<hr />
+<p><em>Audit &amp; Compliance Module: Audit Domain Assessment Cards</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">cards/audit-compliance/expansion-deck/compliance-frameworks.md</p><h1>Audit &amp; Compliance Module: Compliance Frameworks &amp; Remediation (Expansion)</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> October 2025</p>
+<hr />
+<h2>Overview</h2>
+<p><strong>Compliance Framework Cards</strong> extend the Audit &amp; Compliance module with industry-specific and regulation-specific assessment frameworks beyond the generic 6-domain audit.</p>
+<ul>
+<li><strong>Total Cards:</strong> 19 (11 framework variant cards + 8 remediation action cards)</li>
+<li><strong>Used In:</strong> Audit &amp; Compliance expansion (specialized assessments)</li>
+<li><strong>Prerequisite:</strong> Complete generic audit with 6 domains</li>
+<li><strong>Purpose:</strong> Deep-dive assessment using specific compliance frameworks</li>
+</ul>
+<hr />
+<h2>Compliance Framework Variants</h2>
+<p>Organizations must often comply with specific regulatory frameworks. Each framework has slightly different focuses and requirements.</p>
+<hr />
+<h2>NIST Cybersecurity Framework (5 cards)</h2>
+<p><strong>Relevance:</strong> US Federal government, critical infrastructure, government contractors
+<strong>Key Standard:</strong> NIST CSF (Cybersecurity Framework) 5 functions</p>
+<h3>FRAMEWORK-NIST-01: Identify Function</h3>
+<p><strong>Framework:</strong> NIST CSF
+<strong>Function:</strong> Identify (AM - Asset Management, RM - Risk Management)
+<strong>Focus:</strong> Knowing what systems/data you have and what risks they face</p>
+<p><strong>Assessment Criteria:</strong>
+- Asset inventory (what systems exist?)
+- Data classification (what data is sensitive?)
+- Risk assessment (what could go wrong?)
+- Threat intelligence (what are realistic threats?)</p>
+<p><strong>Scoring (1-5 stars):</strong>
+- ⭐ (1): No asset inventory, no risk assessment
+- ⭐⭐ (2): Partial inventory, informal risk assessment
+- ⭐⭐⭐ (3): Complete inventory, documented risk assessment
+- ⭐⭐⭐⭐ (4): Inventory regularly updated, risk assessment reviewed annually
+- ⭐⭐⭐⭐⭐ (5): Real-time asset visibility, continuous risk assessment</p>
+<p><strong>Typical Findings:</strong>
+- Unknown systems (shadow IT)
+- Unclassified data (don't know what's sensitive)
+- Missing risk assessment
+- Risk assessment not updated</p>
+<p><strong>Remediation:</strong>
+- Discovery tools (find all systems)
+- Data classification policy
+- Annual risk assessment
+- Asset management system</p>
+<hr />
+<h3>FRAMEWORK-NIST-02: Protect Function</h3>
+<p><strong>Framework:</strong> NIST CSF
+<strong>Function:</strong> Protect (PR.AC - Identity Management &amp; Access Control, PR.AT - Awareness &amp; Training, PR.DS - Data Security, PR.IP - Information Protection Processes, PR.MA - Maintenance, PR.PT - Protective Technology)
+<strong>Focus:</strong> Building security controls to prevent/slow attacks</p>
+<p><strong>Assessment Criteria:</strong>
+- Access controls (only authorized users)
+- Employee training (security awareness)
+- Data protection (encryption, classification)
+- Information protection (DLP, data loss prevention)
+- Business continuity (backup, disaster recovery)</p>
+<p><strong>Scoring (1-5 stars):</strong>
+- ⭐ (1): No controls
+- ⭐⭐ (2): Basic controls (passwords)
+- ⭐⭐⭐ (3): Good controls (MFA, encryption)
+- ⭐⭐⭐⭐ (4): Strong controls (defense-in-depth)
+- ⭐⭐⭐⭐⭐ (5): Excellent controls (comprehensive, tested)</p>
+<p><strong>Typical Findings:</strong>
+- Weak authentication (no MFA)
+- Poor training (phishing success rate &gt;10%)
+- Unencrypted data
+- No backup strategy
+- Defense gaps</p>
+<p><strong>Remediation:</strong>
+- MFA deployment
+- Security training program
+- Encryption implementation
+- Backup/DR strategy
+- Penetration testing</p>
+<hr />
+<h3>FRAMEWORK-NIST-03: Detect Function</h3>
+<p><strong>Framework:</strong> NIST CSF
+<strong>Function:</strong> Detect (AE - Anomalies &amp; Events, CM - Continuous Monitoring)
+<strong>Focus:</strong> Detecting attacks as they happen</p>
+<p><strong>Assessment Criteria:</strong>
+- Log monitoring (are suspicious activities logged?)
+- Anomaly detection (is suspicious behavior caught?)
+- Continuous monitoring (24/7 surveillance)
+- Alert procedures (who responds to alerts?)
+- Threat intelligence integration (using threat data)</p>
+<p><strong>Scoring (1-5 stars):</strong>
+- ⭐ (1): No logging, no monitoring
+- ⭐⭐ (2): Logging exists, limited monitoring
+- ⭐⭐⭐ (3): SIEM deployed, some alerts
+- ⭐⭐⭐⭐ (4): SIEM with good rules, 24/7 monitoring
+- ⭐⭐⭐⭐⭐ (5): Mature SOC, threat intelligence integrated</p>
+<p><strong>Typical Findings:</strong>
+- No SIEM deployed
+- Alerts not reviewed
+- No 24/7 monitoring
+- Response time too slow
+- Threat intel not integrated</p>
+<p><strong>Remediation:</strong>
+- SIEM deployment
+- Alert rule tuning
+- SOC staffing (24/7 coverage)
+- Response procedures
+- Threat intel integration</p>
+<hr />
+<h3>FRAMEWORK-NIST-04: Respond Function</h3>
+<p><strong>Framework:</strong> NIST CSF
+<strong>Function:</strong> Respond (RS.RP - Response Planning, RS.CO - Communications, RS.AN - Analysis, RS.MI - Mitigation, RS.IM - Improvements)
+<strong>Focus:</strong> Responding to breaches/attacks</p>
+<p><strong>Assessment Criteria:</strong>
+- Incident response plan (documented procedures)
+- Response team (trained, staffed)
+- Communication plan (who gets told when)
+- Investigation procedures (forensics)
+- Post-incident review (lessons learned)</p>
+<p><strong>Scoring (1-5 stars):</strong>
+- ⭐ (1): No incident response plan
+- ⭐⭐ (2): Plan exists, not tested
+- ⭐⭐⭐ (3): Plan exists, annual testing
+- ⭐⭐⭐⭐ (4): Plan regularly tested, team trained
+- ⭐⭐⭐⭐⭐ (5): Mature response, regular exercises, continuous improvement</p>
+<p><strong>Typical Findings:</strong>
+- No incident response plan
+- Response team not trained
+- No communication plan
+- Investigation procedures unclear
+- No post-incident reviews</p>
+<p><strong>Remediation:</strong>
+- Incident response plan development
+- Team training
+- Communication procedures
+- Tabletop exercises
+- Post-incident review process</p>
+<hr />
+<h3>FRAMEWORK-NIST-05: Recover Function</h3>
+<p><strong>Framework:</strong> NIST CSF
+<strong>Function:</strong> Recover (RC.RP - Recovery Planning, RC.IM - Improvements, RC.CO - Communications)
+<strong>Focus:</strong> Recovering from breaches and improving for next time</p>
+<p><strong>Assessment Criteria:</strong>
+- Recovery plan (how to restore systems)
+- Recovery time objectives (RTO - how fast?)
+- Recovery point objectives (RPO - how much data loss?)
+- Backup verification (can you actually restore?)
+- Lessons learned process (improve after incident)</p>
+<p><strong>Scoring (1-5 stars):</strong>
+- ⭐ (1): No recovery plan, no backups
+- ⭐⭐ (2): Backup exists, recovery not tested
+- ⭐⭐⭐ (3): Recovery plan exists, tested annually
+- ⭐⭐⭐⭐ (4): Recovery plan regularly tested, RPO/RTO defined
+- ⭐⭐⭐⭐⭐ (5): Mature recovery, tested regularly, continuous improvement</p>
+<p><strong>Typical Findings:</strong>
+- No recovery plan
+- Backups untested (may not restore)
+- RTO/RPO not defined
+- Recovery team not trained
+- No lessons learned process</p>
+<p><strong>Remediation:</strong>
+- Recovery plan development
+- Backup testing (quarterly)
+- RTO/RPO definition
+- Recovery team training
+- Lessons learned process</p>
+<hr />
+<h2>CIS Controls (3 cards)</h2>
+<p><strong>Relevance:</strong> General US/Canada, healthcare, financial, government
+<strong>Key Standard:</strong> CIS Controls (18 prioritized security controls)</p>
+<h3>FRAMEWORK-CIS-01: Safeguards 1-6 (Foundations)</h3>
+<p><strong>Focus:</strong> Basic security practices (asset management, access control, data protection, secure configuration)</p>
+<p><strong>Assessment Criteria:</strong>
+- Asset management (know what you have)
+- Access control (least privilege)
+- Data protection (encryption)
+- Secure configuration (harden systems)
+- Detection tools (SIEM, antivirus)
+- Training (security awareness)</p>
+<hr />
+<h3>FRAMEWORK-CIS-02: Safeguards 7-13 (Advanced Defenses)</h3>
+<p><strong>Focus:</strong> Advanced controls (incident response, supply chain, defense tools)</p>
+<p><strong>Assessment Criteria:</strong>
+- Incident response plan
+- Supply chain risk
+- Vulnerability management
+- Application security
+- Remote services security
+- Testing &amp; monitoring
+- Network segmentation</p>
+<hr />
+<h3>FRAMEWORK-CIS-03: Safeguards 14-18 (Operations &amp; Governance)</h3>
+<p><strong>Focus:</strong> Operational controls (reporting, awareness, training, testing)</p>
+<p><strong>Assessment Criteria:</strong>
+- Security awareness training
+- Incident reporting
+- Third-party risk management
+- Penetration testing
+- Secure development practices</p>
+<hr />
+<h2>PCI-DSS (3 cards)</h2>
+<p><strong>Relevance:</strong> Any organization handling payment cards
+<strong>Key Standard:</strong> PCI-DSS (Payment Card Industry Data Security Standard)</p>
+<h3>FRAMEWORK-PCI-01: Infrastructure Security (Requirements 1-4)</h3>
+<p><strong>Focus:</strong> Network and system security for cardholder data</p>
+<p><strong>Assessment Criteria:</strong>
+- Firewall configuration
+- No default credentials
+- Cardholder data protection
+- Vulnerability scanning</p>
+<hr />
+<h3>FRAMEWORK-PCI-02: Access &amp; Operations (Requirements 5-10)</h3>
+<p><strong>Focus:</strong> Access control and operational procedures</p>
+<p><strong>Assessment Criteria:</strong>
+- Antivirus/malware protection
+- Secure system updates
+- Access control &amp; authentication
+- Audit trails &amp; logging</p>
+<hr />
+<h3>FRAMEWORK-PCI-03: Testing &amp; Compliance (Requirements 11-12)</h3>
+<p><strong>Focus:</strong> Testing, monitoring, and compliance management</p>
+<p><strong>Assessment Criteria:</strong>
+- Security testing (penetration testing, vulnerability scanning)
+- Monthly scanning
+- Annual penetration testing
+- Security policies
+- Training
+- Incident response procedures</p>
+<hr />
+<h2>Remediation Action Cards (8 cards)</h2>
+<p><strong>Remediation Cards</strong> represent specific actions to address compliance findings. These can be used after an audit to remediate identified gaps.</p>
+<p><strong>Budget note (v2.2):</strong> these cards are the only place the Audit module's starting Budget (100, per core rules) is spent — the assessment itself costs nothing.</p>
+<h3>REMEDIATION-01: Implement MFA</h3>
+<p><strong>Cost:</strong> 5 Budget
+<strong>Timeline:</strong> 2-4 weeks
+<strong>Difficulty:</strong> Low-Medium</p>
+<p><strong>What it does:</strong>
+- Deploy multi-factor authentication for all user access
+- Implement MFA for VPN, remote access, email, admin access
+- Select authentication method (authenticator app, hardware token, SMS)</p>
+<p><strong>Prerequisites:</strong>
+- Identity management system (Domain Controller, Azure AD)
+- User device (phone or security key)
+- Application/system support for MFA</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-02 (Access Control) findings
+- Makes credential attacks (T-03, T-06) harder
+- Improves Incident Response and Disaster Recovery modifiers</p>
+<hr />
+<h3>REMEDIATION-02: Deploy SIEM</h3>
+<p><strong>Cost:</strong> 15 Budget
+<strong>Timeline:</strong> 4-8 weeks
+<strong>Difficulty:</strong> Medium</p>
+<p><strong>What it does:</strong>
+- Deploy Security Information &amp; Event Management (SIEM)
+- Configure log collection from all systems
+- Create alert rules for suspicious activity
+- Implement 24/7 monitoring</p>
+<p><strong>Prerequisites:</strong>
+- Centralized logging infrastructure
+- SIEM software/service (Splunk, ELK, QRadar, Azure Sentinel)
+- Security personnel to manage SIEM</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-03 (Threat Detection) findings
+- Enables early breach detection
+- Improves Incident Response investigation
+- Provides audit trail for compliance</p>
+<hr />
+<h3>REMEDIATION-03: Implement Network Segmentation</h3>
+<p><strong>Cost:</strong> 12 Budget
+<strong>Timeline:</strong> 4-6 weeks
+<strong>Difficulty:</strong> Medium-High</p>
+<p><strong>What it does:</strong>
+- Divide network into security zones (DMZ, internal, admin)
+- Deploy firewalls between zones
+- Configure firewall rules for inter-zone traffic
+- Implement VLANs and network isolation</p>
+<p><strong>Prerequisites:</strong>
+- Network switches/routers capable of VLAN support
+- Firewall(s) for inter-zone traffic
+- Network diagram and access requirements</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-01 (Network Segmentation) findings
+- Prevents lateral movement (T-04 becomes harder)
+- Improves Disaster Recovery (limits blast radius)
+- Foundational for zero-trust architecture</p>
+<hr />
+<h3>REMEDIATION-04: Backup &amp; Disaster Recovery</h3>
+<p><strong>Cost:</strong> 10 Budget
+<strong>Timeline:</strong> 2-4 weeks
+<strong>Difficulty:</strong> Low-Medium</p>
+<p><strong>What it does:</strong>
+- Implement 3-2-1 backup strategy (3 copies, 2 media, 1 offsite)
+- Configure automated backups
+- Test backup restoration (quarterly)
+- Document recovery procedures</p>
+<p><strong>Prerequisites:</strong>
+- Backup software/service
+- Off-site storage location
+- Testing schedule</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-04 (Backup &amp; DR) findings
+- Enables ransomware recovery
+- Improves Disaster Recovery (reduces costs)
+- Supports compliance requirements</p>
+<hr />
+<h3>REMEDIATION-05: Security Training Program</h3>
+<p><strong>Cost:</strong> 3 Budget
+<strong>Timeline:</strong> 1-2 weeks (ongoing)
+<strong>Difficulty:</strong> Low</p>
+<p><strong>What it does:</strong>
+- Develop security awareness training curriculum
+- Conduct initial training for all employees
+- Implement phishing simulations
+- Quarterly refresher training</p>
+<p><strong>Prerequisites:</strong>
+- Training development (internal or vendor)
+- Management buy-in (release time for employees)</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-06 (Security Ops) findings
+- Reduces phishing success rate
+- Improves overall security culture
+- Compliance requirement (most frameworks)</p>
+<hr />
+<h3>REMEDIATION-06: Vendor Security Assessment</h3>
+<p><strong>Cost:</strong> 5 Budget
+<strong>Timeline:</strong> 2-4 weeks
+<strong>Difficulty:</strong> Low-Medium</p>
+<p><strong>What it does:</strong>
+- Develop vendor security questionnaire
+- Send questionnaires to key vendors
+- Review vendor security controls
+- Document vendor risk assessment
+- Establish SLAs with security requirements</p>
+<p><strong>Prerequisites:</strong>
+- Vendor list and criticality assessment
+- Security questionnaire template
+- Document review process</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-05 (Third-Party Risk) findings
+- Identifies supply chain risks
+- Prevents SCENARIO-03 (Supply Chain Compromise)
+- Compliance requirement (GDPR, etc.)</p>
+<hr />
+<h3>REMEDIATION-07: Vulnerability Management Program</h3>
+<p><strong>Cost:</strong> 8 Budget
+<strong>Timeline:</strong> 3-4 weeks
+<strong>Difficulty:</strong> Medium</p>
+<p><strong>What it does:</strong>
+- Deploy vulnerability scanning tools
+- Establish patching procedures
+- Configure patch management automation
+- Document vulnerability remediation process</p>
+<p><strong>Prerequisites:</strong>
+- Vulnerability scanner (Nessus, Qualys, OpenVAS)
+- Patch management tools or procedures
+- Prioritization process (critical vs. non-critical)</p>
+<p><strong>Impact:</strong>
+- Reduces multiple audit findings
+- Prevents PT-05 (Privilege Escalation via unpatched kernel)
+- Improves overall security posture</p>
+<hr />
+<h3>REMEDIATION-08: Incident Response Plan &amp; Team</h3>
+<p><strong>Cost:</strong> 12 Budget
+<strong>Timeline:</strong> 4-6 weeks (plus ongoing)
+<strong>Difficulty:</strong> Medium-High</p>
+<p><strong>What it does:</strong>
+- Develop incident response plan (procedures, contacts, escalation)
+- Establish incident response team
+- Conduct tabletop exercises
+- Implement communication procedures</p>
+<p><strong>Prerequisites:</strong>
+- Team designation (CISO, security analysts, IT, legal, PR)
+- Plan documentation
+- Training and exercises</p>
+<p><strong>Impact:</strong>
+- Reduces DOMAIN-03 (Threat Detection) and DOMAIN-06 (Security Ops) findings
+- Enables faster response to Incident Response module
+- Improves Disaster Recovery effectiveness
+- Compliance requirement (nearly universal)</p>
+<hr />
+<h2>Using Compliance Frameworks in Gameplay</h2>
+<h3>Standalone Compliance Assessment</h3>
+<ol>
+<li>Choose one framework (e.g., NIST CSF, CIS Controls, PCI-DSS)</li>
+<li>Assess each requirement</li>
+<li>Score and document findings</li>
+<li>Develop remediation roadmap</li>
+<li><strong>Game ends:</strong> Compliance report delivered</li>
+</ol>
+<h3>Framework-Specific Play</h3>
+<ul>
+<li><strong>NIST:</strong> For government/critical infrastructure players</li>
+<li><strong>CIS:</strong> For general security posture assessment</li>
+<li><strong>PCI:</strong> For organizations handling payment cards</li>
+<li><strong>HIPAA:</strong> For healthcare (expansion deck)</li>
+</ul>
+<h3>Remediation Roadmap</h3>
+<ol>
+<li>After audit, teams identify high-priority findings</li>
+<li>Allocate budget to remediation actions</li>
+<li>Spend Budget to fix findings</li>
+<li>Re-assess after remediation</li>
+<li>Track compliance journey</li>
+</ol>
+<hr />
+<h2>Print Instructions</h2>
+<ol>
+<li>Print on cardstock (250 gsm minimum)</li>
+<li>Framework color-coding:</li>
+<li><strong>Blue (NIST):</strong> FRAMEWORK-NIST-01 to FRAMEWORK-NIST-05</li>
+<li><strong>Orange (CIS):</strong> FRAMEWORK-CIS-01 to FRAMEWORK-CIS-03</li>
+<li><strong>Red (PCI):</strong> FRAMEWORK-PCI-01 to FRAMEWORK-PCI-03</li>
+<li><strong>Green (Remediation):</strong> REMEDIATION-01 to REMEDIATION-08</li>
+<li>Include assessment rubric (1-5 stars) on each framework card</li>
+<li>Include cost/timeline/difficulty on remediation cards</li>
+<li>Cut along dotted lines</li>
+</ol>
+<hr />
+<h2>Possible Expansion: Additional Frameworks</h2>
+<ul>
+<li><strong>HIPAA:</strong> Healthcare specific (Privacy Rule, Security Rule, Breach Notification)</li>
+<li><strong>GDPR:</strong> European Union data protection (7 principles, 99 articles)</li>
+<li><strong>ISO 27001:</strong> International standard (14 control categories)</li>
+<li><strong>SOC 2:</strong> Service organization controls (trust principles)</li>
+<li><strong>COBIT:</strong> IT governance (governance &amp; management objectives)</li>
+</ul>
+<hr />
+<p><em>Audit &amp; Compliance Module: Compliance Frameworks &amp; Remediation (Expansion)</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">cards/print-templates/tracker-sheets.md</p><h1>Tracker Sheets (Print &amp; Play)</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition</p>
+<p>Print on plain A4. One <strong>Universal Sheet</strong> per table, plus the module sheet for the module you're playing. Tip: laminate and use a dry-erase marker, or move a coin/token along the tracks.</p>
+<hr />
+<h2>Universal Tracker Sheet (all modules)</h2>
+<h3>Turn Track</h3>
+<p>Cross off as each turn ends. Circle your turn limit before starting.</p>
+<pre><code> 1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16
+[ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]
+</code></pre>
+<h3>Budget Track</h3>
+<p>Start at your module's budget (Network Building 40-60 · Disaster Recovery 50 · Forensics 75 · IR 100 · Audit 100 · Hardening 150). Tick down in 5s.</p>
+<pre><code>150 145 140 135 130 125 120 115 110 105 100  95  90  85  80  75
+ 70  65  60  55  50  45  40  35  30  25  20  15  10   5   0
+</code></pre>
+<h3>Reputation / Score Track (0-100)</h3>
+<pre><code>100  95  90  85  80  75  70  65  60  55  50  45  40  35  30  25  20  15  10  5  0
+</code></pre>
+<h3>Uncontained Threats (Incident Response)</h3>
+<pre><code> 0   1   2   3   4   5
+[ ] [ ] [ ] [ ] [ ] [ ]      Penalty at start of turn: -5 Budget each
+</code></pre>
+<hr />
+<h2>Forensics Module Sheet — Progress Meters</h2>
+<p>Advance each meter per card effects. Victory thresholds marked ▲.</p>
+<pre><code>ATTRIBUTION      0   10   20   30   40   50   60   70   80   90▲  100
+TIMELINE         0   10   20   30   40   50   60   70   80▲  90   100
+ATTACK CHAIN     0   10   20   30   40   50   60   70   80▲  90   100
+CHAIN OF CUSTODY 0   10   20   30   40   50   60   70▲  80   90   100
+</code></pre>
+<p><strong>Victory check (end of game):</strong>
+- <strong>V1 Full Attribution:</strong> Attribution ≥90 AND Timeline ≥80
+- <strong>V2 Solid Case:</strong> Timeline ≥80 AND Attack Chain ≥80 AND Chain of Custody ≥70
+- <strong>V3 Partial Findings:</strong> any two meters ≥70</p>
+<p><strong>Investigation in flight:</strong> <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em>_ (results arrive Turn </strong>_)
+<strong>Evidence collected (✓ = Analyzed, one Analyze per card):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Evidence card</th>
+<th>Documented? (+5% CoC)</th>
+<th>Analyzed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Disaster Recovery Module Sheet</h2>
+<h3>Crisis Progress Tracks</h3>
+<pre><code>INVESTIGATION   0   10   20   30   40   50   60   70   80   90   100
+REMEDIATION     0   10   20   30   40   50   60   70   80   90   100
+COMMUNICATION   0   10   20   30   40   50   60   70   80   90   100
+</code></pre>
+<h3>Stakeholder Trust (0-100%; any stakeholder at 0% = company collapses)</h3>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>100</th>
+<th>80</th>
+<th>60</th>
+<th>40</th>
+<th>20 (critical)</th>
+<th>0 (LOSS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customers</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Employees</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Regulators</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Board / Investors</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Media / Public</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Deadline Timeline (mark scheduled events at setup)</h3>
+<table>
+<thead>
+<tr>
+<th>Turn</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scheduled event</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Deadline</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Customers notified (recommended)</td>
+<td>Regulator penalties begin</td>
+<td></td>
+<td>GDPR 72h — regulators notified</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Multi-turn action in flight:</strong> <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em>_ (completes Turn </strong>_)</p>
+<hr />
+<h2>Audit &amp; Compliance Module Sheet — Scoring Worksheet</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Domain</th>
+<th>Stars (1-5)</th>
+<th>PASS (3★+) / FAIL (1-2★)</th>
+<th>Key gap found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Network Segmentation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Identity &amp; Access</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Detection &amp; Monitoring</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Backup &amp; Recovery</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cloud Security</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Security Operations</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result: ___ / 6 PASS</strong> — Gap penalties for follow-on modules: see module rules (total capped at -30).</p>
+<hr />
+<h2>Network Building Module Sheet — Score Sheet</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Points</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requirements met</td>
+<td></td>
+<td>per requirement card</td>
+</tr>
+<tr>
+<td>Security coverage</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td>Capability coverage</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td>Budget management</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Components placed:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Cost</th>
+<th>Capacity used / total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Budget remaining:</strong> ___ / starting ___</p></section>
+</body></html>

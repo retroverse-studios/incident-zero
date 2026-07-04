@@ -37,7 +37,7 @@ ENV/
 build/
 develop-eggs/
 dist/
-downloads/
+# (note: the repo-root downloads/ folder holds tracked print-and-play bundles)
 eggs/
 .eggs/
 lib/

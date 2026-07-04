@@ -1,0 +1,3403 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Zero — Hardening (Print &amp; Play)</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.5;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem; color: #1a1a1a; }
+h1, h2, h3, h4 { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.25; }
+h1 { border-bottom: 3px solid #1a1a1a; padding-bottom: .3rem; }
+h2 { border-bottom: 1px solid #999; padding-bottom: .2rem; margin-top: 2.2rem; }
+pre, code { font-family: 'Courier New', monospace; font-size: .85em; }
+pre { background: #f4f4f4; border: 1px solid #ddd; padding: .8rem;
+      overflow-x: auto; white-space: pre; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92em; }
+th, td { border: 1px solid #888; padding: .35rem .55rem; text-align: left; vertical-align: top; }
+th { background: #eee; }
+blockquote { border-left: 4px solid #888; margin-left: 0; padding-left: 1rem; color: #444; }
+hr { border: none; border-top: 1px solid #bbb; margin: 2rem 0; }
+a { color: #0b5394; }
+.doc-break { page-break-before: always; break-before: page; border-top: 6px double #1a1a1a;
+             margin-top: 3rem; padding-top: 1rem; }
+.doc-src { font-family: 'Courier New', monospace; font-size: .75rem; color: #777;
+           text-transform: uppercase; letter-spacing: .08em; }
+.bundle-cover { text-align: center; padding: 4rem 0 2rem; page-break-after: always; }
+.bundle-cover h1 { border: none; font-size: 2.6rem; }
+.bundle-cover .toc { text-align: left; display: inline-block; margin-top: 2rem; }
+@media print {
+  body { max-width: none; padding: 0; font-size: 11pt; }
+  a { color: inherit; text-decoration: none; }
+  pre { white-space: pre-wrap; }
+}
+</style></head><body>
+<div class="bundle-cover">
+  <h1>INCIDENT ZERO</h1>
+  <p><strong>Hardening</strong> — Print &amp; Play Bundle · v2.2 Playtest Edition</p>
+  <p>A cybersecurity board game by RetroVerse Studios · CC BY-NC-SA 4.0</p>
+  <p>Print this file (Ctrl/Cmd+P) or read on screen. Card pages print best on cardstock.</p>
+  <div class="toc"><strong>Contents:</strong><ol><li>docs/HOW_TO_PLAY.md</li><li>docs/TO_GUIDE.md</li><li>docs/rules/core-rules.md</li><li>docs/rules/module-hardening.md</li><li>docs/standalone-games/hardening.md</li><li>cards/hardening/core-deck/defense-cards.md</li><li>cards/hardening/core-deck/pentester-tactic-cards.md</li><li>cards/hardening/expansion-deck/advanced-tactics.md</li><li>cards/print-templates/tracker-sheets.md</li></ol></div>
+</div>
+<section class=""><p class="doc-src">docs/HOW_TO_PLAY.md</p><h1>How to Play Incident Zero</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Read time: ~15 minutes. First game: ~45 minutes.</strong></p>
+<p>This is the learn-to-play manual — read it once, run your first game, then use the module rules as reference during play. Exact tables and numbers live in the reference docs; this manual teaches the flow.</p>
+<hr />
+<h2>1. What Is This Game?</h2>
+<p><strong>Incident Zero</strong> is a cybersecurity board game for classrooms and training rooms. One player is the <strong>Threat Orchestrator (TO)</strong> — part facilitator, part adversary, part narrator. Everyone else is the <strong>Blue Team</strong>: security defenders making decisions under budget and time pressure.</p>
+<p>The game's signature rule: <strong>you get better dice odds by explaining your reasoning like a real analyst.</strong> Say "we investigate suspicious activity" and you roll flat. Say "we pull the mail gateway logs to check the sender's real IP against threat intel" and you roll at +3. Talking like a professional is literally how you win — that's the point.</p>
+<p>There are <strong>6 modules</strong> covering the security lifecycle. Each is a standalone 30-45 minute game; they also chain together (the outcome of one feeds the setup of the next). This manual teaches <strong>Incident Response</strong> first — it's the flagship and the best hook.</p>
+<h2>2. What You Need</h2>
+<ul>
+<li><strong>People:</strong> 2-7 (1 TO + 1-6 defenders; 3-5 total is the sweet spot)</li>
+<li><strong>Dice:</strong> one d20 (plus a d4 and d6 for advanced options)</li>
+<li><strong>Printed:</strong> the Tracker Sheets, and the card deck for your module — for Incident Response that's the Threat &amp; Defense cards (see the A4 Print Guide; index cards with titles written on them are fine for a first game)</li>
+<li><strong>Pencil</strong> for the trackers</li>
+</ul>
+<h2>3. The Core Loop (all modules)</h2>
+<p>Every module runs on the same engine:</p>
+<ol>
+<li><strong>Turns.</strong> A fixed number of turns (announced at setup). Each turn: start-of-turn penalties → 2-3 minutes of team discussion → ONE team action → end of turn.</li>
+<li><strong>Budget.</strong> One shared pool representing money, staff, and time. Every action costs Budget. Run dry and you can't act.</li>
+<li><strong>The d20 roll.</strong> Uncertain actions need <code>roll + modifiers ≥ 11</code>.</li>
+<li><strong>Justification modifiers.</strong> <strong>+2</strong> for strong technical reasoning (methodology — <em>why</em> this approach works), <strong>+1</strong> for naming real tools or techniques (Wireshark, EDR, Mimikatz, a MITRE technique). The TO judges honestly; vague = +0.</li>
+<li><strong>Debrief.</strong> Every session ends with 5-10 minutes of "what happened, why, what would you do differently." This is where the learning locks in — don't skip it.</li>
+</ol>
+<h2>4. Your First Game: Incident Response (Beginner)</h2>
+<p><strong>The setup (TO does this privately, 5 min):</strong> An attacker is inside the fictional company's network. The TO secretly builds a 3-card <strong>attack chain</strong> in kill-chain order and keeps it face-down:</p>
+<blockquote>
+<p><strong>Suggested first chain:</strong> T-01 Phishing Campaign (INITIAL COMPROMISE / SOCIAL ENGINEERING) → T-04 Lateral Movement via SMB (PIVOT &amp; ESCALATE / NETWORK) → T-07 Scheduled Task Persistence (PERSISTENCE / MALWARE)</p>
+</blockquote>
+<ul>
+<li>Turn limit: <strong>(3 cards × 2) + 1 = 7 turns.</strong> Announce it.</li>
+<li>Blue Team Budget: <strong>100.</strong> The team draws a shared hand of <strong>5 Defense cards</strong>.</li>
+<li>Blue Team wins by <strong>revealing all 3 chain cards</strong> (in order — you always work on the earliest unrevealed card) before turn 7 ends.</li>
+</ul>
+<p><strong>The three actions (Blue Team picks ONE per turn):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Cost</th>
+<th>On success (roll+mods ≥ 11)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Investigate</strong></td>
+<td>5</td>
+<td>1st success on a link = the TO gives a clue. 2nd success on the same link = <strong>card revealed!</strong></td>
+</tr>
+<tr>
+<td><strong>Deploy Defense</strong></td>
+<td>10/15/25 by tier</td>
+<td>If the card's vector AND chain step match the hidden card = <strong>revealed immediately.</strong> Partial match = defense stays on the table and gives <strong>+2</strong> to future rolls against any link matching its vector</td>
+</tr>
+<tr>
+<td><strong>Emergency Response</strong></td>
+<td>15</td>
+<td>No roll. Contain one already-revealed threat (removes its ongoing penalty)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pressure (TO applies at the START of each turn):</strong>
+- <strong>Active Breach Cost:</strong> -5 Budget while <em>any</em> chain card is still unrevealed (the breach is burning money whether you see it or not)
+- <strong>Uncontained Threats:</strong> -5 Budget per revealed-but-uncontained threat (revealing the <em>next</em> card in the chain auto-contains the previous one)</p>
+<p><strong>When a card is revealed,</strong> the team immediately picks ONE reward: draw 2 Defense cards, <strong>+10 Budget</strong>, or Fast-Track (next Investigate succeeds on 5+).</p>
+<h3>Scripted opening — read this at the table</h3>
+<p><strong>TURN 1.</strong> <em>TO:</em> "Start of turn: one attacker action is still hidden — Active Breach Cost, minus 5. Budget: 95. Something is wrong at Meridian Logistics: the helpdesk queue is full of password-reset complaints. What do you do?"
+<em>Team (after discussion):</em> "Investigate. We pull the mail gateway logs and check sender domains against our threat-intel feed — if this is phishing, the return-path won't match the display name." <em>TO:</em> "That's a real methodology and a real tool — <strong>+2 and +1.</strong> Roll." <em>Rolls 9. 9+3 = 12 ≥ 11 — success.</em> <em>TO reads a clue from T-01:</em> "Several employees received emails claiming to be from IT, asking them to 're-authenticate'. The link goes to a look-alike domain registered 4 days ago." <em>(First success on this link — clue only. Budget: 95 - 5 = 90.)</em></p>
+<p><strong>TURN 2.</strong> <em>TO:</em> "Active Breach Cost, minus 5. Budget: 85."
+<em>Team:</em> "Keep digging on the phishing — we check the mail gateway for who <em>clicked</em>, and pull those workstations' proxy logs." <em>TO:</em> "+2, +1. Roll." <em>Rolls 10. 13 ≥ 11 — second success on the same link.</em> <em>TO flips T-01 face-up:</em> "<strong>Phishing Campaign — revealed!</strong> Three users entered credentials on the fake page. This threat is now uncontained. Choose a reward." <em>Team takes Budget Grant: 85 - 5 + 10 = 90.</em></p>
+<p><strong>TURN 3.</strong> <em>TO:</em> "Two cards still hidden: Active Breach minus 5. One uncontained threat: minus 5. Budget: 80. You know how they got in — you don't yet know where they went."
+<em>From here, you're on your own.</em> (A strong play: Deploy the Network Segmentation defense — if the next hidden card is network lateral movement, vector + step match reveals it instantly <em>and</em> auto-contains the phishing.)</p>
+<h3>How it ends</h3>
+<ul>
+<li><strong>All 3 cards revealed by end of turn 7</strong> → win. Count remaining Budget for bragging rights.</li>
+<li><strong>Turn 7 ends with cards still hidden</strong> → the attack completes. Read the unrevealed cards' "Why This Works" text aloud — that's the real lesson — and go to debrief. (Losses are teachable; the debrief is identical either way.)</li>
+</ul>
+<p><strong>Debrief prompts:</strong> What did you spend the most on, and was it worth it? Which clue actually changed your next decision? What one defense, bought before turn 1, would have changed everything?</p>
+<h2>5. The Other Five Modules (one paragraph each)</h2>
+<ul>
+<li><strong>Network Building</strong> — <em>before the attack.</em> Design a company network under a hard budget: which servers, which security devices, what architecture. Business Requirement and Operational Event cards stress the design. Teaches trade-offs — you can't afford everything, and the gaps you leave matter later.</li>
+<li><strong>Hardening</strong> — <em>build defense-in-depth.</em> Deploy and upgrade layered defenses over 7 turns, then a <strong>pentester attacks</strong> (Pentester Tactic cards, each stating which defenses help). Teaches which control blunts which technique — and that signature antivirus won't save you.</li>
+<li><strong>Disaster Recovery</strong> — <em>the breach happened.</em> A crisis-management exercise on an 8-turn clock: advance Investigation/Remediation/Communication tracks, keep five stakeholder trust meters alive, hit the GDPR 72-hour notification deadline, and face the ransom decision. The most "real tabletop exercise" module.</li>
+<li><strong>Forensics</strong> — <em>after the fire is out.</em> Run investigations (disk, memory, logs, network, malware) to collect Evidence cards and push four meters: Attribution, Timeline, Attack Chain, Chain of Custody. Sloppy evidence handling costs you the case. Teaches actual forensic discipline.</li>
+<li><strong>Audit &amp; Compliance</strong> — <em>prove it.</em> Assess six security domains PASS/FAIL against real framework criteria (NIST CSF, CIS, PCI DSS). Or play <strong>Variation C</strong>, the debate format: argue risk acceptance vs. negligence in front of judges — the best large-group mode in the box.</li>
+</ul>
+<p><strong>Chaining modules:</strong> outcomes carry forward (audit gaps raise your DR costs; an IR loss sets up DR; IR's revealed chain seeds Forensics). See Module Combinations. Full lifecycle = all six in sequence, 4-5 hours across sessions.</p>
+<h2>6. Where to Go Next</h2>
+<table>
+<thead>
+<tr>
+<th>You want...</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>You're the Threat Orchestrator</strong></td>
+<td>The TO Guide — the role, judging justifications, per-module screens</td>
+</tr>
+<tr>
+<td>Exact rules for a module</td>
+<td>docs/rules/ — core + one file per module</td>
+</tr>
+<tr>
+<td>Solo/standalone setup for any module</td>
+<td>docs/standalone-games/</td>
+</tr>
+<tr>
+<td>Every card, indexed</td>
+<td>cards/CARD_REFERENCE.md</td>
+</tr>
+<tr>
+<td>To run a playtest and report back</td>
+<td>docs/playtesting/</td>
+</tr>
+<tr>
+<td>Variable game length &amp; difficulty tiers</td>
+<td>core-rules §3a</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Quick Reference (photocopy this)</h2>
+<p><strong>Roll:</strong> d20 + modifiers ≥ 11 · <strong>+2</strong> strong justification · <strong>+1</strong> real tool/technique named · <strong>+2</strong> matching deployed defense (IR)
+<strong>IR costs:</strong> Investigate 5 · Deploy 10/15/25 · Emergency Response 15
+<strong>IR start-of-turn:</strong> -5 while any card hidden · -5 per uncontained revealed threat
+<strong>Reveal:</strong> 2 successful Investigates on a link, or 1 full-match Deploy (vector + step) · always the earliest unrevealed card
+<strong>Reward per reveal (pick 1):</strong> 2 Defense cards / +10 Budget / next Investigate succeeds on 5+
+<strong>Turn limit:</strong> (chain cards × 2) + 1 → 3 cards = 7 turns
+<strong>Budgets:</strong> NB 40-60 · DR 50 · Forensics 75 · IR 100 · Audit 100 · Hardening 150</p></section><section class="doc-break"><p class="doc-src">docs/TO_GUIDE.md</p><h1>The Threat Orchestrator's Guide</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Audience:</strong> anyone about to run Incident Zero — teacher, trainer, or the friend who volunteered.</p>
+<hr />
+<h2>1. The Role</h2>
+<p>The <strong>Threat Orchestrator (TO)</strong> is Incident Zero's dungeon master. You wear three hats, usually in the same minute:</p>
+<ul>
+<li><strong>The Adversary</strong> — you built the hidden attack chain; you know what the Blue Team doesn't. You want them challenged, not beaten.</li>
+<li><strong>The Narrator</strong> — you turn card text into a story. "You failed the roll" is a rules outcome; "the log archive was rotated last night — whatever was there is gone" is a game.</li>
+<li><strong>The Teacher</strong> — you award the justification bonuses, ask "why?", and run the debrief. Every roll is a chance to make someone articulate real security reasoning.</li>
+</ul>
+<p>If you've ever run a tabletop RPG, you already have 80% of this. The remaining 20% is the adjudication rubric in §4 — it's the part that makes this game educational rather than just thematic.</p>
+<p><strong>A good TO makes the game.</strong> The same scenario is flat or unforgettable depending on how you deliver clues and how honestly you judge reasoning. That's why this guide exists.</p>
+<h2>2. Golden Rules</h2>
+<ol>
+<li><strong>Be fair, not nice.</strong> Never fudge dice — in either direction. The rules already give you legitimate difficulty dials (§5); use those, not your thumb on the d20.</li>
+<li><strong>Never block on ignorance.</strong> If players are stuck, sell them a hint through the fiction ("your SOC junior suggests looking at outbound traffic...") rather than letting three turns die in silence.</li>
+<li><strong>Announce costs before actions.</strong> "That's 15 Budget — confirm?" prevents every argument you'd otherwise have.</li>
+<li><strong>Explain outcomes.</strong> Success or failure, say <em>why</em> in security terms. The explanation is the lesson; the roll is just pacing.</li>
+<li><strong>Keep the clock.</strong> 2-3 minutes of planning per turn, firmly. Deliberation past that point is quarterbacking, not strategy.</li>
+<li><strong>Let them be wrong.</strong> A confidently wrong plan that fails teaches more than a corrected plan that succeeds. Save the correction for the debrief.</li>
+</ol>
+<h2>3. Session Prep (15 minutes)</h2>
+<ul>
+<li>[ ] Pick the module; skim its rules doc and its <strong>v2.2 Playtest Edition Changes</strong> section</li>
+<li>[ ] Build your scenario (IR: choose the chain; Hardening: threat profile; DR: pick scenario + place scheduled events on the timeline; Forensics: pick tier; Audit: pick sample org; NB: shuffle REQ/EVT decks)</li>
+<li>[ ] Print/lay out: tracker sheets, the module's cards, one d20 (d4/d6 where the module calls for them)</li>
+<li>[ ] <strong>Rehearse your first clue out loud once.</strong> Seriously — the first clue sets the session's tone.</li>
+<li>[ ] Decide your difficulty posture (§5) based on who's at the table</li>
+<li>[ ] First time running anything? Use the fully scripted opening in How to Play §4</li>
+</ul>
+<h2>4. Judging Justifications (the heart of the job)</h2>
+<p>The +2/+1 modifiers are the game's teaching engine. Your consistency is what makes them meaningful.</p>
+<p><strong>+2 — Strong technical justification.</strong> The player explains <em>methodology</em>: what they'll look at, and why that would reveal or stop this specific thing.
+- ✅ "We pull the mail gateway logs and compare the return-path against the display-name domain — spoofed senders won't match." <em>(mechanism stated)</em>
+- ✅ "Deploy EDR because living-off-the-land attacks won't trip signature AV — we need behavioral detection." <em>(threat-to-control logic)</em>
+- ❌ "We investigate the email server thoroughly." <em>(a location is not a method)</em></p>
+<p><strong>+1 — Real tool or technique named.</strong> Wireshark, Splunk queries, Mimikatz, a MITRE technique ID, an actual CVE.
+- ✅ "Check LSASS access events — that's Mimikatz behavior, T1003."
+- ❌ "We use our security tools." <em>(no it isn't)</em></p>
+<p><strong>Rulings that keep it fair:</strong>
+- <strong>Judge the reasoning, not the vocabulary.</strong> A beginner saying "check if the email really came from who it says" in plain words has the mechanism — award the +2. A buzzword salad without a mechanism gets +0.
+- <strong>Consistency beats generosity.</strong> Whatever bar you set on turn 1 is the bar all game.
+- <strong>Escalate the bar as the group learns</strong> — by session three, "we check the SIEM" that earned +1 in session one should need a specific query. Announce the escalation openly ("you're professionals now — I want specifics").
+- <strong>Expert groups ("Expert Mode"):</strong> award +2 only for named artifacts, ATT&amp;CK technique IDs, or detection logic. This is the challenge ceiling for practitioner tables — the card math never has to change.
+- <strong>One player monologuing every justification?</strong> Ask a different player to give it each turn ("Sam, you're on comms — why does this matter to the regulator?").</p>
+<h2>5. Difficulty Dials (live, legitimate)</h2>
+<p><strong>Signs it's too easy:</strong> no failed rolls; goal in sight with 40+ Budget spare; players bored.
+<strong>Signs it's too hard:</strong> no progress for 3+ turns; consecutive failures; frustration replacing discussion.</p>
+<table>
+<thead>
+<tr>
+<th>Easier (pick 1-2)</th>
+<th>Harder (pick 1-2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Richer clues (more specific detail per success)</td>
+<td>Vaguer clues (accurate but terse)</td>
+</tr>
+<tr>
+<td>Suggest an angle through the fiction</td>
+<td>Expert-mode justification bar</td>
+</tr>
+<tr>
+<td>Shorter chain / lower tier next game</td>
+<td>Longer chain, expansion cards</td>
+</tr>
+<tr>
+<td>Beginner budgets (module max)</td>
+<td>Minimum budgets</td>
+</tr>
+</tbody>
+</table>
+<p>Never adjust by fudging a roll or changing a printed number mid-game — players smell it, and it teaches that outcomes are arbitrary.</p>
+<h2>6. Failure Modes (yours, not theirs)</h2>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Encyclopedia</td>
+<td>You lecture after every roll</td>
+<td>One sentence of "why," save the rest for debrief</td>
+</tr>
+<tr>
+<td>The Softie</td>
+<td>Everyone always gets +2</td>
+<td>Re-read §4; require the mechanism</td>
+</tr>
+<tr>
+<td>The Sphinx</td>
+<td>Clues so cryptic nobody moves</td>
+<td>Clues must be <em>actionable</em>: each should suggest at least one sensible next investigation</td>
+</tr>
+<tr>
+<td>The Railroader</td>
+<td>You steer them to <em>your</em> solution</td>
+<td>Multiple paths are valid; score the outcome, not the route</td>
+</tr>
+<tr>
+<td>The Accountant</td>
+<td>You narrate numbers, not events</td>
+<td>Lead with fiction, then state the numbers</td>
+</tr>
+<tr>
+<td>The Rusher</td>
+<td>Debrief skipped because time ran out</td>
+<td>Protect the last 10 minutes like it's the win condition — it is</td>
+</tr>
+</tbody>
+</table>
+<h2>7. Module Panels (your screen, one per module)</h2>
+<h3>🔎 Incident Response — you are the hidden attacker</h3>
+<ul>
+<li><strong>Setup:</strong> secret chain in kill-chain order (3-5 cards) · turns = (chain × 2) + 1 → 7/9/11 · Budget 100 · team draws 5 Defense cards</li>
+<li><strong>Start of every turn, announce:</strong> -5 Active Breach (any card hidden) · -5 per uncontained revealed threat · then current Budget</li>
+<li><strong>Actions:</strong> Investigate 5 (1st success on a link = clue, 2nd = reveal) · Deploy 10/15/25 (vector+step match = reveal; partial = stays, +2 later vs its vector) · Emergency Response 15 (contain, no roll)</li>
+<li><strong>Always target the earliest unrevealed card.</strong> On reveal: +1 uncontained, previous auto-contains, team picks reward (2 cards / +10 Budget / next Investigate 5+)</li>
+<li><strong>Your craft:</strong> progressive clues — first success is a symptom, second-to-last is nearly a name. Announce "your deployed defenses are helping here" when the +2 persistence applies — it's a clue in itself.</li>
+</ul>
+<h3>🛡️ Hardening — you become the pentester mid-game</h3>
+<ul>
+<li><strong>Setup:</strong> threat profile via 1d6 across all 6 vectors · 7 turns · Budget 150 (or IR carryover)</li>
+<li><strong>Actions (one/turn):</strong> Deploy defense 10/15/25 (two BASIC may be one action) · Upgrade 5 (+2 on that defense) · Playbook 10 (+3, <strong>max 2 per game</strong>) · Test &amp; Drill (roll)</li>
+<li><strong>Pentester Challenge (turns 3-4):</strong> draw PT cards. Resolution: d20 + printed bonus of the ONE chosen defense + its upgrades + relevant playbook ≥ the card's DC. No stacking across defenses. Multi-vector tactics = separate rolls, one defense each.</li>
+<li><strong>Victory gate:</strong> score ≥60 AND ≥4 defenses deployed AND majority of tactics defended. Score = defenses×5 + upgrades×2 + playbooks×10 + tactics defended×5 + (Budget left/150)×10.</li>
+<li><strong>Your craft:</strong> narrate the pentester as a person with a plan; read the card's teaching point after each resolution, win or lose.</li>
+</ul>
+<h3>🏗️ Network Building — you are the demanding business</h3>
+<ul>
+<li><strong>Setup:</strong> Budget 60/50/40 (easier→harder) · 5 turns = design-review phases · REQ deck (1/turn) + EVT events between turns</li>
+<li><strong>Turn rule:</strong> place ANY number of affordable components. Required: Email, Web, Database, Identity (DC), Backup. Overload = +1 Budget per extra service over capacity.</li>
+<li><strong>Scoring:</strong> max 40 · tiers 32-40 / 22-31 / 12-21 / &lt;12 · smart utilization beats hoarding (5-15 left is the sweet spot)</li>
+<li><strong>Your craft:</strong> play the CFO and the auditor — every REQ card is a stakeholder with a voice. "Legal called: we're in PCI scope now."</li>
+</ul>
+<h3>🚨 Disaster Recovery — you are the crisis itself</h3>
+<ul>
+<li><strong>Setup:</strong> 8 turns (~72h) · Budget 50 · 3 tracks (Investigation/Remediation/Communication) + 5 stakeholder trust meters at start values · place scheduled events: EVENT-01 T2, 04 T3, 03+09 T5, 02 T6, 12 T7; triggered events fire on conditions</li>
+<li><strong>Turn:</strong> one ACTION card (0-20 Budget; Holding Statement is free). Advances are deterministic — <strong>dice only for</strong>: optional Justification bonus (strong reasoning → d20, 11+ = +5% on that advance) and ACTION-13's pay-the-ransom reliability roll (1-5 = keys fail)</li>
+<li><strong>Deadlines:</strong> customers by T5 · regulator penalties from T6, hard GDPR line T8 · <strong>Loss: any trust meter hits 0%</strong> · final Reputation computed at game end (tiers 85/70/55/40)</li>
+<li><strong>Your craft:</strong> you are the ringing phone. Open every turn in-fiction: "The journalist calls again. The board wants a number. What do you do?"</li>
+</ul>
+<h3>🔬 Forensics — you are the evidence</h3>
+<ul>
+<li><strong>Setup:</strong> tier sets turns (TIER 2 ≈ 8-10, TIER 3 = 11-13, +d4 variation) · Budget 75 · 4 meters at 0%</li>
+<li><strong>Actions:</strong> Investigation card (printed cost/DC; Duration N = results arrive N turns later, one in flight) · Analyze evidence 5 (DC 10, once per card, only two meters) · Follow lead 5</li>
+<li><strong>Key rulings:</strong> evidence card's printed impacts replace the investigation's advance line (no double counting) · +5% Chain of Custody each time evidence is discovered AND the team states preservation (hash/image/export) · partial success band = DC-2 to DC-1 · haste -2</li>
+<li><strong>Victory (checked first, at game end):</strong> V1 Attribution≥90+Timeline≥80 · V2 Timeline≥80+Chain≥80+CoC≥70 · V3 any two ≥70. Budget-out is NOT a loss.</li>
+<li><strong>Your craft:</strong> describe evidence sensorily ("the timestamp is three hours <em>before</em> the alert"). Ask "how are you preserving that?" every single time — that question IS the chain-of-custody lesson.</li>
+</ul>
+<h3>📋 Audit &amp; Compliance — you are the organization under review</h3>
+<ul>
+<li><strong>Setup:</strong> pick sample org (or the debate Variation C) · no budget during assessment (100 only for optional remediation cards)</li>
+<li><strong>Scoring:</strong> 6 domains, PASS/FAIL against printed criteria (stars: 1-2★=FAIL, 3★+=PASS, PARTIAL=FAIL) → X/6 · gap penalties for later modules capped at -30 total</li>
+<li><strong>Ruling discipline:</strong> the printed criteria decide, not vibes — untested backups FAIL even if the team likes the org. Disagreement about a borderline call is not a problem; it's the lesson. Let them argue, then apply the criterion.</li>
+<li><strong>Your craft:</strong> in Variation C you're the judge panel — score arguments on risk reasoning, not rhetoric.</li>
+</ul>
+<h2>8. Running the Debrief (10 minutes, non-negotiable)</h2>
+<p>Three rounds, in order: <strong>What happened?</strong> (players narrate, you correct only facts) → <strong>Why did it work that way?</strong> (connect two or three key moments to real-world security — this is where you finally get to lecture, briefly) → <strong>What would you do differently?</strong> (go around the table; everyone answers). Losses debrief better than wins: read any unrevealed cards' "Why This Works" text aloud — it's the payoff for losing.</p>
+<h2>9. First Session? Do This</h2>
+<ol>
+<li>Run beginner <strong>Incident Response</strong> with the scripted opening in How to Play §4 — your first two turns are literally written out</li>
+<li>Keep the tracker sheet visible to everyone; public state builds trust in your fairness</li>
+<li>Log frictions on the session notes form — your confusion is playtest data too</li>
+<li>Forgive yourself one rules mistake per session; announce it, fix it forward, don't replay</li>
+</ol></section><section class="doc-break"><p class="doc-src">docs/rules/core-rules.md</p><h1>Incident Zero: Core Rules &amp; Mechanics</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> October 2025</p>
+<hr />
+<h2>Core Concept 🎯</h2>
+<p><strong>Incident Zero</strong> is a modular cybersecurity board game for 2+ players designed for educational environments. One player acts as the <strong>Threat Orchestrator (TO)</strong> (the facilitator), while all other players form <strong>Blue Teams</strong> (the Defenders).</p>
+<h3>How It Works</h3>
+<p>Players choose which <strong>module(s)</strong> to play based on learning objectives:</p>
+<ol>
+<li><strong>Network Building Module</strong> - Design and secure infrastructure (30-45 min)</li>
+<li><strong>Hardening Module</strong> - Build defense-in-depth (30-45 min)</li>
+<li><strong>Incident Response Module</strong> - Detect and investigate hidden attack chains (30-45 min)</li>
+<li><strong>Disaster Recovery Module</strong> - Manage breach crisis (30-45 min)</li>
+<li><strong>Forensics Module</strong> - Investigate and attribute attacks (30-45 min) <strong>NEW in v2.1</strong></li>
+<li><strong>Audit &amp; Compliance Module</strong> - Conduct security assessments (30-45 min)</li>
+</ol>
+<p>Modules can be played <strong>solo</strong> or <strong>combined in any sequence</strong> using the modifier generation procedures documented in FRAMEWORK.md and Module Combinations.</p>
+<hr />
+<h2>Game Components (Universal)</h2>
+<h3>Card Types</h3>
+<h4>Threat Cards</h4>
+<p>Represent attacker actions. Each card includes:
+- <strong>Title:</strong> e.g., "Phishing Campaign"
+- <strong>Attack Chain Step:</strong> <code>INITIAL COMPROMISE</code>, <code>PIVOT &amp; ESCALATE</code>, <code>PERSISTENCE</code>, or <code>C2 &amp; EXFIL</code>
+- <strong>Attack Vector:</strong> <code>SOCIAL ENGINEERING</code>, <code>WEB EXPLOIT</code>, <code>CREDENTIAL ABUSE</code>, <code>MALWARE</code>, <code>NETWORK</code>, or <code>DATA EXFIL</code>
+- <strong>Clue:</strong> Descriptive text for the Threat Orchestrator
+- <strong>Why This Works:</strong> Educational explanation (revealed after discovery)</p>
+<p><strong>Deck Composition:</strong>
+- <strong>12 Base Threat Cards</strong> (see cards/incident-response/core-deck/threat-defense-cards.md)
+- <strong>8 Expansion Threat Cards</strong> (see cards/incident-response/expansion-deck/advanced-threats.md)</p>
+<hr />
+<h4>Defense Cards</h4>
+<p>Represent security controls. Each card includes:
+- <strong>Title:</strong> e.g., "Multi-Factor Authentication"
+- <strong>Countermeasure Vector:</strong> One of the six attack vectors
+- <strong>Tier:</strong> BASIC (10 Budget), ADVANCED (15 Budget), or ELITE (25 Budget)
+- <strong>Description:</strong> What the defense does and when it applies</p>
+<p><strong>Deck Composition:</strong>
+- <strong>24 Base Defense Cards</strong> (see cards/incident-response/core-deck/threat-defense-cards.md)
+- <strong>19 Expansion Defenses</strong> (see cards/incident-response/expansion-deck/advanced-defenses.md)</p>
+<p><strong>Examples:</strong>
+- BASIC: Email Authentication Setup, User Security Training, Firewall Rules (10 Budget)
+- ADVANCED: Multi-Factor Authentication, EDR, Network Segmentation (15 Budget)
+- ELITE: Threat Hunting, Memory Forensics, Deception Technology (25 Budget)</p>
+<hr />
+<h4>Pentester Tactic Cards</h4>
+<p>Represent sophisticated attack techniques used in Hardening module (and potentially others).</p>
+<p><strong>8 Core Tactics (PT-01 to PT-08):</strong>
+1. PT-01: Social Engineering - Pretexting Attack
+2. PT-02: Malware Evasion - Living-off-the-Land Technique
+3. PT-03: Credential Dumping - Mimikatz Attack
+4. PT-04: Lateral Movement - Network Traversal
+5. PT-05: Privilege Escalation - Unpatched Kernel Exploit
+6. PT-06: Data Exfiltration - Unmonitored Channel
+7. PT-07: Supply Chain Compromise - Trusted Software Update
+8. PT-08: Insider Threat - Malicious Administrator</p>
+<p>See cards/hardening/core-deck/pentester-tactic-cards.md for full card text, plus 8 expansion tactics (PT-09 to PT-16) in advanced-tactics.md.</p>
+<hr />
+<h4>Asset Cards</h4>
+<p>Simple cards providing scenario context. Examples:
+- Email Server
+- Customer Database
+- Domain Controller
+- Web Application
+- Backup System
+- Developer Workstation</p>
+<hr />
+<h3>Game Materials Required</h3>
+<p><strong>Physical Components:</strong>
+- One 20-sided die (d20)
+- Turn Tracker (paper or board, counts 1-12+)
+- Budget Tracker (shows 0-150+)
+- Reputation/Security Score Tracker (shows 0-100)
+- Uncontained Threats Tracker (shows 0-5)
+- Tokens or counters (for tracking upgrades, penalties)</p>
+<p><strong>Optional:</strong>
+- Score sheets (printable or paper)
+- Playbook tracking sheet
+- Stakeholder communication log (for Disaster Recovery)</p>
+<hr />
+<h2>Universal Game Mechanics</h2>
+<h3>1. The d20 Roll System</h3>
+<p><strong>When Used:</strong> Investigation, Defense Deployment, Negotiation, and similar actions that have uncertain outcomes.</p>
+<p><strong>How It Works:</strong>
+1. Player announces action and parameters
+2. Player rolls 1d20 (one 20-sided die)
+3. Compare result to target number (usually 11+) plus modifiers
+4. Success if: <code>roll + modifiers ≥ target number</code></p>
+<p><strong>Example:</strong></p>
+<pre><code>Action: Investigate email headers
+Target: 11+
+Roll: 7
+Modifiers: +2 (technical justification) +1 (referenced Splunk)
+Calculation: 7 + 2 + 1 = 10
+Result: FAIL (10 &lt; 11)
+</code></pre>
+<hr />
+<h3>2. Budget System (Universal)</h3>
+<p><strong>What is Budget?</strong>
+Abstract resource representing time, money, personnel, and tools. Spent to take actions, buy defenses, or conduct investigations.</p>
+<p><strong>Budget Allocation by Module:</strong>
+- <strong>Network Building:</strong> Start at 40-60 (by difficulty; see module rules)
+- <strong>Hardening:</strong> Start at 150 (or carry over from IR)
+- <strong>Incident Response:</strong> Start at 100
+- <strong>Disaster Recovery:</strong> Start at 50 (emergency fund)
+- <strong>Forensics:</strong> Start at 75
+- <strong>Audit &amp; Compliance:</strong> Start at 100 (used only for optional remediation cards)</p>
+<p><strong>Budget Spending:</strong>
+- <strong>Investigate action:</strong> 5 Budget
+- <strong>Deploy Defense:</strong> 10/15/25 Budget (by tier)
+- <strong>Emergency Response (IR):</strong> 15 Budget (v2.2; was 25)
+- <strong>Active Breach Cost (IR, v2.2):</strong> -5 Budget at start of each turn while any chain card remains unrevealed
+- <strong>Harden Upgrade (Hardening):</strong> 5 Budget
+- <strong>Create Playbook (Hardening):</strong> 10 Budget
+- <strong>Crisis Action cards (DR):</strong> 5-20 Budget per card (ACTION-01 to ACTION-12; the free "Holding Statement" costs 0)
+- <strong>Ransom Decision (DR, ACTION-13):</strong> Pay 20 / Negotiate 5 / Refuse 0</p>
+<p><strong>Budget = 0:</strong> Team loses (cannot take further actions)</p>
+<p><em>Exception (Disaster Recovery, v2.2): Budget floor is 0 and the free Holding Statement action remains available — DR is never lost by running out of Budget; DR's loss condition is any stakeholder trust reaching 0%.</em></p>
+<hr />
+<h3>3. Turn System (Universal)</h3>
+<p><strong>Turns represent:</strong> Time passing in the game world (6 hours, 30 minutes, or abstract unit depending on module)</p>
+<p><strong>Turn Sequence:</strong>
+1. <strong>Start of Turn:</strong> Penalties applied, trackers announced
+2. <strong>Planning Phase:</strong> Team discusses strategy (2-3 min)
+3. <strong>Action Phase:</strong> Execute chosen action, resolve rolls
+4. <strong>End of Turn:</strong> Advance tracker, draw card, check events</p>
+<hr />
+<h3>3a. Variable Game Length System (v2.1 - New!)</h3>
+<p><strong>Philosophy:</strong> In real incident response, some attacks move fast (hours), some take months. Fixed turn lengths feel unrealistic. This system adds realism without requiring complex calculations.</p>
+<h4>For Beginners &amp; Quick Play: Default Formula</h4>
+<p><strong>Default Formula: (Attack Chain Cards × 2) + 1</strong></p>
+<p>This gives attackers enough time to progress realistically while keeping games manageable:</p>
+<table>
+<thead>
+<tr>
+<th>Attack Chain</th>
+<th>Formula</th>
+<th>Turn Count</th>
+<th>Session Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3 cards</td>
+<td>(3 × 2) + 1</td>
+<td><strong>7 turns</strong></td>
+<td>30-40 min play</td>
+</tr>
+<tr>
+<td>4 cards</td>
+<td>(4 × 2) + 1</td>
+<td><strong>9 turns</strong></td>
+<td>35-45 min play</td>
+</tr>
+<tr>
+<td>5 cards</td>
+<td>(5 × 2) + 1</td>
+<td><strong>11 turns</strong></td>
+<td>40-50 min play</td>
+</tr>
+<tr>
+<td>6 cards</td>
+<td>(6 × 2) + 1</td>
+<td><strong>13 turns</strong></td>
+<td>45-55 min play</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to Use Default Formula:</strong>
+1. Choose number of threat cards in attack chain (3, 4, 5, or 6)
+2. Apply formula: (Cards × 2) + 1 = Turn Count
+3. Announce turn count to Blue Team
+4. Play game normally with that turn limit</p>
+<p><strong>Example Setup:</strong></p>
+<blockquote>
+<p>"I've created a 4-card attack chain. That's (4 × 2) + 1 = 9 turns. You have 9 turns to detect all four threats. Go!"</p>
+</blockquote>
+<hr />
+<h4>For Advanced Players: Complexity Tiers (v2.1)</h4>
+<p>Advanced Threat Orchestrators can use a <strong>Tier + d4 system</strong> for more control and variability:</p>
+<p><strong>Step 1: Select Attack Complexity Tier</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Turn Base</th>
+<th>Attack Profile</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TIER 1</strong></td>
+<td>5-7</td>
+<td>Simple &amp; obvious</td>
+<td>Script kiddie using public tools</td>
+</tr>
+<tr>
+<td><strong>TIER 2</strong></td>
+<td>8-10</td>
+<td>Standard sophistication</td>
+<td>Organized cybercriminal group</td>
+</tr>
+<tr>
+<td><strong>TIER 3</strong></td>
+<td>11-13</td>
+<td>Highly sophisticated</td>
+<td>APT with operational security</td>
+</tr>
+<tr>
+<td><strong>TIER 4</strong></td>
+<td>14-16</td>
+<td>Expert/Nation-state</td>
+<td>State-sponsored group</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2: Add Randomness (Optional)</strong></p>
+<p>Roll 1d4 for variation:
+- <strong>Roll 1:</strong> -1 turn (tight timeline)
+- <strong>Roll 2 or 3:</strong> ±0 turns (no change)
+- <strong>Roll 4:</strong> +1 turn (extended dwell time)</p>
+<p><strong>Final Turn Count = Tier Base + d4 Result</strong></p>
+<p><strong>Example Advanced Setup:</strong></p>
+<blockquote>
+<p>"This is a TIER 2 attack (organized cybercriminals). Base is 8-10 turns. I'll roll d4 for variation... [rolls 4, +1 turn]. Final turn count: 9-11 turns."</p>
+</blockquote>
+<hr />
+<h4>Critical Game Integrity Rules (v2.1)</h4>
+<p>These rules protect game balance and prevent metagaming:</p>
+<h5>Rule 1: Accept Any Roll (Even If It Feels Wrong)</h5>
+<p><strong>The Rule:</strong> Threat Orchestrators MUST accept the random result, even if it feels impossibly tight or loose.</p>
+<p><strong>Why:</strong> Real incident response is unpredictable. Sometimes attacks happen faster or slower than expected.</p>
+<p><strong>Example Scenarios:</strong>
+- TIER 3 attack (11-13 base) + d4 roll of 1 = 10-12 turns (tighter than expected, but realistic)
+- TIER 1 attack (5-7 base) + d4 roll of 4 = 6-8 turns (easier conditions, but acceptable)</p>
+<p><strong>When Chaos Feels Realistic:</strong>
+- Tight timeline: "The attacker worked faster than expected—they had prior knowledge"
+- Loose timeline: "The attacker was cautious, spending weeks in reconnaissance before striking"</p>
+<p><strong>Implementation:</strong> Lean into the randomness as realistic incident variability.</p>
+<hr />
+<h5>Rule 2: Players Cannot Question Tier Based on Turn Count</h5>
+<p><strong>The Rule:</strong> Blue Team CANNOT deduce the attack tier from the announced turn count. They cannot ask "Is this TIER 2?" or "Is this TIER 4?" based on how many turns they have.</p>
+<p><strong>Why:</strong> Real incident response doesn't come with difficulty labels. Attackers don't advertise sophistication. Players should discover complexity through gameplay (attack chain complexity, defender evasion, tool sophistication, etc.).</p>
+<p><strong>What Players CAN Ask:</strong>
+- "What are the suspicious network events?" (leads to understanding threats)
+- "Can we analyze the malware?" (reveals attacker sophistication through findings)
+- "Why did this attack succeed?" (post-game discussion)</p>
+<p><strong>What Players CANNOT Ask:</strong>
+- "Is this a TIER 2 attack?" (deriving tier from turn count)
+- "This looks like a TIER 1 because we have 7 turns" (meta-gaming difficulty)</p>
+<p><strong>Implementation:</strong> Respond to difficulty questions by saying "Investigate and find out!" Players discover sophistication through evidence, not from turn counts.</p>
+<hr />
+<h5>Rule 3: TO Modifier Authority (Rare &amp; Optional)</h5>
+<p><strong>The Rule:</strong> ONLY after rolling d4, the Threat Orchestrator may apply an optional ±1 turn adjustment IF the rolled result feels genuinely unreasonable for the scenario.</p>
+<p><strong>When to Use (Rare):</strong>
+- Scenario setup is unusually complex (multiple attack vectors, coordination across systems)
+- Player group is new and needs slightly easier conditions
+- Real-world incident being taught had specific timeline constraints</p>
+<p><strong>When NOT to Use (Prefer Random):</strong>
+- "The roll feels unlucky" (accept the chaos)
+- "I want this exactly 10 turns" (let dice decide)
+- "The attack chain is long so it should take longer" (that's what TIER system handles)</p>
+<p><strong>Implementation:</strong>
+1. Roll d4 normally
+2. Announce rolled result
+3. ONLY IF genuinely unreasonable, apply ±1 modifier and explain why
+4. Document the override for consistency in future scenarios</p>
+<p><strong>Example Valid Use:</strong></p>
+<blockquote>
+<p>"TIER 2 base 8-10, rolled -1 = 7-9 turns. That's tight given we have 5-card attack chain, so I'm adding +1 modifier (explaining the discovery is methodical). Final: 8-10 turns."</p>
+</blockquote>
+<p><strong>Example Invalid Use:</strong></p>
+<blockquote>
+<p>"I rolled 8-10 but I want 10-12, so I'm adding +2." (NO - use the roll as-is)</p>
+</blockquote>
+<hr />
+<h4>Implementation Checklist</h4>
+<p><strong>For Beginners (Use Default Formula):</strong>
+- [ ] Choose attack chain length (3, 4, 5, or 6 cards)
+- [ ] Calculate: (Cards × 2) + 1
+- [ ] Announce turn count
+- [ ] Play</p>
+<p><strong>For Advanced (Use Tier + d4):</strong>
+- [ ] Select TIER (1, 2, 3, or 4)
+- [ ] Announce TIER basis (not the number, just why it's that complexity)
+- [ ] Roll d4 for variation (hidden or public, your choice)
+- [ ] Calculate final turn count
+- [ ] Apply Rule 3 modifier if genuinely needed (rare)
+- [ ] Announce final turn count WITHOUT revealing tier</p>
+<hr />
+<h4>Quick Reference Card</h4>
+<p><strong>Default Formula:</strong> Turn Count = (Attack Cards × 2) + 1</p>
+<p><strong>Tier System:</strong>
+- TIER 1: 5-7 turns (simple)
+- TIER 2: 8-10 turns (standard)
+- TIER 3: 11-13 turns (advanced)
+- TIER 4: 14-16 turns (expert)
+- Add d4 roll: -1, 0, 0, or +1</p>
+<p><strong>Golden Rules:</strong>
+1. Accept any roll (embrace chaos)
+2. Never reveal tier to players
+3. Modifier authority only when truly needed (rare)</p>
+<hr />
+<h3>4. Roll Modifiers (Universal)</h3>
+<p>All modules use the same modifier system for consistency:</p>
+<h4>+2 Bonus: Strong Technical Justification</h4>
+<p>Awarded when a player provides clear, specific reasoning for their action using real security concepts.</p>
+<p><strong>Examples:</strong>
+- "We're analyzing email headers in the mail gateway logs to identify the true sender IP and check it against threat intelligence feeds"
+- "We're deploying EDR on all endpoints because it can detect living-off-the-land techniques"
+- "We're querying our SIEM for scheduled task creation events because attackers use them for persistence"</p>
+<p><strong>Criteria:</strong>
+- References specific tools (Splunk, EDR, SIEM, etc.)
+- Explains methodology (why this approach works)
+- Shows understanding of the threat being addressed</p>
+<hr />
+<h4>+1 Bonus: Real Tools or Techniques Referenced</h4>
+<p>Awarded when player references actual security tools or real attack/defense techniques.</p>
+<p><strong>Examples:</strong>
+- "We'll use Wireshark to analyze the network traffic"
+- "We're checking for Mimikatz usage in memory"
+- "We're reviewing EDR telemetry"
+- "We're looking for this specific CVE exploitation pattern"</p>
+<p><strong>Criteria:</strong>
+- References real tools (Wireshark, EDR, Splunk, etc.)
+- References real techniques (MITRE ATT&amp;CK, specific CVEs)
+- Shows awareness of how things actually work</p>
+<hr />
+<h3>5. Uncontained Threats Penalty (Incident Response Module)</h3>
+<p><strong>When Applied:</strong> Incident Response module only, applied at START of each turn</p>
+<p><strong>How It Works:</strong>
+1. When a threat card is <strong>revealed</strong>, add 1 to Uncontained Threats Tracker
+2. At START of each turn, deduct <strong>5 Budget per uncontained threat</strong>
+3. When <strong>next card in chain is revealed</strong>, previous threat is auto-mitigated (-1 from tracker)
+4. When <strong>Emergency Response action is used</strong> (15 Budget), remove a revealed threat (-1 from tracker)</p>
+<p><strong>Companion rule — Active Breach Cost (v2.2):</strong> while at least one chain card remains <strong>unrevealed</strong>, deduct an additional flat -5 Budget at the start of each turn. Hidden attackers cost money too.</p>
+<p><strong>Purpose:</strong> Creates urgency - dwell time costs money, whether you've found the attacker yet or not. Teaches real-world incident response costs.</p>
+<p><strong>Example (uncontained penalty only; Active Breach Cost also applies while cards remain hidden):</strong></p>
+<pre><code>Turn 1: Phishing revealed → Uncontained Threats = 1
+Turn 2: START → Deduct 5 Budget (95 remaining from 100)
+Turn 3: Lateral Movement revealed → Phishing auto-mitigated (Uncontained = 1)
+Turn 3: START → Deduct 5 Budget
+Turn 4: Emergency Response on Lateral Movement (15 Budget) → Uncontained Threats = 0
+</code></pre>
+<hr />
+<h2>Common Roles &amp; Responsibilities</h2>
+<h3>Threat Orchestrator (Facilitator)</h3>
+<p><strong>Responsibilities:</strong>
+- Manage game state and track turns/budget
+- Describe scenarios and outcomes
+- Roll dice when action outcomes are uncertain
+- Guide the narrative</p>
+<p><strong>During Incident Response:</strong>
+- Create and manage hidden attack chain
+- Provide clues based on successful investigations
+- Control Uncontained Threats penalties
+- Be fair but challenging</p>
+<p><strong>During Other Modules:</strong>
+- Describe threat context and defenses
+- Draw Pentester Tactic cards (Hardening)
+- Manage timeline and deadlines (Disaster Recovery)
+- Guide debrief questions</p>
+<p><strong>Universal Tips:</strong>
+- Explain <em>why</em> actions succeed or fail
+- Ask clarifying questions about player strategy
+- Balance challenge with learning
+- Provide constructive feedback</p>
+<hr />
+<h3>Blue Team (Defenders)</h3>
+<p><strong>Responsibilities:</strong>
+- Discuss strategy as a team
+- Choose one action per turn
+- Justify your decisions (gain +2 modifier)
+- Manage budget carefully
+- Learn from success and failure</p>
+<hr />
+<h2>Modifier Stacking Rules</h2>
+<p><strong>Key Rule:</strong> Modifiers are <strong>additive</strong> and can stack.</p>
+<p><strong>Example (Hardening Module, canonical formula — v2.2):</strong></p>
+<pre><code>Pentester Tactic: PT-02 Living-off-the-Land (DC 13)
+
+Defense roll = d20
+  + printed bonus for the ONE defense chosen (D-08 EDR vs PT-02: +3)
+  + hardening upgrades on that defense (+2 each; one upgrade: +2)
+  + relevant playbook (+3)
+
+Team rolls 8:
+8 + 3 (EDR) + 2 (upgrade) + 3 (playbook) = 16 ≥ 13 = SUCCESS
+</code></pre>
+<p>Only the single chosen defense's printed bonus applies — deployed defenses do not stack with each other against one tactic.</p>
+<hr />
+<h2>Difficulty &amp; Scaling</h2>
+<h3>By Attack Chain Length</h3>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>3 cards</strong></td>
+<td>Beginner</td>
+<td>Learning mechanics, 30 min sessions</td>
+</tr>
+<tr>
+<td><strong>4 cards</strong></td>
+<td>Intermediate</td>
+<td>Standard play, 40 min sessions</td>
+</tr>
+<tr>
+<td><strong>5 cards</strong></td>
+<td>Advanced</td>
+<td>Challenge play, full kill chain</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>By Starting Budget</h3>
+<table>
+<thead>
+<tr>
+<th>Budget</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>60</strong></td>
+<td>Hard</td>
+<td>Resource scarcity, tough choices</td>
+</tr>
+<tr>
+<td><strong>100</strong></td>
+<td>Standard</td>
+<td>Balanced play, most scenarios</td>
+</tr>
+<tr>
+<td><strong>150+</strong></td>
+<td>Easy</td>
+<td>Strategic depth, multiple options</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>By Turn Limit</h3>
+<table>
+<thead>
+<tr>
+<th>Turns</th>
+<th>Difficulty</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>8</strong></td>
+<td>Hard</td>
+<td>Time pressure, fast play</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>Standard</td>
+<td>Balanced, most scenarios</td>
+</tr>
+<tr>
+<td><strong>12</strong></td>
+<td>Easy</td>
+<td>Exploration, learning</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note (v2.2): Incident Response derives its turn limit from the Variable Game Length formula — (Attack Chain Cards × 2) + 1 → 7/9/11 turns (see §3a). The table above is for modules with educator-set limits.</em></p>
+<hr />
+<h2>Educational Objectives</h2>
+<h3>By Module</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Primary Learning</th>
+<th>Secondary Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Incident Response</strong></td>
+<td>Cyber kill chain, attack detection, investigation</td>
+<td>Resource prioritization, incident response</td>
+</tr>
+<tr>
+<td><strong>Hardening</strong></td>
+<td>Defense-in-depth, layering, proactive security</td>
+<td>Cost-benefit analysis, security architecture</td>
+</tr>
+<tr>
+<td><strong>Disaster Recovery</strong></td>
+<td>Crisis management, stakeholder communication</td>
+<td>Risk assessment, incident cost</td>
+</tr>
+<tr>
+<td><strong>Network Building</strong></td>
+<td>Network design, asset security, architecture</td>
+<td>Infrastructure hardening, threat modeling</td>
+</tr>
+<tr>
+<td><strong>Forensics</strong></td>
+<td>Digital forensics, chain of custody, attribution</td>
+<td>Evidence handling, MITRE ATT&amp;CK mapping</td>
+</tr>
+<tr>
+<td><strong>Audit &amp; Compliance</strong></td>
+<td>Security assessment, governance, compliance</td>
+<td>Risk identification, remediation prioritization</td>
+</tr>
+</tbody>
+</table>
+<h3>By Game Mechanic</h3>
+<table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>What It Teaches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d20 roll system</td>
+<td>Uncertainty, risk, informed decision-making</td>
+</tr>
+<tr>
+<td>Budget constraints</td>
+<td>Resource allocation, prioritization</td>
+</tr>
+<tr>
+<td>Justification bonuses</td>
+<td>Technical reasoning, tools/techniques knowledge</td>
+</tr>
+<tr>
+<td>Uncontained Threats penalty</td>
+<td>Urgency, cost of dwell time</td>
+</tr>
+<tr>
+<td>Pentester Tactics</td>
+<td>Attacker sophistication, defense limitations</td>
+</tr>
+<tr>
+<td>Playbook system</td>
+<td>Preparation, incident response planning</td>
+</tr>
+<tr>
+<td>Scoring systems</td>
+<td>Outcome measurement, quality assessment</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Cooperative vs. Competitive Play</h2>
+<h3>Cooperative Mode</h3>
+<ul>
+<li><strong>Single Blue Team</strong> vs. challenges</li>
+<li>Team wins or loses together</li>
+<li>Encourages discussion and consensus</li>
+<li>Better for learning</li>
+<li>Better for mixed experience levels</li>
+</ul>
+<h3>Competitive Mode</h3>
+<ul>
+<li><strong>Multiple Blue Teams</strong> solving same challenge</li>
+<li>First to achieve objective wins</li>
+<li>Creates urgency and engagement</li>
+<li>Better for tournaments</li>
+<li>Better for same-level players</li>
+</ul>
+<p><strong>Implementation:</strong>
+- Same setup for all teams
+- Teams cannot share information (Incident Response)
+- Score comparison determines winner (Hardening)
+- Reputation comparison (Disaster Recovery)</p>
+<hr />
+<h2>Debrief &amp; Reflection (Universal)</h2>
+<p><strong>Every module should include a 5-15 minute debrief</strong> with three sections:</p>
+<h3>Part 1: What Happened?</h3>
+<ul>
+<li>Summarize the scenario and outcome</li>
+<li>Highlight key decisions</li>
+<li>Acknowledge successes and failures</li>
+</ul>
+<h3>Part 2: Why Did That Happen?</h3>
+<ul>
+<li>Discuss the mechanisms (why the rule works that way)</li>
+<li>Connect to real-world security</li>
+<li>Explain attacker/defender motivation</li>
+</ul>
+<h3>Part 3: What Would You Do Differently?</h3>
+<ul>
+<li>Reflect on strategy</li>
+<li>Discuss trade-offs</li>
+<li>Plan for next playthrough</li>
+</ul>
+<hr />
+<h2>Tips for Threat Orchestrators (Universal)</h2>
+<h3>Before the Game</h3>
+<ol>
+<li><strong>Read the module rules completely</strong> - Know what's coming</li>
+<li><strong>Prepare your scenario</strong> - Pre-build attack chain or threat context</li>
+<li><strong>Organize materials</strong> - Sort cards, prepare trackers</li>
+<li><strong>Know your balancing points</strong> - Be ready to adjust difficulty if needed</li>
+<li><strong>Practice reading clues</strong> - Deliver them dramatically!</li>
+</ol>
+<h3>During Gameplay</h3>
+<ol>
+<li><strong>Be clear about costs</strong> - Announce Budget before action</li>
+<li><strong>Resolve rolls immediately</strong> - Announce target, let player roll, resolve</li>
+<li><strong>Ask clarifying questions</strong> - "Why are you investigating email headers?"</li>
+<li><strong>Be fair but challenging</strong> - Give honest difficulty, don't fudge rolls</li>
+<li><strong>Narrate outcomes</strong> - Describe what happens, not just success/failure</li>
+<li><strong>Manage pacing</strong> - Keep turns moving (2-3 min discussion max)</li>
+<li><strong>Track penalties accurately</strong> - Keep budget, turn, and threat trackers visible</li>
+</ol>
+<h3>Balancing Difficulty</h3>
+<p><strong>Too Easy Signs:</strong>
+- Team reveals all cards/achieves goal with 40+ budget remaining
+- No failed rolls
+- No meaningful decisions required
+- Team is bored</p>
+<p><strong>Too Hard Signs:</strong>
+- Team is stuck/making no progress after 5 turns
+- Multiple consecutive failed rolls
+- Team frustrated rather than challenged
+- No learning happening</p>
+<p><strong>Adjustment Options:</strong>
+- <strong>Easier:</strong> Provide better clues, more starting budget, fewer tactics
+- <strong>Harder:</strong> Less specific clues, lower budget, more tactics
+- <strong>Faster:</strong> Shorter turn limits, simpler scenarios
+- <strong>Slower:</strong> More turns, more complex scenarios</p>
+<hr />
+<h2>Card Reference</h2>
+<p>For complete card descriptions, see:
+- <strong>Base Threat &amp; Defense Cards</strong> cards/incident-response/core-deck/threat-defense-cards.md
+- <strong>Expansion Threats</strong> cards/incident-response/expansion-deck/advanced-threats.md
+- <strong>Expansion Defenses</strong> cards/incident-response/expansion-deck/advanced-defenses.md
+- <strong>All decks indexed</strong> cards/CARD_REFERENCE.md</p>
+<hr />
+<h2>Module-Specific Rules</h2>
+<p>For complete rules on each module:</p>
+<ul>
+<li><strong>Network Building Module:</strong> module-network-building.md</li>
+<li><strong>Hardening Module:</strong> module-hardening.md</li>
+<li><strong>Incident Response Module:</strong> module-incident-response.md</li>
+<li><strong>Disaster Recovery Module:</strong> module-disaster-recovery.md</li>
+<li><strong>Forensics Module:</strong> module-forensics.md</li>
+<li><strong>Audit &amp; Compliance Module:</strong> module-audit-compliance.md</li>
+</ul>
+<hr />
+<h2>Quick Reference: Universal Mechanics</h2>
+<h3>d20 Roll System</h3>
+<ul>
+<li><strong>Base target:</strong> 11+ (varies by action)</li>
+<li><strong>+2 modifier:</strong> Strong technical justification</li>
+<li><strong>+1 modifier:</strong> Real tools/techniques referenced</li>
+<li><strong>Modifiers stack:</strong> All bonuses add together</li>
+</ul>
+<h3>Budget System</h3>
+<ul>
+<li><strong>Spent on:</strong> Actions, defenses, investigations</li>
+<li><strong>Cannot go below:</strong> 0 (team loses)</li>
+<li><strong>Tracked per turn:</strong> Budget available announced at start of turn</li>
+</ul>
+<h3>Turn System</h3>
+<ul>
+<li><strong>Sequence:</strong> Start → Planning → Action → End</li>
+<li><strong>Planning:</strong> 2-3 minutes discussion</li>
+<li><strong>End of turn:</strong> Advance tracker, draw card, apply effects</li>
+</ul>
+<h3>Penalties &amp; Bonuses</h3>
+<ul>
+<li><strong>Uncontained Threats:</strong> -5 Budget per revealed-uncontained threat per turn (IR only)</li>
+<li><strong>Active Breach Cost (v2.2):</strong> -5 Budget per turn while any chain card is unrevealed (IR only)</li>
+<li><strong>Pentester Tactics:</strong> Add difficulty/modify actions (Hardening)</li>
+<li><strong>Reputation:</strong> Track 0-100, affects outcome (DR)</li>
+</ul>
+<hr />
+<h2>Continuing to Next Steps</h2>
+<p><strong>For your first game:</strong>
+1. Choose a module from Module Combinations
+2. Read the module-specific rules
+3. Read the standalone setup guide
+4. Prepare your scenario
+5. Play!</p>
+<p><strong>For multiple modules:</strong>
+1. Refer to Module Combinations for recommended sequences
+2. Refer to FRAMEWORK.md for modifier generation procedures
+3. Play first module, generate modifiers for next
+4. Continue as desired</p>
+<hr />
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Want to combine modules?</strong> See Module Combinations</li>
+<li><strong>Understanding module flexibility?</strong> See FRAMEWORK.md</li>
+<li><strong>Specific module rules?</strong> See module-*.md files</li>
+<li><strong>How to play solo?</strong> See standalone guide for your chosen module</li>
+</ul>
+<hr />
+<p><em>Incident Zero: Core Rules &amp; Mechanics</em>
+<em>v2.1 - Balanced &amp; Refined Edition</em>
+<em>Universal rules for all modules</em></p></section><section class="doc-break"><p class="doc-src">docs/rules/module-hardening.md</p><h1>Hardening Module: Complete Rules</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Module Duration:</strong> 20-45 minutes (standalone or after Incident Response)
+<strong>Prerequisites:</strong> None (can play standalone) or completion of Incident Response module
+<strong>Learning Focus:</strong> Defense-in-depth, security architecture, proactive hardening, layered controls</p>
+<hr />
+<h2>Module Overview</h2>
+<p>The <strong>Hardening Module</strong> teaches players how to build <strong>multi-layered security controls</strong> that work together to protect critical systems. Players transition from reactive incident response to proactive security design.</p>
+<p>This module can be:
+- <strong>Standalone:</strong> Play alone with generated threat context
+- <strong>Continuation:</strong> Follow a successful Incident Response (players harden against discovered threats)
+- <strong>Paired:</strong> Combined with other modules for complete security lifecycle training</p>
+<hr />
+<h2>Core Mechanics: What's Different from Incident Response</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Incident Response</th>
+<th>Hardening</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Focus</strong></td>
+<td>Detect hidden threats</td>
+<td>Build defenses against known threats</td>
+</tr>
+<tr>
+<td><strong>Time Pressure</strong></td>
+<td>High (variable turn limit, 100 budget)</td>
+<td>Lower (7 turns, carries budget forward)</td>
+</tr>
+<tr>
+<td><strong>Actions</strong></td>
+<td>Investigate, Deploy, Emergency Response</td>
+<td>Deploy, Upgrade, Playbook, Test</td>
+</tr>
+<tr>
+<td><strong>Rolls Needed</strong></td>
+<td>Investigation &amp; Defense deployments</td>
+<td>Test &amp; Drill and Pentester defense rolls</td>
+</tr>
+<tr>
+<td><strong>Scoring</strong></td>
+<td>Detection efficiency</td>
+<td>Defense layering &amp; breadth</td>
+</tr>
+<tr>
+<td><strong>Threats</strong></td>
+<td>Hidden chain</td>
+<td>Known vectors, Pentester tactics</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Setup</h2>
+<h3>Step 1: Determine Your Context</h3>
+<h4>Option A: Standalone Play (Fresh Start)</h4>
+<p>Generate threat context from scratch (v2.2 — one standard procedure):
+- Roll <strong>1d6 for each of the six threat vectors</strong> (SOCIAL_ENGINEERING, WEB_EXPLOIT, CREDENTIAL_ABUSE, MALWARE, NETWORK, DATA_EXFIL):
+  - <strong>1-2:</strong> No notable threat on this vector
+  - <strong>3-4:</strong> Intermediate threat on this vector
+  - <strong>5-6:</strong> Advanced threat on this vector
+- Or use Threat Orchestrator's chosen scenario
+- Budget: 150 (full planning allocation)</p>
+<h4>Option B: Continuation from Incident Response</h4>
+<p>Use the attack chain that was just discovered:
+- All <strong>revealed threat cards</strong> now represent known attack vectors
+- Each vector gets a defense priority
+- Budget carries over (minimum 20, maximum 150)
+- Example: If IR revealed Phishing, Lateral Movement, and Data Exfil, you harden against those specific vectors</p>
+<h4>Option C: Hypothetical Scenario</h4>
+<p>Threat Orchestrator describes a realistic scenario:</p>
+<blockquote>
+<p>"Imagine your team successfully detected an attack chain:
+1. Phishing campaign (SOCIAL ENGINEERING vector)
+2. Lateral movement via SMB (NETWORK vector)
+3. Data exfiltration (DATA EXFIL vector)</p>
+<p>You have time to harden your network. Here are the threat vectors you need to defend against..."</p>
+</blockquote>
+<h3>Step 2: Initialize Trackers</h3>
+<ul>
+<li><strong>Budget:</strong> Starting allocation (150 for solo, carry-over if continuing from IR)</li>
+<li><strong>Security Score:</strong> 0 (will accumulate points)</li>
+<li><strong>Turn Counter:</strong> 1</li>
+<li><strong>Hardening Upgrades:</strong> 0 (track total count)</li>
+<li><strong>Playbooks Created:</strong> 0 (track total count — <strong>maximum 2 per game, v2.2</strong>)</li>
+<li><strong>Deployed Defenses:</strong> [] (track list on paper/whiteboard)</li>
+</ul>
+<h3>Step 3: Prepare Card Decks</h3>
+<ul>
+<li><strong>Defense Cards Deck:</strong> Shuffle all available cards (D-01 to D-24, see <code>cards/hardening/core-deck/defense-cards.md</code>)</li>
+<li><strong>Pentester Tactic Cards:</strong> Set aside 2-4 cards from PT-01 to PT-08 (by difficulty level, see <code>cards/hardening/core-deck/pentester-tactic-cards.md</code>)</li>
+<li><strong>Asset Cards:</strong> Place relevant systems on table (Email Server, Database, Workstations, etc. — shared components, see <code>cards/network-building/core-deck/asset-cards.md</code>)</li>
+</ul>
+<h3>Step 4: Deal Starting Hand</h3>
+<p>Each Blue Team receives <strong>5 Defense Cards</strong> (drawn randomly, face down in hand)</p>
+<h3>Step 5: Read Opening Narrative</h3>
+<p>Threat Orchestrator provides context for the hardening scenario:</p>
+<blockquote>
+<p>"Your detection team successfully identified an attack chain. Now you have time and resources to harden your defenses to prevent similar attacks in the future. Here's what you're defending against and what assets are at risk..."</p>
+</blockquote>
+<hr />
+<h2>Gameplay: 7 Turns</h2>
+<p>The Hardening module runs <strong>7 turns</strong> at every difficulty level (v2.2 — difficulty scales through the number of Pentester Tactics, not the turn count). One action per turn.</p>
+<h3>Turn Structure</h3>
+<p><strong>START OF TURN</strong>
+- Announce turn number: "Hardening Turn 3..."
+- Announce remaining Budget
+- Declare any Pentester Challenge scheduled for this turn</p>
+<p><strong>PLANNING PHASE (2-3 minutes)</strong>
+- Team discusses hardening strategy
+- Decides which action to take this turn
+- Prepares for any mid-turn Pentester Challenge</p>
+<p><strong>ACTION PHASE</strong>
+- Execute chosen action (see below)
+- Resolve rolls if applicable
+- Update trackers</p>
+<p><strong>END OF TURN</strong>
+- Advance turn counter
+- Draw 1 new Defense Card
+- Check if Pentester Challenge occurs (typically turn 3-4)</p>
+<hr />
+<h2>Four Hardening Actions</h2>
+<h3>Action 1: Deploy a New Defense 🛡️</h3>
+<p><strong>Cost:</strong> 10/15/25 Budget (based on card tier)
+<strong>Roll Required:</strong> None—automatic success</p>
+<p><strong>How it works:</strong>
+1. Choose a Defense Card from your hand
+2. Announce which Asset or threat vector it protects
+3. Place card on the table (face up)
+4. Optional: Explain the deployment strategy (enhances learning but not required)</p>
+<p><strong>Effect:</strong>
+- Defense is immediately active and deployed
+- Counts toward Security Score (5 points per defense)
+- Cannot be undone (represents permanent security improvement)
+- Stays on board for remainder of module and beyond (if continuing)</p>
+<p><strong>Quick-Win Rule (v2.2):</strong> You may deploy <strong>up to 2 BASIC-tier defenses as a single action</strong> (pay 10 Budget each). This keeps foundational hygiene affordable within the 7-turn limit.</p>
+<p><strong>Examples:</strong>
+- Deploy Multi-Factor Authentication (ADVANCED - 15 Budget) on VPN access
+- Deploy EDR on all workstations (ADVANCED - 15 Budget)
+- Deploy Data Loss Prevention (DLP) on network gateways (ADVANCED - 15 Budget)
+- Deploy Email Authentication (BASIC - 10 Budget) and User Security Training (BASIC - 10 Budget) together as one action (v2.2 Quick-Win)</p>
+<p><strong>Strategic Notes:</strong>
+- BASIC defenses (10 Budget) are cheaper but carry smaller printed bonuses against Pentester Tactics
+- ADVANCED defenses (15 Budget) provide good balance of cost/effectiveness
+- ELITE defenses (25 Budget) are expensive but carry the largest printed bonuses against Pentester Tactics</p>
+<hr />
+<h3>Action 2: Harden an Existing Defense ⬆️</h3>
+<p><strong>Cost:</strong> 5 Budget per upgrade
+<strong>Roll Required:</strong> None</p>
+<p><strong>How it works:</strong>
+1. Choose a Defense Card already deployed (earlier this game, or carried over from Incident Response)
+2. Pay 5 Budget
+3. Mark defense with <strong>+2 effectiveness bonus</strong> (track on paper)
+4. Optional: Describe the hardening (e.g., "Tuning behavioral analytics in EDR")</p>
+<p><strong>Effect:</strong>
+- Defense effectiveness increases by +2
+- Bonuses stack (EDR with three upgrades = +6 total)
+- Counts toward Security Score (2 points per upgrade)
+- Makes defense more resistant to Pentester Tactics</p>
+<p><strong>Examples of Hardening:</strong>
+- "Harden our MFA by requiring hardware tokens instead of SMS" → MFA now has +2
+- "Enhance Network Segmentation with microsegmentation inside critical zones" → NS now has +2
+- "Improve SIEM with threat intelligence integration" → SIEM now has +2</p>
+<p><strong>Strategic Value:</strong>
+- Fewer, well-hardened defenses can beat many basic ones
+- Upgrades compound: 3 upgrades on one defense = +6 bonus
+- Cost-effective way to improve security posture without full new deployments</p>
+<hr />
+<h3>Action 3: Prepare an Incident Response Playbook 📋</h3>
+<p><strong>Cost:</strong> 10 Budget per playbook
+<strong>Roll Required:</strong> None
+<strong>Limit (v2.2):</strong> Maximum <strong>2 playbooks per game</strong></p>
+<p><strong>How it works:</strong>
+1. Choose a specific threat vector you want to prepare for (SOCIAL ENGINEERING, WEB EXPLOIT, CREDENTIAL ABUSE, MALWARE, NETWORK, or DATA EXFIL)
+2. Write a 1-2 sentence playbook describing your response plan
+3. Place playbook on the table with vector marked
+4. When an attack using this vector occurs, you get <strong>one-time +3 bonus</strong> to your defense roll</p>
+<p><strong>Effect:</strong>
+- Provides one-time +3 bonus to defense roll when matching vector is attacked
+- Playbook is discarded after use (one-time only)
+- Counts toward Security Score (10 points per playbook)
+- Forces strategic thinking about which threats matter most</p>
+<p><strong>Example Playbooks:</strong>
+- <strong>SOCIAL ENGINEERING:</strong> "Credential Compromise Response - Forced MFA re-authentication and access token revocation across all systems"
+- <strong>MALWARE:</strong> "Ransomware Response - Immediate backup isolation, network segmentation, and process termination"
+- <strong>NETWORK:</strong> "Lateral Movement Detection - Real-time network behavior analysis and suspicious SMB activity alert protocol"
+- <strong>DATA EXFIL:</strong> "Data Theft Response - DLP block, endpoint containment, and forensic image capture"
+- <strong>WEB EXPLOIT:</strong> "Web Attack Response - Immediate application firewall rule deployment and vulnerable component isolation"</p>
+<p><strong>Strategic Considerations:</strong>
+- Playbooking is expensive (10 Budget) but provides large bonus (+3)
+- You can only use each playbook once, and only create two per game (v2.2) — plan carefully
+- Encourages predicting which threats are most dangerous
+- Reflects real-world incident response playbook development
+- Playbooks alone cannot win the game: victory requires <strong>at least 4 deployed defenses</strong> (v2.2)</p>
+<hr />
+<h3>Action 4: Test &amp; Drill Defenses 🎯</h3>
+<p><strong>Cost:</strong> 0 Budget (represents time investment)
+<strong>Roll Required:</strong> 11+ on d20</p>
+<p><strong>How it works:</strong>
+1. Announce you're conducting a security drill
+2. Choose one or more deployed defenses to test
+3. For each defense, roll 1d20
+4. Defenses with roll 11+ are successful; 10 or less fail</p>
+<p><strong>Effect:</strong>
+- Successful tests: Defense works properly (tracked as "tested")
+- Failed tests: Implementation issues found (no penalty, but noted)
+- Tests don't contribute to final score but provide confidence
+- Teaches the importance of validation and testing</p>
+<p><strong>Educational Value:</strong>
+- Reflects real-world practice of security testing
+- Validates that deployments actually work
+- Low-cost way to use budget on preparation vs. initial deployment</p>
+<hr />
+<h2>Mid-Game: Pentester Challenge</h2>
+<h3>When Pentester Tactics Are Used</h3>
+<p>Typically after turn 3 or 4, once teams have deployed initial defenses.</p>
+<p><strong>Timing Options:</strong>
+- <strong>Per turn:</strong> One Pentester Tactic drawn each turn (turns 3-6)
+- <strong>Multiple attacks:</strong> 2-4 Pentester Tactics total (depends on difficulty)
+- <strong>Final challenge:</strong> All remaining Tactics drawn at end of turn 6</p>
+<h3>Pentester Tactic Cards (PT-01 to PT-08)</h3>
+<p><strong>(v2.2)</strong> The Hardening module uses the standard Pentester Tactic deck, <strong>PT-01 to PT-08</strong>, defined in <code>cards/hardening/core-deck/pentester-tactic-cards.md</code>. Each card is a realistic red-team technique with a printed <strong>DC</strong> (difficulty class) and a list of printed <strong>defense bonuses</strong> for specific Defense Cards.</p>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Tactic</th>
+<th>Target Vectors</th>
+<th>Difficulty</th>
+<th>Primary Defense</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PT-01</td>
+<td>Social Engineering - Pretexting Attack</td>
+<td>SOCIAL_ENGINEERING, CREDENTIAL_ABUSE</td>
+<td>BASIC (DC 12)</td>
+<td>D-02 User Training</td>
+</tr>
+<tr>
+<td>PT-02</td>
+<td>Malware Evasion - Living-off-the-Land</td>
+<td>MALWARE, CREDENTIAL_ABUSE</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>D-08 EDR</td>
+</tr>
+<tr>
+<td>PT-03</td>
+<td>Credential Dumping - Mimikatz</td>
+<td>CREDENTIAL_ABUSE, MALWARE</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>D-16 Credential Guard</td>
+</tr>
+<tr>
+<td>PT-04</td>
+<td>Lateral Movement - Network Traversal</td>
+<td>NETWORK, CREDENTIAL_ABUSE</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>D-09 Network Segmentation</td>
+</tr>
+<tr>
+<td>PT-05</td>
+<td>Privilege Escalation - Unpatched Kernel Exploit</td>
+<td>MALWARE, WEB_EXPLOIT</td>
+<td>ADVANCED (DC 14)</td>
+<td>D-03 Patch Management</td>
+</tr>
+<tr>
+<td>PT-06</td>
+<td>Data Exfiltration - Unmonitored Channel</td>
+<td>DATA_EXFIL, NETWORK</td>
+<td>ADVANCED (DC 14)</td>
+<td>D-11 DLP</td>
+</tr>
+<tr>
+<td>PT-07</td>
+<td>Supply Chain Compromise - Trusted Update</td>
+<td>MALWARE, WEB_EXPLOIT</td>
+<td>ADVANCED (DC 14)</td>
+<td>D-08 EDR / D-13 Threat Hunting</td>
+</tr>
+<tr>
+<td>PT-08</td>
+<td>Insider Threat - Malicious Administrator</td>
+<td>CREDENTIAL_ABUSE, DATA_EXFIL, NETWORK</td>
+<td>EXPERT (DC 15)</td>
+<td>D-22 SIEM / D-20 Zero Trust</td>
+</tr>
+</tbody>
+</table>
+<p>For expansion play, 8 additional tactics (PT-09 to PT-16) are available in <code>cards/hardening/expansion-deck/advanced-tactics.md</code>.</p>
+<hr />
+<h3>Attack Resolution: One Canonical Formula (v2.2)</h3>
+<p>When a Pentester Tactic Card is drawn:</p>
+<p><strong>1. Threat Orchestrator Describes the Attack</strong></p>
+<blockquote>
+<p>Example (PT-01): "A pentester calls your IT helpdesk impersonating a VIP executive, demanding emergency access to critical systems..."</p>
+</blockquote>
+<p><strong>2. Blue Team Chooses ONE Deployed Defense to Resolve With</strong></p>
+<blockquote>
+<p>Example: "We resolve this with our User Security Training (D-02) — staff are trained to verify callers."</p>
+</blockquote>
+<p><strong>3. Roll the Defense Roll</strong></p>
+<blockquote>
+<p><strong>Defense roll = d20 + printed defense bonus for the chosen defense (from the tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3, one-time, matching vector)</strong></p>
+<p><strong>Success if the total ≥ the tactic card's printed DC.</strong></p>
+</blockquote>
+<p>Notes:
+- Only ONE defense's printed bonus applies per roll. If your chosen defense isn't on the tactic's bonus list, its printed bonus is +0 (upgrades and playbooks still apply).
+- <strong>Multi-vector or multi-phase tactics</strong> (e.g., PT-09): resolve each vector/phase as a <strong>separate roll</strong>, one chosen defense per roll.
+- Playbooks are discarded after use.</p>
+<p><strong>4. Worked Example</strong></p>
+<pre><code>Tactic: PT-01 Social Engineering - Pretexting (DC 12)
+Chosen defense: D-02 User Security Training (printed bonus +2 vs PT-01)
+D-02 has 1 hardening upgrade (+2)
+SOCIAL ENGINEERING playbook available (+3)
+
+Roll 1d20 = 7
+Total = 7 + 2 (printed) + 2 (upgrade) + 3 (playbook) = 14
+14 ≥ DC 12 → SUCCESS. Playbook is discarded.
+</code></pre>
+<p><strong>5. Outcome</strong></p>
+<ul>
+<li><strong>Success:</strong> Defense holds; count it as a <strong>Pentester Tactic Defended</strong> (+5 Security Score); attacks continue</li>
+<li><strong>Failure:</strong> Attack succeeds; apply the consequence printed on the tactic card; no score for this tactic; attacks continue</li>
+</ul>
+<p><em>(v2.2: the old -10 Reputation penalty has been removed from Hardening — failed defenses simply score nothing and trigger the card's printed consequence. Reputation remains a Disaster Recovery mechanic.)</em></p>
+<hr />
+<h2>Scoring: Security Score Calculation</h2>
+<h3>Final Security Score Formula (v2.2 — one formula, used in both rules and standalone guide)</h3>
+<pre><code>Security Score = (Defenses Deployed × 5)
+               + (Hardening Upgrades × 2)
+               + (Playbooks Created × 10)      [max 2 playbooks]
+               + (Pentester Tactics Defended × 5)
+               + (Budget Remaining / Starting Budget) × 10
+</code></pre>
+<h3>Example Scoring (7 turns, 150 starting budget)</h3>
+<pre><code>Turn 1: Deploy D-01 Email Auth + D-02 User Training (2 BASIC as one action)  -20
+Turn 2: Deploy D-04 Firewall Rules + D-19 Backup &amp; DR (2 BASIC)              -20
+Turn 3: Deploy D-08 EDR (ADVANCED)                                           -15
+        → PT-02 strikes: defended ✓
+Turn 4: Deploy D-09 Network Segmentation (ADVANCED)                          -15
+Turn 5: Create MALWARE playbook                                              -10
+        → PT-01 strikes: defended ✓
+Turn 6: Harden D-08 EDR (+2)                                                  -5
+Turn 7: Deploy D-11 DLP (ADVANCED)                                           -15
+        → PT-06 strikes: defended ✓ (D-11's printed +4 bonus vs DC 14 carried the roll)
+
+Budget spent: 100 → 50 remaining
+
+Defenses Deployed:      7 × 5  = 35 points
+Hardening Upgrades:     1 × 2  =  2 points
+Playbooks Created:      1 × 10 = 10 points
+Tactics Defended:       3 × 5  = 15 points
+Budget Efficiency: (50/150) × 10 ≈ 3 points
+─────────────────────────────────────
+FINAL SECURITY SCORE:            65 points → Strong (Victory)
+</code></pre>
+<h3>Security Score Tiers (v2.2 — rescaled for the 7-action economy)</h3>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Level</th>
+<th>Interpretation</th>
+<th>Real-World Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>75+</strong></td>
+<td>Exceptional</td>
+<td>Enterprise-grade security posture</td>
+<td>Large financial institution</td>
+</tr>
+<tr>
+<td><strong>60-74</strong></td>
+<td>Strong</td>
+<td>Comprehensive defense-in-depth</td>
+<td>Mid-market company</td>
+</tr>
+<tr>
+<td><strong>45-59</strong></td>
+<td>Adequate</td>
+<td>Basic layered protection</td>
+<td>Startup/small business</td>
+</tr>
+<tr>
+<td><strong>30-44</strong></td>
+<td>Weak</td>
+<td>Minimal defenses, significant gaps</td>
+<td>Under-resourced organization</td>
+</tr>
+<tr>
+<td><strong>Below 30</strong></td>
+<td>Vulnerable</td>
+<td>Inadequate protection, likely to fail</td>
+<td>High-risk organization</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Winning &amp; Losing Hardening</h2>
+<h3>Victory Condition ✓ (v2.2)</h3>
+<p><strong>Blue Team Wins Hardening if ALL of:</strong>
+- <strong>Final Security Score ≥ 60</strong> (strong, comprehensive defense-in-depth)
+- <strong>AND at least 4 defenses deployed</strong> (playbooks and upgrades alone cannot win)
+- <strong>AND majority of Pentester Tactics defended against</strong> (defenses actually work)</p>
+<p><strong>Interpretation:</strong> Team successfully built layered, effective defenses within constraints.</p>
+<h3>Defeat Condition ✗</h3>
+<p><strong>Blue Team Loses Hardening if:</strong>
+- <strong>Final Security Score &lt; 45</strong> (inadequate overall protection)
+- <strong>OR Budget exhausted</strong> before completing hardening strategy
+- <strong>OR majority of Pentester Tactics succeeded</strong> (defenses aren't effective)</p>
+<p><strong>Interpretation:</strong> Defenses are insufficient against realistic threats.</p>
+<p>Scores between 45 and 59 that meet the tactic/defense requirements count as a <strong>partial success</strong> — adequate protection with room to improve.</p>
+<hr />
+<h2>Difficulty Levels</h2>
+<p>All difficulty levels run <strong>7 turns</strong> (v2.2); difficulty scales via Pentester Tactic count.</p>
+<h3>Beginner Hardening</h3>
+<ul>
+<li><strong>Starting Budget:</strong> 150</li>
+<li><strong>Pentester Tactics:</strong> 2 cards</li>
+<li><strong>Turn Limit:</strong> 7 turns</li>
+<li><strong>Best For:</strong> First-time players, teaching core mechanics</li>
+<li><strong>Focus:</strong> Deploy basic defenses, understand layering</li>
+</ul>
+<h3>Intermediate Hardening</h3>
+<ul>
+<li><strong>Starting Budget:</strong> 150</li>
+<li><strong>Pentester Tactics:</strong> 3 cards</li>
+<li><strong>Turn Limit:</strong> 7 turns</li>
+<li><strong>Best For:</strong> Standard play, balanced challenge</li>
+<li><strong>Focus:</strong> Balance deployment, upgrades, and playbooks</li>
+</ul>
+<h3>Advanced Hardening</h3>
+<ul>
+<li><strong>Starting Budget:</strong> 150</li>
+<li><strong>Pentester Tactics:</strong> 4 cards</li>
+<li><strong>Turn Limit:</strong> 7 turns</li>
+<li><strong>Best For:</strong> Experienced players, comprehensive strategy</li>
+<li><strong>Focus:</strong> Optimize defense layers, predict threats, handle complexity</li>
+</ul>
+<h3>Expert: Continuation from Incident Response (Loss)</h3>
+<ul>
+<li><strong>Starting Budget:</strong> Carry over from IR (may be low)</li>
+<li><strong>Pentester Tactics:</strong> 4 cards (harder variants, may include PT-09 to PT-16)</li>
+<li><strong>Turn Limit:</strong> 7 turns</li>
+<li><strong>Best For:</strong> Advanced play, realistic recovery scenarios</li>
+<li><strong>Focus:</strong> Harden after breach, limited resources</li>
+</ul>
+<hr />
+<h2>Tips for Threat Orchestrators</h2>
+<h3>Balancing Defense Deployment</h3>
+<p><strong>Too Easy:</strong>
+- Teams deploy 8+ defenses with large budget remaining
+- Almost all Pentester Tactics fail
+- No meaningful decisions required
+- Game feels trivial</p>
+<p><strong>Too Hard:</strong>
+- Teams can only afford 3-4 defenses with budget exhausted
+- Almost all Pentester Tactics succeed
+- Team feels overwhelmed
+- Frustration rather than learning</p>
+<p><strong>Just Right (within 7 actions and 150 Budget):</strong>
+- Teams deploy 5-7 defenses with some budget remaining (the Quick-Win rule for BASIC pairs makes this achievable)
+- 50-70% of Pentester Tactics fail (defenses work)
+- Teams debate priorities and trade-offs
+- Players learn through strategic choices</p>
+<p><strong>Adjustments:</strong>
+- Lower budget (100) for harder game
+- Higher budget (200) for easier game
+- Fewer/more Pentester Tactics
+- Provide feedback: "Your defenses are working well" or "Your SIEM isn't catching these"</p>
+<h3>Using Pentester Tactics Effectively</h3>
+<p><strong>Timing:</strong> Draw first tactic after turn 3-4 (let teams deploy initial defenses)</p>
+<p><strong>Narrative:</strong> Always frame tactics as specific scenarios:
+- "Your red team just attempted a supply chain attack..."
+- "An advanced attacker is using living-off-the-land techniques..."
+- "A coordinated insider attack is beginning..."</p>
+<p><strong>Strategy:</strong> Escalate difficulty
+- Turns 1-2: No tactics (deployment phase)
+- Turn 3: First tactic (softer: PT-01, DC 12)
+- Turn 4: Second tactic (medium: PT-02 to PT-04, DC 13)
+- Turn 5+: Third/fourth tactics (harder: PT-05 to PT-08, DC 14-15)</p>
+<h3>Common Teaching Moments</h3>
+<p><strong>Defense-in-Depth:</strong> When a chosen defense earns only a +0/+1 printed bonus, discuss why layers matter
+<strong>Cost-Benefit:</strong> Teams overspend on Elite defenses; discuss Advanced alternatives
+<strong>Upgrades:</strong> Teams ignore upgrades; show how +2 bonuses compound
+<strong>Playbooks:</strong> Teams underestimate playbooks; demonstrate their power (+3 bonus) — and note the 2-per-game cap</p>
+<hr />
+<h2>Extensions &amp; Variations</h2>
+<h3>Extended Hardening (60 minutes)</h3>
+<ul>
+<li>Start with Budget: 200</li>
+<li>Play 9 turns (instead of 7)</li>
+<li>5-6 Pentester Tactics (instead of 2-4)</li>
+<li>Raise the playbook cap to 3</li>
+<li>More complex strategic decisions</li>
+</ul>
+<h3>Compliance-Enhanced Hardening</h3>
+<ul>
+<li>Add compliance requirements (PCI-DSS, HIPAA, etc.)</li>
+<li>Some defenses count toward compliance</li>
+<li>Score includes compliance satisfaction</li>
+<li>Teams balance security and regulatory needs</li>
+</ul>
+<h3>Competitive Hardening Tournament</h3>
+<ul>
+<li>Multiple teams hardening simultaneously</li>
+<li>Same starting conditions</li>
+<li>Highest Security Score wins</li>
+<li>Tiebreaker: Most Budget remaining</li>
+</ul>
+<h3>Defense Architecture Detailed Play</h3>
+<ul>
+<li>Focus on how defenses work together</li>
+<li>Create explicit layers: Prevention, Detection, Response</li>
+<li>Score based on how well layers complement each other</li>
+<li>More discussion-based, less combat-focused</li>
+</ul>
+<hr />
+<h2>Educational Objectives</h2>
+<table>
+<thead>
+<tr>
+<th>Learning Goal</th>
+<th>How Module Teaches It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Defense-in-depth concept</td>
+<td>Deploy multiple layers, see some fail while others succeed</td>
+</tr>
+<tr>
+<td>Resource prioritization</td>
+<td>Limited budget forces choices between defenses</td>
+</tr>
+<tr>
+<td>Trade-offs in security</td>
+<td>BASIC cheap but weak vs. ELITE expensive but strong</td>
+</tr>
+<tr>
+<td>Proactive vs. reactive</td>
+<td>Hardening teaches prevention vs. IR's response focus</td>
+</tr>
+<tr>
+<td>Layering effectiveness</td>
+<td>Pentester Tactics show how weak defenses alone fail</td>
+</tr>
+<tr>
+<td>Incident playbooks</td>
+<td>Playbook mechanic teaches the value of preparation</td>
+</tr>
+<tr>
+<td>Security architecture</td>
+<td>Thoughtful defense selection teaches how to think architecturally</td>
+</tr>
+<tr>
+<td>Cost-benefit analysis</td>
+<td>Every budget point spent has consequences</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Quick Reference: Actions &amp; Costs</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Cost</th>
+<th>Roll</th>
+<th>Effect</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deploy Defense</strong></td>
+<td>10/15/25</td>
+<td>None</td>
+<td>Active immediately (up to 2 BASIC per action, v2.2)</td>
+<td>+5 each</td>
+</tr>
+<tr>
+<td><strong>Harden Upgrade</strong></td>
+<td>5</td>
+<td>None</td>
+<td>+2 effectiveness</td>
+<td>+2</td>
+</tr>
+<tr>
+<td><strong>Create Playbook</strong></td>
+<td>10</td>
+<td>None</td>
+<td>One-time +3 bonus (max 2 per game, v2.2)</td>
+<td>+10</td>
+</tr>
+<tr>
+<td><strong>Test &amp; Drill</strong></td>
+<td>0</td>
+<td>11+</td>
+<td>Validates defense</td>
+<td>+0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pentester defense roll (v2.2):</strong> d20 + printed bonus (one chosen defense) + upgrades (+2 each) + playbook (+3) ≥ tactic DC. Each tactic defended: +5 Score.</p>
+<hr />
+<h2>Continuing to Other Modules</h2>
+<p><strong>After Winning Hardening:</strong>
+- Continue to <strong>Incident Response</strong> (test your defenses)
+- Continue to <strong>Audit &amp; Compliance</strong> (verify your hardening)
+- Play again with new threat vectors</p>
+<p><strong>After Losing Hardening:</strong>
+- Replay with different strategy
+- Try higher budget variation
+- Study which Pentester Tactics caused most losses
+- Plan for those tactics in next iteration</p>
+<hr />
+<h2>v2.2 Playtest Edition Changes</h2>
+<p>Changes for playtesters to validate, and why they were made:</p>
+<ol>
+<li><strong>Pentester Tactics unified to the PT-01–PT-08 deck.</strong> The 8 tactics previously embedded in this document (Bypass Basic Defenses, Zero-Day, etc.) are replaced by the printed card deck in <code>cards/hardening/core-deck/pentester-tactic-cards.md</code>. This removes duplicate, conflicting tactic definitions (including a "Persistence Expert" tactic that referenced a nonexistent PERSISTENCE vector).</li>
+<li><strong>One canonical resolution formula.</strong> Defense roll = d20 + printed defense bonus for ONE chosen defense (per the tactic card) + hardening upgrades on that defense (+2 each) + relevant playbook (+3), vs. the tactic's printed DC. The old "+2 to +4 by tier", "roll 11+/13+", and multi-defense "synergy stacking" texts are removed. <strong>Validate:</strong> do DCs 12-15 feel fair with the printed bonuses?</li>
+<li><strong>Fixed turn count: 7 turns, one action per turn</strong>, plus the <strong>Quick-Win rule</strong> (deploy up to 2 BASIC defenses as one action). <strong>Validate:</strong> can teams realistically field 5-7 defenses in 7 actions?</li>
+<li><strong>Single scoring formula</strong> (shared with the standalone guide) including Pentester results and budget efficiency; tiers rescaled (win at 60+). Reputation removed from Hardening scoring — failed tactics simply score 0 and trigger their printed consequence.</li>
+<li><strong>Anti-playbook-spam:</strong> playbooks capped at <strong>2 per game</strong>, and victory requires <strong>≥4 deployed defenses</strong>.</li>
+</ol>
+<p><strong>Designer note — why playbook spam can't win (v2.2 math):</strong>
+- <em>Playbook-spam strategy:</em> 2 playbooks (cap) = 20 pts; 0 defenses = 0 pts; with no deployed defenses every Pentester roll is d20 + 0 (+3 once per playbook) vs DC 12-15, so expect ~1 of 3 tactics defended = 5 pts; budget efficiency (130/150) × 10 ≈ 9 pts. <strong>Total ≈ 34</strong> — below the 60 threshold, and it fails the ≥4-defenses gate regardless. <strong>Cannot win.</strong>
+- <em>Balanced layered strategy:</em> 7 defenses (35) + 1 upgrade (2) + 1 playbook (10) + 3 of 3 tactics defended (15) + budget efficiency (50/150 × 10 ≈ 3) = <strong>65 → Victory.</strong> See the worked example above.</p>
+<hr />
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Questions about Incident Response?</strong> See Module: Incident Response</li>
+<li><strong>Want to play multiple modules?</strong> See Module Combinations</li>
+<li><strong>Understanding framework?</strong> See Framework</li>
+</ul>
+<hr />
+<p><em>Hardening Module - Complete Rules</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">docs/standalone-games/hardening.md</p><h1>Hardening Module: Standalone Play Guide</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Duration:</strong> 30-45 minutes
+<strong>Players:</strong> 1 Threat Orchestrator + 2-4 Blue Team members
+<strong>Best For:</strong> Defense architecture training, security design, proactive hardening practice</p>
+<hr />
+<h2>Module Overview</h2>
+<p>The <strong>Hardening Module</strong> teaches players how to build <strong>defense-in-depth</strong>—layered security controls that work together to protect critical systems. Players deploy defenses strategically, harden existing controls, and defend against pentester challenges.</p>
+<p>This module focuses on <strong>proactive security</strong> rather than reactive incident response.</p>
+<hr />
+<h2>Setup (5 minutes)</h2>
+<h3>1. Choose Difficulty Level</h3>
+<p>All difficulty levels run <strong>7 turns</strong>, one action per turn (v2.2). Difficulty scales via Pentester Tactic count.</p>
+<table>
+<thead>
+<tr>
+<th>Difficulty</th>
+<th>Budget</th>
+<th>Turn Limit</th>
+<th>Pentester Tactics</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Beginner</strong></td>
+<td>150</td>
+<td>7 turns</td>
+<td>2 cards</td>
+<td>First-time, teaching defense concepts</td>
+</tr>
+<tr>
+<td><strong>Intermediate</strong></td>
+<td>150</td>
+<td>7 turns</td>
+<td>3 cards</td>
+<td>Standard play, balanced challenge</td>
+</tr>
+<tr>
+<td><strong>Advanced</strong></td>
+<td>150</td>
+<td>7 turns</td>
+<td>4 cards</td>
+<td>Experienced players, comprehensive test</td>
+</tr>
+</tbody>
+</table>
+<h3>2. Set Your Scenario Context</h3>
+<p><strong>Option A: Hypothetical Threat (Solo)</strong>
+Threat Orchestrator describes a realistic threat scenario:</p>
+<blockquote>
+<p>"Imagine your team successfully detected an attack last month. The attacker started with a phishing email, moved laterally through the network via SMB, and escalated privileges using a kernel exploit. Now you have time to harden your defenses. Here's the threat profile you need to defend against..."</p>
+</blockquote>
+<p><strong>Option B: Follow from Incident Response Module</strong>
+If continuing from Incident Response:
+- Use the attack chain that was just played
+- Players now design defenses against those specific threats
+- Discovered vectors guide defense selection</p>
+<p><strong>Option C: Generate Threat Vectors Randomly (v2.2 — one standard procedure)</strong>
+Roll <strong>1d6 for each of the six threat vectors</strong> to determine which threats you must defend against (1-2 = no notable threat, 3-4 = intermediate threat, 5-6 = advanced threat):
+- Roll 1d6 for SOCIAL ENGINEERING threats
+- Roll 1d6 for WEB EXPLOIT threats
+- Roll 1d6 for CREDENTIAL ABUSE threats
+- Roll 1d6 for MALWARE threats
+- Roll 1d6 for NETWORK threats
+- Roll 1d6 for DATA EXFIL threats</p>
+<h3>3. Blue Team Setup</h3>
+<ul>
+<li>Starting Budget: <strong>150</strong> (represents planning time/resources)</li>
+<li>Draw 5 Defense Cards (random, face down)</li>
+<li>Place Security Score Tracker at <strong>0</strong></li>
+<li>Place Hardening Tokens/Upgrade Counter at <strong>0</strong></li>
+<li>Prepare to track deployed defenses on paper/board</li>
+<li>Optional: Place relevant Asset Cards on the table for scenario context (shared components — see <code>cards/network-building/core-deck/asset-cards.md</code>)</li>
+</ul>
+<h3>4. Prepare Pentester Tactic Cards</h3>
+<ul>
+<li>Shuffle the Pentester Tactic Card deck</li>
+<li>Set aside <strong>2-4 cards</strong> based on difficulty (don't reveal yet)</li>
+<li>These will be drawn mid-game to test the team's defenses</li>
+</ul>
+<hr />
+<h2>Gameplay Loop (25-35 minutes)</h2>
+<h3>Round Structure</h3>
+<p>Each turn represents time allocated to hardening (15-30 minutes of planning work per turn).</p>
+<p><strong>TURN SEQUENCE:</strong></p>
+<p><strong>1. START OF TURN</strong>
+- Read turn number aloud ("Hardening Turn 1...")
+- Remaining budget announced</p>
+<p><strong>2. BLUE TEAM'S TURN (2-3 minutes discussion)</strong>
+- Discuss which hardening action to take
+- Decide strategy (deploy new defense, upgrade existing, create playbook)</p>
+<p><strong>3. ACTION EXECUTION</strong>
+- Perform chosen action
+- No roll needed for deployment (see below for when rolls occur)
+- Update trackers</p>
+<p><strong>4. END OF TURN</strong>
+- Advance Turn Tracker by 1
+- Draw 1 new Defense Card
+- Check if mid-game Pentester Challenge should occur</p>
+<h3>Four Available Actions</h3>
+<h4>Action 1: Deploy a New Defense 🛡️</h4>
+<p><strong>Cost:</strong> 10/15/25 Budget (by tier)
+<strong>Roll Required:</strong> None—automatic success</p>
+<p><strong>How it works:</strong>
+1. Choose a Defense Card from your hand
+2. Announce which Asset or threat vector it defends
+3. Explain strategy (optional but encouraged): "Why are we deploying this defense?"
+4. Card is placed on the table (face up)</p>
+<p><strong>Outcome:</strong>
+- Defense is immediately active
+- No roll needed
+- All deployed defenses contribute to final Security Score</p>
+<p><strong>Quick-Win Rule (v2.2):</strong> You may deploy <strong>up to 2 BASIC-tier defenses as a single action</strong> (pay 10 Budget each).</p>
+<p><strong>Note (v2.2):</strong> The core deck contains one copy of each defense (D-01 to D-24), so each defense can only be deployed once per game. If you want duplicate deployments (e.g., two MFA implementations on different systems), print a second copy of the deck and house-rule it.</p>
+<hr />
+<h4>Action 2: Harden an Existing Defense ⬆️</h4>
+<p><strong>Cost:</strong> 5 Budget per upgrade
+<strong>Roll Required:</strong> None</p>
+<p><strong>How it works:</strong>
+1. Choose a Defense Card already deployed (from this turn or previous)
+2. Pay 5 Budget
+3. Mark defense with <strong>+2 effectiveness bonus</strong> (track on paper next to the card)
+4. Optionally explain: "We're improving this defense by..."</p>
+<p><strong>Examples of hardening:</strong>
+- "Hardening our EDR deployment by tuning behavioral analytics and adding threat intel integration" → EDR now has +2 bonus
+- "Hardening our MFA implementation by enabling hardware token requirements" → MFA now has +2 bonus
+- "Hardening Network Segmentation by adding microsegmentation within critical zones" → Network Seg now has +2 bonus</p>
+<p><strong>Strategic Value:</strong>
+- Each upgrade adds +2 to the defense's effectiveness
+- Upgrades can stack (e.g., MFA with +2, +2, +2 = +6 total)
+- Upgraded defenses are more likely to survive Pentester Tactics</p>
+<hr />
+<h4>Action 3: Create an Incident Response Playbook 📋</h4>
+<p><strong>Cost:</strong> 10 Budget per playbook
+<strong>Roll Required:</strong> None
+<strong>Limit (v2.2):</strong> Maximum <strong>2 playbooks per game</strong></p>
+<p><strong>How it works:</strong>
+1. Choose a specific threat vector you want to prepare for
+2. Write a 1-2 sentence playbook describing your response: (e.g., "Ransomware Outbreak Response: Immediate backup isolation, network segmentation, and access revocation")
+3. Place playbook card on the table
+4. When a Pentester uses a matching vector later, you get <strong>+3 bonus</strong> to your defense roll</p>
+<p><strong>Example Playbooks:</strong>
+- "Credential Compromise Incident: Forced MFA re-authentication and access token revocation"
+- "Supply Chain Attack Detection: Monitor unusual DNS and C2 beaconing patterns"
+- "Insider Threat Response: Behavioral analytics review and privileged access audit"
+- "Ransomware Response: Immediate backup isolation and network segmentation"</p>
+<p><strong>Strategic Value:</strong>
+- Playbooks cost more (10 Budget) but provide larger bonus (+3)
+- Limited use (one-time per playbook, then discarded after use; max 2 per game)
+- Forces teams to predict which threats are most dangerous
+- Playbooks alone cannot win: victory requires at least 4 deployed defenses (v2.2)</p>
+<hr />
+<h4>Action 4: Test &amp; Drill Defenses 🎯</h4>
+<p><strong>Cost:</strong> 0 Budget (represents time, not money)
+<strong>Roll Required:</strong> 11+ on d20</p>
+<p><strong>How it works:</strong>
+1. Announce you're conducting a drill/test of deployed defenses
+2. Choose one or more deployed defenses to test
+3. Roll 1d20 for each defense
+4. Each defense with roll of 11+ succeeds; 10 or less fails</p>
+<p><strong>Outcome:</strong>
+- Success: Defense works properly; mark it as "tested" (contributes extra points at end)
+- Failure: Defense has implementation issues; no penalty, but doesn't count toward testing bonus</p>
+<p><strong>Strategic Value:</strong>
+- Free way to validate defenses
+- Successful tests add confidence (and points) but don't guarantee success against real attacks
+- Encourages thinking about deployment validation (realistic practice)</p>
+<hr />
+<h2>Mid-Game: Pentester Challenge</h2>
+<p><strong>After turn 3 or 4</strong>, the Threat Orchestrator draws a <strong>Pentester Tactic Card</strong> (PT-01 to PT-08, see <code>cards/hardening/core-deck/pentester-tactic-cards.md</code>) and launches a simulated attack.</p>
+<h3>Pentester Attack Resolution (v2.2 — one canonical formula)</h3>
+<p><strong>1. TO Describes the Attack Scenario</strong>
+Example (PT-02): "Your red team delivered a payload that uses only built-in Windows tools — living-off-the-land. Can your defenses detect it?"</p>
+<p><strong>2. Blue Team Chooses ONE Deployed Defense to Resolve With</strong>
+Team selects one deployed defense to defend against this attack</p>
+<p><strong>3. Roll the Defense Roll</strong></p>
+<blockquote>
+<p><strong>Defense roll = d20 + printed defense bonus for the chosen defense (from the tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3, one-time, matching vector)</strong></p>
+<p><strong>Success if the total ≥ the tactic card's printed DC</strong> (DC 12-15 for PT-01 to PT-08).</p>
+</blockquote>
+<p>If the chosen defense isn't on the tactic's bonus list, its printed bonus is +0 (upgrades and playbooks still apply). Multi-vector tactics: two separate rolls, one defense each.</p>
+<p><strong>4. Outcome</strong>
+- <strong>Success:</strong> Defense holds; count as a Pentester Tactic Defended (+5 Security Score)
+- <strong>Failure:</strong> Attack succeeds; apply the consequence printed on the tactic card; no score for this tactic</p>
+<p><strong>Optional:</strong> Play multiple pentester tactics (2-4 total) across turns 3-6.</p>
+<hr />
+<h2>Scoring &amp; Final Security Posture</h2>
+<h3>Security Score Calculation (v2.2 — same formula as the module rules)</h3>
+<pre><code>Defenses Deployed:          Count × 5 points
+Hardening Upgrades:         Count × 2 points
+Playbooks Created:          Count × 10 points   [max 2 playbooks per game]
+Pentester Tactics Defended: Count × 5 points
+Budget Efficiency:          (Remaining Budget / Starting Budget) × 10 points
+
+EXAMPLE (150 starting budget, 7 turns):
+- 7 defenses deployed (two turns used the 2-BASIC Quick-Win):  35 points
+- 1 hardening upgrade:                                          2 points
+- 1 playbook created:                                          10 points
+- 3 of 3 pentester tactics defended:                           15 points
+- 50 budget remaining (spent 100): (50/150) × 10 ≈              3 points
+────────────────────────────
+TOTAL SECURITY SCORE:                                          65 points → Strong (Victory)
+</code></pre>
+<h3>Scoring Tiers (v2.2 — rescaled for the 7-action economy)</h3>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Level</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>75+</strong></td>
+<td>Exceptional</td>
+<td>Enterprise-grade security posture; sophisticated threat preparedness</td>
+</tr>
+<tr>
+<td><strong>60-74</strong></td>
+<td>Strong</td>
+<td>Mid-market ready; layered, comprehensive defenses</td>
+</tr>
+<tr>
+<td><strong>45-59</strong></td>
+<td>Adequate</td>
+<td>Startup-level protection; covers main attack vectors</td>
+</tr>
+<tr>
+<td><strong>30-44</strong></td>
+<td>Weak</td>
+<td>Minimal protection; significant gaps remain</td>
+</tr>
+<tr>
+<td><strong>Below 30</strong></td>
+<td>Vulnerable</td>
+<td>Inadequate defenses; likely to fail against sophisticated attacks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Winning &amp; Losing</h2>
+<h3>Victory Condition ✓ (v2.2)</h3>
+<p><strong>Blue Team Wins Hardening if ALL of:</strong>
+- Final Security Score ≥ 60 (strong layered defenses)
+- AND at least 4 defenses deployed (playbooks and upgrades alone cannot win)
+- AND majority of Pentester Tactics were successfully defended against</p>
+<h3>Defeat Condition ✗</h3>
+<p><strong>Blue Team Loses Hardening if:</strong>
+- Final Security Score &lt; 45 (inadequate protection)
+- OR Budget exhausted before defenses were deployed
+- OR majority of Pentester Tactics succeeded despite defenses</p>
+<p>Scores of 45-59 that meet the tactic/defense requirements count as a partial success.</p>
+<hr />
+<h2>Debrief &amp; Reflection (5-10 minutes)</h2>
+<p><strong>PART 1: DEFENSE STRATEGY (3 min)</strong>
+1. "How did you prioritize which defenses to deploy first?"
+2. "What layers of defense work best together?"
+3. "Did the Pentester Tactics reveal gaps? Which ones?"</p>
+<p><strong>PART 2: RESOURCE MANAGEMENT (2 min)</strong>
+1. "Did you run out of budget? Would more budget have helped?"
+2. "Which defenses provided the best value (cost vs. effectiveness)?"
+3. "Would you have allocated budget differently?"</p>
+<p><strong>PART 3: PENTESTER RESULTS (2-3 min)</strong>
+1. "Which Pentester Tactic was most surprising?"
+2. "Which defense was most valuable against attacks?"
+3. "How would you harden further given unlimited budget?"</p>
+<p><strong>PART 4: REAL-WORLD APPLICATION (2 min)</strong>
+1. "If you were hardening your actual organization, what would you deploy first?"
+2. "Why is defense-in-depth difficult in practice?"
+3. "What's the hardest part of maintaining layered security?"</p>
+<hr />
+<h2>Tips for Threat Orchestrators</h2>
+<h3>Balancing Defense Deployment</h3>
+<p><strong>Too Easy:</strong>
+- Teams deploy 8+ defenses with budget to spare
+- All Pentester Tactics fail
+- No difficult decisions required</p>
+<p><strong>Too Hard:</strong>
+- Teams can only afford 3-4 defenses
+- Most Pentester Tactics succeed
+- Team feels overwhelmed</p>
+<p><strong>Just Right:</strong>
+- Teams deploy 5-7 defenses with some budget left
+- 50-70% of Pentester Tactics fail
+- Teams debate defense priorities</p>
+<p><strong>Adjust by:</strong>
+- Starting budget (120, 150, or 180)
+- Number of Pentester Tactics (2, 3, or 4)
+- Defense card availability (more common defense draws)</p>
+<h3>Pentester Tactic Timing</h3>
+<ul>
+<li><strong>Turn 1-2:</strong> Let teams deploy initial defenses (no pentester challenge)</li>
+<li><strong>Turn 3-4:</strong> First Pentester Challenge</li>
+<li><strong>Turn 5-6:</strong> Second Pentester Challenge (if time allows)</li>
+</ul>
+<p><strong>Narrative framing:</strong> "Your red team has tested your defenses..."</p>
+<h3>Running as Competitive Tournament</h3>
+<p>If multiple teams are hardening simultaneously:
+- All teams get same starting threat vectors
+- All teams draw from same card deck (or equivalent decks)
+- Highest Security Score wins
+- Tiebreaker: Most Budget remaining</p>
+<hr />
+<h2>Sample Scenarios to Try</h2>
+<h3>Scenario 1: "Post-Phishing Hardening" (Beginner)</h3>
+<p><strong>Threat Vector:</strong> SOCIAL ENGINEERING
+<strong>Budget:</strong> 150
+<strong>Pentester Tactics:</strong> 2</p>
+<p><strong>Setup:</strong> "Your team detected a phishing attack. Now harden against social engineering threats."</p>
+<p><strong>Suggested defenses:</strong>
+- D-01: Email Authentication Setup (BASIC)
+- D-02: User Security Training (BASIC)
+- D-07: Multi-Factor Authentication (ADVANCED)
+- D-20: Zero Trust Access Control (ELITE)</p>
+<hr />
+<h3>Scenario 2: "Ransomware Preparedness" (Intermediate)</h3>
+<p><strong>Threat Vectors:</strong> MALWARE, DATA EXFIL, NETWORK
+<strong>Budget:</strong> 150
+<strong>Pentester Tactics:</strong> 3</p>
+<p><strong>Setup:</strong> "A ransomware variant targeted your industry. Prepare your defenses."</p>
+<p><strong>Key defenses:</strong>
+- D-08: EDR (Endpoint Detection &amp; Response)
+- D-11: Data Loss Prevention (DLP)
+- D-09: Network Segmentation
+- D-15: Deception Technology (Honeypots)
+- D-19: Backup &amp; Disaster Recovery
+- D-23: IR Program &amp; Runbooks</p>
+<hr />
+<h3>Scenario 3: "Enterprise Hardening" (Advanced)</h3>
+<p><strong>Threat Vectors:</strong> All 6 (SOCIAL ENGINEERING, WEB EXPLOIT, CREDENTIAL ABUSE, MALWARE, NETWORK, DATA EXFIL)
+<strong>Budget:</strong> 150
+<strong>Pentester Tactics:</strong> 4</p>
+<p><strong>Setup:</strong> "Your enterprise faces threats across all vectors. Build comprehensive defense-in-depth."</p>
+<p><strong>Challenge:</strong> Defend against all six vectors with limited budget</p>
+<hr />
+<h2>Extensions &amp; Variations</h2>
+<h3>Hardening Plus (Extended Play)</h3>
+<p><strong>Duration:</strong> 45-60 minutes
+- Start with Budget: 200 (more resources)
+- Play 9 turns instead of 7 (more time)
+- 4-5 Pentester Tactics (more challenges)
+- Raise the playbook cap from 2 to 3</p>
+<h3>Defense-in-Depth Deep Dive</h3>
+<p><strong>Focus on layering:</strong>
+- Each turn, discuss <em>why</em> defenses work together
+- Create explicit layer descriptions: "Layer 1 (Prevention), Layer 2 (Detection), Layer 3 (Response)"
+- Score based on how well defenses complement each other</p>
+<h3>Compliance Integration</h3>
+<p><strong>Add compliance requirement:</strong>
+- Teams must defend against threat vectors while meeting compliance requirements (PCI-DSS, GDPR, HIPAA)
+- Some defenses satisfy both security and compliance
+- Creates strategic depth</p>
+<hr />
+<h2>Next Steps After This Module</h2>
+<p><strong>If you won:</strong>
+- Continue to <strong>Incident Response Module</strong> (as follow-up) → Test your defenses against attacks
+- Continue to <strong>Audit &amp; Compliance Module</strong> → Validate your security posture</p>
+<p><strong>If you lost:</strong>
+- Replay with higher budget
+- Try a less complex scenario
+- Play Incident Response to understand what defenses are actually needed</p>
+<p><strong>Standalone:</strong> Play again with different threat vectors and Pentester Tactics</p>
+<hr />
+<h2>Quick Reference: Action Costs &amp; Effects</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Cost</th>
+<th>Effect</th>
+<th>Roll</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deploy Defense</strong></td>
+<td>10/15/25</td>
+<td>Defense active immediately (up to 2 BASIC per action, v2.2)</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Harden Upgrade</strong></td>
+<td>5</td>
+<td>+2 effectiveness to defense</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Create Playbook</strong></td>
+<td>10</td>
+<td>+3 bonus when used once (max 2 per game, v2.2)</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Test &amp; Drill</strong></td>
+<td>0</td>
+<td>Validate defenses</td>
+<td>11+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pentester defense roll (v2.2):</strong> d20 + printed bonus (one chosen defense) + upgrades (+2 each) + playbook (+3) ≥ tactic DC.</p>
+<p><em>For the full list of v2.2 changes and the reasoning behind them, see the "v2.2 Playtest Edition Changes" section in Module: Hardening.</em></p>
+<hr />
+<h2>Need Help?</h2>
+<ul>
+<li><strong>Questions about rules?</strong> See Core Rules</li>
+<li><strong>Want to combine modules?</strong> See Module Combinations</li>
+<li><strong>Confused about scoring?</strong> See FRAMEWORK.md</li>
+</ul>
+<hr />
+<p><em>Hardening Module - Standalone Play Guide</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em></p></section><section class="doc-break"><p class="doc-src">cards/hardening/core-deck/defense-cards.md</p><h1>Hardening Module: Defense Cards (Shared with Incident Response)</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> July 2026</p>
+<hr />
+<h2>Overview</h2>
+<p>These 24 Defense Cards are <strong>shared between the Incident Response and Hardening modules</strong>. In Hardening, teams deploy these same defenses to build defense-in-depth and test them against Pentester Tactics.</p>
+<ul>
+<li><strong>Total Cards:</strong> 24</li>
+<li><strong>Tiers:</strong> BASIC (10 Budget), ADVANCED (15 Budget), ELITE (25 Budget)</li>
+<li><strong>Distribution:</strong> 8 cards per tier, 6 threat vectors represented</li>
+<li><strong>Used In:</strong> Both Incident Response and Hardening modules</li>
+</ul>
+<hr />
+<h2>Defense Card Organization</h2>
+<h3>Tier System</h3>
+<ul>
+<li><strong>BASIC (10 Budget):</strong> Fundamental tools and procedures (8 cards)</li>
+<li><strong>ADVANCED (15 Budget):</strong> Specialized investigative techniques (8 cards)</li>
+<li><strong>ELITE (25 Budget):</strong> Cutting-edge detection and response (8 cards)</li>
+</ul>
+<p><strong>Note (v2.2):</strong> Tiers are grouped by section below. Card IDs are stable and do not renumber when a card's tier changes, so IDs within a section are not always contiguous.</p>
+<h3>Countermeasure Vectors</h3>
+<ul>
+<li><code>SOCIAL_ENGINEERING</code></li>
+<li><code>WEB_EXPLOIT</code></li>
+<li><code>CREDENTIAL_ABUSE</code></li>
+<li><code>MALWARE</code></li>
+<li><code>NETWORK</code></li>
+<li><code>DATA_EXFIL</code></li>
+</ul>
+<p><strong>Vectors: plural convention (v2.2):</strong> Most defenses list a single vector. A few list two (marked "Vectors:"). A dual-tagged defense counts as a vector match for <strong>either</strong> listed vector.</p>
+<hr />
+<h2>BASIC TIER DEFENSES (10 Budget Each)</h2>
+<h3>D-01: Email Authentication Setup</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> SOCIAL_ENGINEERING</p>
+<p>Deploy SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail), and DMARC (Domain Message Authentication, Reporting &amp; Conformance) to prevent email spoofing.</p>
+<p><strong>Effect:</strong> Blocks phishing emails claiming to be from your domain. Requires attackers to find alternative vectors.</p>
+<p><strong>Used Against:</strong> T-01 (Phishing Campaign)</p>
+<hr />
+<h3>D-02: User Security Training</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> SOCIAL_ENGINEERING</p>
+<p>Conduct phishing awareness training for all staff. Teach recognition of suspicious links, sender spoofing, urgency tactics, and credential harvesting attempts.</p>
+<p><strong>Effect:</strong> Reduces successful phishing rate by 70-80%. Users become your first line of defense.</p>
+<p><strong>Used Against:</strong> T-01, T-02 (Phishing, Watering Hole)</p>
+<hr />
+<h3>D-03: Windows Update Patching</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> WEB_EXPLOIT</p>
+<p>Deploy automated Windows Update management across all systems. Establish patch deployment timelines (critical = 48 hours, high = 2 weeks).</p>
+<p><strong>Effect:</strong> Closes browser and kernel vulnerabilities. Prevents watering hole and exploit kit attacks.</p>
+<p><strong>Used Against:</strong> T-02 (Watering Hole), T-05 (Privilege Escalation)</p>
+<hr />
+<h3>D-04: Network Firewall Rules</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> NETWORK</p>
+<p>Deploy perimeter firewall rules to block unauthorized outbound protocols. Default-deny for unusual ports and known malware C2 domains.</p>
+<p><strong>Effect:</strong> Prevents early-stage lateral movement and C2 beaconing. Slows attacker reconnaissance.</p>
+<p><strong>Used Against:</strong> T-04 (Lateral Movement), T-09 (C2 Beaconing)</p>
+<hr />
+<h3>D-05: Log Centralization</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy centralized log aggregation (syslog, Splunk, ELK). Forward Windows Event Logs, firewall logs, DNS queries, and proxy logs to central SIEM.</p>
+<p><strong>Effect:</strong> Makes local log tampering difficult. Provides investigative visibility into attacker activities. Foundation for threat hunting.</p>
+<p><strong>Used Against:</strong> T-07, T-08 (Persistence attacks)</p>
+<hr />
+<h3>D-06: Basic Antivirus Deployment</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy signature-based antivirus across all endpoints. Enable automatic definition updates (daily). Configure real-time file and email scanning.</p>
+<p><strong>Effect:</strong> Catches known malware variants. Does not detect zero-day or polymorphic malware. Useful as part of defense-in-depth.</p>
+<p><strong>Used Against:</strong> T-05, T-07, T-08 (Malware-based attacks)</p>
+<hr />
+<h3>D-19: Backup &amp; Disaster Recovery</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget) <em>(v2.2 — retiered from ELITE; 3-2-1 backups are fundamental hygiene)</em>
+<strong>Vector:</strong> MALWARE</p>
+<p>Implement 3-2-1 backup strategy: 3 copies of data, 2 different storage types, 1 offsite copy. Test restore procedures quarterly.</p>
+<p><strong>Effect:</strong> Enables rapid recovery from ransomware. Ensures data availability even if primary systems are compromised. Critical for business continuity.</p>
+<p><strong>Used Against:</strong> T-07, T-08, T-10, T-11, T-12 (Persistence and exfil attacks)</p>
+<hr />
+<h3>D-23: IR Program &amp; Runbooks</h3>
+<p><strong>Tier:</strong> BASIC (10 Budget) <em>(v2.2 — retiered from ELITE and renamed from "Incident Response Playbooks" to avoid confusion with the Hardening "Create Playbook" action)</em>
+<strong>Vector:</strong> NETWORK</p>
+<p>Establish an incident response program with detailed runbooks for common scenarios: malware infection, data exfiltration, ransomware, insider threats, supply chain compromise. Include roles, responsibilities, communication plans.</p>
+<p><strong>Effect:</strong> Enables faster, more coordinated response when incidents occur. Reduces confusion during high-pressure situations. Improves incident containment and recovery time.</p>
+<p><strong>Used Against:</strong> T-09, T-10, T-11, T-12 (All C2 &amp; Exfil attacks)</p>
+<hr />
+<h2>ADVANCED TIER DEFENSES (15 Budget Each)</h2>
+<h3>D-07: Multi-Factor Authentication (MFA)</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> CREDENTIAL_ABUSE</p>
+<p>Deploy MFA for all remote access (VPN, RDP), email, and admin portals. Use authenticator apps or hardware tokens (not SMS).</p>
+<p><strong>Effect:</strong> Makes compromised credentials useless without the second factor. Blocks credential stuffing attacks.</p>
+<p><strong>Used Against:</strong> T-03 (Compromised Credentials), T-06 (Mimikatz)</p>
+<hr />
+<h3>D-08: EDR (Endpoint Detection &amp; Response)</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy EDR agent on all endpoints. Monitor process execution, file creation, registry modifications, and memory injection attempts. Enable behavioral analytics.</p>
+<p><strong>Effect:</strong> Detects living-off-the-land attacks (PowerShell, cmd, scheduled tasks). Provides deep visibility into attack progression.</p>
+<p><strong>Used Against:</strong> T-05 (Priv Esc), T-07, T-08 (Persistence)</p>
+<hr />
+<h3>D-09: Network Segmentation</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> NETWORK</p>
+<p>Implement VLANs and microsegmentation to separate user workstations from servers. Deploy firewall rules between segments. Implement zero-trust network access controls.</p>
+<p><strong>Effect:</strong> Prevents lateral movement via SMB and other internal protocols. Limits blast radius of compromise.</p>
+<p><strong>Used Against:</strong> T-04 (Lateral Movement), T-06 (Credential Dumping spread)</p>
+<hr />
+<h3>D-10: SIEM Correlation Rules</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> NETWORK</p>
+<p>Create SIEM rules to detect attack patterns: failed login spikes, privilege escalation attempts, unusual process creation, scheduled task creation, and data exfil indicators.</p>
+<p><strong>Effect:</strong> Correlates events across logs to detect multi-step attacks. Enables faster investigation and response.</p>
+<p><strong>Used Against:</strong> T-04, T-05, T-06, T-07, T-08, T-09 (Detection across entire chain)</p>
+<hr />
+<h3>D-11: Data Loss Prevention (DLP)</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> DATA_EXFIL</p>
+<p>Deploy DLP to monitor outbound data transfers. Classify sensitive data (customer PII, source code, trade secrets). Block or alert on unauthorized transfers.</p>
+<p><strong>Effect:</strong> Prevents SQL database exfiltration and bulk data theft. Detects unusual data access patterns. Enforces data security policies.</p>
+<p><strong>Used Against:</strong> T-10, T-11, T-12 (Data exfiltration attacks)</p>
+<hr />
+<h3>D-12: Password Manager &amp; Vault</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget)
+<strong>Vector:</strong> CREDENTIAL_ABUSE</p>
+<p>Deploy enterprise password vault (CyberArk, HashiCorp Vault). Enforce strong unique passwords. Implement password rotation policies for service accounts.</p>
+<p><strong>Effect:</strong> Prevents credential reuse attacks. Makes credential stuffing difficult. Provides audit trail for compliance and incident investigation.</p>
+<p><strong>Used Against:</strong> T-03, T-06 (Credential attacks)</p>
+<hr />
+<h3>D-18: Intrusion Prevention System (IPS)</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget) <em>(v2.2 — retiered from ELITE; IPS/WAF appliances are standard mid-tier controls)</em>
+<strong>Vector:</strong> WEB_EXPLOIT</p>
+<p>Deploy network-based IPS with exploit signatures. Monitor for known CVE exploitation patterns. Configure WAF (Web Application Firewall) rules for SQL injection, XSS, and OWASP Top 10 attacks.</p>
+<p><strong>Effect:</strong> Blocks exploitation attempts in transit. Prevents watering hole and web exploit attacks. Most effective when combined with patching.</p>
+<p><strong>Used Against:</strong> T-02 (Watering Hole), T-05 (Exploits)</p>
+<hr />
+<h3>D-24: Threat Intelligence Integration</h3>
+<p><strong>Tier:</strong> ADVANCED (15 Budget) <em>(v2.2 — retiered from ELITE; community feeds like MISP/OTX are affordable)</em>
+<strong>Vectors:</strong> NETWORK, DATA_EXFIL <em>(v2.2 — dual-tagged; counts as a match for either vector)</em></p>
+<p>Subscribe to threat intelligence feeds (MISP, VirusTotal, AlienVault OTX). Integrate IOCs (Indicators of Compromise) into firewall, SIEM, and proxy. Participate in information sharing communities.</p>
+<p><strong>Effect:</strong> Enables faster detection of known malicious IPs and domains. Identifies emerging threats targeting your industry. Reduces detection time from days to minutes.</p>
+<p><strong>Used Against:</strong> T-09 (C2 Beaconing), T-10, T-11, T-12 (Exfil detection)</p>
+<hr />
+<h2>ELITE TIER DEFENSES (25 Budget Each)</h2>
+<h3>D-13: Threat Hunting Program</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Establish proactive threat hunting using MITRE ATT&amp;CK framework. Hunt for living-off-the-land techniques, anomalous processes, suspicious registry changes, and memory injection.</p>
+<p><strong>Effect:</strong> Finds advanced attacks that bypass signature-based detection. Detects LSASS dumping, scheduled task persistence, and registry backdoors. Reduces dwell time significantly.</p>
+<p><strong>Used Against:</strong> T-05, T-07, T-08 (Advanced persistence)</p>
+<hr />
+<h3>D-14: Memory Forensics</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy memory capture and analysis (Volatility, Memoryze). Create memory images of suspicious systems. Analyze for credential dumping, injected code, and rootkits.</p>
+<p><strong>Effect:</strong> Detects Mimikatz attacks and credential harvesting. Reveals attacker activities hidden from disk forensics. Critical for identifying advanced persistence mechanisms.</p>
+<p><strong>Used Against:</strong> T-06 (Mimikatz), T-07, T-08 (In-memory attacks)</p>
+<hr />
+<h3>D-15: Deception Technology (Honeypots)</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> NETWORK</p>
+<p>Deploy decoy systems (fake file servers, databases, credentials) to detect lateral movement. Create canary tokens that alert when accessed.</p>
+<p><strong>Effect:</strong> Any access to honeypots indicates active compromise. Detects lateral movement with zero false positives. Slows attacker progress and forces reconnaissance.</p>
+<p><strong>Used Against:</strong> T-04 (Lateral Movement), T-06 (Credential abuse)</p>
+<hr />
+<h3>D-16: Credential Guard &amp; Secure Boot</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> CREDENTIAL_ABUSE</p>
+<p>Enable Windows Credential Guard to isolate LSASS in virtualized container. Implement UEFI Secure Boot to prevent bootkit attacks. Enable TPM attestation.</p>
+<p><strong>Effect:</strong> Makes Mimikatz credential dumping ineffective. Prevents bootloader manipulation. Ensures firmware integrity. Blocks entire classes of early-boot attacks.</p>
+<p><strong>Used Against:</strong> T-06 (Mimikatz), T-07, T-08 (Persistence)</p>
+<hr />
+<h3>D-17: Advanced Malware Sandbox</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy advanced sandboxing solution (Cuckoo, Detonate, hybrid-analysis). Analyze suspicious files/URLs in isolated environments. Generate behavioral indicators and YARA rules.</p>
+<p><strong>Effect:</strong> Detects zero-day malware and unknown exploits. Analyzes evasion tactics. Generates detection rules for SIEM. Prevents spread of novel malware.</p>
+<p><strong>Used Against:</strong> T-05 (Privilege Escalation), T-07, T-08 (Malware persistence)</p>
+<hr />
+<h3>D-20: Zero Trust Access Control</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> CREDENTIAL_ABUSE</p>
+<p>Implement zero-trust architecture: verify every access request regardless of source. Deploy device identity, user identity, and behavior analytics. Implement conditional access policies.</p>
+<p><strong>Effect:</strong> Eliminates implicit trust based on network location. Even compromised devices cannot access sensitive resources without proper authentication and behavior validation.</p>
+<p><strong>Used Against:</strong> T-03, T-06 (Credential abuse), T-04 (Lateral movement)</p>
+<hr />
+<h3>D-21: Container Security &amp; Orchestration</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> MALWARE</p>
+<p>Deploy container runtime security (Falco, Sysdig). Implement image scanning for vulnerabilities. Use policy enforcement engines (OPA/Gatekeeper). Implement network policies for container segmentation.</p>
+<p><strong>Effect:</strong> Detects container escape attempts. Prevents vulnerable images from running. Limits lateral movement within containerized environments. Critical for modern cloud applications.</p>
+<p><strong>Used Against:</strong> T-05 (Priv Esc), T-04 (Lateral Movement in cloud)</p>
+<hr />
+<h3>D-22: Security Information &amp; Event Management (SIEM)</h3>
+<p><strong>Tier:</strong> ELITE (25 Budget)
+<strong>Vector:</strong> NETWORK</p>
+<p>Deploy enterprise SIEM (Splunk, ELK, QRadar). Centralize logs from all sources. Implement automated correlation rules, threat intelligence integration, and incident response workflows.</p>
+<p><strong>Effect:</strong> Provides centralized visibility into all security events. Enables rapid threat detection and investigation. Foundation for mature incident response program.</p>
+<p><strong>Used Against:</strong> T-04, T-06, T-07, T-08, T-09, T-10 (Detection across entire attack chain)</p>
+<hr />
+<h2>Defense Card Summary</h2>
+<h3>Distribution by Tier (v2.2)</h3>
+<ul>
+<li><strong>BASIC (10 Budget):</strong> 8 cards — D-01, D-02, D-03, D-04, D-05, D-06, D-19, D-23</li>
+<li><strong>ADVANCED (15 Budget):</strong> 8 cards — D-07, D-08, D-09, D-10, D-11, D-12, D-18, D-24</li>
+<li><strong>ELITE (25 Budget):</strong> 8 cards — D-13, D-14, D-15, D-16, D-17, D-20, D-21, D-22</li>
+</ul>
+<h3>Distribution by Vector (v2.2)</h3>
+<ul>
+<li><strong>SOCIAL_ENGINEERING:</strong> D-01, D-02 (2 cards)</li>
+<li><strong>WEB_EXPLOIT:</strong> D-03, D-18 (2 cards)</li>
+<li><strong>CREDENTIAL_ABUSE:</strong> D-07, D-12, D-16, D-20 (4 cards)</li>
+<li><strong>MALWARE:</strong> D-05, D-06, D-08, D-13, D-14, D-17, D-19, D-21 (8 cards)</li>
+<li><strong>NETWORK:</strong> D-04, D-09, D-10, D-15, D-22, D-23, D-24 (7 cards)</li>
+<li><strong>DATA_EXFIL:</strong> D-11, D-24 (2 cards)</li>
+</ul>
+<p><strong>Note:</strong> 24 cards total. D-24 is dual-tagged (NETWORK + DATA_EXFIL) and appears in both rows, so vector-row counts sum to 25 tags across 24 cards.</p>
+<hr />
+<h2>How These Cards Are Used in Hardening</h2>
+<h3>Deploy Action</h3>
+<p>Blue Team selects a Defense Card from their hand and deploys it:
+- <strong>Cost:</strong> 10/15/25 Budget depending on tier
+- <strong>Roll Required:</strong> None—automatic success
+- <strong>Effect:</strong> Defense immediately becomes active and counts toward Security Score
+- <strong>(v2.2)</strong> Two BASIC defenses may be deployed together as a single action</p>
+<h3>Pentester Challenge (v2.2 — one canonical formula)</h3>
+<p>When a Pentester Tactic is drawn (see Pentester Tactic Cards file), the Blue Team chooses <strong>one</strong> deployed defense to resolve it with:</p>
+<blockquote>
+<p><strong>Defense roll = d20 + printed defense bonus for the chosen defense (from the tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3)</strong></p>
+<p>Success if the total is <strong>≥ the tactic card's printed DC</strong>.</p>
+</blockquote>
+<p>See Module: Hardening for the full resolution procedure and a worked example.</p>
+<h3>Strategic Layering</h3>
+<p>Multiple defenses work together:
+- BASIC defenses are cheap but carry small printed bonuses against tactics
+- ADVANCED defenses provide good cost/effectiveness balance
+- ELITE defenses are expensive but carry the largest printed bonuses against sophisticated tactics
+- Layering across vectors matters: each tactic card lists which defenses earn bonuses, so broad coverage means you always have a strong defense to choose</p>
+<hr />
+<h2>Print Instructions</h2>
+<ol>
+<li>Print on cardstock (250 gsm minimum) for durability</li>
+<li>Cut along dotted lines</li>
+<li>Optional: Laminate or use sleeves for durability and reusability</li>
+<li>Consider color-coding by vector for visual quick reference:</li>
+<li><strong>SOCIAL_ENGINEERING:</strong> Red</li>
+<li><strong>WEB_EXPLOIT:</strong> Orange</li>
+<li><strong>CREDENTIAL_ABUSE:</strong> Blue</li>
+<li><strong>MALWARE:</strong> Purple</li>
+<li><strong>NETWORK:</strong> Green</li>
+<li><strong>DATA_EXFIL:</strong> Cyan</li>
+</ol>
+<hr />
+<h2>Notes on Card Reusability</h2>
+<p>These 24 Defense Cards are the <strong>same cards used in Incident Response module</strong>. The difference in usage:</p>
+<ul>
+<li><strong>In Incident Response:</strong> Blue Team deploys defenses to reveal hidden threats and earn points</li>
+<li><strong>In Hardening:</strong> Blue Team deploys defenses to prepare for Pentester Tactics and build resilience</li>
+</ul>
+<p>This allows educators to:
+- Use one physical deck for both modules
+- Teach defense-in-depth concepts in sequence
+- Show how defenses complement each other</p>
+<hr />
+<p><em>Hardening Module: Defense Cards</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">cards/hardening/core-deck/pentester-tactic-cards.md</p><h1>Hardening Module: Pentester Tactic Cards</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> July 2026</p>
+<hr />
+<h2>Overview</h2>
+<p><strong>Pentester Tactic Cards</strong> are unique to the Hardening Module. These 8 cards represent real-world red team attack tactics that challenge the defenses the Blue Team has deployed.</p>
+<ul>
+<li><strong>Total Cards:</strong> 8 (PT-01 to PT-08)</li>
+<li><strong>Used In:</strong> Hardening module only</li>
+<li><strong>Purpose:</strong> Challenge deployed defenses and test defense resilience</li>
+<li><strong>Timing:</strong> Drawn during mid-game "Pentester Challenge" (typically turns 3-4)</li>
+</ul>
+<hr />
+<h2>Core Concept</h2>
+<p>During the Hardening module gameplay:</p>
+<ol>
+<li><strong>Blue Team Deploys Defenses</strong> - Accumulate defensive controls across the 7-turn game (v2.2)</li>
+<li><strong>Pentester Challenge Occurs</strong> - Red team launches simulated attack</li>
+<li><strong>Defense Test</strong> - Deployed defenses are tested against the tactic</li>
+<li><strong>Resolution</strong> - Blue Team rolls d20 + modifiers to see if defense holds</li>
+<li><strong>Learning Moment</strong> - Whether attack succeeds or fails, discuss why</li>
+</ol>
+<hr />
+<h2>Pentester Tactic Cards</h2>
+<h3>PT-01: Social Engineering - Pretexting Attack</h3>
+<p><strong>Tactic Type:</strong> Initial Access / Social Engineering
+<strong>Target Vectors:</strong> SOCIAL_ENGINEERING, CREDENTIAL_ABUSE
+<strong>Difficulty:</strong> BASIC (defeat DC 12)</p>
+<p><strong>Description:</strong>
+A pentester calls your IT helpdesk impersonating a VIP executive. They claim to be traveling without their laptop and need emergency access to critical systems. They pressure the helpdesk with urgency and authority. Can they bypass your security procedures?</p>
+<p><strong>Attack Details:</strong>
+- Targets: User security training gaps, process enforcement
+- Success indicates: Social engineering protocols aren't followed
+- Blue Team rolls 1d20 to resist</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-02 (User Security Training):</strong> +2 bonus (staff trained to verify callers)
+- <strong>D-07 (MFA):</strong> +1 bonus (second factor still required)
+- <strong>D-23 (IR Program &amp; Runbooks):</strong> +2 bonus (clear escalation procedures)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (12+):</strong> Helpdesk follows proper verification procedures, attacker is denied
+- <strong>Blue Team Fails:</strong> Attacker gains credentials or system access; Blue Team must deploy additional defenses</p>
+<p><strong>Teaching Point:</strong> Social engineering exploits human psychology and organizational process gaps. Technology alone cannot defend against this; training and procedures are essential.</p>
+<hr />
+<h3>PT-02: Malware Evasion - Living-off-the-Land Technique</h3>
+<p><strong>Tactic Type:</strong> Persistence &amp; Execution
+<strong>Target Vectors:</strong> MALWARE, CREDENTIAL_ABUSE
+<strong>Difficulty:</strong> INTERMEDIATE (defeat DC 13)</p>
+<p><strong>Description:</strong>
+A pentester delivers a payload that uses only built-in Windows tools (PowerShell, scheduled tasks, registry modifications, WMI) to maintain persistence and establish a beachhead. No suspicious files, no external C2 traffic—just legitimate Windows features weaponized. Can your defenses detect this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Traditional antivirus, signature-based detection
+- Success indicates: Blind spot in malware detection strategy
+- Blue Team rolls 1d20 to detect and block</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-06 (Basic Antivirus):</strong> +1 bonus only (signatures don't catch living-off-the-land)
+- <strong>D-08 (EDR):</strong> +3 bonus (behavioral detection catches anomalous PowerShell/schtasks)
+- <strong>D-13 (Threat Hunting):</strong> +2 bonus (proactive hunting finds MITRE ATT&amp;CK techniques)
+- <strong>D-14 (Memory Forensics):</strong> +2 bonus (finds injected code in memory)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (13+):</strong> EDR or threat hunting detects the attack before persistence is established
+- <strong>Blue Team Fails:</strong> Attacker establishes persistent access; Blue Team must escalate incident response</p>
+<p><strong>Teaching Point:</strong> Signature-based defenses are insufficient against sophisticated attackers. Behavioral detection and proactive hunting are essential for modern threats.</p>
+<hr />
+<h3>PT-03: Credential Dumping - Mimikatz Attack</h3>
+<p><strong>Tactic Type:</strong> Privilege Escalation / Credential Access
+<strong>Target Vectors:</strong> CREDENTIAL_ABUSE, MALWARE
+<strong>Difficulty:</strong> INTERMEDIATE (defeat DC 13)</p>
+<p><strong>Description:</strong>
+A pentester with local admin privileges attempts to dump LSASS memory and extract cached domain credentials using Mimikatz. These credentials could then be used for lateral movement and privilege escalation. Can your endpoint defenses prevent this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: LSASS memory protection, credential storage hardening
+- Success indicates: Weak credential protection on endpoints
+- Blue Team rolls 1d20 to block the attack</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-07 (MFA):</strong> +1 bonus only (doesn't protect cached credentials)
+- <strong>D-12 (Password Vault):</strong> +2 bonus (service accounts in vault aren't in LSASS)
+- <strong>D-14 (Memory Forensics):</strong> +2 bonus (detects LSASS tampering)
+- <strong>D-16 (Credential Guard &amp; Secure Boot):</strong> +4 bonus (isolates LSASS in virtualized container—primary defense)
+- <strong>D-08 (EDR):</strong> +2 bonus (alerts on suspicious LSASS access)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (13+):</strong> Credential Guard blocks the attack or EDR detects the attempt
+- <strong>Blue Team Fails:</strong> Domain credentials compromised; Blue Team loses future rolls vs. credential-based attacks (-1 penalty for remaining game)</p>
+<p><strong>Teaching Point:</strong> Privileged credential protection is critical. Credential Guard is the gold standard for endpoint protection. Service account password rotation and vaults prevent cached credential abuse.</p>
+<hr />
+<h3>PT-04: Lateral Movement - Network Traversal</h3>
+<p><strong>Tactic Type:</strong> Lateral Movement
+<strong>Target Vectors:</strong> NETWORK, CREDENTIAL_ABUSE
+<strong>Difficulty:</strong> INTERMEDIATE (defeat DC 13)</p>
+<p><strong>Description:</strong>
+A pentester with access to one workstation attempts to move laterally across your network using SMB share enumeration, pass-the-hash attacks, and exploitation of unsecured share access. Can your network architecture and controls prevent this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Network segmentation, share access controls
+- Success indicates: Flat network with unrestricted SMB traffic
+- Blue Team rolls 1d20 + architecture modifiers</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-04 (Firewall Rules):</strong> +1 bonus (blocks some traffic, but not SMB on internal network)
+- <strong>D-09 (Network Segmentation):</strong> +3 bonus (restricts SMB traffic between segments)
+- <strong>D-10 (SIEM Correlation):</strong> +2 bonus (detects lateral movement patterns)
+- <strong>D-15 (Honeypots):</strong> +2 bonus (attacker triggers canary token)
+- <strong>D-20 (Zero Trust Access):</strong> +3 bonus (even lateral access requires authentication)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (13+):</strong> Network segmentation or honeypots stop the attack
+- <strong>Blue Team Fails:</strong> Attacker establishes foothold on file server or domain controller; future defense deployments cost 1.5x Budget</p>
+<p><strong>Teaching Point:</strong> Flat networks are indefensible. Network segmentation combined with zero-trust access controls are essential. Honeypots are low-cost but highly effective deterrents.</p>
+<hr />
+<h3>PT-05: Privilege Escalation - Unpatched Kernel Exploit</h3>
+<p><strong>Tactic Type:</strong> Privilege Escalation
+<strong>Target Vectors:</strong> MALWARE, WEB_EXPLOIT
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester discovers an unpatched vulnerability in a critical Windows kernel or third-party driver. They develop a local privilege escalation exploit that elevates from user to SYSTEM privileges. Can your patch management and detection systems catch this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Patch management gaps, detection of privilege escalation
+- Success indicates: Unpatched systems or poor vulnerability management
+- Blue Team rolls 1d20 to patch or detect</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-03 (Windows Patching):</strong> +3 bonus (prevents the vulnerability from existing)
+- <strong>D-05 (Log Centralization):</strong> +1 bonus (may detect unusual privilege elevation attempts)
+- <strong>D-08 (EDR):</strong> +3 bonus (behavioral detection alerts on privilege escalation)
+- <strong>D-13 (Threat Hunting):</strong> +2 bonus (proactive hunting finds unpatched systems)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+):</strong> Patch management or EDR prevents or detects the exploit before escalation
+- <strong>Blue Team Fails:</strong> Attacker gains system-level access; all subsequent attacks get +1 bonus, all defensive deployments get -1 penalty for remainder of game</p>
+<p><strong>Teaching Point:</strong> Patch management is one of the highest-ROI security controls. Unpatched systems are low-hanging fruit for attackers. Automated patching and vulnerability scanning are essential.</p>
+<hr />
+<h3>PT-06: Data Exfiltration - Unmonitored Channel</h3>
+<p><strong>Tactic Type:</strong> Exfiltration
+<strong>Target Vectors:</strong> DATA_EXFIL, NETWORK
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester with network access attempts to exfiltrate sensitive data (customer database, source code, trade secrets) via an unmonitored channel: DNS tunneling, steganography in image uploads, or a rogue cloud storage account. Can your DLP and monitoring systems catch this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Data loss prevention, network monitoring blind spots
+- Success indicates: Unsupervised data channels or weak DLP enforcement
+- Blue Team rolls 1d20 to detect and block</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-04 (Firewall Rules):</strong> +1 bonus (may block some exfil channels)
+- <strong>D-05 (Log Centralization):</strong> +1 bonus (may reveal unusual network traffic)
+- <strong>D-10 (SIEM Correlation):</strong> +2 bonus (detects anomalous data transfer patterns)
+- <strong>D-11 (DLP):</strong> +4 bonus (primary defense against data exfil)
+- <strong>D-22 (SIEM):</strong> +2 bonus (detects data access and transfer anomalies)
+- <strong>D-24 (Threat Intelligence):</strong> +1 bonus (identifies known C2 domains/IPs)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+):</strong> DLP or network monitoring detects and blocks the exfil attempt
+- <strong>Blue Team Fails:</strong> Data is exfiltrated; Blue Team immediately loses the game (breach is complete)</p>
+<p><strong>Teaching Point:</strong> DLP and network monitoring are essential for preventing data loss. Organizations must understand their critical data flows and monitor them accordingly.</p>
+<hr />
+<h3>PT-07: Supply Chain Compromise - Trusted Software Update</h3>
+<p><strong>Tactic Type:</strong> Initial Access / Persistence
+<strong>Target Vectors:</strong> MALWARE, WEB_EXPLOIT
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester compromises a software vendor that your organization trusts. They inject malicious code into a legitimate update that your organization automatically deploys. The malware is signed with the vendor's legitimate certificate. Can you detect and prevent this?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Update management, supply chain security, behavioral detection
+- Success indicates: Over-trust in vendor updates, poor verification procedures
+- Blue Team rolls 1d20 to detect or prevent</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-03 (Windows Patching):</strong> +0 bonus (legitimate patch—can't be distinguished)
+- <strong>D-06 (Antivirus):</strong> +1 bonus only (legitimate signature—won't help)
+- <strong>D-08 (EDR):</strong> +3 bonus (behavioral detection catches malicious activity after installation)
+- <strong>D-13 (Threat Hunting):</strong> +2 bonus (proactive hunting for suspicious post-update behavior)
+- <strong>D-17 (Malware Sandbox):</strong> +2 bonus (detonates update before deployment)
+- <strong>D-21 (Container Security):</strong> +2 bonus (prevents compromise spread in containerized environments)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+):</strong> EDR or threat hunting detects malicious behavior before widespread compromise
+- <strong>Blue Team Fails:</strong> Supply chain compromise spreads across organization; -2 penalty to all defense rolls for remainder of game</p>
+<p><strong>Teaching Point:</strong> Trust is not security. Even legitimate vendors can be compromised. Behavioral detection, code signing verification, and staged rollouts are essential.</p>
+<hr />
+<h3>PT-08: Insider Threat - Malicious Administrator</h3>
+<p><strong>Tactic Type:</strong> Privilege Abuse / Data Exfiltration
+<strong>Target Vectors:</strong> CREDENTIAL_ABUSE, DATA_EXFIL, NETWORK
+<strong>Difficulty:</strong> EXPERT (defeat DC 15)</p>
+<p><strong>Description:</strong>
+A pentester acts as a disgruntled administrator with legitimate system access. They use their privileges to bypass security controls, disable logging, create backdoor accounts, and exfiltrate sensitive data. Can your controls prevent insider threats?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Administrative account monitoring, privilege abuse detection
+- Success indicates: Weak monitoring of privileged access, overly broad admin permissions
+- Blue Team rolls 1d20 to detect and prevent</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-05 (Log Centralization):</strong> +2 bonus (immutable offsite logs prevent tampering)
+- <strong>D-07 (MFA):</strong> +1 bonus (makes it harder to create backdoor accounts)
+- <strong>D-10 (SIEM Correlation):</strong> +2 bonus (detects unusual admin activity patterns)
+- <strong>D-12 (Password Vault):</strong> +2 bonus (requires approval/audit for privileged access)
+- <strong>D-20 (Zero Trust Access):</strong> +3 bonus (even admins require proper authorization for sensitive access)
+- <strong>D-22 (SIEM):</strong> +3 bonus (behavioral analytics detect insider threats)
+- <strong>D-23 (IR Program &amp; Runbooks):</strong> +1 bonus (clear escalation for suspicious admin activity)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (15+):</strong> Monitoring detects unauthorized admin activity before damage
+- <strong>Blue Team Fails:</strong> Insider exfiltrates data and disables controls; Blue Team loses game immediately and additional penalties apply to Disaster Recovery module (if played next)</p>
+<p><strong>Teaching Point:</strong> Insider threats are one of the hardest problems in security. Prevention is impossible; detection is essential. Privileged access management, behavioral monitoring, and immutable audit logs are critical.</p>
+<hr />
+<h2>Pentester Tactic Card Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Tactic</th>
+<th>Vectors</th>
+<th>Difficulty</th>
+<th>Primary Defense</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PT-01</td>
+<td>Social Engineering</td>
+<td>SE, CA</td>
+<td>BASIC (DC 12)</td>
+<td>User Training</td>
+</tr>
+<tr>
+<td>PT-02</td>
+<td>Malware Evasion</td>
+<td>MALWARE, CA</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>EDR</td>
+</tr>
+<tr>
+<td>PT-03</td>
+<td>Credential Dumping</td>
+<td>CA, MALWARE</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>Credential Guard</td>
+</tr>
+<tr>
+<td>PT-04</td>
+<td>Lateral Movement</td>
+<td>NETWORK, CA</td>
+<td>INTERMEDIATE (DC 13)</td>
+<td>Network Segmentation</td>
+</tr>
+<tr>
+<td>PT-05</td>
+<td>Privilege Escalation</td>
+<td>MALWARE, WEB</td>
+<td>ADVANCED (DC 14)</td>
+<td>Patch Management</td>
+</tr>
+<tr>
+<td>PT-06</td>
+<td>Data Exfiltration</td>
+<td>EXFIL, NETWORK</td>
+<td>ADVANCED (DC 14)</td>
+<td>DLP</td>
+</tr>
+<tr>
+<td>PT-07</td>
+<td>Supply Chain Compromise</td>
+<td>MALWARE, WEB</td>
+<td>ADVANCED (DC 14)</td>
+<td>EDR/Threat Hunting</td>
+</tr>
+<tr>
+<td>PT-08</td>
+<td>Insider Threat</td>
+<td>CA, EXFIL, NETWORK</td>
+<td>EXPERT (DC 15)</td>
+<td>Privileged Access Monitoring</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>How Pentester Tactics Are Used in Gameplay</h2>
+<h3>Timing</h3>
+<p>Pentester Tactics are typically drawn during turns 3-4 of the 7-turn game (v2.2). This gives the Blue Team time to deploy initial defenses but creates time pressure for the final deployment phase.</p>
+<h3>Resolution (v2.2 — one canonical formula)</h3>
+<p>When a Pentester Tactic is drawn:</p>
+<ol>
+<li><strong>Announce the Attack:</strong> Read the tactic description to the Blue Team</li>
+<li><strong>Blue Team Chooses ONE Deployed Defense:</strong> Pick the defense you resolve this tactic with (it must be deployed)</li>
+<li><strong>Roll:</strong></li>
+</ol>
+<blockquote>
+<p><strong>Defense roll = d20 + printed defense bonus for the chosen defense (from this tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3)</strong></p>
+</blockquote>
+<ol>
+<li><strong>Compare to DC:</strong> If total ≥ the tactic's printed DC, the tactic fails; if &lt; DC, the tactic succeeds</li>
+<li><strong>Apply Consequences:</strong> Based on success or failure</li>
+</ol>
+<p><strong>Notes:</strong>
+- Only ONE defense's printed bonus applies per roll—there is no stacking of multiple defenses on a single roll. Layering still matters: broad coverage means a strong printed bonus is always available to choose.
+- If the chosen defense is not listed on the tactic card, its printed bonus is +0 (upgrades and playbooks still apply).
+- <strong>Multi-vector or multi-phase tactics</strong> (e.g., PT-09 in the expansion): resolve each vector/phase as a <strong>separate roll</strong>, choosing one defense for each roll.</p>
+<p>See Module: Hardening for the full procedure and a worked example.</p>
+<h3>Difficulty Progression</h3>
+<ul>
+<li>PT-01, PT-02, PT-04: Early tactics (easier to defeat)</li>
+<li>PT-03, PT-05, PT-06, PT-07: Mid-game tactics (harder, require multiple defenses)</li>
+<li>PT-08: Final challenge (hardest, requires comprehensive defense-in-depth)</li>
+</ul>
+<hr />
+<h2>Design Philosophy</h2>
+<p><strong>Each Pentester Tactic represents a real-world attack pattern</strong> that:
+1. <strong>Is realistic</strong> - Based on actual TTPs (Tactics, Techniques, Procedures) from MITRE ATT&amp;CK
+2. <strong>Teaches defense priorities</strong> - Success requires defense-in-depth, not single solutions
+3. <strong>Demonstrates gaps</strong> - Failing a tactic shows where the defense strategy is weak
+4. <strong>Encourages layering</strong> - Multiple defenses together are stronger than any single defense</p>
+<hr />
+<h2>Print Instructions</h2>
+<ol>
+<li>Print on cardstock (250 gsm minimum)</li>
+<li>Use a different color scheme from Defense Cards (suggest:</li>
+<li><strong>RED background</strong> with black text (indicates "attack" phase)</li>
+<li>Compare to <strong>BLUE background</strong> for Defense Cards (indicates "defense" phase)</li>
+<li>Cut along dotted lines</li>
+<li>These should be shuffled and kept separate from Defense Cards during gameplay</li>
+</ol>
+<hr />
+<h2>Expansion Possibilities</h2>
+<p>For advanced gameplay, 8 additional Pentester Tactics are available:
+- <strong>PT-09:</strong> Multi-Vector Attack (combines multiple tactics)
+- <strong>PT-10:</strong> Zero-Day Exploitation (signature-based defenses are useless)
+- <strong>PT-11:</strong> Ransomware Deployment &amp; Encryption (requires backup verification)
+- <strong>PT-12:</strong> APT Campaign (multi-turn tactic with escalating difficulty)
+- <strong>PT-13:</strong> Cloud Misconfiguration Attack (for cloud-native environments)
+- <strong>PT-14:</strong> IoT/OT Compromise (for industrial environments)
+- <strong>PT-15:</strong> Firmware/BIOS Attack (hardware-level persistence)
+- <strong>PT-16:</strong> Container Escape (privilege escalation from containers)</p>
+<p>See <code>../expansion-deck/advanced-tactics.md</code> for these advanced cards.</p>
+<hr />
+<p><em>Hardening Module: Pentester Tactic Cards</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">cards/hardening/expansion-deck/advanced-tactics.md</p><h1>Hardening Module: Advanced Pentester Tactics (Expansion)</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition
+<strong>Last Updated:</strong> July 2026</p>
+<p><strong>Difficulty → DC mapping (v2.2):</strong> BASIC = DC 12, INTERMEDIATE = DC 13, ADVANCED = DC 14, EXPERT = DC 15, EXPERT+ = DC 16. The Outcome threshold on every card equals its printed DC. Resolution uses the canonical formula in Module: Hardening: d20 + printed bonus for ONE chosen defense + upgrades (+2 each) + playbook (+3) vs DC.</p>
+<hr />
+<h2>Overview</h2>
+<p><strong>Advanced Pentester Tactic Cards</strong> extend the core Hardening module with 8 sophisticated attack scenarios for experienced players and complex threat environments.</p>
+<ul>
+<li><strong>Total Cards:</strong> 8 (PT-09 to PT-16)</li>
+<li><strong>Difficulty Range:</strong> ADVANCED to EXPERT+</li>
+<li><strong>Best For:</strong> Experienced teams, advanced threat scenarios, specialized environments</li>
+<li><strong>Prerequisite:</strong> Familiarity with core Pentester Tactics (PT-01 to PT-08)</li>
+</ul>
+<hr />
+<h2>Advanced Pentester Tactics</h2>
+<h3>PT-09: Multi-Vector Attack - Coordinated Campaign</h3>
+<p><strong>Tactic Type:</strong> Advanced Persistence / Multi-Stage
+<strong>Target Vectors:</strong> MALWARE, CREDENTIAL_ABUSE, NETWORK, DATA_EXFIL
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester orchestrates a coordinated multi-vector attack that combines multiple tactics simultaneously: social engineering + malware + lateral movement + data exfiltration. Each phase is dependent on the previous one, and success in one area opens opportunities in others. Can your defenses coordinate to stop the full attack chain?</p>
+<p><strong>Attack Details:</strong>
+- Phase 1: Phishing delivers initial malware
+- Phase 2: Malware establishes persistence
+- Phase 3: Lateral movement to file server
+- Phase 4: Credential harvesting and exfiltration
+- Targets: Defense coordination, integrated threat response
+- Blue Team must roll separately for EACH phase</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>Phase 1 (Social Engineering):</strong> D-02 (+2), D-23 (+2) reduce success by +2 on this roll
+- <strong>Phase 2 (Malware):</strong> D-06 (+1), D-08 (+3), D-13 (+2), D-17 (+2) for this phase
+- <strong>Phase 3 (Lateral Movement):</strong> D-04 (+1), D-09 (+3), D-10 (+2), D-15 (+2) for this phase
+- <strong>Phase 4 (Data Exfil):</strong> D-11 (+4), D-22 (+2), D-24 (+1) for this phase
+- <strong>Card Effect — Full Coverage:</strong> If Blue Team has deployed defenses covering all 4 targeted vectors, add +1 to each phase roll</p>
+<p><strong>Resolution (v2.2):</strong> Each phase is a <strong>separate roll</strong> against DC 14, with <strong>one chosen defense per roll</strong> (that phase's bonus list).</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+ on every phase roll):</strong> Comprehensive defense stops the attack chain
+- <strong>Blue Team Fails ANY phase:</strong> Attack progresses; Blue Team loses 1d4 security score points per failed phase and must deploy emergency response</p>
+<p><strong>Teaching Point:</strong> Modern attacks are sophisticated and multi-faceted. No single defense can stop them. Comprehensive defense-in-depth with coordinated response is essential. Defense teams must practice responding to coordinated attacks.</p>
+<hr />
+<h3>PT-10: Zero-Day Exploitation - Unknown Vulnerability</h3>
+<p><strong>Tactic Type:</strong> Initial Access / Execution
+<strong>Target Vectors:</strong> MALWARE, WEB_EXPLOIT
+<strong>Difficulty:</strong> EXPERT (defeat DC 15)</p>
+<p><strong>Description:</strong>
+A pentester exploits a previously unknown vulnerability (zero-day) in a critical business application. Traditional defenses (patching, signature-based detection, vulnerability scanning) cannot help because the vulnerability isn't public. Only behavioral detection or proactive hunting can identify this attack. Can your advanced monitoring catch what signature-based tools cannot?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Signature-based defenses, unknown vulnerability management
+- Attack Vector: Unpatched but pristine application
+- Success indicates: Blind spots in behavioral detection
+- Blue Team rolls 1d20 to detect before exploitation succeeds</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-03 (Patching):</strong> +0 bonus (zero-day by definition isn't in patches)
+- <strong>D-06 (Antivirus):</strong> +0 bonus (signatures don't exist for zero-day)
+- <strong>D-08 (EDR):</strong> +3 bonus (behavioral analytics detect anomalous post-exploitation)
+- <strong>D-13 (Threat Hunting):</strong> +3 bonus (proactive hunting finds zero-day activity)
+- <strong>D-17 (Sandbox):</strong> +2 bonus (detonates malicious payloads in sandbox before deployment)
+- <strong>D-18 (IPS):</strong> +1 bonus only (cannot stop unknown exploits)
+- <strong>D-21 (Container Security):</strong> +2 bonus (isolates exploited application)</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (15+):</strong> EDR or threat hunting detects post-exploitation activity before damage
+- <strong>Blue Team Fails:</strong> Zero-day achieves initial access; Blue Team suffers -1 penalty to all rolls for remainder of game (blind spot in defenses)</p>
+<p><strong>Special Rule:</strong> If Blue Team has NOT deployed at least 2 of {D-08, D-13, D-17}, they cannot succeed at this challenge (add clause: "You must have behavioral detection to stop unknown exploits").</p>
+<p><strong>Teaching Point:</strong> Signature-based defenses have inherent limitations. Behavioral detection and threat hunting are essential for detecting novel attacks. Zero-day preparedness requires assumption-of-breach mindset.</p>
+<hr />
+<h3>PT-11: Ransomware Deployment &amp; Encryption</h3>
+<p><strong>Tactic Type:</strong> Impact / Extortion
+<strong>Target Vectors:</strong> MALWARE, DATA_EXFIL, NETWORK
+<strong>Difficulty:</strong> EXPERT (defeat DC 15)</p>
+<p><strong>Description:</strong>
+A pentester deploys ransomware that encrypts critical business data and demands payment for decryption keys. The attack combines malware execution, persistence, and data exfiltration (to threaten public disclosure if ransom not paid). This is the culmination of a successful attack chain. Can your defenses prevent data encryption, and can your backup strategy save you?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Data availability, backup resilience, recovery procedures
+- Success indicates: Lack of backup redundancy or immutable backup protection
+- Blue Team rolls 1d20 to either: (A) prevent ransomware deployment, OR (B) recover from backup</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>Option A: Prevent Deployment</strong>
+  - D-08 (EDR): +3 bonus (detects ransomware execution)
+  - D-13 (Threat Hunting): +2 bonus (proactive hunting finds ransomware)
+  - D-14 (Memory Forensics): +1 bonus (detects encryption process)
+  - D-17 (Sandbox): +2 bonus (detonates before reaching production)
+  - D-21 (Container Security): +2 bonus (prevents spread in containerized environments)</p>
+<ul>
+<li><strong>Option B: Recover from Backup (if prevention fails)</strong></li>
+<li>D-19 (Backup &amp; Disaster Recovery): +4 bonus (3-2-1 backup strategy enables recovery)</li>
+<li>D-21 (Container Security): +1 bonus (containerized backups easier to restore)</li>
+<li>DC becomes 12 (easier to recover than prevent)</li>
+</ul>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (15+ on prevention roll, or 12+ on recovery roll under Option B):</strong> Ransomware prevented or successfully recovered from backup
+- <strong>Blue Team Fails:</strong> Data encrypted; immediate loss of 25% of remaining Budget, and all data-dependent operations suffer -2 penalty for remainder of game</p>
+<p><strong>Special Rule - Immutable Backup Check:</strong> If Blue Team deployed D-19, they also need verification that backups are immutable and tested. If backup testing procedures weren't mentioned in D-19 deployment, the bonus only applies if they roll 15+.</p>
+<p><strong>Teaching Point:</strong> Ransomware is now the #1 cybersecurity threat. Prevention through detection is important, but backup resilience is the ultimate defense. Immutable backups that survive ransomware attacks are essential business continuity strategy. Regular restore testing is critical.</p>
+<hr />
+<h3>PT-12: APT Campaign - Multi-Turn Persistent Threat</h3>
+<p><strong>Tactic Type:</strong> Advanced Persistent Threat / Long-term Compromise
+<strong>Target Vectors:</strong> CREDENTIAL_ABUSE, MALWARE, NETWORK, DATA_EXFIL
+<strong>Difficulty:</strong> EXPERT+ (defeat DC 16)</p>
+<p><strong>Description:</strong>
+A pentester simulates an Advanced Persistent Threat (APT) campaign that maintains presence across multiple turns. Each turn, the APT performs new reconnaissance, persistence, lateral movement, or data exfiltration activities. The Blue Team must detect and eradicate the APT before it achieves critical objectives. This is a multi-turn challenge that escalates difficulty.</p>
+<p><strong>Attack Details:</strong>
+- Multi-turn challenge (lasts 2-3 turns of main game)
+- Targets: Long-term detection, threat hunting, incident response procedures
+- Each turn the APT performs an action; Blue Team must detect and respond
+- If APT achieves 3 objectives (e.g., 3 successful data exfils), game is lost</p>
+<p><strong>Turn-by-Turn APT Actions:</strong>
+- <strong>Turn 1:</strong> Reconnaissance (scan network, enumerate users, identify critical assets)
+- <strong>Turn 2:</strong> Lateral movement (move to file server, domain controller)
+- <strong>Turn 3:</strong> Persistence establishment (add backdoor, create hidden user account)
+- <strong>Turn 4 (if still active):</strong> Data exfiltration (steal customer database)
+- <strong>Turn 5+ (if still active):</strong> Destruction phase (delete logs, trigger ransomware)</p>
+<p><strong>Defending Against APT:</strong></p>
+<p>Each turn, Blue Team must roll 1d20 to detect the APT activity:</p>
+<ul>
+<li><strong>Detection Phase:</strong></li>
+<li>D-05 (Log Centralization): +1 bonus (detects suspicious activity in centralized logs)</li>
+<li>D-10 (SIEM Correlation): +2 bonus (correlates multi-step APT behavior)</li>
+<li>D-13 (Threat Hunting): +3 bonus (proactive hunting finds APT indicators)</li>
+<li>D-22 (SIEM Enterprise): +3 bonus (advanced correlation detects APT patterns)</li>
+<li>D-23 (IR Program &amp; Runbooks): +1 bonus (clear detection procedures in runbooks)</li>
+<li>
+<p>D-24 (Threat Intelligence): +2 bonus (known APT indicators in threat feeds)</p>
+</li>
+<li>
+<p><strong>Eradication Phase (if detected):</strong></p>
+</li>
+<li>D-09 (Network Segmentation): +1 bonus (isolates compromised systems)</li>
+<li>D-15 (Honeypots): +2 bonus (APT triggers honeypot canaries)</li>
+<li>D-20 (Zero Trust): +2 bonus (APT cannot spread even with stolen credentials)</li>
+</ul>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (roll ≥ current DC, base 16):</strong> APT detected and eradicated before achieving 3 objectives
+- <strong>Blue Team Fails (roll &lt; current DC):</strong> APT progresses to next action; if 3 objectives achieved, game is lost</p>
+<p><strong>Special Rule - Escalating Difficulty:</strong> Each turn the APT remains undetected, DC increases by 1 (Turn 1: DC 16, Turn 2: DC 17, Turn 3: DC 18, etc.)</p>
+<p><strong>Teaching Point:</strong> APTs are sophisticated, well-resourced, and patient. They expect to remain undetected for months or years. Early detection is critical. Continuous monitoring, threat intelligence integration, and advanced hunting are essential for APT detection.</p>
+<hr />
+<h3>PT-13: Cloud-Specific Attack - Misconfigured Cloud Resources</h3>
+<p><strong>Tactic Type:</strong> Cloud Security / Privilege Escalation
+<strong>Target Vectors:</strong> MALWARE, CREDENTIAL_ABUSE, NETWORK, DATA_EXFIL
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester discovers misconfigured cloud resources (S3 bucket, Azure storage, GCP database) that are accessible without authentication. They pivot from compromised workstation to cloud infrastructure, exfiltrating sensitive data stored in cloud. Can your cloud security controls catch this lateral movement into cloud?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Cloud security posture management, identity &amp; access management in cloud
+- Assumes: Blue Team has cloud infrastructure in their network design
+- Success indicates: Misconfigured cloud resources, weak cloud IAM policies
+- Blue Team rolls 1d20 to detect and remediate</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-04 (Firewall Rules):</strong> +1 bonus (limits cloud connectivity from compromised systems)
+- <strong>D-20 (Zero Trust Access):</strong> +2 bonus (requires proper identity &amp; authorization for cloud access)
+- <strong>D-21 (Container Security):</strong> +2 bonus (blocks cloud API abuse if containerized)
+- <strong>D-22 (SIEM Enterprise):</strong> +2 bonus (detects unusual cloud API calls)
+- <strong>D-24 (Threat Intelligence):</strong> +1 bonus (known misconfigured bucket signatures)
+- <strong>New Special Defense - Cloud Posture Mgmt:</strong> +3 bonus (automatically detects and remediates misconfigurations)</p>
+<p><strong>Special Cloud Defense:</strong> If Blue Team deployed cloud-specific hardening (e.g., cloud security posture management tools, cloud-native IAM), add +2 bonus.</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+):</strong> Misconfiguration detected and remediated before exfiltration
+- <strong>Blue Team Fails:</strong> Cloud data is exfiltrated; -1 penalty to all rolls for remainder of game, plus immediate 15 Budget cost for cloud forensics</p>
+<p><strong>Teaching Point:</strong> Cloud security is fundamentally different from on-premises. Shared responsibility model requires organizations to actively manage cloud configuration. Cloud misconfigurations are the #1 cloud vulnerability. Continuous posture scanning is essential.</p>
+<hr />
+<h3>PT-14: IoT/OT Compromise - Industrial Network Attack</h3>
+<p><strong>Tactic Type:</strong> Operational Technology Attack / Physical Safety Impact
+<strong>Target Vectors:</strong> NETWORK, MALWARE
+<strong>Difficulty:</strong> ADVANCED (defeat DC 14)</p>
+<p><strong>Description:</strong>
+A pentester compromises IoT or Operational Technology (OT) devices (industrial control systems, HVAC, building management, manufacturing systems) that are connected to the corporate network. Unlike IT systems (computers, servers), OT systems prioritize availability and cannot be patched frequently. Can your network architecture prevent OT compromise, and can you detect it before physical systems are affected?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Network segmentation between IT and OT, OT-specific monitoring
+- Assumes: Blue Team has IoT/OT devices in their network design
+- Success indicates: Lack of network segmentation or OT-specific monitoring
+- Blue Team rolls 1d20 to detect and isolate</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-04 (Firewall Rules):</strong> +1 bonus (separates IT from OT traffic)
+- <strong>D-09 (Network Segmentation):</strong> +3 bonus (dedicated OT segment with restricted access)
+- <strong>D-10 (SIEM Correlation):</strong> +1 bonus (detects OT anomalies if properly tuned)
+- <strong>D-22 (SIEM Enterprise):</strong> +2 bonus (advanced OT monitoring and correlation)
+- <strong>New Special Defense - OT Monitoring:</strong> +3 bonus (specialized tools detect OT compromise)</p>
+<p><strong>Special OT Defense:</strong> If Blue Team has deployed OT-specific monitoring and segmentation, add +2 bonus.</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (14+):</strong> OT compromise detected and isolated before impact
+- <strong>Blue Team Fails:</strong> OT systems compromised; physical operations affected, -2 penalty to all rolls for remainder of game, plus potential safety/liability consequences (narrative impact)</p>
+<p><strong>Teaching Point:</strong> OT security is distinct from IT security. OT systems cannot be patched like IT systems. Network segmentation is the primary defense. OT-specific monitoring and threat hunting are essential. Organizations with manufacturing, utilities, or building management need specialized OT security strategies.</p>
+<hr />
+<h3>PT-15: Firmware/BIOS Attack - Bootloader Compromise</h3>
+<p><strong>Tactic Type:</strong> Persistence / Hardware-Level Attack
+<strong>Target Vectors:</strong> MALWARE, NETWORK
+<strong>Difficulty:</strong> EXPERT (defeat DC 15)</p>
+<p><strong>Description:</strong>
+A pentester with physical or remote access targets system firmware (BIOS/UEFI) or bootloader, establishing persistence at the hardware level below the operating system. This attack survives OS reinstalls and even hardware replacement (if firmware is deployed via supply chain). Can your controls detect and prevent firmware-level attacks?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Firmware integrity, secure boot verification, hardware attestation
+- Success indicates: Lack of UEFI Secure Boot, no firmware validation, no TPM
+- Blue Team rolls 1d20 to detect firmware tampering</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-16 (Credential Guard &amp; Secure Boot):</strong> +3 bonus (UEFI Secure Boot prevents unauthorized firmware)
+- <strong>D-17 (Malware Sandbox):</strong> +1 bonus only (doesn't catch firmware-level attacks)
+- <strong>D-13 (Threat Hunting):</strong> +2 bonus (advanced hunting detects firmware persistence)
+- <strong>New Special Defense - Hardware Attestation:</strong> +3 bonus (TPM verification detects firmware changes)
+- <strong>New Special Defense - Supply Chain Verification:</strong> +2 bonus (validates firmware integrity from trusted source)</p>
+<p><strong>Special Firmware Defense:</strong> If Blue Team deployed secure boot, TPM attestation, and hardware validation, add +2 additional bonus.</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (15+):</strong> Firmware tampering detected and system reimaged
+- <strong>Blue Team Fails:</strong> Firmware-level persistence established; -2 penalty to all rolls for remainder of game, Blue Team loses control of compromised system</p>
+<p><strong>Teaching Point:</strong> Firmware attacks are extremely sophisticated but increasingly common in APT campaigns. Secure Boot and TPM are standard defenses but must be enabled and properly configured. Firmware supply chain security is critical. Organizations should consider firmware integrity verification in procurement.</p>
+<hr />
+<h3>PT-16: Privilege Escalation - Containerized Environment Escape</h3>
+<p><strong>Tactic Type:</strong> Privilege Escalation / Container Escape
+<strong>Target Vectors:</strong> MALWARE, NETWORK
+<strong>Difficulty:</strong> EXPERT (defeat DC 15)</p>
+<p><strong>Description:</strong>
+A pentester, operating from within a compromised container, exploits a container runtime vulnerability (like CVE-2019-5736 runc exploit) to escape the container and gain access to the underlying host system. From there, lateral movement to other containers and host systems becomes possible. Can your container security and patching strategies prevent container escape?</p>
+<p><strong>Attack Details:</strong>
+- Targets: Container runtime patching, container isolation, runtime security
+- Assumes: Blue Team has containerized workloads (Docker, Kubernetes, etc.)
+- Success indicates: Unpatched container runtime or lack of runtime monitoring
+- Blue Team rolls 1d20 to prevent or detect escape</p>
+<p><strong>Defending Defenses:</strong>
+- <strong>D-03 (Patching):</strong> +2 bonus (ensures container runtime is patched)
+- <strong>D-08 (EDR):</strong> +2 bonus (detects suspicious syscalls attempting escape)
+- <strong>D-13 (Threat Hunting):</strong> +2 bonus (hunting for container escape indicators)
+- <strong>D-21 (Container Security):</strong> +4 bonus (runtime security detects and blocks escape attempts)
+- <strong>New Special Defense - Kubernetes Security Policies:</strong> +2 bonus (network policies and pod security policies restrict escape)</p>
+<p><strong>Special Container Defense:</strong> If Blue Team has deployed comprehensive container security (runtime monitoring + pod security policies + network policies), add +2 additional bonus.</p>
+<p><strong>Outcome:</strong>
+- <strong>Blue Team Succeeds (15+):</strong> Container escape prevented or detected before host compromise
+- <strong>Blue Team Fails:</strong> Attacker escapes container to host; immediate +1 for all subsequent attacks, gains ability to compromise other containers</p>
+<p><strong>Teaching Point:</strong> Container security is distinct from traditional OS security. Container runtimes have historically had significant vulnerabilities. Runtime security monitoring is essential. Kubernetes network policies and pod security standards are critical controls. Organizations using containers must keep runtimes patched and actively monitor for escape attempts.</p>
+<hr />
+<h2>Advanced Tactics Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Tactic</th>
+<th>Vectors</th>
+<th>Difficulty</th>
+<th>Primary Defense</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PT-09</td>
+<td>Multi-Vector Attack</td>
+<td>Multiple</td>
+<td>ADVANCED (DC 14)</td>
+<td>Integrated Response</td>
+</tr>
+<tr>
+<td>PT-10</td>
+<td>Zero-Day Exploitation</td>
+<td>MALWARE, WEB</td>
+<td>EXPERT (DC 15)</td>
+<td>Behavioral Detection</td>
+</tr>
+<tr>
+<td>PT-11</td>
+<td>Ransomware Deployment</td>
+<td>MALWARE, EXFIL, NETWORK</td>
+<td>EXPERT (DC 15)</td>
+<td>Backup &amp; DR</td>
+</tr>
+<tr>
+<td>PT-12</td>
+<td>APT Campaign</td>
+<td>Multiple</td>
+<td>EXPERT+ (DC 16)</td>
+<td>Threat Hunting</td>
+</tr>
+<tr>
+<td>PT-13</td>
+<td>Cloud Misconfiguration</td>
+<td>Multiple</td>
+<td>ADVANCED (DC 14)</td>
+<td>Cloud Posture</td>
+</tr>
+<tr>
+<td>PT-14</td>
+<td>IoT/OT Compromise</td>
+<td>NETWORK, MALWARE</td>
+<td>ADVANCED (DC 14)</td>
+<td>OT Segmentation</td>
+</tr>
+<tr>
+<td>PT-15</td>
+<td>Firmware Attack</td>
+<td>MALWARE, NETWORK</td>
+<td>EXPERT (DC 15)</td>
+<td>Hardware Attestation</td>
+</tr>
+<tr>
+<td>PT-16</td>
+<td>Container Escape</td>
+<td>MALWARE, NETWORK</td>
+<td>EXPERT (DC 15)</td>
+<td>Runtime Security</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Gameplay Recommendations</h2>
+<h3>When to Use Advanced Tactics</h3>
+<ol>
+<li><strong>Experienced Teams:</strong> Players familiar with core tactics (PT-01 to PT-08)</li>
+<li><strong>Longer Games:</strong> Extend Hardening gameplay to 9 turns instead of the standard 7 (v2.2)</li>
+<li><strong>Specialized Environments:</strong> Organizations with cloud, IoT, or containerized infrastructure</li>
+<li><strong>Challenge Play:</strong> Teams want more difficulty and realism</li>
+</ol>
+<h3>Suggested Advanced Scenarios</h3>
+<p><strong>Scenario A: Cloud-Native Hardening (6 turns)</strong>
+- Turn 1-3: Deploy cloud-specific defenses + container security
+- Turn 4: PT-13 (Cloud Misconfiguration) challenge
+- Turn 5: PT-16 (Container Escape) challenge
+- Turn 6: Final defense evaluation</p>
+<p><strong>Scenario B: APT Defense (8 turns)</strong>
+- Turns 1-4: Deploy enterprise-grade defenses (SIEM, threat hunting, forensics)
+- Turns 5-7: PT-12 (APT Campaign) multi-turn challenge
+- Turn 8: Eradication and recovery</p>
+<p><strong>Scenario C: Zero-Day &amp; Ransomware (7 turns)</strong>
+- Turns 1-3: Deploy behavioral detection + backup systems
+- Turn 4: PT-10 (Zero-Day) challenge
+- Turn 5: PT-11 (Ransomware) challenge
+- Turns 6-7: Recovery and hardening improvements</p>
+<hr />
+<h2>Design Philosophy</h2>
+<p><strong>Each Advanced Tactic represents modern, sophisticated threat scenarios</strong> that:</p>
+<ol>
+<li><strong>Are realistic</strong> - Based on actual APT campaigns, zero-day vulnerabilities, ransomware attacks</li>
+<li><strong>Require advanced defenses</strong> - Cannot be defeated by basic controls alone</li>
+<li><strong>Teach emerging threats</strong> - Cloud security, containerization, firmware, OT compromise</li>
+<li><strong>Encourage specialization</strong> - Teams must choose focus areas (cloud, OT, containers) and accept vulnerability elsewhere</li>
+<li><strong>Create strategic dilemmas</strong> - Limited budget forces difficult prioritization choices</li>
+</ol>
+<hr />
+<h2>Print Instructions</h2>
+<ol>
+<li>Print on cardstock (250 gsm minimum)</li>
+<li>Use distinct color scheme from core tactics (suggest: <strong>DARK RED background</strong> to indicate "advanced threat")</li>
+<li>Core tactics have lighter red; advanced tactics have darker red (visual difficulty progression)</li>
+<li>Cut along dotted lines</li>
+<li>Keep separate from core Pentester Tactic Cards until players are ready for advanced challenges</li>
+</ol>
+<hr />
+<h2>Special Rules for Advanced Tactics</h2>
+<h3>Difficulty Escalation</h3>
+<p>Advanced tactics can be introduced gradually:
+- Start with PT-09 (Multi-Vector) and PT-10 (Zero-Day)
+- Once mastered, add PT-11 (Ransomware) and PT-13 (Cloud)
+- Save PT-12 (APT), PT-14 (OT), PT-15 (Firmware), PT-16 (Container) for expert play</p>
+<h3>Synergy with Core Tactics</h3>
+<p>Advanced tactics build on concepts from core tactics:
+- PT-09 (Multi-Vector) combines concepts from PT-01 to PT-08
+- PT-10 (Zero-Day) extends PT-05 (Priv Esc) concepts
+- PT-12 (APT) extends PT-02 (Malware Evasion) concepts</p>
+<h3>Future Expansion</h3>
+<p>Possible additional advanced tactics:
+- <strong>PT-17:</strong> Machine Learning Model Poisoning
+- <strong>PT-18:</strong> Quantum-Resistant Cryptography Breaking
+- <strong>PT-19:</strong> Supply Chain Compromise (Deep Dive)
+- <strong>PT-20:</strong> Geopolitical Nation-State Attack Simulation</p>
+<hr />
+<p><em>Hardening Module: Advanced Pentester Tactics</em>
+<em>Part of Incident Zero, a modular cybersecurity board game</em>
+<em>v2.2 - Playtest Edition</em></p></section><section class="doc-break"><p class="doc-src">cards/print-templates/tracker-sheets.md</p><h1>Tracker Sheets (Print &amp; Play)</h1>
+<p><strong>Version:</strong> 2.2 - Playtest Edition</p>
+<p>Print on plain A4. One <strong>Universal Sheet</strong> per table, plus the module sheet for the module you're playing. Tip: laminate and use a dry-erase marker, or move a coin/token along the tracks.</p>
+<hr />
+<h2>Universal Tracker Sheet (all modules)</h2>
+<h3>Turn Track</h3>
+<p>Cross off as each turn ends. Circle your turn limit before starting.</p>
+<pre><code> 1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16
+[ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ] [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]
+</code></pre>
+<h3>Budget Track</h3>
+<p>Start at your module's budget (Network Building 40-60 · Disaster Recovery 50 · Forensics 75 · IR 100 · Audit 100 · Hardening 150). Tick down in 5s.</p>
+<pre><code>150 145 140 135 130 125 120 115 110 105 100  95  90  85  80  75
+ 70  65  60  55  50  45  40  35  30  25  20  15  10   5   0
+</code></pre>
+<h3>Reputation / Score Track (0-100)</h3>
+<pre><code>100  95  90  85  80  75  70  65  60  55  50  45  40  35  30  25  20  15  10  5  0
+</code></pre>
+<h3>Uncontained Threats (Incident Response)</h3>
+<pre><code> 0   1   2   3   4   5
+[ ] [ ] [ ] [ ] [ ] [ ]      Penalty at start of turn: -5 Budget each
+</code></pre>
+<hr />
+<h2>Forensics Module Sheet — Progress Meters</h2>
+<p>Advance each meter per card effects. Victory thresholds marked ▲.</p>
+<pre><code>ATTRIBUTION      0   10   20   30   40   50   60   70   80   90▲  100
+TIMELINE         0   10   20   30   40   50   60   70   80▲  90   100
+ATTACK CHAIN     0   10   20   30   40   50   60   70   80▲  90   100
+CHAIN OF CUSTODY 0   10   20   30   40   50   60   70▲  80   90   100
+</code></pre>
+<p><strong>Victory check (end of game):</strong>
+- <strong>V1 Full Attribution:</strong> Attribution ≥90 AND Timeline ≥80
+- <strong>V2 Solid Case:</strong> Timeline ≥80 AND Attack Chain ≥80 AND Chain of Custody ≥70
+- <strong>V3 Partial Findings:</strong> any two meters ≥70</p>
+<p><strong>Investigation in flight:</strong> <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em>_ (results arrive Turn </strong>_)
+<strong>Evidence collected (✓ = Analyzed, one Analyze per card):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Evidence card</th>
+<th>Documented? (+5% CoC)</th>
+<th>Analyzed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Disaster Recovery Module Sheet</h2>
+<h3>Crisis Progress Tracks</h3>
+<pre><code>INVESTIGATION   0   10   20   30   40   50   60   70   80   90   100
+REMEDIATION     0   10   20   30   40   50   60   70   80   90   100
+COMMUNICATION   0   10   20   30   40   50   60   70   80   90   100
+</code></pre>
+<h3>Stakeholder Trust (0-100%; any stakeholder at 0% = company collapses)</h3>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>100</th>
+<th>80</th>
+<th>60</th>
+<th>40</th>
+<th>20 (critical)</th>
+<th>0 (LOSS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customers</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Employees</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Regulators</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Board / Investors</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Media / Public</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Deadline Timeline (mark scheduled events at setup)</h3>
+<table>
+<thead>
+<tr>
+<th>Turn</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scheduled event</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Deadline</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Customers notified (recommended)</td>
+<td>Regulator penalties begin</td>
+<td></td>
+<td>GDPR 72h — regulators notified</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Multi-turn action in flight:</strong> <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em>_ (completes Turn </strong>_)</p>
+<hr />
+<h2>Audit &amp; Compliance Module Sheet — Scoring Worksheet</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Domain</th>
+<th>Stars (1-5)</th>
+<th>PASS (3★+) / FAIL (1-2★)</th>
+<th>Key gap found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Network Segmentation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Identity &amp; Access</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Detection &amp; Monitoring</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Backup &amp; Recovery</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cloud Security</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Security Operations</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result: ___ / 6 PASS</strong> — Gap penalties for follow-on modules: see module rules (total capped at -30).</p>
+<hr />
+<h2>Network Building Module Sheet — Score Sheet</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Points</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requirements met</td>
+<td></td>
+<td>per requirement card</td>
+</tr>
+<tr>
+<td>Security coverage</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td>Capability coverage</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td>Budget management</td>
+<td></td>
+<td>per rules scoring table</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Components placed:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Cost</th>
+<th>Capacity used / total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Budget remaining:</strong> ___ / starting ___</p></section>
+</body></html>
