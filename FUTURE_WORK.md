@@ -852,6 +852,41 @@ Add real-time multiplayer — the full tabletop experience online.
 
 ---
 
+### 18. Image Asset Plan (prioritized; execute in the Phase A retro style)
+
+**Rule:** the game is playable text-only, so art is table presence + accessibility, not function. Do NOT generate generic placeholder art — the Phase A visual identity (8-bit pixel, terminal/WarGames, CRT scanlines) is already decided; generate assets once, in that style.
+
+Priority order:
+- [ ] **Card backs** (~8, one per card type) — the only art with gameplay function: hidden decks (Threat, Pentester Tactic, Event) need uniform backs for face-down play
+- [ ] **Card-type + vector icons** (~15 small vectors) — doubles as the colorblind-accessibility fix from #10 (replace color-only coding)
+- [ ] **Hero banner** — README, docsify coverpage, GitHub social preview; worth doing early as the retro identity's first test piece
+- [ ] Designed tracker sheets (replace ASCII layouts) — low priority
+- [ ] Per-card illustrations — lowest priority; optional 2"×2" image space already reserved in card layouts
+
+None of this blocks playtesting — playtest with text cards.
+
+---
+
+### 19. Companion Company Website & Interviewable Employees
+
+**Concept:** a real (fictional) website for the scenario company — e.g., Meridian Logistics — with a staff directory and deliberately planted OSINT clues (email formats, staff names for phishing pretexts, tech stack in job postings). Players do genuine reconnaissance before Hardening/IR, and can *interview employees* during IR/Forensics/DR. Modeled on real OSINT training ranges / red-team exercise props.
+
+**Hard rules (non-negotiable):**
+1. **Optional enhancement, never a dependency** — the site adds flavor and an alternate clue path; tabletop-only play must stay complete. No win-critical information lives only on the site.
+2. **Single source of truth** — every fact on the site is generated from a scenario pack (#16). A hand-maintained prop site WILL drift from the cards and recreate the pre-v2.2 consistency problem.
+3. **Sequencing:** scenario packs first — the website is a scenario pack rendered as a prop.
+
+**Mechanic hook:** "Interview Employee" as an Investigate-variant action (≈5 Budget, 3 questions per interview); in DR, stakeholder communication can literally be a conversation with the CEO/counsel persona.
+
+**Build in three stages:**
+- [ ] **v1 — Static prop site** (GitHub Pages, free): company pages + staff directory with planted clues for one scenario pack; used as pre-game recon homework or table prop
+- [ ] **v2 — Scripted interviews**: Ink dialogue trees embedded on the site — deterministic, offline, and shares the engine/scenario format with the IF edition (#17)
+- [ ] **v3 — LLM chatbot employees**: persona + bounded knowledge scope per employee; guardrails required (hallucinated clues that contradict the scenario are a game-breaking bug); consider API cost/privacy for schools. Ties into Phase B's AI TO.
+
+**Pedagogical caution:** mid-game browsing splits table attention — best used as pre-game recon or turn-gated interviews with a question budget.
+
+---
+
 ## Version History & Tracking
 
 - **v2.1** (October 2025) - Initial Future Work document
