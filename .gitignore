@@ -2,6 +2,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+._*
 *.swp
 *.swo
 *~
@@ -50,10 +51,10 @@ wheels/
 *.egg
 
 # Generated/Compiled files
-*.pdf
 *.epub
-*.html (generated documentation)
 *.zip
+# Note: PDFs and HTML are NOT ignored — print-pack PDFs and the docsify
+# index.html are tracked deliverables.
 
 # Temporary files
 *.tmp

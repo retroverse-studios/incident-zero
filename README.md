@@ -52,7 +52,7 @@ Incident Zero features **6 interchangeable modules** covering the complete cyber
 - **Crisis & Investigation:** Disaster Recovery → Forensics (90 min)
 - **Detect & Defend:** Incident Response → Hardening (90 min)
 - **Build, Test, Fix:** Network Building → Incident Response → Hardening (120 min)
-- **Complete Lifecycle:** Network Building → Hardening → Incident Response → Disaster Recovery → Forensics → Audit (2.5+ hours)
+- **Complete Lifecycle:** Network Building → Hardening → Incident Response → Disaster Recovery → Forensics → Audit (4-5 hours; split across sessions)
 
 Each module can also be **generated procedurally** (dice rolls, cards) when played solo, so modules connect seamlessly in any educator-chosen sequence.
 
@@ -73,7 +73,7 @@ incident-zero/
 │   ├── module-combinations.md         # Module combinations & recommended sequences
 │   ├── gameplay-modes.md              # Recommended module combinations & tournaments
 │   ├── rules/
-│   │   ├── core-rules.md              # Core mechanics (v2.1)
+│   │   ├── core-rules.md              # Core mechanics (v2.2)
 │   │   ├── module-network-building.md # Network Building rules (full)
 │   │   ├── module-hardening.md        # Hardening module rules (full)
 │   │   ├── module-incident-response.md # Incident Response rules (full)
@@ -100,17 +100,12 @@ incident-zero/
 │   ├── disaster-recovery/            # Disaster Recovery module cards
 │   ├── forensics/                    # Forensics module cards [NEW v2.1]
 │   │   ├── README.md                 # Forensics card overview
-│   │   ├── core-deck/
-│   │   │   ├── investigation-cards.md    # 12 Investigation Action cards
-│   │   │   └── evidence-cards.md         # 12 Evidence + 4 Findings cards
-│   │   └── expansion-deck/
-│   │       └── advanced-cards.md         # Advanced forensics scenarios
+│   │   └── core-deck/
+│   │       ├── investigation-cards.md    # 12 Investigation Action cards
+│   │       └── evidence-cards.md         # 12 Evidence + 4 Findings cards
 │   ├── audit-compliance/             # Audit & Compliance module cards
 │   └── print-templates/
-│       └── [Card printing guides and templates]
-│
-└── assets/
-    └── [Placeholder for future images, templates, and digital assets]
+│       └── [Card printing guides, tracker sheets, and templates]
 ```
 
 ## Getting Started
@@ -130,7 +125,7 @@ incident-zero/
 ### For Threat Orchestrators
 1. Review [Core Rules](docs/rules/core-rules.md) for core mechanics (v2.1)
 2. Choose the module(s) you want to run (see [Gameplay Modes](docs/gameplay-modes.md) for recommendations)
-3. Build your scenario using the [12 core threat cards](cards/core-deck/threat-defense-cards.md) or [8 expansion threats](cards/expansion-decks/advanced-threats.md)
+3. Build your scenario using the [12 core threat cards](cards/incident-response/core-deck/threat-defense-cards.md) or [8 expansion threats](cards/incident-response/expansion-deck/advanced-threats.md)
 4. Follow the module-specific rules and setup procedures
 5. Use debrief questions to reinforce learning
 
@@ -144,7 +139,7 @@ incident-zero/
 ### Expansion Decks
 - **8 Modern Threats:** Supply chain attacks, insider threats, IoT compromise, cloud API abuse, DNS tunneling, physical security bypass
 - **Advanced Defenses:** Specialized countermeasures for expansion threats
-- **Pentester Tactic Cards:** Advanced attack scenarios for Phase 2
+- **Pentester Tactic Cards:** Advanced attack scenarios for the Hardening module
 
 ## Key Features
 
@@ -161,14 +156,20 @@ incident-zero/
 ## Printing Your Deck
 
 ### Quick Start
-Print the cards from [Card Decks](cards/core-deck/threat-defense-cards.md) on cardstock, cut along dotted lines, and optionally sleeve them.
+Print the cards from the [card decks](cards/README.md) on cardstock, cut along dotted lines, and optionally sleeve them.
 
-### For A4 Printing (8 cards per sheet)
+### For A4 Printing (9 cards per sheet)
 See [A4 Layout Guide](cards/print-templates/a4-layout-guide.md) for detailed instructions on:
-- Paper specifications (250 gsm cardstock)
+- Paper specifications (200-250 gsm cardstock)
 - Cutting guides and margins
 - Multiple-card-per-sheet layouts
-- Color recommendations by vector
+- Color recommendations by card type
+
+### Tracker Sheets (required to play)
+Print the [Tracker Sheets](cards/print-templates/tracker-sheets.md) — a universal Turn/Budget/Reputation/Uncontained sheet plus per-module sheets (Forensics meters, DR stakeholder trust, Audit scoring, NB score sheet).
+
+### Playtesting
+Running a session? Use the [Playtest Guide](docs/playtesting/README.md), [Feedback Form](docs/playtesting/feedback-form.md), and [Session Notes Form](docs/playtesting/session-notes-form.md), and report results via GitHub Issues.
 
 ### Digital Production (Future)
 Future versions may include:
@@ -216,21 +217,21 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ### 60-Minute Session (Beginner)
 - Setup: 10 min
-- Phase 1 (3-card chain, Startup difficulty): 30 min
+- Incident Response (3-card chain, Startup difficulty): 30 min
 - Lessons Learned debrief: 10 min
 - Discussion: 10 min
 
 ### 90-Minute Session (Intermediate)
 - Setup: 5 min
-- Phase 1 (4-card chain): 30-35 min
+- Incident Response (4-card chain): 30-35 min
 - Lessons Learned: 10 min
-- Phase 2 Hardening: 30 min
+- Hardening: 30 min
 - Debrief: 10 min
 
 ### 2-Hour Tournament (Multiple Teams)
 - Setup: 10 min
-- Phase 1 (all teams simultaneous): 40 min
-- Phase 2 (split by outcome): 35 min
+- Incident Response (all teams simultaneous): 40 min
+- Second module, split by outcome — winners play Hardening, losers play Disaster Recovery: 35 min
 - Awards & debrief: 30 min
 
 ## Design Philosophy
@@ -272,7 +273,14 @@ A: The current version is tabletop-focused. A digital adaptation is a future pos
 
 ## Version History
 
-- **v2.1** (Current) - Balanced & Refined Edition
+- **v2.2** (Current) - Playtest Edition
+  - Full consistency pass: rules docs, standalone guides, and card decks now agree across all 6 modules (one budget scale, one cost list, one scoring formula per module)
+  - Balance patches: IR reveal & dwell-time economy, Hardening playbook cap + canonical defense-roll formula, Forensics action costs + reachable Chain of Custody, DR Ransom Decision card (ACTION-13), NB free placement per turn
+  - Disaster Recovery unified on the card-driven system (percent tracks + stakeholder trust, 8-turn clock)
+  - Accuracy pass: MITRE ATT&CK IDs, NIST CSF/CIS citations, GDPR/CCPA/ransom-legality facts corrected
+  - New: Network Building standalone decks (REQ-01–20, EVT-01–16), tracker sheets, A4 print guide, playtest kit
+  - Each module rules doc ends with a "v2.2 Playtest Edition Changes" section for playtesters
+- **v2.1** - Balanced & Refined Edition
   - Added Uncontained Threats penalty mechanics
   - Balanced Fast-Track discovery reward
   - Introduced Pentester Tactic Cards for Phase 2

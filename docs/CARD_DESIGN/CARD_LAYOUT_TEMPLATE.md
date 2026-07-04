@@ -90,7 +90,7 @@ This document provides consistent card layout templates and guidelines for creat
 
 **Purpose:** Tools and procedures to counter attacks
 **Used In:** Incident Response, Hardening modules
-**Total Cards:** 24 core + 8 expansion
+**Total Cards:** 24 core (shared deck) + 19 expansion
 
 ## ASCII Layout
 
@@ -252,7 +252,7 @@ This document provides consistent card layout templates and guidelines for creat
 
 **Purpose:** Actions taken during a breach to respond
 **Used In:** Disaster Recovery module
-**Total Cards:** 12 core
+**Total Cards:** 13 core
 
 ## ASCII Layout
 
@@ -340,7 +340,7 @@ This document provides consistent card layout templates and guidelines for creat
 
 **Purpose:** Time pressure and escalation events
 **Used In:** Disaster Recovery module
-**Total Cards:** 12 core + 8 expansion
+**Total Cards:** 12 core (6 Scheduled + 6 Triggered); the DR expansion adds 8 Scenario cards instead of extra events
 
 ## ASCII Layout
 
@@ -837,7 +837,7 @@ Submit as markdown file with:
 
 ## Questions?
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for full contribution guidelines.
 
 ---
 
@@ -848,14 +848,24 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full contribution guidelines.
 | Type | Count | Cost | Difficulty | Module |
 |------|-------|------|------------|--------|
 | Threat Cards | 12 core + 8 exp | — | DC 10-15 | IR |
-| Defense Cards | 24 core + 8 exp | 10/15/25 | — | IR, Hardening |
+| Defense Cards | 24 core (shared) + 19 exp | 10/15/25 | — | IR, Hardening |
 | Pentester Tactics | 8 core + 8 exp | — | DC 12-16 | Hardening |
-| Crisis Actions | 12 | 5-30 | — | DR |
-| Event Cards | 12 core + 8 exp | — | — | DR |
-| Server Cards | 10 core + 4 exp | 3-25 | — | NB |
-| Security Devices | 10 core + 4 exp | 4-15 | — | NB |
+| Crisis Actions | 13 | 0-20 | — | DR |
+| Event Cards | 12 core (6 Scheduled + 6 Triggered) | — | — | DR |
+| Stakeholder Cards | 5 | — | — | DR |
+| Crisis Scenarios | 8 exp | — | — | DR |
+| Server Cards | 10 core + 8 exp (legacy + cloud) | 3-15 | — | NB |
+| Security Devices | 10 core | 6-15 | — | NB |
+| Architecture Cards | 5 | 0-12 | — | NB |
+| Asset Cards | 8 | — | — | NB |
+| Business Requirements | 20 (standalone) | — | — | NB |
+| Operational Events | 16 (standalone) | — | — | NB |
+| Investigation Cards | 12 | 5-20 | DC 11-15 | Forensics |
+| Evidence Cards | 12 | — | — | Forensics |
+| Findings Cards | 4 | — | — | Forensics |
 | Audit Domains | 6 | — | — | A&C |
-| Frameworks | 12 | — | — | A&C |
+| Frameworks | 11 exp (5 NIST + 3 CIS + 3 PCI) | — | — | A&C |
+| Remediation Actions | 8 exp | 3-15 | — | A&C |
 
 ---
 

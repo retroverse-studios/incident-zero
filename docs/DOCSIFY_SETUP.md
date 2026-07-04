@@ -106,7 +106,7 @@ Then visit: `http://localhost:3000`
 Organized hierarchically:
 1. **Overview** - Getting started and framework
 2. **Core Rules** - Base game mechanics
-3. **Module Rules** - Rules for each of the 5 modules
+3. **Module Rules** - Rules for each of the 6 modules
 4. **Standalone Games** - How to play each module independently
 5. **Card Decks** - Complete card documentation organized by module
 

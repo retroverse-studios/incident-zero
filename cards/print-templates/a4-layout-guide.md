@@ -1,0 +1,88 @@
+# A4 Print & Layout Guide
+
+**Version:** 2.2 - Playtest Edition
+
+How to turn the card files in `cards/` into a physical deck.
+
+---
+
+## What You Need
+
+- **Printer:** Any home/office printer (color recommended, mono works)
+- **Paper:** 200-250 gsm cardstock for cards; plain 80 gsm for tracker sheets
+- **Tools:** Paper cutter or scissors, ruler, optionally 63.5 × 88 mm card sleeves
+- **Optional:** Corner rounder, laminator for tracker sheets (reuse with dry-erase markers)
+
+---
+
+## Card Format
+
+All Incident Zero cards use **poker size (63.5 × 88 mm / 2.5" × 3.5")**.
+That gives a **3 × 3 grid of 9 cards per A4 sheet** with comfortable margins and cutting gutters.
+
+### A4 Sheet Layout (9 cards)
+
+```
+A4 portrait: 210 × 297 mm
+Margins: 10 mm all sides
+Card grid: 3 columns × 3 rows
+Card size: 63.5 × 88 mm
+Gutters: ~3 mm between cards (cut lines)
+```
+
+If your printer needs more margin, drop to a **2 × 4 grid (8 cards per sheet)** and scale cards to fit.
+
+---
+
+## Making Cards From the Markdown Files
+
+Until the PDF print pack ships, the quickest playable approach:
+
+### Option 1: Table-fold cards (fastest)
+1. Open the card file (e.g., `cards/incident-response/core-deck/threat-defense-cards.md`)
+2. Copy each card's title + key fields into a 9-cell table in any word processor
+3. Print on cardstock, cut on the gridlines
+
+### Option 2: Print the reference pages
+1. Print the card file directly from the docs site (Ctrl+P in your browser)
+2. Keep the pages as a face-up reference "menu" instead of a shuffled deck
+3. Works well for decks that are menus rather than hidden draws
+   (Defense cards, Crisis Action cards, Investigation cards, Audit domains)
+
+### Option 3: Index cards (zero printing)
+Hand-write card titles + costs/DCs on index cards; keep the markdown open as the rules text. Fine for a first playtest.
+
+> **Which decks must be hidden/shuffled?** Only the Threat deck (Threat Orchestrator's hidden attack chain), Pentester Tactic deck, and Event deck benefit from being physical face-down cards. Everything else can be an open menu.
+
+---
+
+## Color Coding by Card Type
+
+| Card Type | Color | Modules |
+|-----------|-------|---------|
+| Threat | Red | Incident Response |
+| Defense | Blue | IR / Hardening |
+| Pentester Tactic | Dark red | Hardening |
+| Server / Device / Architecture | Green | Network Building |
+| Crisis Action | Orange | Disaster Recovery |
+| Event | Purple | Disaster Recovery |
+| Stakeholder | Yellow | Disaster Recovery |
+| Investigation | Teal | Forensics |
+| Evidence / Findings | Grey | Forensics |
+| Audit Domain / Framework | Brown | Audit & Compliance |
+
+Mono printers: print the card-type name in a header band instead.
+
+**Accessibility note:** never rely on color alone — every card carries its type in text. (Colorblind-safe icons are planned; see FUTURE_WORK.md.)
+
+---
+
+## Cutting & Finishing
+
+1. Cut columns first, then rows (fewer long cuts = straighter edges)
+2. Round corners if you have a corner punch (cards shuffle better)
+3. Sleeve if the deck will be shuffled a lot (Threat, Tactic, Event decks)
+
+## Tracker Sheets
+
+Print `tracker-sheets.md` (this folder) on plain paper — one universal sheet per table plus the module sheet for the module you're playing. Laminate + dry-erase marker for repeated use.

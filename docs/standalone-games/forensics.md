@@ -1,6 +1,6 @@
 # Forensics Module: Standalone Game Guide
 
-**Version:** 2.1 - Investigation & Attribution Edition
+**Version:** 2.2 - Playtest Edition (rule changes marked "(v2.2)" — see the module rules doc for the full change list)
 **Duration:** 45-90 minutes
 **Player Count:** 1 Threat Orchestrator + 1-4 Investigators
 **Complexity:** Intermediate to Advanced
@@ -35,7 +35,7 @@ In standalone Forensics, you are a team of incident investigators called in to a
 - **4 Findings Cards** (from cards/forensics/core-deck/)
 - **One d20 (20-sided die)**
 - **Turn Tracker** (paper or board showing current turn)
-- **Budget Tracker** (tracks spending from 0-150)
+- **Budget Tracker** (tracks spending from 0-100)
 - **Progress Meters:**
   - Timeline Completeness (0-100%)
   - Attack Chain Reconstruction (0-100%)
@@ -141,7 +141,7 @@ Read the **Incident Briefing** to all investigators:
 On a shared board or spreadsheet, create:
 
 1. **Turn Tracker:** Current turn = 1, Max turns = [TURN COUNT]
-2. **Budget Tracker:** Current budget = 75 (or 100), Max = 150
+2. **Budget Tracker:** Current budget = 75 (or 100), tracker range 0-100
 3. **Progress Meters:**
    - Timeline Completeness: 0%
    - Attack Chain Reconstruction: 0%
@@ -165,15 +165,16 @@ One investigator (or the whole team collectively) describes what forensic invest
 **Option A: Conduct Investigation**
 - Choose an Investigation Action card (Disk Forensics, Memory Analysis, Log Analysis, Network Traffic, Malware Analysis, Timeline Reconstruction, or Threat Attribution)
 - Describe HOW they'll conduct the investigation (methodology, tools, expected findings)
-- Declare the Budget cost (shown on card)
-- Example: "We'll do a full disk image of the compromised database server and look for persistence mechanisms, rootkits, and artifact evidence. Cost 10 Budget."
+- Declare the Budget cost (shown on card) — paid on the turn you start
+- Note the card's **Duration (v2.2):** starting the investigation is your action this turn; counting this turn as turn 1, the roll and results arrive at the START of turn N (Duration 1 = same turn, Duration 2 = start of next turn, Duration 3 = two turns later). Only ONE multi-turn investigation may be in flight at a time; you may take other actions while waiting.
+- Example: "We'll do a full disk image of the compromised database server and look for persistence mechanisms, rootkits, and artifact evidence. Cost 10 Budget, Duration 2 — results at the start of next turn."
 
-**Option B: Analyze Existing Evidence**
-- Review 2-4 Evidence cards already discovered
+**Option B: Analyze Existing Evidence** — Cost: 5 Budget (v2.2)
+- Review 2-4 Evidence cards already discovered — **each Evidence card can be Analyzed only once (v2.2)**; mark cards as Analyzed
 - Describe connections between findings (temporal sequence, technical relationships, or attribution links)
 - Example: "The malware sample matches the persistence mechanism we found in scheduled tasks, suggesting the attacker knew exactly what they were doing. Plus, the C2 domain was registered by the same person who registered two other domains we found in old breach reports."
 
-**Option C: Follow Investigative Lead**
+**Option C: Follow Investigative Lead** — Cost: 5 Budget (v2.2)
 - Pick an Evidence card with an "Investigative Lead" noted
 - Describe how you'll pursue this lead
 - Example: "This C2 domain resolves to a Russian ASN. Let's do a WHOIS lookup and see what other domains are hosted on this infrastructure."
@@ -184,45 +185,49 @@ One investigator (or the whole team collectively) describes what forensic invest
 
 **For Conduct Investigation or Follow Investigative Lead:**
 
-1. **Verify Cost:** Check if Blue Team has sufficient Budget
+1. **Verify Cost:** Check if Blue Team has sufficient Budget (Follow Lead costs 5 — v2.2)
    - If insufficient Budget, investigation cannot proceed (suggest alternative action)
 
-2. **Set Difficulty Class (DC):** TO checks Investigation Action card for DC
+2. **Apply Duration (v2.2):** For a Duration 2-3 investigation, the cost and action are spent now, but steps 3-5 happen at the START of the turn the investigation completes (Duration 1 resolves immediately)
+
+3. **Set Difficulty Class (DC):** TO checks Investigation Action card for DC
    - Example: Disk Forensics has DC 12
    - Modify DC if anti-forensics present: +2 DC
    - Modify DC if attacker was sophisticated: +1-2 DC
 
-3. **Determine Modifiers:** Apply skill modifiers to the roll
+4. **Determine Modifiers:** Apply skill modifiers to the roll
    - +2 if investigator has forensics certification
    - +1 if basic IT security background
    - +2 if team provides detailed technical narrative
    - +1 if previous investigation discovered clues to this action
-   - -1 if attempting hastily (rushed, final turn desperation)
+   - -2 if attempting hastily (rushed, final turn desperation) (v2.2)
 
-4. **Roll:** Investigator (or TO on their behalf) rolls d20
+5. **Roll:** Investigator (or TO on their behalf) rolls d20
 
-5. **Compare Results:**
-   - **Success (roll ≥ DC):** Discover ONE Evidence card + advance relevant Progress Meters by 10-20%
-   - **Partial Success (roll DC-3 to DC-1):** Discover partial or incomplete evidence + advance Progress Meter by 5-10%
-   - **Failure (roll < DC-3):** No evidence discovered; Budget still spent; take a turn
+6. **Compare Results:**
+   - **Success (roll ≥ DC):** Discover ONE Evidence card (unless the card says otherwise — MEM-02 and NET-02 award TWO) and apply ONLY that Evidence card's printed meter impacts (typically +5-35% per meter; major breakthroughs can exceed +20%). The investigation card's own advance line applies only if no Evidence card is produced (v2.2: No Double Counting)
+   - **Partial Success (roll DC-2 to DC-1):** Discover partial or incomplete evidence + apply the investigation card's partial advance line (typically +5-15%)
+   - **Failure (roll < DC-2):** No evidence discovered; Budget still spent; take a turn
 
 **For Analyze Existing Evidence:**
 
-1. **Describe Connection:** Blue Team explains how findings are related
-2. **Roll:** d20 + investigator skill modifier vs. DC 10
-3. **Results:**
+1. **Pay Cost:** 5 Budget (v2.2); the 2-4 Evidence cards reviewed must not have been Analyzed before
+2. **Describe Connection:** Blue Team explains how findings are related
+3. **Roll:** d20 + investigator skill modifier vs. DC 10
+4. **Results:**
    - **Success (≥10):** Gain insight; advance two Progress Meters by 5-10% each
-   - **Failure (<10):** No progress; use a turn
+   - **Failure (<10):** No progress; use a turn (Budget still spent)
 
 ---
 
 #### Step 3: Record & Update Tracking (1-2 minutes)
 
-1. **Deduct Budget:** Subtract investigation cost from Budget Tracker
+1. **Deduct Budget:** Subtract action cost from Budget Tracker
 2. **Advance Turn:** Increment Turn counter by 1
-3. **Update Progress Meters:** Record any progress from successful investigation
+3. **Update Progress Meters:** Record any progress from resolved investigations
 4. **Note Evidence:** If Evidence card discovered, add to Evidence Log with source and chain of custody status
-5. **Check Victory Condition:** Did Blue Team achieve any victory condition? (see Victory Conditions section)
+5. **Chain of Custody (v2.2):** +5% Chain of Custody for each Evidence card discovered this turn IF the team stated how it was preserved (hash, imaging, log export); TO may award +10% for exemplary handling
+6. **Check Victory Condition:** Did Blue Team achieve any victory condition? (see Victory Conditions section)
 
 ---
 
@@ -245,40 +250,37 @@ One investigator (or the whole team collectively) describes what forensic invest
 | TIMELINE-01: Timeline Reconstruction | 13 | 5 | 1 turn | Chronological attack sequence, entry and exit points |
 | THREAT-01: Threat Attribution Analysis | 15 | 20 | 3 turns | Link to known threat groups, TTPs, motivation |
 
+*DISK-01 rush option (v2.2): pay +5 Budget (15 total) to run it at Duration 1. Duration rule: results arrive at the start of the turn the Duration completes — see Turn Sequence.*
+
 ---
 
 ## Victory & Failure Conditions
 
 ### Investigation Complete (VICTORY)
 
-Blue Team wins if they achieve ONE of these before running out of turns or budget:
+Blue Team wins if they achieve ONE of these (canonical v2.2 conditions — identical to the module rules):
 
-**Victory Condition 1: Attribution Success**
-- **Attribution Confidence ≥ 90%** (identified threat actor, techniques, motivations)
-- PLUS **Attack Chain Reconstruction ≥ 75%** (understand attack progression)
+**Victory Condition 1: "Full Attribution"**
+- **Attribution Confidence ≥ 90%** AND **Timeline Completeness ≥ 80%**
 - **Result:** "You have successfully attributed this attack to [Threat Group]. Intelligence briefing prepared for leadership."
 
-**Victory Condition 2: Complete Timeline & Evidence**
-- **Timeline Completeness ≥ 80%** (clear chronological sequence of all major events)
-- PLUS **Attack Chain Reconstruction ≥ 80%** (complete understanding of how attacker progressed)
-- PLUS **Evidence Chain of Custody ≥ 70%** (evidence is documented and admissible)
+**Victory Condition 2: "Solid Case"**
+- **Timeline Completeness ≥ 80%** AND **Attack Chain Reconstruction ≥ 80%** AND **Evidence Chain of Custody ≥ 70%**
 - **Result:** "Your forensic investigation is publishable quality and legally defensible. Law enforcement briefed."
 
-**Victory Condition 3: Actionable Findings**
-- Budget exhausted (or turn limit reached) early
-- BUT achieved **any two Progress Meters ≥ 70%** with clear findings
+**Victory Condition 3: "Partial Findings"**
+- **Any two Progress Meters ≥ 70% at game end**
 - **Result:** "Investigation concluded with sufficient findings for remediation. Hardening team can now implement controls."
 
 ---
 
 ### Investigation Inconclusive (FAILURE)
 
-Blue Team fails if they reach the turn limit with:
+Blue Team fails if, **at the turn limit, no victory condition is met**.
 
-- **Any single Progress Meter < 40%** (critical gap in understanding), PLUS
-- No coherent findings to act on
+**Precedence (v2.2):** Victory conditions are always checked FIRST. There is no "any meter < 40% = failure" clause (deleted — it conflicted with Victory Condition 3), and **budget exhaustion is not a loss**: you may always fall back on the cheap 5-Budget actions while Budget lasts, and the game simply plays out to the turn limit.
 
-**Result:** "Investigation stalled. Too many unanswered questions. Threat actor remains unidentified. Forensic team recommends additional investigation by external firm."
+**Result of failure:** "Investigation stalled. Too many unanswered questions. Threat actor remains unidentified. Forensic team recommends additional investigation by external firm."
 
 **Consequence of Failure:**
 - Investigation results are incomplete and cannot feed into Hardening or Network Building modules
@@ -291,28 +293,31 @@ Blue Team fails if they reach the turn limit with:
 
 ### Scenario Setup (TO Secret)
 > TIER 2 attack: Credential-based lateral movement with persistence
-> Turn limit: 10 turns
+> Turn limit: 8 turns (TIER 2 baseline 9, d4 roll of -1)
 > Attacker profile: Eastern European cybercriminal group
 > Key technique: Password spray → Privilege escalation → Scheduled task persistence → Data exfiltration
+> Bonus: The sysadmin's initial triage captured a suspicious binary, so a malware sample is available from turn 1
 
 ### Turn 1
 
-**Blue Team:** "We'll start with event log analysis of the compromised database server. We want to see the login history and identify unusual access patterns."
+**Blue Team:** "We'll start with event log analysis of the compromised database server. We want to see the login history and identify unusual access patterns. We'll export the logs with their digital signatures and hash the export."
 
 **Investigator Skill:** IT Security background (+1)
 
 **TO Facilitator:**
 1. **Check Cost:** LOG-01 costs 5 Budget. Current budget 75. ✓ OK
-2. **Set DC:** LOG-01 has DC 11. No anti-forensics. DC = 11
-3. **Apply Modifiers:** +1 (IT security background) + 0 (no prior clues) = +1 total
-4. **Roll:** Investigator rolls d20+1. Result: 14
-5. **Success!** (14 ≥ 11) → Discover Evidence card "Suspicious Admin Logins (Timeline)"
+2. **Check Duration:** LOG-01 is Duration 1 — resolves this turn
+3. **Set DC:** LOG-01 has DC 11. No anti-forensics. DC = 11
+4. **Apply Modifiers:** +1 (IT security background) + 0 (no prior clues) = +1 total
+5. **Roll:** Investigator rolls d20+1. d20 = 13, total 14
+6. **Success!** (14 ≥ 11) → Discover Evidence card **EVD-04 "Suspicious Admin Login (Timeline)"** — apply ONLY its printed impacts (v2.2 No Double Counting)
 
 **Update Tracking:**
 - Budget: 75 - 5 = 70 remaining
 - Turn: 1 → 2
-- Timeline Completeness: 0% → 15% (login timeline discovered)
-- Evidence Log: "Suspicious Admin Logins - discovered via Event Log Analysis - Chain of Custody: intact"
+- EVD-04 printed impacts: Timeline 0% → 25%, Attack Chain 0% → 20%, Attribution 0% → 10%
+- Chain of Custody: 0% → 5% (v2.2: preservation stated — signed log export, hashed)
+- Evidence Log: "EVD-04 - discovered via LOG-01 - preserved via signed/hashed export - Chain of Custody: intact"
 
 **Blue Team Deduction:** "Looks like an admin account was accessed from unusual locations. Might be credential theft."
 
@@ -320,112 +325,162 @@ Blue Team fails if they reach the turn limit with:
 
 ### Turn 2
 
-**Blue Team:** "Let's analyze that malware sample. We want to understand what it does and where it connects to."
+**Blue Team:** "Let's analyze that malware sample from triage. We want to understand what it does and where it connects to."
 
 **Investigator Skill:** Forensic certification background (+2)
 
 **TO Facilitator:**
 1. **Check Cost:** MALW-01 costs 15 Budget. Current budget 70. ✓ OK
-2. **Set DC:** MALW-01 has DC 12. Attacker was moderately sophisticated. DC = 13
-3. **Apply Modifiers:** +2 (forensic cert) + 0 = +2 total
-4. **Roll:** Investigator rolls d20+2. Result: 16
-5. **Success!** (16 ≥ 13) → Discover Evidence card "Command-and-Control Callback Domain"
+2. **Check Duration (v2.2):** MALW-01 is Duration 2. Starting the sandbox run is this turn's action; the roll and results arrive at the START of turn 3. MALW-01 is now the one multi-turn investigation in flight.
 
 **Update Tracking:**
 - Budget: 70 - 15 = 55 remaining
 - Turn: 2 → 3
-- Attack Chain Reconstruction: 0% → 20% (malware functionality understood)
-- Evidence Log: "C2 Domain - discovered via Malware Analysis - Chain of Custody: intact"
+- Meters: unchanged (results pending) — Timeline 25%, Attack Chain 20%, Attribution 10%, Chain of Custody 5%
+
+---
+
+### Turn 3
+
+**Start of turn — MALW-01 resolves (v2.2 Duration):**
+1. **Set DC:** MALW-01 has DC 12. Attacker was moderately sophisticated: +1. DC = 13
+2. **Apply Modifiers:** +2 (forensic cert)
+3. **Roll:** d20 = 14, total 16
+4. **Success!** (16 ≥ 13) → Discover **EVD-02 "Command-and-Control Callback Domain"**
+   - EVD-02 printed impacts: Attack Chain 20% → 35%, Attribution 10% → 35%, Timeline 25% → 30%
+   - Chain of Custody: 5% → 10% (v2.2: sample hashed, sandbox logs archived)
+
+**Turn 3 action — Blue Team:** "Now let's look at network flow records for that C2 domain. Start NET-01."
+
+**TO Facilitator:** NET-01 costs 10 (budget 55 → 45 ✓), Duration 2 — resolves at the start of turn 4. (Allowed: MALW-01 finished this turn, so only one investigation is in flight.)
+
+**Update Tracking:**
+- Budget: 45 remaining
+- Turn: 3 → 4
+- Meters: Timeline 30%, Attack Chain 35%, Attribution 35%, Chain of Custody 10%
 
 **Blue Team Deduction:** "The malware communicates with an external server. That's how the attacker stays in control."
 
 ---
 
-### Turn 3-5 (Abbreviated)
+### Turn 4
 
-**Turn 3:** Network Traffic Analysis (DC 12, roll 15) → Discover "Data Exfiltration Evidence" (evidence of 100+ GB transferred)
+**Start of turn — NET-01 resolves (v2.2 Duration):**
+1. **Set DC:** NET-01 has DC 12
+2. **Apply Modifiers:** +1 (IT security background)
+3. **Roll:** d20 = 9, total 10
+4. **Partial Success** (10 is in the DC-2 to DC-1 band, 10-11) → Suspicious outbound traffic found, but the destination is unclear. No Evidence card produced, so apply NET-01's partial advance line: Attack Chain 35% → 45%, Attribution 35% → 40%. No Chain of Custody handling bonus (no Evidence card discovered).
 
-**Turn 4:** Timeline Reconstruction (DC 13, roll 10) → Partial success: "Incomplete Timeline" card (some gaps remain)
+**Turn 4 action — Blue Team:** "Let's try to reconstruct the timeline from what we have. TIMELINE-01."
 
-**Turn 5:** Threat Attribution Analysis (DC 15, roll 17) → Discover "Attacker Infrastructure Map" (multiple C2 domains)
+**TO Facilitator:** TIMELINE-01 costs 5 (budget 45 → 40 ✓), Duration 1 — resolves now. DC 13, +2 (DFIR training). Roll: d20 = 8, total 10. **Failure** (10 < 11, below the DC-2 partial band). Too many timestamp gaps. Budget still spent.
 
-**Progress So Far:**
-- Timeline: 30%, Attack Chain: 50%, Attribution: 20%, Chain of Custody: 60%
-- Budget: 25 remaining, Turn: 6 of 10
+**Update Tracking:**
+- Budget: 40 remaining
+- Turn: 4 → 5
+- Meters: Timeline 30%, Attack Chain 45%, Attribution 40%, Chain of Custody 10%
 
 ---
 
-### Turn 6 (Critical Decision)
+### Turn 5 (Critical Decision)
 
-**Blue Team:** "This is expensive, but let's do Memory Forensics Deep Dive on the admin workstation. If the attacker has malware in memory, we might find encryption keys or recent commands that show their intent."
-
-**Investigator Skill:** Forensic analyst (+2)
+**Blue Team:** "This is expensive, but let's start the Memory Forensics Deep Dive on the admin workstation. If the attacker has malware in memory, we might find encryption keys or recent commands that show their intent."
 
 **TO Facilitator:**
-1. **Check Cost:** MEM-02 costs 20 Budget. Current budget 25. ✓ OK (barely)
-2. **Set DC:** MEM-02 has DC 15. Advanced investigation. DC = 15
-3. **Apply Modifiers:** +2 (forensic analyst) + 1 (prior investigations revealed attacker is sophisticated) = +3
-4. **Roll:** Investigator rolls d20+3. Result: 19
-5. **Success!** (19 ≥ 15) → Discover "Attacker Command History" + "Encryption Keys"
+1. **Check Cost:** MEM-02 costs 20 Budget. Current budget 40. ✓ OK
+2. **Check Duration (v2.2):** MEM-02 is Duration 3 — started this turn (turn 1 of 3), it resolves at the START of turn 7. It is now the one multi-turn investigation in flight.
 
 **Update Tracking:**
-- Budget: 25 - 20 = 5 remaining (nearly exhausted)
+- Budget: 40 - 20 = 20 remaining
+- Turn: 5 → 6
+- Meters: unchanged (results pending)
+
+---
+
+### Turn 6 (Working While Waiting)
+
+**Blue Team:** "While the memory analysis runs, let's Analyze our existing evidence. The suspicious admin login (EVD-04, T1078 Valid Accounts) lines up with the C2 callbacks (EVD-02, T1071 Application Layer Protocol): the login happened 20 minutes before the first beacon. This was credential theft followed by remote control."
+
+**TO Facilitator:**
+1. **Check Cost:** Analyze Existing Evidence costs 5 (v2.2). Budget 20 → 15 ✓. (Allowed while MEM-02 is in flight — Analyze is not an investigation.)
+2. **Check cards:** EVD-04 and EVD-02 have not been Analyzed before ✓ — mark both as Analyzed (v2.2: each Evidence card only once)
+3. **Modifiers:** +1 (references specific MITRE ATT&CK techniques) + 1 (IT security background) = +2
+4. **Roll:** d20 = 12, total 14 vs. DC 10. **Success!** → Advance two meters by 10% each: Timeline 30% → 40%, Attribution 40% → 50%
+
+**Update Tracking:**
+- Budget: 15 remaining
 - Turn: 6 → 7
-- Attribution: 20% → 50% (command history shows attacker intent and tools)
-- Chain of Custody: 60% → 85% (all evidence now properly documented)
-- **CRITICAL CHECK:** Two meters now ≥ 70%! But still need higher for victory...
+- Meters: Timeline 40%, Attack Chain 45%, Attribution 50%, Chain of Custody 10%
 
-**Blue Team Deduction:** "We see evidence of Russian-language malware and cryptocurrency mining commands. Eastern European group confirmed!"
+**Blue Team Deduction:** "Credential theft, then hands-on-keyboard control. Now we need the memory results."
 
 ---
 
-### Turn 7 (Final Push)
+### Turn 7 (Breakthrough)
 
-**Blue Team:** "We have 5 Budget left and 3 turns. Let's do a quick THREAT-01: Threat Attribution Analysis. We have enough evidence to make a determination."
+**Start of turn — MEM-02 resolves (v2.2 Duration, started turn 5):**
+1. **Set DC:** MEM-02 has DC 15
+2. **Apply Modifiers:** +2 (forensic analyst) + 1 (MALW-01 already completed) = +3
+3. **Roll:** d20 = 11, total 14
+4. **Partial Success** (14 is in the DC-2 to DC-1 band, 13-14) → Discover ONE complete Evidence card, **EVD-09 "Attacker Command History"**, plus an INCOMPLETE second finding (fragments of an RC4 key — marked INCOMPLETE, no meter impact until completed or interpreted)
+   - EVD-09 printed impacts: Timeline 40% → 65%, Attack Chain 45% → 70%, Attribution 50% → 65%, Chain of Custody 10% → 20%
+   - Chain of Custody: 20% → 25% (v2.2: memory image hashed, extraction methodology documented)
 
-**Investigator Skill:** Security analyst (+1)
+**Turn 7 action — Blue Team:** "Follow the investigative lead on EVD-02: WHOIS and ASN lookup on the C2 domain to map related attacker infrastructure."
 
 **TO Facilitator:**
-1. **Check Cost:** THREAT-01 costs 20 Budget. Current budget 5. ✗ NOT ENOUGH
-2. **Alternative:** "You don't have enough budget for THREAT-01. You could do LOG-02 (Deep Log Correlation) for 10 Budget instead, but you'd need to use this turn and next turn might be your last."
-
-**Blue Team Pivots:** "OK, we'll use our follow investigative lead action instead. That C2 domain we found—let's do WHOIS and ASN lookup to find related attacker infrastructure."
-
-**TO Facilitator:**
-1. **Set DC:** Follow Lead is DC 12
-2. **Apply Modifiers:** +2 (good idea, references prior evidence) = +2
-3. **Roll:** d20+2 = 18
-4. **Success!** → Discover "Attacker Infrastructure Network" evidence
+1. **Check Cost:** Follow Investigative Lead costs 5 (v2.2). Budget 15 → 10 ✓
+2. **Set DC:** 12
+3. **Apply Modifiers:** +2 (detailed approach referencing prior evidence)
+4. **Roll:** d20 = 14, total 16. **Success!** → Discover **EVD-07 "Attacker Infrastructure Map"** — apply its printed impacts (v2.2: no separate +20% Attribution bonus — No Double Counting)
+   - EVD-07 printed impacts: Attribution 65% → 95%, Attack Chain 70% → 85%, Timeline 65% → 75%
+   - Chain of Custody: 25% → 30% (v2.2: WHOIS records and passive-DNS exports archived)
 
 **Update Tracking:**
-- Budget: 5 remaining (effectively exhausted)
-- Turn: 7 → 8 of 10
-- Attribution: 50% → 75% (infrastructure linked to known threat group)
+- Budget: 10 remaining
+- Turn: 7 → 8 of 8 (final turn)
+- Meters: Timeline 75%, Attack Chain 85%, Attribution 95%, Chain of Custody 30%
 
-**Blue Team Assessment:** "We have 75% attribution and solid evidence. Let's see if we meet victory condition..."
+**Victory check:** Condition 1 needs Attribution ≥ 90% ✓ (95%) AND Timeline ≥ 80% ✗ (75%). Not yet. Condition 2 needs Timeline ≥ 80% ✗. Play on.
 
 ---
 
-### Victory Determination (After Turn 8)
+### Turn 8 (Final Turn)
 
-**Check Victory Conditions:**
+**Blue Team:** "One more push on the timeline. We retry TIMELINE-01, now synthesizing the login timeline (EVD-04), the C2 beacons (EVD-02), and the attacker's command history (EVD-09)."
 
-**Condition 1: Attribution ≥ 90%?** No (75%)
-**Condition 2: Timeline + Chain of Custody ≥ 80% combined?** Timeline 30%, Chain of Custody 85% = 60% average. No.
-**Condition 3: Two meters ≥ 70% with budget exhausted?**
-- Attribution: 75% ✓
-- Chain of Custody: 85% ✓
-- Budget: Nearly exhausted (5 remaining) ✓
-- **YES! VICTORY CONDITION 3 MET!**
+**TO Facilitator:**
+1. **Check Cost:** TIMELINE-01 costs 5. Budget 10 → 5 ✓. Duration 1 — resolves now.
+2. **Set DC:** 13
+3. **Apply Modifiers:** +2 (DFIR training) + 1 (prior investigations provide clues) = +3
+4. **Roll:** d20 = 15, total 18. **Success!** All timeline-type evidence has already been discovered, so no new Evidence card is produced — apply TIMELINE-01's own advance line instead (v2.2 No Double Counting): Timeline 75% → 100%, Attack Chain 85% → 100%
+
+**Update Tracking:**
+- Budget: 5 remaining
+- Turn: 8 of 8 — game end
+- Final meters: Timeline 100%, Attack Chain 100%, Attribution 95%, Chain of Custody 30%
+
+---
+
+### Victory Determination (Game End, After Turn 8)
+
+**Check Victory Conditions (v2.2 — victory is checked first, never overridden by a low meter):**
+
+**Condition 1 "Full Attribution": Attribution ≥ 90% AND Timeline ≥ 80%?**
+- Attribution: 95% ✓
+- Timeline: 100% ✓
+- **YES! VICTORY CONDITION 1 MET!**
+
+(For completeness: Condition 2 "Solid Case" fails on Chain of Custody 30% < 70%; Condition 3 "Partial Findings" would also be met with three meters ≥ 70% at game end. Note the v2.2 precedence rule: Chain of Custody sitting at 30% does NOT cause a failure — the old "any meter < 40%" clause is deleted. Meter averages are never used.)
 
 **Game Ends with VICTORY**
 
 > **Investigation Result:** "Your forensic investigation successfully identified the attacker as a member of the [Eastern European Cybercriminal Group]. Key findings:
 > - Attack vector: Credential theft via password spray
-> - Persistence: Scheduled task malware
-> - Exfiltration: 100+ GB customer database records
-> - Timeline: 3-week dwell time before discovery
-> - Attribution: 75% confidence linked to known group; 85% evidence admissibility
+> - Control: C2 beaconing from checkupdate-style domains, hands-on-keyboard commands recovered from memory
+> - Timeline: fully reconstructed from signed logs, beacon timing, and command history
+> - Attribution: 95% confidence linked to known group via infrastructure map
+> - Caveat: evidence admissibility is weak (Chain of Custody 30%) — fine for hardening, not for court
 >
 > Recommendations:
 > 1. Implement multi-factor authentication on admin accounts
@@ -488,7 +543,7 @@ Blue Team fails if they reach the turn limit with:
 - **Turn 4-7:** Mix of successes and failures. Some investigations hit dead-ends. Tension rises.
 - **Turn 8+:** Each turn matters. Budget running low. Critical decisions.
 
-- **If game is ending early** (Victory Condition 3 before turn 6): Let it happen. Means they played smart.
+- **If game is ending early** (Victory Condition 1 or 2 before turn 6): Let it happen. Means they played smart. (Condition 3 is only checked at game end.)
 - **If game is dragging** (still <50% progress by turn 6): Hint that they should use Follow Investigative Lead (cheaper, guided path)
 
 ### Challenge Scaling
@@ -606,23 +661,24 @@ After game concludes, facilitate discussion:
 **Setup:** Choose TIER (1-4), Roll d4, Announce turn count and starting budget (75)
 
 **Each Turn:**
-1. **Choose action:** Conduct Investigation, Analyze Evidence, or Follow Lead
-2. **Pay cost:** Deduct Budget
-3. **Roll d20:** Add skill modifier, compare to DC
-4. **Resolve:** Discover evidence, advance Progress Meters, or fail
-5. **Update:** Budget, Turn counter, Progress Meters
+1. **Resolve arrivals (v2.2):** Any Duration 2-3 investigation completing this turn rolls and resolves at the start of the turn
+2. **Choose action:** Conduct Investigation (card cost, Duration 1-3), Analyze Evidence (5 Budget, each Evidence card only once), or Follow Lead (5 Budget)
+3. **Pay cost:** Deduct Budget
+4. **Roll d20:** Add skill modifier, compare to DC (partial success on DC-2 to DC-1); Duration 2-3 investigations roll when they complete
+5. **Resolve:** Discover evidence (apply the Evidence card's printed impacts — never also the investigation card's advance line), or fail
+6. **Update:** Budget, Turn counter, Progress Meters (+5% Chain of Custody per Evidence discovery with stated preservation)
 
 **Resources:**
-- Budget: 75 (represents forensic lab time)
+- Budget: 75 (represents forensic lab time; tracker range 0-100)
 - Turns: 6-15 (depends on tier + d4 roll)
 - Progress Meters: Timeline, Attack Chain, Attribution, Chain of Custody (each 0-100%)
 
-**Victory:**
-- Attribution ≥ 90% + Attack Chain ≥ 75%, OR
-- Timeline ≥ 80% + Chain of Custody ≥ 70%, OR
-- Any two meters ≥ 70% + Budget exhausted/nearly exhausted
+**Victory (v2.2):**
+- **V1 "Full Attribution":** Attribution ≥90% AND Timeline ≥80%
+- **V2 "Solid Case":** Timeline ≥80% AND Attack Chain ≥80% AND Chain of Custody ≥70%
+- **V3 "Partial Findings":** any two meters ≥70% at game end
 
-**Failure:** Any meter < 40% at turn limit = Inconclusive investigation
+**Failure (v2.2):** At the turn limit, no victory condition met. Victory is checked first — there is no meter-minimum failure clause, and budget exhaustion is not a loss. investigation
 
 ---
 
@@ -639,18 +695,18 @@ Before playing, ensure you have:
   - [ ] Timeline & Attribution (2 cards)
 
 - [ ] 12 Evidence Cards (printable from cards/forensics/core-deck/)
-  - [ ] Malware & Persistence (3 cards)
-  - [ ] Credentials & Access (2 cards)
-  - [ ] Lateral Movement (2 cards)
-  - [ ] Exfiltration (2 cards)
-  - [ ] Infrastructure (2 cards)
-  - [ ] Timeline (1 card)
+  - [ ] Malware & Persistence (4 cards: EVD-01, EVD-03, EVD-08, EVD-10)
+  - [ ] Credentials & Access (1 card: EVD-04)
+  - [ ] Lateral Movement (1 card: EVD-05)
+  - [ ] Exfiltration (1 card: EVD-06)
+  - [ ] Attack Infrastructure (2 cards: EVD-02, EVD-07)
+  - [ ] Attack Activity (3 cards: EVD-09, EVD-11, EVD-12)
 
 - [ ] 4 Findings Cards
-  - [ ] Threat Attribution
-  - [ ] Attack Surface
-  - [ ] Persistence Analysis
-  - [ ] Control Gaps
+  - [ ] FIND-01: Threat Attribution Report
+  - [ ] FIND-02: Attack Surface Analysis
+  - [ ] FIND-03: Persistence Mechanisms Discovered
+  - [ ] FIND-04: Investigative Gaps & Recommendations
 
 - [ ] 1d20 die
 - [ ] Turn tracker (paper or board)
@@ -675,7 +731,7 @@ A: Yes! 4-8 investigators is ideal. With more, split into two teams (each team h
 A: Don't tell them. Part of the game is discovering how sophisticated the attacker is through evidence analysis. Let them discover it.
 
 **Q: What if we run out of budget before solving the case?**
-A: That's a realistic outcome! You must work with what you've discovered. Did you achieve Victory Condition 3 (two meters ≥70%)? If so, you win with incomplete findings (like real-world investigations). If not, investigation is inconclusive.
+A: That's a realistic outcome, and it is NOT an automatic loss (v2.2). Keep playing to the turn limit — the cheap 5-Budget actions (Analyze Evidence, Follow Lead, LOG-01, TIMELINE-01) stretch a thin budget, and at game end you check victory normally. If any two meters are ≥70% at game end, you win via Condition 3 (like real-world investigations with incomplete findings). If no condition is met at the turn limit, the investigation is inconclusive.
 
 **Q: Can we retry a failed investigation?**
 A: You can attempt the same investigation again next turn (costs full budget again), but you still don't know if you'll succeed. You're essentially re-investigating the same evidence looking for something you missed.
@@ -684,11 +740,11 @@ A: You can attempt the same investigation again next turn (costs full budget aga
 
 ## Printable Components
 
-All printable cards and tracking sheets are available in:
-- [cards/forensics/core-deck/investigation-cards.md](../../cards/forensics/core-deck/investigation-cards.md)
-- [cards/forensics/core-deck/evidence-cards.md](../../cards/forensics/core-deck/evidence-cards.md)
-- [cards/forensics/core-deck/findings-cards.md](../../cards/forensics/core-deck/findings-cards.md)
-- [Forensics Progress Meter Tracker (Excel/Google Sheets template)](../../assets/forensics-tracker-template.xlsx)
+All printable cards are available in:
+- [cards/forensics/core-deck/investigation-cards.md](../../cards/forensics/core-deck/investigation-cards.md) — 12 Investigation Action cards
+- [cards/forensics/core-deck/evidence-cards.md](../../cards/forensics/core-deck/evidence-cards.md) — 12 Evidence cards + 4 Findings cards (Findings section)
+
+Progress Meter Tracker: print templates coming in the print pack. Until then, draw a simple 4-meter tracker on paper: four rows labeled Timeline Completeness, Attack Chain Reconstruction, Attribution Confidence, and Evidence Chain of Custody, each marked 0-100% in 5% steps, plus a Turn row and a Budget row (0-100).
 
 ---
 

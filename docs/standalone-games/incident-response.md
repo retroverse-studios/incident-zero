@@ -18,11 +18,13 @@ This is the foundation module—many other modules build upon successful or unsu
 
 ### 1. Choose Difficulty Level
 
+Turn limits use the **Variable Game Length formula** from [Core Rules §3a](../rules/core-rules.md#3a-variable-game-length-system-v21---new): **Turn Limit = (Attack Chain Cards × 2) + 1**.
+
 | Difficulty | Chain Length | Budget | Turn Limit | Best For |
 |------------|--------------|--------|-----------|----------|
-| **Beginner** | 3 cards | 100 | 12 turns | First playthrough, basic learning |
-| **Intermediate** | 4 cards | 100 | 10 turns | Standard play, mixed experience |
-| **Advanced** | 5 cards | 100 | 10 turns | Experienced players, challenge |
+| **Beginner** | 3 cards | 100 | 7 turns | First playthrough, basic learning |
+| **Intermediate** | 4 cards | 100 | 9 turns | Standard play, mixed experience |
+| **Advanced** | 5 cards | 100 | 11 turns | Experienced players, challenge |
 
 ### 2. Threat Orchestrator Preparation
 
@@ -30,7 +32,7 @@ This is the foundation module—many other modules build upon successful or unsu
 1. Select 3-5 threat cards in logical sequence
 2. Arrange by attack chain step: INITIAL COMPROMISE → PIVOT & ESCALATE → PERSISTENCE → C2 & EXFIL
 3. Write down clues for each hidden card (don't reveal yet)
-4. Place relevant Asset Cards on the table (visible to all)
+4. Place relevant Asset Cards on the table (visible to all). Asset Cards are shared components — see `cards/network-building/core-deck/asset-cards.md`
 
 **Recommended first-time scenario:**
 - T-01: Phishing Campaign (INITIAL COMPROMISE - SOCIAL ENGINEERING)
@@ -62,6 +64,7 @@ Each turn follows this structure:
 
 **1. START OF TURN**
 - **Uncontained Threats Penalty:** For each revealed-but-uncontained threat, deduct 5 Budget
+- **Active Breach Cost (v2.2):** If at least one chain card is still unrevealed, deduct 5 Budget (dwell time is never free)
 - Read turn number aloud ("Turn 3...")
 
 **2. BLUE TEAM'S TURN (2-3 minutes discussion)**
@@ -100,9 +103,13 @@ Each turn follows this structure:
 - "We want to analyze the email headers in the mail gateway to identify the true sender IP and check it against threat intelligence feeds"
 - "We'll query our EDR agent logs for any processes spawned after the user clicked the link, looking for PowerShell or suspicious child processes"
 
-**Outcomes:**
-- **Success (roll ≥ 11 + modifiers):** TO gives a **verbal clue** about the *next* hidden threat in the chain (one card forward)
-- **Failure:** "Your investigation yields no actionable intelligence" (turn wasted, budget spent, but team learned)
+**Outcomes (v2.2 — investigation successes accumulate):**
+- **Success (roll + modifiers ≥ 11):**
+  - **First success against the current chain link:** TO gives a **verbal clue** about that hidden threat (always the earliest unrevealed card — see Sequential Discovery below)
+  - **Second success against the same link:** **THE CARD IS REVEALED!** It becomes uncontained and the team chooses a Discovery Reward
+- **Failure:** "Your investigation yields no actionable intelligence" (turn wasted, budget spent, but team learned). Failures do not count toward the two successes.
+
+**Sequential Discovery (v2.2 note):** Only the **earliest unrevealed chain card** can be revealed — by investigation or by defense deployment. Clues and successes always target that card, matching the clue system's walk down the kill chain.
 
 ---
 
@@ -120,20 +127,20 @@ Each turn follows this structure:
 **Roll Modifiers:** Same as Investigate (+2 for justification, +1 for real tools)
 
 **Outcomes:**
-- **Success (roll ≥ 11 + modifiers):**
-  - If card's **Countermeasure matches** the hidden threat's **Attack Vector** AND it's the correct step in the chain → **THREAT CARD REVEALED!**
+- **Success (roll + modifiers ≥ 11):**
+  - If card's **Countermeasure matches** the hidden threat's **Attack Vector** AND it's the correct step in the chain → **THREAT CARD REVEALED IMMEDIATELY!**
   - If it matches but wrong step, or right step but wrong vector → Defense deployed but no reveal
   - If neither matches → Defense deployed but ineffective against current threat
 
 - **Failure:** Budget spent, defense not properly implemented (card discarded)
 
-**Note:** Even unsuccessful Defense deployments can be valuable! They stay on the board and may help in later turns.
+**Deployed Defense Persistence (v2.2):** Deployed defenses stay on the board. Whenever the chain link currently being targeted has a vector matching a deployed defense, add **+2** to Investigate and Deploy Defense rolls against it (the TO, who knows the hidden vector, announces when this applies). Full rule in [Module: Incident Response](../rules/module-incident-response.md).
 
 ---
 
 #### Action 3: Emergency Response 🚨
 
-**Cost:** 25 Budget
+**Cost:** 15 Budget (v2.2 — repriced from 25)
 **Roll Required:** None—this always succeeds
 
 **How it works:**
@@ -149,22 +156,25 @@ Each turn follows this structure:
 
 ---
 
-### Uncontained Threats Penalty Mechanic
+### Uncontained Threats Penalty & Active Breach Cost
 
 **How it works:**
 1. When a threat card is **revealed**, it becomes "uncontained" (add 1 to Uncontained Threats Tracker)
 2. At the **START of each turn**, deduct **5 Budget per uncontained threat**
-3. When **Emergency Response** is used, remove that threat and decrement the tracker
-4. When the **next card in the chain is revealed**, the previous uncontained threat is automatically "mitigated" (decrement tracker)
+3. **Active Breach Cost (v2.2):** at the START of each turn, also deduct **5 Budget** if at least one chain card is still unrevealed (hidden dwell time costs money too)
+4. When **Emergency Response** is used, remove that threat and decrement the tracker
+5. When the **next card in the chain is revealed**, the previous uncontained threat is automatically "mitigated" (decrement tracker)
 
-**Example:**
+**Example (one action per turn; 3-card chain; Budget 100):**
 ```
-Turn 1: Phishing Campaign revealed → Uncontained Threats = 1
-Turn 2: START → Deduct 5 Budget (now 95 total)
-Turn 3: Lateral Movement revealed → Phishing auto-mitigated (Uncontained = 1)
-Turn 3: START → Deduct 5 Budget
-Turn 4: Team uses Emergency Response to contain Lateral Movement
-        → Uncontained Threats = 0 (no more penalties)
+Turn 1: START → -5 Active Breach Cost (95)
+        Deploy Defense succeeds, full match → PHISHING REVEALED
+        (-10 for the BASIC defense, 85) → Uncontained Threats = 1
+        Reward: Budget Grant +10 (95)
+Turn 2: START → -5 (uncontained) -5 (Active Breach: 2 cards hidden) = 85
+        Emergency Response on Phishing: pay 15 (70) → Uncontained = 0
+Turn 3: START → -5 (Active Breach only) = 65
+        ...investigation continues toward the next chain card
 ```
 
 ---
@@ -175,14 +185,15 @@ Turn 4: Team uses Emergency Response to contain Lateral Movement
 
 **Blue Team Wins if:**
 - All threat cards in the attack chain are revealed
-- AND this happens before Turn Tracker reaches 10 (or your turn limit)
-- AND Budget never reaches 0
+- AND this happens within your turn limit (7/9/11 by chain length)
+
+**Victory is checked immediately when the final card is revealed (v2.2)** — before any start-of-turn penalties.
 
 ### Defeat Condition ✗
 
 **Blue Team Loses if:**
-- Turn Tracker reaches 10 (or your turn limit) with unrevealed cards remaining
-- OR Budget reaches 0 (including Uncontained Threats penalties)
+- Turn Tracker exceeds your turn limit with unrevealed cards remaining
+- OR the team cannot afford any legal action (Budget floors at 0; an action requires its full cost — see Budget Edge Rules in [Module: Incident Response](../rules/module-incident-response.md))
 
 ### Scoring (Optional)
 
@@ -205,7 +216,7 @@ When your team successfully reveals a Threat Card:
 **Choose ONE reward:**
 
 1. **Intelligence Bonus:** Draw 2 additional Defense Cards (keep both)
-2. **Budget Grant:** Gain +15 Budget (represents management approval of your response)
+2. **Budget Grant:** Gain +10 Budget (v2.2 — reduced from +15; represents management approval of your response)
 3. **Fast-Track:** On your **next** Investigate action, you succeed on 5+ instead of 11+ (still costs 5 Budget, still need justification modifiers)
 
 ---
@@ -253,13 +264,13 @@ The game is **too easy** if:
 The game is **too hard** if:
 - Teams get stuck after revealing 1 card
 - No successful rolls for 5+ turns
-- Teams hit turn 10 with only 1-2 cards revealed
+- Teams hit the turn limit with only 1-2 cards revealed
 
 **Adjust by:**
-- Number of cards (3 vs. 4 vs. 5)
+- Number of cards (3 vs. 4 vs. 5 — the turn limit scales automatically via (chain × 2) + 1)
 - Quality of clues (more/less specific)
 - Starting budget (60 vs. 100 vs. 120)
-- Turn limit (8, 10, or 12)
+- Turn limit (formula −1 for harder, formula +1 for easier)
 
 ### Running Multiple Teams
 
@@ -307,8 +318,8 @@ If running this for a tournament or competitive context:
 - Requires more discipline but playable
 
 ### Speed Mode
-- Reduce turn limit to 8 (extra pressure)
-- Remove Uncontained Threats mechanic (less bookkeeping)
+- Reduce the turn limit by 2 (extra pressure)
+- Remove Uncontained Threats penalty and Active Breach Cost (less bookkeeping)
 - Budget costs stay the same
 - Good for experienced teams wanting challenge
 
@@ -338,20 +349,23 @@ If running this for a tournament or competitive context:
 
 | Action | Cost | Roll | Success | Failure |
 |--------|------|------|---------|---------|
-| **Investigate** | 5 Budget | 11+ | Clue about next card | No intel (budget wasted) |
-| **Deploy Defense** | 10/15/25 | 11+ | Possibly reveal card | Defense not deployed |
-| **Emergency Response** | 25 | None | Remove revealed threat | — |
+| **Investigate** | 5 Budget | roll + modifiers ≥ 11 | 1st success: clue; 2nd success on same link: reveal (v2.2) | No intel (budget wasted) |
+| **Deploy Defense** | 10/15/25 | roll + modifiers ≥ 11 | Full match reveals card immediately | Defense not deployed |
+| **Emergency Response** | 15 (v2.2) | None | Remove revealed threat | — |
 
 | Modifier | Effect |
 |----------|--------|
 | **+2** | Strong technical justification |
 | **+1** | Real tool/technique referenced |
+| **+2** | Deployed Defense Persistence: deployed defense's vector matches targeted link (v2.2) |
 
 | Tracker | Starting | Changes |
 |---------|----------|---------|
-| **Budget** | 100 | -5 per uncontained threat (start of turn) |
-| **Turn** | 1 | +1 each turn |
+| **Budget** | 100 | -5 per uncontained threat + -5 Active Breach Cost while any card is hidden (start of turn, v2.2); floor 0 |
+| **Turn** | 1 | +1 each turn (limit = chain × 2 + 1) |
 | **Uncontained Threats** | 0 | +1 when revealed, -1 when contained or next card revealed |
+
+*For the full list of v2.2 changes and reasoning, see the "v2.2 Playtest Edition Changes" section in [Module: Incident Response](../rules/module-incident-response.md).*
 
 ---
 

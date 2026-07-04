@@ -1,6 +1,6 @@
 # Disaster Recovery Module: Advanced Crisis Scenarios (Expansion)
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
@@ -10,9 +10,11 @@
 **Advanced Scenario Cards** extend the Disaster Recovery module with sophisticated, multi-faceted crisis situations that challenge experienced crisis management teams.
 
 - **Total Cards:** 8 (SCENARIO-01 to SCENARIO-08)
-- **Used In:** Disaster Recovery expansion (replaces standard core-deck events)
+- **Used In:** Disaster Recovery expansion (overlays on the core 8-turn game)
 - **Prerequisite:** Familiarity with core Disaster Recovery mechanics
 - **Complexity:** HIGH (recommended for experienced teams)
+
+**How scenarios work (v2.2):** each scenario is played with the standard core rules — same 8-turn clock, same Action/Event/Stakeholder cards, same scoring. A scenario adds its "Special Events" as extra Scheduled events on the timeline at setup, and applies its concrete **Difficulty (v2.2)** effects (listed per scenario, replacing the old percentage "difficulty multipliers"). The only mechanical layers are the Special Events and the Difficulty block; "Cost Implications" sections are narrative color for the debrief. Dollar figures are narrative-only unless converted at **1 Budget ≈ $50K**.
 
 ---
 
@@ -25,8 +27,8 @@
 
 **Description:**
 Breach affects customer data in multiple countries with different privacy laws:
-- **US (CCPA):** 30-day notification deadline, $7,500 per violation fine
-- **EU (GDPR):** 72-hour notification deadline, 4% of revenue fine (up to €20M)
+- **US (California):** notify without unreasonable delay; CCPA statutory damages fuel class actions
+- **EU (GDPR):** 72-hour notification deadline; fines up to €20M or 4% of global turnover, whichever is HIGHER
 - **Asia (varies):** Different deadlines and requirements in each country
 
 Data residency requirements mean:
@@ -36,7 +38,7 @@ Data residency requirements mean:
 - Different notification laws require different messages
 
 **Key Complications:**
-- **Timeline Conflict:** EU needs notification in 72 hours, US in 30 days, Asia varies
+- **Timeline Conflict:** EU regulators demand notification faster than the domestic clock; US requires notification without unreasonable delay; Asia varies
 - **Legal Conflict:** EU GDPR vs. US lawful intercept (conflicting requirements)
 - **Investigation:** Must conduct forensics in multiple jurisdictions simultaneously
 - **Costs:** Multi-region response = much higher costs
@@ -47,17 +49,15 @@ Data residency requirements mean:
 3. How to notify customers differently per region
 4. How to handle conflicting regulatory requirements
 
-**Special Events:**
-- **Turn 2:** EU 72-hour deadline reminder (must start notification)
-- **Turn 4:** US 30-day deadline reminder
-- **Turn 3-5:** International regulators demand investigation coordination
-- **Turn 4+:** Data residency violation triggers additional fines
+**Special Events (added to the timeline at setup):**
+- **Turn 2:** EU regulators demand notification — a second ACTION-10 play (EU filing) is due by **end of Turn 4**
+- **Turn 5:** International regulators demand investigation coordination (Regulator trust -5 if Investigation is below 25%)
+- **Turn 6:** Data residency complication — if the EU filing was missed, Regulator trust -10 per turn (in place of, not stacked with, the core EVENT-02 escalation)
 
 **Cost Implications:**
-- Multi-region forensics: +20 Budget (expensive)
-- Multiple legal teams: +15 Budget (lawyers in each region)
-- Regulatory fines stacked: 4% + 0.75% + varying amounts = significant
-- Notification costs: Translations, different templates, regulatory filings
+- Multi-region legal and forensics overhead: see Difficulty below
+- Regulatory fines can stack across jurisdictions (narrative-only)
+- Notification costs: translations, different templates, regulatory filings
 
 **Team Response:**
 - Must prioritize regions (satisfy EU first due to timeline)
@@ -65,7 +65,10 @@ Data residency requirements mean:
 - Must conduct compliant investigation (following local laws)
 - Communication % must advance faster than usual
 
-**Difficulty Multiplier:** Investigation, Remediation, Communication all +25% harder (more moving parts)
+**Difficulty (v2.2):**
+- All Communication advances -5% (multi-jurisdiction overhead; minimum +5%)
+- A second regulator notification (EU) is required by end of Turn 4 (ACTION-10 played twice this game)
+- Set aside 5 Budget at setup as a translation/filing reserve (unavailable for actions)
 
 ---
 
@@ -76,10 +79,10 @@ Data residency requirements mean:
 
 **Description:**
 Attacker not only encrypted data but also stole data and threatens public disclosure:
-- "Pay $10M or we publish 50GB of customer PII on dark web"
+- "Pay up or we publish 50GB of customer PII on dark web" (demand ≈ 20 Budget; narrative "$10M" for a large enterprise)
 - Attacker provides proof of data access (sample files)
 - Extortion email sent to CEO and board
-- Attacker sets 5-day deadline
+- Attacker sets the deadline at the start of Turn 5 (the core ACTION-13 ransom deadline)
 
 **Key Complications:**
 - **Payment Question:** Pay ransom or not?
@@ -91,16 +94,16 @@ Attacker not only encrypted data but also stole data and threatens public disclo
 - **Law Enforcement:** FBI recommends not paying (incentivizes more attacks)
 - **Backup Reliance:** Can you recover without paying?
 
-**Timeline Pressure:**
-- Turn 1: Extortion email + 5-day deadline
-- Turn 2: First partial data publication (attacker shows they have data)
-- Turn 3-4: Attacker lowers price (negotiation attempt)
-- Turn 5: Deadline reached (attacker publishes full dataset if unpaid)
+**Timeline Pressure (Special Events added at setup):**
+- Turn 1: Extortion email; ransom deadline set at start of Turn 5
+- Turn 2: First partial data publication (attacker shows they have data): Media trust -5
+- Turn 3: Attacker lowers price (negotiation attempt; pure roleplay — ACTION-13 costs are unchanged)
+- Turn 5: Deadline reached — resolve ACTION-13 as printed (publish if unpaid; +2 turns if NEGOTIATE)
 
 **Financial Dilemma:**
-- Ransom: $10M upfront, cannot claim insurance (illegal to pay ransoms)
+- Ransom: payment may violate OFAC sanctions if the actor is sanctioned; many insurers restrict or exclude ransom coverage
 - Recovery from backup: Slow (if backups exist)
-- Data publication: Regulatory fines + lawsuits (potentially $50M+ liability)
+- Data publication: Regulatory fines + lawsuits (potentially $50M+ liability; narrative-only)
 - Public disclosure: Stock price crash, customer loss
 
 **Team Decisions:**
@@ -115,20 +118,18 @@ Attacker not only encrypted data but also stole data and threatens public disclo
 - May recommend decoy ransom negotiation (catch attacker)
 - Investigation may take weeks (slow response)
 
-**Special Events:**
-- Turn 2: Partial data publication (sample data released)
-- Turn 3: Media discovers extortion threat ("CEO held for ransom")
-- Turn 4: Attacker releases more data (pressure increases)
-- Turn 5: Deadline decision point (pay or lose everything?)
+**Special Events (added to the timeline at setup):**
+- Turn 3: Media discovers extortion threat ("CEO held for ransom"): Media trust -10
+- Turn 4: Attacker releases more sample data: Customer trust -5
 
 **Cost Implications:**
-- Ransom: $10M (if paid)
-- Investigation: +10 Budget (FBI coordination, forensics)
-- Notification: +15 Budget (customers affected by extortion)
-- Remediation: +20 Budget (full system rebuild if paying ransom)
-- Regulatory fines: 4% revenue + penalties (if data published)
+- Ransom: 20 Budget if paid (ACTION-13 PAY, as printed)
+- FBI coordination and extortion-specific notification overhead: see Difficulty below
+- Regulatory fines if data published: narrative-only (GDPR-scale)
 
-**Difficulty Multiplier:** Investigation +30%, Remediation +50% (rebuild required), Communication +40% (extortion is PR disaster)
+**Difficulty (v2.2):**
+- Remediation advances are **halved** until ACTION-13 is declared (operational paralysis while the decision hangs)
+- Use ACTION-13 exactly as printed; the ransom deadline is start of Turn 5
 
 ---
 
@@ -195,7 +196,10 @@ Investigation reveals attacker didn't target your company directly—they compro
 - Regulatory: "Poor third-party risk management"
 - Board: "Why did we use this vendor?"
 
-**Difficulty Multiplier:** Investigation +20% (limited access), Communication +35% (third-party failure is hard to explain), Remediation +25% (vendor transition)
+**Difficulty (v2.2):**
+- Investigation advances -5% (no direct access to vendor systems; minimum +5%)
+- Set aside 10 Budget at setup as a legal reserve (unavailable for actions)
+- Turn-5 Special Event: vendor declares bankruptcy — Board trust -10
 
 ---
 
@@ -271,7 +275,10 @@ During investigation of external breach, forensic team discovers:
 - Media: "Company had insider threat"
 - Board: "Why was security so bad?"
 
-**Difficulty Multiplier:** Investigation +40% (added complexity), Remediation +30% (reset credentials), Communication +25% (cannot disclose details)
+**Difficulty (v2.2):**
+- Investigation advances are **halved** until Investigation reaches 50% (internal accounts cannot be trusted)
+- Executive trust starts at 60% (instead of 80%)
+- ACTION-08 (Credential Reset) is effectively mandatory — if not completed by end of Turn 6, EVENT-08 (Second Breach) fires automatically
 
 ---
 
@@ -315,7 +322,7 @@ Breach affects critical infrastructure where compromise could cause physical har
 **Team Decisions:**
 1. Continue operations (risk of safety incident) or shut down (risk to people without service)?
 2. Engage with government agencies (lose control of response)
-3. Negotiate with attacker (funding terrorism, illegal)
+3. Negotiate with attacker (payment may violate OFAC sanctions if the actor is sanctioned; government will weigh in)
 4. Accept potential service interruption (for safety)
 
 **Cost Implications:**
@@ -331,7 +338,11 @@ Breach affects critical infrastructure where compromise could cause physical har
 - Public panic risk (if people know infrastructure is vulnerable)
 - Media cannot report full details (government requests)
 
-**Difficulty Multiplier:** Investigation +50% (cannot interrupt operations), Remediation +100% (limited options), Communication +75% (national security restrictions, cannot disclose)
+**Difficulty (v2.2):**
+- Remediation advances are **halved** (systems must stay operational — no downtime allowed)
+- Communication advances -5% (national security disclosure restrictions; minimum +5%)
+- ACTION-13 PAY is unavailable (government prohibits payment)
+- Turn-1 Special Event: CISA declaration — Regulator trust starts at 50% but ACTION-10 gives +25 instead of +20 (cooperation is rewarded)
 
 ---
 
@@ -408,7 +419,10 @@ Public company stock price crashes following breach announcement:
 - Media attention is intense (every statement scrutinized)
 - Cannot show weakness (stock market punishes)
 
-**Difficulty Multiplier:** Communication +50% (investor relations critical), Remediation -20% (budget may be cut), Board confidence +50% risk (board pressure is constant)
+**Difficulty (v2.2):**
+- Board trust starts at 50% (instead of 70%)
+- Budget -10 at setup (credit crunch)
+- EVENT-09 (Shareholder Pressure) fires at Turn 3 AND Turn 5 (it is scheduled twice this game)
 
 ---
 
@@ -484,7 +498,10 @@ Not a single attack but multiple overlapping compromises:
 - Must appear to have control (or stock crashes)
 - Media narrative: "Multiple breaches mean security is very bad"
 
-**Difficulty Multiplier:** Investigation +50%, Remediation +75%, Communication +60% (complexity multiplied by multiple simultaneous crises)
+**Difficulty (v2.2):**
+- **+2 turns of events:** EVENT-08 (Second Breach) is pre-armed and fires automatically at Turn 6 (once) — the game runs 10 turns
+- All track advances -5% (three simultaneous investigations; minimum +5%)
+- The ransom deadline covers all three extortion threats — one ACTION-13 decision resolves them together
 
 ---
 
@@ -572,7 +589,10 @@ Breach is discovered during critical phase of M&A transaction:
 - Must negotiate simultaneously with acquirer + regulators + investigators
 - Media discovery complicates (stock price pressure)
 
-**Difficulty Multiplier:** Communication +70% (multiple audiences with conflicting interests), Negotiation complexity extreme, Board pressure to under-respond
+**Difficulty (v2.2):**
+- Communication advances are **halved** (every statement is reviewed by two legal teams)
+- Board trust starts at 50% (deal-preservation pressure to under-respond)
+- Turn-3 Special Event: price renegotiation — Board trust -10 if Investigation is below 25% (the board can't answer the acquirer's questions)
 
 ---
 
@@ -651,4 +671,4 @@ Breach is discovered during critical phase of M&A transaction:
 
 *Disaster Recovery Module: Advanced Crisis Scenarios (Expansion)*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

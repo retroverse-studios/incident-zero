@@ -1,6 +1,8 @@
 # Incident Zero: Game Modes & Play Variants
 ## Three Mini-Games, Two Full Campaigns, Flexible Play Options
 
+> **⚠️ LEGACY DOCUMENT (pre-v2.1).** This guide predates the 6-module system and the Variable Game Length System. It covers only 3 of the 6 modules and uses fixed turn limits (12/10/10) that have been replaced by the (Attack Cards × 2) + 1 formula in [core-rules.md §3a](rules/core-rules.md). For current guidance on combining modules, see [Module Combinations](module-combinations.md) and [FRAMEWORK.md](FRAMEWORK.md). The tournament structures and competitive variants below remain usable — just substitute current turn limits and module rules.
+
 ---
 
 ## Overview: Flexible Game Architecture

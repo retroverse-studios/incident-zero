@@ -1,18 +1,21 @@
 # Disaster Recovery Module: Crisis Action Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
 
 ## Overview
 
-**Crisis Action Cards** represent the specific actions an organization can take during a breach to investigate, remediate, and respond. Teams deploy Crisis Actions each turn to advance three objectives: Investigation %, Remediation %, and Communication %.
+**Crisis Action Cards** represent the specific actions an organization can take during a breach to investigate, remediate, and respond. Teams deploy ONE Crisis Action each turn to advance three objectives: Investigation %, Remediation %, and Communication % (each tracked 0-100%). Track advances are **deterministic** — no dice are required to advance a track.
 
-- **Total Cards:** 12 (ACTION-01 to ACTION-12)
+- **Total Cards:** 13 (ACTION-01 to ACTION-13)
 - **Used In:** Disaster Recovery module (primary gameplay cards)
-- **Cost Range:** 5-30 Budget depending on action scope
+- **Cost Range:** 0-20 Budget (ACTION-13 Refuse is free; most actions cost 5-15)
+- **Game Clock:** 8 turns; each turn is one crisis phase of ~6-12 hours (Turn 1 ≈ detection +6h ... Turn 8 ≈ 72h). See the module rules for the full turn table.
 - **Purpose:** Drive incident response forward under time/budget pressure
+
+**Money mapping:** 1 Budget ≈ $50K. Dollar figures on cards (fines, ransom) use this mapping unless marked narrative-only.
 
 ---
 
@@ -20,7 +23,7 @@
 
 ### Action Categories
 
-Crisis Actions are organized into three categories:
+Crisis Actions are organized into three categories, plus one decision card:
 
 1. **Investigation Actions** (4 cards)
    - Advance understanding of breach
@@ -39,6 +42,28 @@ Crisis Actions are organized into three categories:
    - Manage media/public relations
    - Report to regulators
    - Maintain customer trust
+
+4. **Crisis Decision** (1 card)
+   - ACTION-13: Ransom Decision (Pay / Negotiate / Refuse)
+
+### Multi-Turn Actions (v2.2)
+
+Some actions list **Duration N** (N greater than 1). The rule, defined once:
+
+> **Duration N:** the action occupies your action slot **only on the turn it is started**; its track advance completes and is applied **at the start of the Nth following turn**. Only one multi-turn action may be in flight at a time. While it is in flight, you may take single-turn actions on later turns, but you may not start another multi-turn action.
+
+*Example:* ACTION-01 (Duration 2) started on Turn 2 applies its +25% Investigation at the start of Turn 4.
+
+### Justification Bonus (v2.2) — optional
+
+The signature d20 stays as an **optional bonus only** (it never gates track advancement): when a team plays an Action card with a strong, specific technical justification, the Threat Orchestrator may allow a d20 roll. **On 11+, that action's track advance gains +5%.** One roll per action card played.
+
+### Free Action: Holding Statement (v2.2)
+
+This is a standing rule, not a numbered card. On any turn, instead of playing an Action card, the team may issue a **Holding Statement** (internal update / brief public status statement):
+
+- **Cost:** 0 Budget (always available, even at 0 Budget)
+- **Effect:** +5% Communication; counts as a Communication action for stakeholder decay purposes
 
 ---
 
@@ -203,7 +228,7 @@ Bring in external incident response firm (forensics, incident handling, remediat
 - Provides expert guidance and credibility
 - Provides evidence acceptable in court
 - Supports regulatory defense
-- Can conduct investigation while team does other actions
+- Multi-turn (Duration 3): occupies your action slot only on the turn started; see Multi-Turn Actions rule
 
 **When to Use:**
 - Major breach with legal implications
@@ -233,10 +258,10 @@ Bring in external incident response firm (forensics, incident handling, remediat
 
 **Team Trade-off:**
 - Most expensive (20 Budget)
-- Long commitment (3 turns)
+- Long commitment (Duration 3 — advances apply at the start of the 3rd following turn)
 - But provides significant investigation + remediation
 - Provides external expertise and credibility
-- Can run alongside other actions
+- While in flight you may take single-turn actions, but no other multi-turn action (v2.2 Multi-Turn rule)
 
 ---
 
@@ -436,6 +461,7 @@ Revoke and reset all potentially compromised credentials:
 **Cost:** 10 Budget
 **Communication Advance:** +20%
 **Duration:** 1 turn (but affects later turns)
+**Deadline (v2.2):** Recommended by end of **Turn 5**. If not completed by then: Customer trust -10 at the start of each later turn; if never completed in-game: -15 Reputation at final scoring (deferred statutory violation).
 
 **Description:**
 Notify customers that their data may have been breached:
@@ -447,7 +473,7 @@ Notify customers that their data may have been breached:
 - Field customer questions/complaints
 
 **Key Details:**
-- Required by most breach notification laws (usually 30-60 days)
+- Required by breach notification laws ("without unreasonable delay" in California and most U.S. states; GDPR requires notifying individuals without undue delay when risk is high)
 - Can be very expensive if many customers affected
 - Notification can cause loss of customer trust
 - Early notification shows good faith
@@ -455,8 +481,8 @@ Notify customers that their data may have been breached:
 - Impacts Customers stakeholder directly
 
 **Regulatory Requirements:**
-- Most laws require "without unreasonable delay" (usually 30-60 days)
-- Some states require notification within specific timeframe
+- Most laws require notification "without unreasonable delay"; some states set specific outer limits
+- California: notify without unreasonable delay; CCPA statutory damages fuel class actions
 - Notification must include:
   - What information was accessed
   - Recommended actions
@@ -477,7 +503,7 @@ Notify customers that their data may have been breached:
 
 **Regulatory Impact:**
 - Many states REQUIRE customer notification
-- California CCPA, GDPR, state laws all require notification
+- California law, GDPR, and other state laws all require notification; CCPA statutory damages fuel class actions
 - Without notification = regulatory violation + fines
 - Proactive notification = better regulatory relationship
 
@@ -495,6 +521,7 @@ Notify customers that their data may have been breached:
 **Cost:** 8 Budget
 **Communication Advance:** +10%
 **Duration:** 1 turn (but ongoing for months)
+**Deadline (v2.2):** Must be completed by end of **Turn 8** (the GDPR 72-hour anchor). Escalating penalty from Turn 6: if not yet completed, Regulator trust -10 at the start of Turns 6, 7, and 8. If never completed in-game: -20 Reputation at final scoring (deferred fine).
 
 **Description:**
 Notify appropriate regulatory agencies:
@@ -513,6 +540,7 @@ Notify appropriate regulatory agencies:
 - Required before public disclosure in some cases
 
 **Regulatory Requirements:**
+- EU data (GDPR): Must notify the supervisory authority within 72 hours; fines up to €20M or 4% of global turnover, whichever is HIGHER (narrative-only figure)
 - Healthcare (HIPAA): Must report to HHS Office for Civil Rights
 - Financial (GLBA/FFIEC): Must report to banking regulators
 - Payment cards (PCI-DSS): Must report to card networks
@@ -651,7 +679,43 @@ Inform board of directors and shareholders about breach:
 - Critical for public companies
 - Impacts Board stakeholder (see Stakeholder Cards)
 - Required by law (usually)
-- Triggers Board Meeting Event (see Event Cards)
+- Complete before EVENT-04 (Board Meeting, scheduled Turn 3) to be "prepared" (see Event Cards)
+
+---
+
+### ACTION-13: Ransom Decision (v2.2)
+**Category:** Crisis Decision
+**Cost:** Varies by option (see below)
+**Timing:** Play at any time before the ransom deadline (default: start of Turn 5). Playing this card does NOT use your turn's action slot — it is a decision made in addition to your normal action. Once per game. If no decision is made by the deadline, the team is treated as having chosen REFUSE.
+**Used only in scenarios with a ransom/extortion demand.**
+
+Choose exactly ONE option:
+
+**Option A — PAY**
+- **Cost:** 20 Budget (≈ $1M at 1 Budget ≈ $50K)
+- **Reputation:** -15 at final scoring
+- **Effect:** The data-publication event is skipped/cancelled. +20% Remediation immediately (decryption keys restore systems).
+- **No guarantee:** The Threat Orchestrator rolls a d20. On 1-5, the keys don't work — no refund, and the Remediation advance is +0% instead of +20%. (The publication event stays cancelled; the attacker took the money and moved on.)
+- **Flavor:** "Criminals are not a customer-service organization."
+
+**Option B — NEGOTIATE**
+- **Cost:** 5 Budget (negotiator/counsel fees)
+- **Reputation:** -5 at final scoring
+- **Effect:** The data-publication event is delayed by 2 turns (default: from start of Turn 5 to start of Turn 7). Buys time to notify stakeholders and remediate before publication.
+
+**Option C — REFUSE**
+- **Cost:** 0 Budget
+- **Reputation:** No immediate change. **If the data-publication event triggers later: -20 Reputation at final scoring.**
+- **Effect:** No payment, no delay. Focus budget on investigation, remediation, and communication.
+
+**Data-Publication Event (reference):** In ransom scenarios, if the team has not PAID by the ransom deadline (default: start of Turn 5; +2 turns if NEGOTIATE), the attacker publishes stolen data: Customer trust -20, Media trust -15 (and the REFUSE scoring penalty above, if applicable).
+
+**Legal & practical facts (corrected v2.2):**
+- Payment may violate OFAC sanctions if the threat actor is sanctioned; many insurers restrict or exclude ransom coverage
+- Law enforcement (FBI) discourages payment — it funds and incentivizes future attacks
+- Payment does not guarantee data deletion or working keys
+
+**Educational Purpose:** There is no "right" answer — payment is a genuine trade-off between operational recovery, ethics, legality, and reputation.
 
 ---
 
@@ -662,15 +726,19 @@ Inform board of directors and shareholders about breach:
 | ACTION-01 | Investigation | 12 | +25% | 2 turns | Expert forensics |
 | ACTION-02 | Investigation | 8 | +15% | 1 turn | Find hidden compromises |
 | ACTION-03 | Investigation | 5 | +10% | 1 turn | Quick log analysis |
-| ACTION-04 | Investigation | 20 | +30% | 3 turns | Third-party expertise |
+| ACTION-04 | Investigation | 20 | +30% Inv / +20% Rem | 3 turns | Third-party expertise |
 | ACTION-05 | Remediation | 10 | +20% | 1 turn | Fix vulnerability |
 | ACTION-06 | Remediation | 8 | +15% | 1 turn | Contain attacker |
 | ACTION-07 | Remediation | 15 | +25% | 2 turns | Clean rebuild |
 | ACTION-08 | Remediation | 6 | +12% | 1 turn | Revoke access |
-| ACTION-09 | Communication | 10 | +20% | 1 turn | Notify customers |
-| ACTION-10 | Communication | 8 | +10% | 1 turn | Notify regulators |
+| ACTION-09 | Communication | 10 | +20% | 1 turn | Notify customers (by Turn 5) |
+| ACTION-10 | Communication | 8 | +10% | 1 turn | Notify regulators (by Turn 8) |
 | ACTION-11 | Communication | 12 | +15% | 1 turn | Media management |
-| ACTION-12 | Communication | 9 | +12% | 1 turn | Board notification |
+| ACTION-12 | Communication | 9 | +12% | 1 turn | Board notification (before Turn 3) |
+| ACTION-13 | Crisis Decision | 0/5/20 | Pay: +20% Rem | Instant | Ransom decision (once per game) |
+| *Free* | Communication | 0 | +5% | 1 turn | Holding Statement (standing rule, not a card) |
+
+**Budget floor (v2.2):** Budget can never go below 0. If you cannot afford any card, the free Holding Statement is always available.
 
 ---
 
@@ -720,6 +788,17 @@ Teams must balance three objectives (each goes 0-100%):
 - Delay customer notification (if allowed)
 - Focus on internal response first
 
+### Mandatory Beats & Budget (v2.2)
+
+With 50 Budget, the mandatory crisis beats are always affordable:
+
+- Investigate (ACTION-03: 5, or ACTION-02: 8)
+- Notify regulators by Turn 8 (ACTION-10: 8)
+- Notify customers by Turn 5 (ACTION-09: 10)
+- Remediate (ACTION-08: 6 and/or ACTION-06: 8)
+
+Cheapest mandatory path: 5 + 8 + 10 + 6 = **29 Budget**. A stronger balanced path (ACTION-02 + ACTION-10 + ACTION-09 + ACTION-05 + ACTION-06) costs **44 Budget** — still within 50.
+
 ---
 
 ## Print Instructions
@@ -729,12 +808,14 @@ Teams must balance three objectives (each goes 0-100%):
    - **Blue (Investigation):** ACTION-01 to ACTION-04
    - **Red (Remediation):** ACTION-05 to ACTION-08
    - **Green (Communication):** ACTION-09 to ACTION-12
+   - **Gold (Crisis Decision):** ACTION-13
 3. Include cost in bold on card
 4. Include progress bars (Investigation %, Remediation %, Communication %)
 5. Cut along dotted lines
+6. Track sheets (progress tracks, stakeholder trust): see print pack (coming)
 
 ---
 
 *Disaster Recovery Module: Crisis Action Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

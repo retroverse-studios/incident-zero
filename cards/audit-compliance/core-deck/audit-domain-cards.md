@@ -1,6 +1,6 @@
 # Audit & Compliance Module: Audit Domain Assessment Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
@@ -31,13 +31,19 @@
 4. **Remediation:** Recommend actions to address findings
 5. **Report:** Compile audit findings and recommendations
 
+### Star → PASS/FAIL Mapping (v2.2)
+
+**PASS/FAIL per domain (X/6) is the primary score.** Stars are flavor, with this fixed mapping:
+
+> **1-2★ = FAIL · 3★+ = PASS · "PARTIAL" counts as FAIL**
+
 ### Scoring Impact
 
 **Domain Score determines:**
-- Audit Grade (1-5 stars)
+- Audit Grade (1-5 stars, flavor)
+- PASS/FAIL status (primary — via the mapping above)
 - Findings Severity (critical/major/minor)
-- Modifiers for other modules (IR, DR get harder if audit failed)
-- Compliance Status (pass/fail/remediation needed)
+- Modifiers for other modules (IR, DR get harder if audit failed — see the canonical table in `docs/rules/module-audit-compliance.md`)
 
 ---
 
@@ -76,8 +82,8 @@
 
 **Compliance Standards:**
 - PCI-DSS Requirement 1: Network segmentation for cardholder data
-- NIST CSF: PR.AC-4 (Access control restricted by segmentation)
-- CIS Control 12: Boundary Defense
+- NIST CSF: PR.AC-5 (Network integrity protected via segmentation)
+- CIS Control 12: Network Infrastructure Management (v8)
 
 **Findings Template:**
 ```
@@ -97,8 +103,8 @@ COST: [Moderate/High/Very High]
 
 **Impact if Failed (1-2 stars):**
 - T-04 (Lateral Movement) becomes trivial for attackers
-- Incident Response becomes much harder (-2 modifier to investigate/contain)
-- Disaster Recovery is harder (attacker spreads widely)
+- Incident Response: -1 to NETWORK defenses (canonical modifier)
+- Disaster Recovery: -10 DR budget penalty (attacker spreads widely)
 
 ---
 
@@ -156,9 +162,8 @@ COST: [Low/Moderate/High]
 
 **Impact if Failed (1-2 stars):**
 - T-03 (Compromised Credentials), T-06 (Mimikatz) become likely
-- Incident Response harder (attacker has valid credentials)
-- Disaster Recovery harder (attacker can restore themselves with stolen creds)
-- -2 modifier to Incident Response defense against credential-based attacks
+- Incident Response: -1 to CREDENTIAL_ABUSE defenses (canonical modifier)
+- Disaster Recovery: -15 DR budget penalty (attacker can restore themselves with stolen creds)
 
 ---
 
@@ -216,9 +221,10 @@ COST: [Moderate/High]
 
 **Impact if Failed (1-2 stars):**
 - Breach detection is late (attacker has time to steal data)
-- Incident Response starts late (investigates old attacks)
-- Dwell time increases (attacker has more time)
-- +5 turn penalty in Incident Response (late detection)
+- Incident Response: -1 to Investigation rolls (canonical modifier; late detection)
+- Disaster Recovery: -10 DR budget penalty (dwell time longer; more data stolen)
+
+**Optional (v2.2):** a 5-star rating in this domain grants +1 to Incident Response investigation rolls if IR is played later.
 
 ---
 
@@ -276,9 +282,9 @@ COST: [Moderate]
 
 **Impact if Failed (1-2 stars):**
 - Ransomware attacks cannot be recovered from
-- Disaster Recovery becomes much harder (+25 Budget cost)
+- Disaster Recovery: -25 DR budget penalty (no recovery option; expensive rebuild)
 - Business interruption is long (days vs hours)
-- May result in game loss (cannot recover)
+- No IR effect (matters in Disaster Recovery)
 
 ---
 
@@ -316,7 +322,7 @@ COST: [Moderate]
 **Compliance Standards:**
 - GDPR Article 28: Processor agreements (vendor security required)
 - PCI-DSS Requirement 12.8: Service provider agreements
-- NIST CSF: PR.AT-2 (Vendor risk management)
+- NIST CSF: ID.SC (Supply Chain Risk Management)
 
 **Findings Template:**
 ```
@@ -338,7 +344,8 @@ COST: [Low/Moderate]
 - SCENARIO-03 (Supply Chain Compromise) becomes likely in Disaster Recovery
 - Vendor breach affects your customers
 - Liability disputes (who's responsible?)
-- +15 Budget cost in Disaster Recovery
+- Incident Response: -1 to WEB_EXPLOIT defenses (canonical modifier)
+- Disaster Recovery: -20 DR budget penalty (cloud provider recovery needed)
 
 ---
 
@@ -376,7 +383,7 @@ COST: [Low/Moderate]
 **Compliance Standards:**
 - Most frameworks require security leadership
 - NIST CSF: PR.IP-1 (Security policy established & communicated)
-- CIS Controls 19: Incident response planning & exercises
+- CIS Control 17: Incident Response Management (v8)
 
 **Findings Template:**
 ```
@@ -397,9 +404,9 @@ COST: [Varies]
 
 **Impact if Failed (1-2 stars):**
 - Security functions are reactive (not proactive)
-- Incident Response is harder (-1 modifier)
+- Incident Response: -1 to Investigation rolls (canonical modifier)
+- Disaster Recovery: -5 DR budget penalty (forensic investigation slow)
 - Vulnerabilities accumulate (PT-10 Zero-Day risk increases)
-- Overall security posture degrades
 
 ---
 
@@ -424,15 +431,15 @@ COST: [Varies]
 AUDIT REPORT - [Organization Name]
 Audit Date: [Date]
 Domains Assessed: 6
-Overall Score: [X/6 stars]
+Overall Score: 2/6 PASS (stars are flavor: 1-2* = FAIL, 3*+ = PASS)
 
 DOMAIN SCORES:
-1. Network Segmentation: ⭐⭐ (2 stars) - NEEDS WORK
-2. Access Control: ⭐⭐⭐ (3 stars) - ADEQUATE
-3. Threat Detection: ⭐ (1 star) - CRITICAL
-4. Backup & DR: ⭐⭐ (2 stars) - NEEDS WORK
-5. Vendor Risk: ⭐⭐ (2 stars) - NEEDS WORK
-6. Security Ops: ⭐⭐⭐⭐ (4 stars) - STRONG
+1. Network Segmentation: ⭐⭐ (2 stars) - FAIL
+2. Access Control: ⭐⭐⭐ (3 stars) - PASS
+3. Threat Detection: ⭐ (1 star) - FAIL (CRITICAL)
+4. Backup & DR: ⭐⭐ (2 stars) - FAIL
+5. Vendor Risk: ⭐⭐ (2 stars) - FAIL
+6. Security Ops: ⭐⭐⭐⭐ (4 stars) - PASS
 
 CRITICAL FINDINGS (must fix immediately):
 - No SIEM or threat monitoring
@@ -456,31 +463,39 @@ RECOMMENDATIONS:
 
 ---
 
-## Modifiers for Other Modules
+## Modifiers for Other Modules (generated from the canonical table in `docs/rules/module-audit-compliance.md`, v2.2)
 
 ### Incident Response Modifiers
 
-**For each failed domain (1-2 stars):**
-- Network Segmentation failed: -1 modifier to contain lateral movement
-- Access Control failed: Attackers have easy credential path (+1 difficulty)
-- Threat Detection failed: +5 turns to investigate (late detection)
-- Backup failed: No offline backup available (complicates recovery)
-- Vendor Risk failed: Supply chain may be compromised (+1 threat to track)
-- Security Ops failed: -1 to all investigation rolls (weak team)
+**For each failed domain (FAIL = 1-2 stars): one -1 modifier.**
 
-**Example:** If 3 domains fail, IR gets -2 to -5 modifiers (making it harder)
+| Failed Domain | IR Modifier |
+|---------------|-------------|
+| DOMAIN-01 Segmentation | -1 to NETWORK defenses |
+| DOMAIN-02 Identity | -1 to CREDENTIAL_ABUSE defenses |
+| DOMAIN-03 Detection | -1 to Investigation rolls |
+| DOMAIN-04 Backup | None (matters in DR) |
+| DOMAIN-05 Vendor/Cloud | -1 to WEB_EXPLOIT defenses |
+| DOMAIN-06 Security Ops | -1 to Investigation rolls |
+
+**Example:** if 3 domains fail, IR carries three separate -1 modifiers.
 
 ### Disaster Recovery Modifiers
 
-**For each failed domain (1-2 stars):**
-- Network Segmentation failed: +10 Budget cost (attacker spread more, costs more)
-- Access Control failed: +5 Budget (credential reset costs more)
-- Threat Detection failed: +5 Budget (investigation slower, costs more)
-- Backup failed: +25 Budget cost (cannot recover from backup, full rebuild)
-- Vendor Risk failed: +15 Budget (vendor negotiation, replacement costs)
-- Security Ops failed: +10 Budget (team less effective, need consultants)
+**For each failed domain (FAIL = 1-2 stars): a penalty subtracted from the DR starting budget.**
 
-**Example:** If all 6 domains fail, DR gets +70 Budget cost increase (from 120 to 190)
+| Failed Domain | DR Budget Penalty |
+|---------------|-------------------|
+| DOMAIN-01 Segmentation | -10 |
+| DOMAIN-02 Identity | -15 |
+| DOMAIN-03 Detection | -10 |
+| DOMAIN-04 Backup | -25 |
+| DOMAIN-05 Vendor/Cloud | -20 |
+| DOMAIN-06 Security Ops | -5 |
+
+**Cap (v2.2):** the total gap penalty applied to a subsequent module's budget is **capped at -30**.
+
+**Example (real budgets: DR starts at 50, IR at 100):** if all 6 domains fail, the raw penalty is -85, capped at -30 — the team enters Disaster Recovery with 50 - 30 = **20 Budget**.
 
 ---
 
@@ -518,13 +533,13 @@ RECOMMENDATIONS:
    - **Green (Resilience):** DOMAIN-04 (Backup)
    - **Orange (Supply Chain):** DOMAIN-05 (Vendor)
    - **Yellow (Operations):** DOMAIN-06 (Ops)
-3. Include assessment rubric (1-5 star descriptions)
+3. Include assessment rubric (1-5 star descriptions and the star → PASS/FAIL mapping)
 4. Include finding templates on back of card
 5. Cut along dotted lines
-6. Create "Audit Scoring Reference Card" for scoring guidance
+6. Audit scoring reference card: see print pack (coming)
 
 ---
 
 *Audit & Compliance Module: Audit Domain Assessment Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

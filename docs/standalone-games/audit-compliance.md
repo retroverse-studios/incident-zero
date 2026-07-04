@@ -1,6 +1,8 @@
 # Incident Zero: Compliance Audit Standalone Mini-Games
 ## Three Variations of Security Assessment Gameplay
 
+**Version:** 2.2 - Playtest Edition — answer keys now follow the printed criteria; PASS/FAIL (X/6) is the primary score (stars: 1-2★ = FAIL, 3★+ = PASS, PARTIAL = FAIL). See `docs/rules/module-audit-compliance.md` for the canonical modifier table.
+
 ---
 
 ## Overview
@@ -17,7 +19,7 @@
 - Standalone 20-35 minute sessions
 - Teaching audit frameworks
 - Understanding security gaps
-- Before/after comparison with Attack Chain (Phase 1)
+- Before/after comparison with the Incident Response module
 - Competitive assessment skills
 
 ---
@@ -188,7 +190,7 @@ SECURITY POSTURE:
 
 ### The 6-Domain Audit
 
-Teams assess each network using this framework:
+Teams assess each network using this framework. **Scoring (v2.2):** PASS/FAIL per domain (X/6) is the primary score. If you use star ratings for flavor, the fixed mapping is **1-2★ = FAIL, 3★+ = PASS, "PARTIAL" counts as FAIL**.
 
 #### **Domain 1: Network Segmentation**
 **Question:** "Are critical systems isolated?"
@@ -211,8 +213,8 @@ Teams assess each network using this framework:
 
 | Score | Criteria |
 |-------|----------|
-| **PASS** | IDS/IPS OR SIEM deployed |
-| **FAIL** | No IDS/IPS AND no SIEM |
+| **PASS** | IDS/IPS or SIEM deployed, covering all critical segments |
+| **FAIL** | No IDS/IPS and no SIEM, OR a critical segment sits outside detection coverage |
 
 #### **Domain 4: Backup & Disaster Recovery**
 **Question:** "Can you recover from failure?"
@@ -240,6 +242,30 @@ Teams assess each network using this framework:
 
 ---
 
+## Audit Worksheet (inline version — copy onto paper; printed sheet: see print pack, coming)
+
+```
+AUDIT WORKSHEET
+Organization audited: ______________________   Auditing team: ______________________
+
+Domain                              PASS/FAIL   Key finding (one line)
+1. Network Segmentation             [    ]      ______________________________________
+2. Access Control & Identity        [    ]      ______________________________________
+3. Incident Detection & Response    [    ]      ______________________________________
+4. Backup & Disaster Recovery       [    ]      ______________________________________
+5. Third-Party Risk Management      [    ]      ______________________________________
+6. Security Ops & Monitoring        [    ]      ______________________________________
+
+SCORE: ____ / 6 PASS      (PARTIAL counts as FAIL; stars: 1-2* = FAIL, 3*+ = PASS)
+
+TOP 3 RECOMMENDATIONS:
+1. ___________________________________________________________________________
+2. ___________________________________________________________________________
+3. ___________________________________________________________________________
+```
+
+---
+
 ## Gameplay (20-25 minutes)
 
 ### Turn Structure
@@ -256,7 +282,7 @@ Teams assess each network using this framework:
 1. **TO reads network description** (2 minutes)
 2. **Teams discuss and score** (2 minutes)
    - Vote on PASS/FAIL for each domain
-   - Record scores on audit worksheet
+   - Record scores on the audit worksheet (inline version below; printed version: see print pack, coming)
 3. **TO reveals "correct" audit** (1 minute)
    - Teams compare their assessment to expert audit
    - Discuss differences
@@ -272,44 +298,44 @@ Teams assess each network using this framework:
 
 ## Pre-Built Audit Results
 
-### Startup Tech - Audit Results
+### Startup Tech - Audit Results (v2.2 — the answer key now follows its own criteria)
 
 | Domain | Score | Finding |
 |--------|-------|---------|
 | Network Segmentation | **FAIL** | No firewall between cloud and on-prem; cloud accessible from internet |
-| Access Control | **PASS** | AD in place; but overloaded (also acts as SIEM?) |
+| Access Control | **FAIL** | Dedicated AD exists, but **no MFA anywhere** (cloud consoles are remote access) — "no MFA" is a FAIL condition |
 | Detection | **FAIL** | No IDS/IPS or SIEM |
-| Backup & Recovery | **PASS** | AWS snapshots + M365 retention |
-| Third-Party Risk | **FAIL** | Cloud systems public internet-accessible |
+| Backup & Recovery | **FAIL** | AWS snapshots + M365 retention exist but are **untested** — "untested backup" is a FAIL condition |
+| Third-Party Risk | **FAIL** | Cloud systems public internet-accessible, holding customer data, no WAF |
 | Operations | **FAIL** | No centralized monitoring |
 
-**Score: 2/6 PASS**
+**Score: 0/6 PASS** (strict). A lenient auditor might award Access Control a narrow PASS — dedicated, single-purpose DC and no VPN/remote-access paths to on-prem — for **1/6**. Either reading lands in the same tier: **Below 3/6, HIGH RISK.** (The judgment call itself is a great Variation C debate.)
 
-**Risk Rating: HIGH**
-- **Vulnerabilities:** No network segmentation, no detection capability, cloud systems exposed
-- **Attack Scenario:** Attacker compromises cloud web server → lateral movement to on-prem AD → full network access
-- **Cost of Breach:** Very high (no detection, no segmentation to contain)
+**Risk Rating: HIGH / CRITICAL**
+- **Vulnerabilities:** No network segmentation, no detection capability, no MFA, untested backups, cloud systems exposed
+- **Attack Scenario:** Attacker compromises cloud web server → lateral movement to on-prem AD → full network access; if ransomware hits, the untested backups may not restore
+- **Cost of Breach:** Very high (no detection, no segmentation to contain, recovery uncertain)
 
 ---
 
-### Mid-Market Corp - Audit Results
+### Mid-Market Corp - Audit Results (v2.2 — table and score now agree)
 
 | Domain | Score | Finding |
 |--------|-------|---------|
 | Network Segmentation | **PASS** | Firewalls between DMZ, Internal, Finance zones |
 | Access Control | **PASS** | AD hardened, VPN with MFA |
-| Detection | **PASS** | IDS active + SIEM deployed |
-| Backup & Recovery | **PASS** | Backup appliance with off-site replication |
+| Detection | **FAIL** | IDS + SIEM deployed, but detection-only (no IPS blocking) and the isolated **legacy accounting segment sits outside IDS coverage** — a blind spot at the highest-risk, unpatched system |
+| Backup & Recovery | **PASS** | Backup appliance with off-site replication, tested |
 | Third-Party Risk | **PASS** | Cloud systems on private network, WAF in place |
 | Operations | **PASS** | SIEM + centralized logging |
 
-**Score: 5/6 PASS** (only concern: no IPS, Legacy system unpatched)
+**Score: 5/6 PASS**
 
 **Risk Rating: MEDIUM**
-- **Strengths:** Good segmentation, detection, logging, backups
-- **Weaknesses:** Legacy accounting system (vulnerable but isolated)
-- **Attack Scenario:** Attacker may get into DMZ but segmentation blocks lateral movement; detection catches lateral movement attempt
-- **Cost of Breach:** Moderate (good detection and segmentation limit damage)
+- **Strengths:** Good segmentation, logging, backups
+- **Weaknesses:** Legacy accounting system (unpatched, and unmonitored — the Detection FAIL)
+- **Attack Scenario:** Attacker may get into DMZ but segmentation blocks lateral movement; an attack routed through the legacy segment, however, could go undetected
+- **Cost of Breach:** Moderate (segmentation limits damage; the legacy blind spot is the residual risk)
 
 ---
 
@@ -479,6 +505,7 @@ Domain 2: Access Control
 
 Domain 3: Detection
   Decision: IDS present but NO SIEM → PARTIAL FAIL
+  (v2.2: "PARTIAL" counts as FAIL for the score)
   Finding: Can detect network attacks but no centralized logging for correlation
 
 Domain 4: Backup & Recovery
@@ -552,36 +579,41 @@ This is a **debate game** where teams argue the merits of audit findings, teachi
 ### Audit Finding Scenarios (3 total)
 
 #### SCENARIO 1: "The Startup Defense"
+
+*(Same fictional company as Variation A's "Startup Tech": 50 people, cloud-first, no VPN.)*
+
 ```
 SCENARIO:
 Startup Tech built this network:
-- Email (Cloud), Web (Cloud), Database (Cloud), 
+- Email (Cloud), Web (Cloud), Database (Cloud),
   Domain Controller (On-Prem), Backup (Cloud snapshots)
 - No Firewall between cloud and on-prem
 - No IDS or SIEM
-- Accessing cloud systems requires VPN
+- No VPN (all cloud-native; cloud consoles protected by
+  provider logins only, no MFA)
 
 AUDITOR'S FINDINGS:
 Domain 1: Network Segmentation → FAIL
   "No firewall between cloud and on-prem represents 
    uncontrolled lateral movement risk."
 
-Domain 2: Detection → FAIL
+Domain 3: Detection → FAIL
   "No IDS/SIEM means attacks go undetected."
 
 OVERALL: HIGH RISK
 
 STARTUP'S COUNTERARGUMENT:
 "We use cloud providers (AWS/Azure) which have built-in
-firewalls at the cloud level. Our VPN requirement means
-only authenticated users can access systems. Our small
-team (20 people) means we're faster to respond. This
-audit is too harsh for a startup."
+firewalls at the cloud level. Cloud provider security
+groups mean only the services we expose are reachable.
+Our small team (50 people) means we're faster to respond.
+This audit is too harsh for a startup."
 
 YOUR JOB:
 - Is the auditor FAIR? (reasonable standards)
 - Is the auditor HARSH? (too strict for context)
-- Is the auditor MISSING gaps? (what should they have found?)
+- Is the auditor MISSING gaps? (what should they have found?
+  Hint: no MFA, untested backups)
 - Vote: Fair / Harsh / Missing / Balanced
 ```
 
@@ -715,16 +747,16 @@ YOUR JOB:
 **ORGANIZATION POSITION (Team B):**
 "The counterargument is valid because:
 1. Startups operate under different constraints than enterprises
-2. We use VPN (authentication) to control access
+2. Cloud provider security groups limit what's exposed
 3. Our cloud provider has better security than we could build
-4. For 20 employees, a $50K security investment is proportional
+4. For 50 employees, a $50K security investment is proportional
 5. We're risk-accepting; this is a known trade-off"
 
 **CROSS-EXAMINATION (back and forth):**
 
 **A:** "But if you get compromised, your customer data is exposed. Isn't that a problem?"
 
-**B:** "Yes, but our VPN AND cloud provider AND limited data make that less likely than you're suggesting."
+**B:** "Yes, but our cloud provider's controls AND limited data make that less likely than you're suggesting."
 
 **A:** "What about detection? If you're breached, you won't know for months."
 
@@ -770,7 +802,7 @@ YOUR JOB:
 3. **"What's the difference between a 'critical finding' and a 'risk we're accepting'?"**
    - Teaching point: Risk management is nuanced; not all gaps are equally important
 
-4. **"How does this change how you think about Phase 1 attacks?"**
+4. **"How does this change how you think about the attacks in Incident Response?"**
    - Connection: "Auditors find gaps that attackers exploit"
 
 ---
@@ -894,7 +926,7 @@ Variation C (Debate): 10 min
 
 Debrief & Connection: 5 min
 - "Now you understand how audits work"
-- "In Phase 1, attackers will exploit these gaps"
+- "In Incident Response, attackers will exploit these gaps"
 
 Total: 60 minutes
 ```
@@ -903,9 +935,9 @@ Total: 60 minutes
 
 ---
 
-# CONNECTING TO ATTACK CHAIN (Phase 1)
+# CONNECTING TO INCIDENT RESPONSE (Attack Chain)
 
-After playing Audit Standalone, teams can transition to Phase 1 (Attack Chain):
+After playing Audit Standalone, teams can transition to the Incident Response module:
 
 **Narrative Bridge:**
 
@@ -922,28 +954,26 @@ Now, if an attacker targets each of these networks, how will it go?"
 
 # MATERIALS CHECKLIST
 
+Everything needed to play today is **in this document**: the three network descriptions, the 6-domain framework, the answer keys, the inline audit worksheet, and the three debate scenarios. Printed play aids (scoring reference card, audit worksheet, judge guide, scoring sheets): **see print pack (coming)**.
+
 ### Variation A: Pre-Built Networks
-- [ ] Scenario descriptions (3 networks)
-- [ ] 6-domain audit framework
-- [ ] Pre-filled audit results (for TO reference)
-- [ ] Scoring sheet
-- [ ] Comparison chart
+- [ ] Scenario descriptions (3 networks — in this document)
+- [ ] 6-domain audit framework (in this document)
+- [ ] Pre-filled audit results (for TO reference — in this document)
+- [ ] Audit worksheet (inline version above; printed: see print pack, coming)
 
 ### Variation B: Random Generation
-- [ ] Simplified server cards
-- [ ] Simplified security device cards
-- [ ] Architecture cards
-- [ ] Network summary template
-- [ ] Audit framework
-- [ ] Accuracy scoring sheet
+- [ ] Simplified server / security device / architecture card lists (in this document)
+- [ ] Network summary template (in this document)
+- [ ] Audit worksheet (inline version above)
+- [ ] Accuracy scoring table (in this document)
 
 ### Variation C: Audit the Auditor
-- [ ] Scenario 1: Startup Defense
-- [ ] Scenario 2: Legacy System
-- [ ] Scenario 3: Over-Engineering
-- [ ] Debate preparation guide (arguments for each side)
-- [ ] Debate scoring sheet
-- [ ] Judge guide (for TO or Team C)
+- [ ] Scenario 1: Startup Defense (in this document)
+- [ ] Scenario 2: Legacy System (in this document)
+- [ ] Scenario 3: Over-Engineering (in this document)
+- [ ] Debate scoring rubric (in this document, Phase 4)
+- [ ] Judge guide: see print pack (coming) — until then, Team C uses the Phase 4 rubric
 
 ---
 
@@ -967,7 +997,7 @@ After any Audit Standalone variation, teams should understand:
 4. **Detection vs. Prevention** - Strong IDS/SIEM matters as much as hardening
 5. **Incident response starts with audit** - Knowing your gaps speeds detection
 
-**Key Teaching:** "In Phase 1 (Attack Chain), auditors played the role of the security team. Attackers play the same role, but with opposite intent. They're looking for exactly what auditors find."
+**Key Teaching:** "In Incident Response, auditors played the role of the security team. Attackers play the same role, but with opposite intent. They're looking for exactly what auditors find."
 
 ---
 

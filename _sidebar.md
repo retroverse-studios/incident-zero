@@ -6,13 +6,18 @@
   - [Gameplay Modes](docs/gameplay-modes.md)
   - [Module Combinations](docs/module-combinations.md)
 
-  - **Documentation Site**
-    - [Docsify Setup Guide](docs/DOCSIFY_SETUP.md)
-    - [Docsify Status & Implementation](docs/DOCSIFY_STATUS.md)
-
 - **📚 Core Rules**
   - [Core Game Rules](docs/rules/core-rules.md)
   - [Variable Game Length System](docs/VARIABLE_GAME_LENGTH_SYSTEM.md)
+
+- **🖨 Print & Play**
+  - [A4 Print & Layout Guide](cards/print-templates/a4-layout-guide.md)
+  - [Tracker Sheets](cards/print-templates/tracker-sheets.md)
+
+- **🧪 Playtesting**
+  - [Playtest Guide](docs/playtesting/README.md)
+  - [Feedback Form](docs/playtesting/feedback-form.md)
+  - [Session Notes Form](docs/playtesting/session-notes-form.md)
 
 - **🎮 Module Rules**
   - [Hardening Module](docs/rules/module-hardening.md)
@@ -49,10 +54,10 @@
   - **Incident Response Module**
     - [Module Overview](cards/incident-response/README.md)
     - Core Deck
-      - [Threats & Defenses (T-01 to T-08, D-01 to D-24)](cards/incident-response/core-deck/threat-defense-cards.md)
+      - [Threats & Defenses (T-01 to T-12, D-01 to D-24)](cards/incident-response/core-deck/threat-defense-cards.md)
     - Expansion Deck
-      - [Advanced Threats (T-09 to T-16)](cards/incident-response/expansion-deck/advanced-threats.md)
-      - [Advanced Defenses (D-25 to D-32)](cards/incident-response/expansion-deck/advanced-defenses.md)
+      - [Advanced Threats (T-13 to T-20)](cards/incident-response/expansion-deck/advanced-threats.md)
+      - [Advanced Defenses (D-25 to D-43)](cards/incident-response/expansion-deck/advanced-defenses.md)
 
   - **Network Building Module**
     - [Module Overview](cards/network-building/README.md)
@@ -64,6 +69,9 @@
     - Expansion Deck
       - [Legacy Systems (LEGACY-01 to LEGACY-04)](cards/network-building/expansion-deck/legacy-systems.md)
       - [Cloud Variants (CLOUD-01 to CLOUD-04)](cards/network-building/expansion-deck/cloud-variants.md)
+    - Standalone Deck
+      - [Business Requirement Cards (REQ-01 to REQ-20)](cards/network-building/standalone/business-requirement-cards.md)
+      - [Operational Event Cards (EVT-01 to EVT-16)](cards/network-building/standalone/operational-event-cards.md)
 
   - **Disaster Recovery Module**
     - [Module Overview](cards/disaster-recovery/README.md)
@@ -79,18 +87,20 @@
     - Core Deck
       - [Investigation Action Cards (12 cards)](cards/forensics/core-deck/investigation-cards.md)
       - [Evidence & Findings Cards (16 cards)](cards/forensics/core-deck/evidence-cards.md)
-    - Expansion Deck
-      - [Advanced Investigation & Evidence (16 cards)](cards/forensics/expansion-deck/advanced-cards.md)
 
   - **Audit & Compliance Module**
     - [Module Overview](cards/audit-compliance/README.md)
     - Core Deck
       - [Audit Domain Cards (DOMAIN-01 to DOMAIN-06)](cards/audit-compliance/core-deck/audit-domain-cards.md)
     - Expansion Deck
-      - [Compliance Frameworks & Remediation (16 cards)](cards/audit-compliance/expansion-deck/compliance-frameworks.md)
+      - [Compliance Frameworks & Remediation (19 cards)](cards/audit-compliance/expansion-deck/compliance-frameworks.md)
 
 - **🔗 Resources**
   - [GitHub Repository](https://github.com/retroverse-studios/incident-zero)
   - [License (CC BY-NC-SA 4.0)](LICENSE)
-  - [Session Summary (v2.1 Complete)](SESSION_SUMMARY.md)
   - [Future Work & Development Roadmap](FUTURE_WORK.md)
+
+- **🛠 Development**
+  - [Docsify Setup Guide](docs/DOCSIFY_SETUP.md)
+  - [Docsify Status & Implementation](docs/DOCSIFY_STATUS.md)
+  - [Session Summary (v2.1)](SESSION_SUMMARY.md)

@@ -3,13 +3,15 @@
 
 This document provides additional Defense Cards for expanding **Incident Zero** gameplay beyond the base 24-card deck. These cards introduce modern security architectures and advanced defensive capabilities that complement the base game.
 
+**Note (v2.2):** These expansion defenses were renumbered from D-19–D-37 to **D-25–D-43** to avoid colliding with core deck cards D-19–D-24 (see `../core-deck/threat-defense-cards.md`).
+
 ---
 
-## ADDITIONAL DEFENSE CARDS (18 Cards)
+## ADDITIONAL DEFENSE CARDS (19 Cards)
 
 ### Application Whitelisting Defenses
 
-#### Card D-19: Application Whitelisting (Basic)
+#### Card D-25: Application Whitelisting (Basic)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -44,7 +46,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-20: Advanced Application Control with AI
+#### Card D-26: Advanced Application Control with AI
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -77,7 +79,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-21: Living-Off-The-Land Blocker (ELITE)
+#### Card D-27: Living-Off-The-Land Blocker (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -115,7 +117,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 
 ### Behavioral Analytics Defenses
 
-#### Card D-22: Baseline Behavior Learning System (Advanced)
+#### Card D-28: Baseline Behavior Learning System (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -149,7 +151,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-23: Process Behavior Analysis (Advanced)
+#### Card D-29: Process Behavior Analysis (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -184,7 +186,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-24: Machine Learning Anomaly Detection (ELITE)
+#### Card D-30: Machine Learning Anomaly Detection (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -222,7 +224,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 
 ### Container Security Defenses
 
-#### Card D-25: Container Image Scanning (Basic)
+#### Card D-31: Container Image Scanning (Basic)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -255,7 +257,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-26: Container Runtime Protection (Advanced)
+#### Card D-32: Container Runtime Protection (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -288,7 +290,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-27: Kubernetes Network Policy & RBAC (ELITE)
+#### Card D-33: Kubernetes Network Policy & RBAC (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -325,7 +327,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 
 ### Cloud Security Posture Management (CSPM)
 
-#### Card D-28: Cloud Configuration Auditing (Basic)
+#### Card D-34: Cloud Configuration Auditing (Basic)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -359,7 +361,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-29: Cloud Access & Permission Auditing (Advanced)
+#### Card D-35: Cloud Access & Permission Auditing (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -393,7 +395,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-30: Cloud Compliance & Audit Trail (ELITE)
+#### Card D-36: Cloud Compliance & Audit Trail (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -431,7 +433,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 
 ### Incident Response Playbooks
 
-#### Card D-31: Playbook: Ransomware Response (Advanced)
+#### Card D-37: Playbook: Ransomware Response (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -465,7 +467,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-32: Playbook: Credential Compromise Response (Advanced)
+#### Card D-38: Playbook: Credential Compromise Response (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -499,7 +501,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-33: Playbook: Insider Threat Response (ELITE)
+#### Card D-39: Playbook: Insider Threat Response (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -534,7 +536,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-34: Playbook: Supply Chain Breach Response (ELITE)
+#### Card D-40: Playbook: Supply Chain Breach Response (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -571,7 +573,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 
 ### Backup & Disaster Recovery
 
-#### Card D-35: Backup Strategy - 3-2-1 Rule (Basic)
+#### Card D-41: Backup Strategy - 3-2-1 Rule (Basic)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -604,7 +606,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-36: Immutable Backup Storage (Advanced)
+#### Card D-42: Immutable Backup Storage (Advanced)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -636,7 +638,7 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 └─────────────────────────────────────┘
 ```
 
-#### Card D-37: Disaster Recovery Plan & Testing (ELITE)
+#### Card D-43: Disaster Recovery Plan & Testing (ELITE)
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
@@ -676,149 +678,139 @@ This document provides additional Defense Cards for expanding **Incident Zero** 
 ### By Threat Type Mapping
 
 **Against Supply Chain Attacks (T-13, T-14):**
-- D-25: Container Image Scanning
-- D-31: Software Composition Analysis
-- D-28: Cloud Configuration Auditing
+- D-31: Container Image Scanning
+- D-29: Process Behavior Analysis (catches apps compromised by supply chain attacks)
+- D-40: Playbook: Supply Chain Breach Response
 
 **Against Insider Threats (T-15, T-16):**
-- D-22: Baseline Behavior Learning System
-- D-23: Process Behavior Analysis
-- D-33: Playbook: Insider Threat Response
+- D-28: Baseline Behavior Learning System
+- D-29: Process Behavior Analysis
+- D-39: Playbook: Insider Threat Response
 
 **Against IoT Compromise (T-17):**
-- D-19: Application Whitelisting
-- D-25: Container Image Scanning (if containerized)
-- D-22: Baseline Behavior Learning System
+- D-25: Application Whitelisting
+- D-31: Container Image Scanning (if containerized)
+- D-28: Baseline Behavior Learning System
 
 **Against Cloud API Abuse (T-18):**
-- D-28: Cloud Configuration Auditing
-- D-29: Cloud Access & Permission Auditing
-- D-30: Cloud Compliance & Audit Trail
+- D-34: Cloud Configuration Auditing
+- D-35: Cloud Access & Permission Auditing
+- D-36: Cloud Compliance & Audit Trail
 
 **Against DNS Tunneling (T-19):**
-- D-22: Baseline Behavior Learning System (network baseline)
-- D-24: Machine Learning Anomaly Detection
+- D-28: Baseline Behavior Learning System (network baseline)
+- D-30: Machine Learning Anomaly Detection
 
 **Against Physical Security Bypass (T-20):**
-- D-22: Baseline Behavior Learning System (detection)
-- D-32: Playbook: Credential Compromise Response
+- D-28: Baseline Behavior Learning System (detection)
+- D-38: Playbook: Credential Compromise Response
 
 **Against Ransomware (T-11, supply chain variants):**
-- D-35: Backup Strategy - 3-2-1 Rule
-- D-36: Immutable Backup Storage
-- D-37: Disaster Recovery Plan & Testing
-- D-31: Playbook: Ransomware Response
+- D-41: Backup Strategy - 3-2-1 Rule
+- D-42: Immutable Backup Storage
+- D-43: Disaster Recovery Plan & Testing
+- D-37: Playbook: Ransomware Response
 
 ---
 
 ## Sample Defense Card Combinations
 
-### "Enterprise Ransomware Defense" (4 cards, 60 Budget)
-- D-35: Backup Strategy - 3-2-1 Rule (10 Budget)
-- D-36: Immutable Backup Storage (15 Budget)
-- D-26: Container Runtime Protection (15 Budget)
-- D-31: Playbook: Ransomware Response (15 Budget)
+### "Enterprise Ransomware Defense" (4 cards, 55 Budget)
+- D-41: Backup Strategy - 3-2-1 Rule (10 Budget)
+- D-42: Immutable Backup Storage (15 Budget)
+- D-32: Container Runtime Protection (15 Budget)
+- D-37: Playbook: Ransomware Response (15 Budget)
 - **Total Effect:** Multi-layered ransomware defense with recovery guarantee
 
-### "Cloud-Native Security" (4 cards, 55 Budget)
-- D-25: Container Image Scanning (10 Budget)
-- D-27: Kubernetes Network Policy & RBAC (25 Budget)
-- D-29: Cloud Access & Permission Auditing (15 Budget)
-- D-30: Cloud Compliance & Audit Trail (25 Budget) - *Adjusted*
+### "Cloud-Native Security" (4 cards, 75 Budget)
+- D-31: Container Image Scanning (10 Budget)
+- D-33: Kubernetes Network Policy & RBAC (25 Budget)
+- D-35: Cloud Access & Permission Auditing (15 Budget)
+- D-36: Cloud Compliance & Audit Trail (25 Budget)
 - **Total Effect:** Comprehensive containerized environment protection
 
-### "Insider Threat Detection & Response" (4 cards, 70 Budget)
-- D-22: Baseline Behavior Learning System (15 Budget)
-- D-24: Machine Learning Anomaly Detection (25 Budget)
-- D-33: Playbook: Insider Threat Response (25 Budget)
-- D-35: Backup Strategy - 3-2-1 Rule (10 Budget)
+### "Insider Threat Detection & Response" (4 cards, 75 Budget)
+- D-28: Baseline Behavior Learning System (15 Budget)
+- D-30: Machine Learning Anomaly Detection (25 Budget)
+- D-39: Playbook: Insider Threat Response (25 Budget)
+- D-41: Backup Strategy - 3-2-1 Rule (10 Budget)
 - **Total Effect:** Multi-stage insider threat defense
 
-### "Zero-Trust Architecture" (5 cards, 75 Budget)
-- D-21: Living-Off-The-Land Blocker (25 Budget)
-- D-23: Process Behavior Analysis (15 Budget)
-- D-27: Kubernetes Network Policy & RBAC (25 Budget)
-- D-29: Cloud Access & Permission Auditing (15 Budget)
-- D-22: Baseline Behavior Learning System (15 Budget) - *Adjusted*
+### "Zero-Trust Architecture" (5 cards, 95 Budget)
+- D-27: Living-Off-The-Land Blocker (25 Budget)
+- D-29: Process Behavior Analysis (15 Budget)
+- D-33: Kubernetes Network Policy & RBAC (25 Budget)
+- D-35: Cloud Access & Permission Auditing (15 Budget)
+- D-28: Baseline Behavior Learning System (15 Budget)
 - **Total Effect:** Comprehensive assume-breach architecture
 
 ---
 
-## Phase 2 Hardening with Expansion Defense Cards
+## Hardening Module with Expansion Defense Cards
 
-### Phase 2 Scenario: Enterprise Defense Build-Out (90 minutes)
+### Hardening Scenario: Enterprise Defense Build-Out (7 turns, v2.2)
 
-**Starting Budget:** 150 (inflated for comprehensive build)
+**Starting Budget:** 150 | **Turn Limit:** 7 (one action per turn; up to 2 BASIC defenses may be deployed as one action)
 
-**Turn 1-3: Foundation (BASIC tier)**
-- D-28: Cloud Configuration Auditing (10)
-- D-19: Application Whitelisting (10)
-- D-35: Backup Strategy - 3-2-1 Rule (10)
-- **Running Total:** 30 Budget spent
+**Turn 1 (Foundation):** D-34 Cloud Configuration Auditing (10) + D-25 Application Whitelisting (10) — Quick-Win pair → 20 spent
+**Turn 2 (Foundation):** D-41 Backup Strategy - 3-2-1 Rule (10) + D-31 Container Image Scanning (10) — Quick-Win pair → 40 spent
+**Turn 3 (Advanced Layer):** D-28 Baseline Behavior Learning System (15) → 55 spent
+**Turn 4 (Advanced Layer):** D-32 Container Runtime Protection (15) → 70 spent
+**Turn 5 (Advanced Layer):** D-35 Cloud Access & Permission Auditing (15) → 85 spent
+**Turn 6 (Preparation):** Create MALWARE playbook (10) → 95 spent
+**Turn 7 (Expert Layer):** D-36 Cloud Compliance & Audit Trail (25) → 120 spent, **30 remaining**
 
-**Turn 4-6: Advanced Layer (ADVANCED tier)**
-- D-22: Baseline Behavior Learning System (15)
-- D-26: Container Runtime Protection (15)
-- D-29: Cloud Access & Permission Auditing (15)
-- D-31: Playbook: Ransomware Response (15)
-- **Running Total:** 90 Budget spent
-
-**Turn 7-9: Expert Layer (ELITE tier)**
-- D-30: Cloud Compliance & Audit Trail (25)
-- D-24: Machine Learning Anomaly Detection (25)
-- D-37: Disaster Recovery Plan & Testing (25)
-- **Running Total:** 165 Budget (over budget - teams must choose)
-
-**Final Security Score Calculation:**
-- (7 defenses deployed × 5) = 35 points
-- (3 hardening upgrades × 2) = 6 points
-- (2 playbooks × 10) = 20 points
-- (4 pentester tactic evasions × 5) = 20 points
-- **Total: 81 points** (Strong defense-in-depth)
+**Final Security Score Calculation (v2.2 formula):**
+- (8 defenses deployed × 5) = 40 points
+- (0 hardening upgrades × 2) = 0 points
+- (1 playbook × 10) = 10 points
+- (3 of 4 pentester tactics defended × 5) = 15 points
+- Budget efficiency: (30 / 150) × 10 = 2 points
+- **Total: 67 points** (Strong defense-in-depth — Victory: score ≥ 60, ≥ 4 defenses, majority of tactics defended)
 
 ---
 
-## Pentester Tactic Card Interactions with Defense Cards
+## Pentester Tactic Card Interactions with Defense Cards (v2.2)
 
-When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide bonuses:
+When a Pentester Tactic Card (PT-01 to PT-08, see `../../hardening/core-deck/pentester-tactic-cards.md`) is drawn during a Hardening phase, these expansion defenses may be chosen as the single resolving defense. Use the bonus below as the chosen defense's **printed bonus** in the canonical formula (d20 + printed bonus + upgrades + playbook vs. the tactic's DC):
 
-### Tactic 1: "Bypass Basic Defenses"
-- **Countered by:** D-20 (Advanced Application Control)
-- **Effect:** +2 to defense roll (upgrades to Advanced tier effectiveness)
+### PT-01: Social Engineering - Pretexting (DC 12)
+- **Expansion counters:** D-28 or D-30 (Behavioral Analytics)
+- **Printed bonus:** +2 (baseline deviation in account usage detected)
 
-### Tactic 2: "Social Engineering Specialist"
-- **Countered by:** D-22 or D-24 (Behavioral Analytics)
-- **Effect:** +2 to defense roll (baseline deviation detected)
+### PT-02: Malware Evasion - Living-off-the-Land (DC 13)
+- **Expansion counters:** D-27 (Living-Off-The-Land Blocker) +4, or D-29 (Process Behavior Analysis) +3
+- **Effect:** Directly restricts or flags abuse of PowerShell/cmd/WMI
 
-### Tactic 3: "Persistence Expert"
-- **Countered by:** D-23 (Process Behavior Analysis)
-- **Effect:** +3 to defense roll (anomalous process creation detected)
+### PT-03: Credential Dumping - Mimikatz (DC 13)
+- **Expansion counters:** D-38 (Playbook: Credential Compromise Response) +4
+- **Effect:** Rapid containment before harvested credentials are reused
 
-### Tactic 4: "Supply Chain Attack"
-- **Countered by:** D-25 (Container Image Scanning) or D-31 (SCA equivalent)
-- **Effect:** +3 to defense roll (malicious dependency detected)
+### PT-04: Lateral Movement - Network Traversal (DC 13)
+- **Expansion counters:** D-33 (Kubernetes Network Policy & RBAC) +3, or D-28 (Baseline Behavior Learning) +2
+- **Effect:** Micro-segmentation and network baselining detect traversal
 
-### Tactic 5: "Detection Evasion"
-- **Countered by:** D-24 (Machine Learning Anomaly Detection)
-- **Effect:** +4 to defense roll (behavioral anomaly detected despite evasion)
+### PT-05: Privilege Escalation - Kernel Exploit (DC 14)
+- **Expansion counters:** D-29 (Process Behavior Analysis) +3, or D-27 (LOTL Blocker) +2
+- **Effect:** Anomalous privilege elevation behavior detected
 
-### Tactic 6: "Budget Drain"
-- **Countered by:** D-37 (Disaster Recovery Plan)
-- **Effect:** Reduce budget drain by 5 (efficiency improvement)
+### PT-06: Data Exfiltration - Unmonitored Channel (DC 14)
+- **Expansion counters:** D-30 (ML Anomaly Detection) +3, or D-36 (Cloud Compliance & Audit Trail) +2
+- **Effect:** Statistical outliers in outbound traffic flagged
 
-### Tactic 7: "Zero-Day Exploit"
-- **Countered by:** D-21 (Living-Off-The-Land Blocker) or D-22/D-24 (Behavioral Analysis)
-- **Effect:** +2 to defense roll (behavior-based detection of exploit)
+### PT-07: Supply Chain Compromise - Trusted Update (DC 14)
+- **Expansion counters:** D-31 (Container Image Scanning) +3, D-29 (Process Behavior Analysis) +3, or D-40 (Playbook: Supply Chain Breach Response) +5
+- **Effect:** Malicious dependency or post-update behavior detected
 
-### Tactic 8: "Multi-Vector Attack"
-- **Countered by:** D-27 (Kubernetes Network Policy) or D-29 (Cloud RBAC)
-- **Effect:** Defend against both vectors (segmentation prevents coordination)
+### PT-08: Insider Threat - Malicious Administrator (DC 15)
+- **Expansion counters:** D-39 (Playbook: Insider Threat Response) +5, D-28 (Baseline Behavior Learning) +3, or D-35 (Cloud Access & Permission Auditing) +2
+- **Effect:** Privileged-access anomalies caught and escalated
 
 ---
 
 ## Teaching Notes for Defense Card Expansion
 
-### Application Whitelisting (D-19, D-20, D-21)
+### Application Whitelisting (D-25, D-26, D-27)
 **Why it matters:**
 - Stops 90%+ of malware variants if properly configured
 - "Defense in depth" - cheap to start, expensive to perfect
@@ -833,7 +825,7 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - "What's blocked by living-off-the-land blocker that regular whitelisting isn't?"
 - "Why is adoption slow despite effectiveness?"
 
-### Behavioral Analytics (D-22, D-23, D-24)
+### Behavioral Analytics (D-28, D-29, D-30)
 **Why it matters:**
 - Catches attacks that don't match known signatures
 - Foundation for modern threat detection
@@ -849,7 +841,7 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - "How do you build a baseline without including attacks?"
 - "Why can't signature-based antivirus do this?"
 
-### Container Security (D-25, D-26, D-27)
+### Container Security (D-31, D-32, D-33)
 **Why it matters:**
 - Container environments have unique attack surfaces
 - Rapid deployment means traditional approaches fail
@@ -865,7 +857,7 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - "Why is network policy critical in Kubernetes?"
 - "What's an example of a container escape attack?"
 
-### Cloud Security Posture Management (D-28, D-29, D-30)
+### Cloud Security Posture Management (D-34, D-35, D-36)
 **Why it matters:**
 - Cloud misconfigurations are leading breach cause
 - Shared responsibility model confuses organizations
@@ -881,7 +873,7 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - "How do you audit permissions when there are 1000s of IAM roles?"
 - "Why is 'least privilege' hard to achieve in practice?"
 
-### Incident Response Playbooks (D-31, D-32, D-33, D-34)
+### Incident Response Playbooks (D-37, D-38, D-39, D-40)
 **Why it matters:**
 - Pre-planning reduces response time significantly
 - Coordination across teams is critical
@@ -897,7 +889,7 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - "How do you balance forensics with business recovery?"
 - "Why test playbooks if you hope to never use them?"
 
-### Backup & Disaster Recovery (D-35, D-36, D-37)
+### Backup & Disaster Recovery (D-41, D-42, D-43)
 **Why it matters:**
 - Ransomware made backups critical (not just compliance)
 - Recovery is often cheapest way to respond to attacks
@@ -919,29 +911,29 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 
 | Card | Title | Tier | Budget | Countermeasure |
 |------|-------|------|--------|-----------------|
-| D-19 | Application Whitelisting | BASIC | 10 | MALWARE |
-| D-20 | Advanced Application Control with AI | ADVANCED | 15 | MALWARE |
-| D-21 | Living-Off-The-Land Blocker | ELITE | 25 | MALWARE |
-| D-22 | Baseline Behavior Learning System | ADVANCED | 15 | NETWORK |
-| D-23 | Process Behavior Analysis | ADVANCED | 15 | MALWARE |
-| D-24 | Machine Learning Anomaly Detection | ELITE | 25 | MALWARE |
-| D-25 | Container Image Scanning | BASIC | 10 | MALWARE |
-| D-26 | Container Runtime Protection | ADVANCED | 15 | MALWARE |
-| D-27 | Kubernetes Network Policy & RBAC | ELITE | 25 | NETWORK |
-| D-28 | Cloud Configuration Auditing | BASIC | 10 | CREDENTIAL ABUSE |
-| D-29 | Cloud Access & Permission Auditing | ADVANCED | 15 | CREDENTIAL ABUSE |
-| D-30 | Cloud Compliance & Audit Trail | ELITE | 25 | DATA EXFIL |
-| D-31 | Playbook: Ransomware Response | ADVANCED | 15 | MALWARE |
-| D-32 | Playbook: Credential Compromise Response | ADVANCED | 15 | CREDENTIAL ABUSE |
-| D-33 | Playbook: Insider Threat Response | ELITE | 25 | DATA EXFIL |
-| D-34 | Playbook: Supply Chain Breach Response | ELITE | 25 | WEB EXPLOIT |
-| D-35 | Backup Strategy - 3-2-1 Rule | BASIC | 10 | MALWARE |
-| D-36 | Immutable Backup Storage | ADVANCED | 15 | MALWARE |
-| D-37 | Disaster Recovery Plan & Testing | ELITE | 25 | MALWARE |
+| D-25 | Application Whitelisting | BASIC | 10 | MALWARE |
+| D-26 | Advanced Application Control with AI | ADVANCED | 15 | MALWARE |
+| D-27 | Living-Off-The-Land Blocker | ELITE | 25 | MALWARE |
+| D-28 | Baseline Behavior Learning System | ADVANCED | 15 | NETWORK |
+| D-29 | Process Behavior Analysis | ADVANCED | 15 | MALWARE |
+| D-30 | Machine Learning Anomaly Detection | ELITE | 25 | MALWARE |
+| D-31 | Container Image Scanning | BASIC | 10 | MALWARE |
+| D-32 | Container Runtime Protection | ADVANCED | 15 | MALWARE |
+| D-33 | Kubernetes Network Policy & RBAC | ELITE | 25 | NETWORK |
+| D-34 | Cloud Configuration Auditing | BASIC | 10 | CREDENTIAL ABUSE |
+| D-35 | Cloud Access & Permission Auditing | ADVANCED | 15 | CREDENTIAL ABUSE |
+| D-36 | Cloud Compliance & Audit Trail | ELITE | 25 | DATA EXFIL |
+| D-37 | Playbook: Ransomware Response | ADVANCED | 15 | MALWARE |
+| D-38 | Playbook: Credential Compromise Response | ADVANCED | 15 | CREDENTIAL ABUSE |
+| D-39 | Playbook: Insider Threat Response | ELITE | 25 | DATA EXFIL |
+| D-40 | Playbook: Supply Chain Breach Response | ELITE | 25 | WEB EXPLOIT |
+| D-41 | Backup Strategy - 3-2-1 Rule | BASIC | 10 | MALWARE |
+| D-42 | Immutable Backup Storage | ADVANCED | 15 | MALWARE |
+| D-43 | Disaster Recovery Plan & Testing | ELITE | 25 | MALWARE |
 
-**Total Expansion Cards:** 19
+**Total Expansion Cards:** 19 (D-25 to D-43)
 **Budget Range:** 10 (BASIC) to 25 (ELITE)
-**Distribution:** 5 BASIC, 8 ADVANCED, 6 ELITE
+**Distribution:** 4 BASIC (D-25, D-31, D-34, D-41), 8 ADVANCED (D-26, D-28, D-29, D-32, D-35, D-37, D-38, D-42), 7 ELITE (D-27, D-30, D-33, D-36, D-39, D-40, D-43)
 
 ---
 
@@ -952,32 +944,32 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 **Setup:**
 - 5-card threat chain (mix of base + expansion threats)
 - Starting Budget: 120
-- Turn Limit: 10
+- Turn Limit: 11 [(5 × 2) + 1, per core rules §3a]
 
-**Phase 1 Attack Chain Example:**
-1. Compromised Software Vendor Update (T-13) → WEB EXPLOIT
+**Incident Response Attack Chain Example:**
+1. Compromised Software Vendor Update (T-13) → MALWARE
 2. Lateral Movement via SMB (T-04) → NETWORK
 3. Cloud API Token Theft (T-18) → CREDENTIAL ABUSE
 4. Disgruntled Employee Sabotage (T-16) → MALWARE
 5. Data Exfiltration (T-19: DNS Tunneling) → DATA EXFIL
 
-**Phase 1 Recommended Defense Starting Hand:**
-- D-25: Container Image Scanning (10)
-- D-22: Baseline Behavior Learning System (15)
-- D-28: Cloud Configuration Auditing (10)
-- D-29: Cloud Access & Permission Auditing (15)
-- D-31: Playbook: Ransomware Response (15) - *reusable*
+**Incident Response Recommended Defense Starting Hand:**
+- D-31: Container Image Scanning (10)
+- D-28: Baseline Behavior Learning System (15)
+- D-34: Cloud Configuration Auditing (10)
+- D-35: Cloud Access & Permission Auditing (15)
+- D-37: Playbook: Ransomware Response (15) - *reusable*
 
-**Phase 2 Hardening Strategy:**
-- Deploy D-26, D-27 for container security
-- Deploy D-30 for cloud audit trails
-- Deploy D-24 for insider threat detection
-- Prepare D-33 playbook for insider coordination
+**Hardening Strategy:**
+- Deploy D-32, D-33 for container security
+- Deploy D-36 for cloud audit trails
+- Deploy D-30 for insider threat detection
+- Prepare D-39 playbook for insider coordination
 
-**Pentester Tactics to Draw (Phase 2):**
-1. "Supply Chain Attack" (countered by D-25, D-31)
-2. "Detection Evasion" (countered by D-24)
-3. "Multi-Vector Attack" (countered by D-27, D-29)
+**Pentester Tactics to Draw (Hardening):**
+1. PT-07: Supply Chain Compromise (countered by D-31, D-40)
+2. PT-02: Malware Evasion - Living-off-the-Land (countered by D-27, D-30)
+3. PT-09: Multi-Vector Attack, expansion (countered by D-33, D-35)
 
 ---
 
@@ -1021,7 +1013,6 @@ When a Pentester Tactic Card is drawn in Phase 2, specific Defense Cards provide
 - [ ] Create a separate deck organizer for expansion cards
 - [ ] Brief threat orchestrators on new defense mechanics
 - [ ] Create scenario cards showing which defenses are available
-- [ ] Update Phase 2 hardening rules with new cards
 - [ ] Prepare Pentester Tactic interaction chart
 - [ ] Test scenarios with expansion cards before classroom use
 - [ ] Create reference sheet linking threats to countering defenses

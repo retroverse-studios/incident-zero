@@ -40,23 +40,24 @@ Contains the essential cards needed to play Incident Response:
 
 ### Expansion Deck
 **Files:**
-- `expansion-deck/advanced-threats.md` (8 additional threat cards)
-- `expansion-deck/advanced-defenses.md` (8 additional defense cards)
+- `expansion-deck/advanced-threats.md` (8 additional threat cards, T-13 to T-20)
+- `expansion-deck/advanced-defenses.md` (19 additional defense cards, D-25 to D-43)
 
 Extends the core deck with more sophisticated attack scenarios:
 
-**Advanced Threat Cards (8 cards):**
-- Supply chain attacks
-- Advanced persistence techniques
-- Nation-state level attacks
-- Specialized vectors (mobile, IoT, cloud-native)
+**Advanced Threat Cards (8 cards, T-13 to T-20):**
+- Supply chain attacks (vendor updates, poisoned libraries)
+- Insider threats (data theft, sabotage)
+- IoT device compromise
+- Cloud API abuse, DNS tunneling, physical/badge attacks
 
-**Advanced Defense Cards (8 cards):**
-- Elite-tier security controls
-- Advanced monitoring and detection
-- Forensics and threat hunting capabilities
+**Advanced Defense Cards (19 cards, D-25 to D-43):**
+- Application whitelisting and behavioral analytics
+- Container and cloud security posture controls
+- Response playbooks (ransomware, credential, insider, supply chain)
+- Backup, immutable storage, and disaster recovery
 
-**Total:** 16 additional cards
+**Total:** 27 additional cards
 
 **Best for:** Advanced gameplay with 5+ card chains or expert player groups
 
@@ -66,8 +67,8 @@ Extends the core deck with more sophisticated attack scenarios:
 
 ### Threat Cards
 1. **Hidden by Threat Orchestrator** - Create attack chain before game starts
-2. **Revealed by Blue Team** - Through successful investigations or defense deployments
-3. **Cost Budget via Uncontained Threats** - Each revealed threat costs 5 Budget/turn
+2. **Revealed by Blue Team** - Two successful investigations of the same chain link (v2.2), or a vector+step-matching defense deployment
+3. **Cost Budget via Uncontained Threats** - Each revealed threat costs 5 Budget/turn; plus a 5 Budget/turn Active Breach Cost while any card is still hidden (v2.2)
 4. **Contains Clues** - TO reads clues to guide investigations
 
 ### Defense Cards
@@ -80,35 +81,36 @@ Extends the core deck with more sophisticated attack scenarios:
 
 ## Deck Composition
 
-### Core Deck Distribution
+### Core Deck Distribution (v2.2 — recounted from actual cards)
 
 **Threat Cards by Vector:**
-- SOCIAL_ENGINEERING: 2 cards
-- WEB_EXPLOIT: 2 cards
-- CREDENTIAL_ABUSE: 2 cards
-- MALWARE: 2 cards
-- NETWORK: 1 card
-- DATA_EXFIL: 1 card
-- MULTI-VECTOR: 2 cards (apply to multiple vectors)
+- SOCIAL_ENGINEERING: 1 card (T-01)
+- WEB_EXPLOIT: 1 card (T-02)
+- CREDENTIAL_ABUSE: 2 cards (T-03, T-06)
+- MALWARE: 4 cards (T-05, T-07, T-08, T-11)
+- NETWORK: 2 cards (T-04, T-09)
+- DATA_EXFIL: 2 cards (T-10, T-12)
 
 **Threat Cards by Chain Step:**
-- INITIAL COMPROMISE: 3 cards (entry point attacks)
-- PIVOT & ESCALATE: 5 cards (lateral movement, privilege escalation)
-- PERSISTENCE: 2 cards (maintaining access)
-- C2 & EXFIL: 2 cards (command & control, data theft)
+- INITIAL COMPROMISE: 3 cards (T-01 to T-03 — entry point attacks)
+- PIVOT & ESCALATE: 3 cards (T-04 to T-06 — lateral movement, privilege escalation)
+- PERSISTENCE: 2 cards (T-07, T-08 — maintaining access)
+- C2 & EXFIL: 4 cards (T-09 to T-12 — command & control, data theft)
 
 **Defense Cards by Vector:**
-- SOCIAL_ENGINEERING defenses: 4 cards
-- WEB_EXPLOIT defenses: 4 cards
-- CREDENTIAL_ABUSE defenses: 4 cards
-- MALWARE defenses: 4 cards
-- NETWORK defenses: 4 cards
-- DATA_EXFIL defenses: 4 cards
+- SOCIAL_ENGINEERING defenses: 2 cards (D-01, D-02)
+- WEB_EXPLOIT defenses: 2 cards (D-03, D-18)
+- CREDENTIAL_ABUSE defenses: 4 cards (D-07, D-12, D-16, D-20)
+- MALWARE defenses: 8 cards (D-05, D-06, D-08, D-13, D-14, D-17, D-19, D-21)
+- NETWORK defenses: 7 cards (D-04, D-09, D-10, D-15, D-22, D-23, D-24)
+- DATA_EXFIL defenses: 2 cards (D-11, D-24)
+
+*(24 cards total; D-24 is dual-tagged NETWORK + DATA_EXFIL, so vector rows sum to 25 tags.)*
 
 **Defense Cards by Tier:**
-- BASIC (10 Budget): 8 cards
-- ADVANCED (15 Budget): 8 cards
-- ELITE (25 Budget): 8 cards
+- BASIC (10 Budget): 8 cards (D-01 to D-06, D-19, D-23)
+- ADVANCED (15 Budget): 8 cards (D-07 to D-12, D-18, D-24)
+- ELITE (25 Budget): 8 cards (D-13 to D-17, D-20 to D-22)
 
 ---
 
@@ -197,7 +199,6 @@ Follow this format:
 TITLE: [Memorable attack name]
 Step: [INITIAL COMPROMISE / PIVOT & ESCALATE / PERSISTENCE / C2 & EXFIL]
 Vector: [SOCIAL_ENGINEERING / WEB_EXPLOIT / CREDENTIAL_ABUSE / MALWARE / NETWORK / DATA_EXFIL]
-Cost: 5 Budget (standard)
 
 CLUE FOR TO:
 [Progressive disclosure about what the attack is doing]

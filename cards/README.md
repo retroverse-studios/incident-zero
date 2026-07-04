@@ -11,49 +11,58 @@ cards/
 ├── README.md (this file)
 ├── CARD_REFERENCE.md (comprehensive card index)
 ├── print-templates/ (card printing templates and guides)
+│   ├── a4-layout-guide.md (A4 print layouts and instructions)
+│   └── tracker-sheets.md (printable game tracker sheets)
 │
 ├── incident-response/
 │   ├── core-deck/
 │   │   └── threat-defense-cards.md (12 threat cards + 24 defense cards)
 │   └── expansion-deck/
-│       ├── advanced-threats.md (8 additional threat cards)
-│       └── advanced-defenses.md (8 additional defense cards)
+│       ├── advanced-threats.md (8 additional threat cards, T-13 to T-20)
+│       └── advanced-defenses.md (19 additional defense cards, D-25 to D-43)
 │
 ├── hardening/
 │   ├── core-deck/
-│   │   ├── defense-cards.md (core defense cards for hardening)
-│   │   └── pentester-tactic-cards.md (8 tactic cards)
+│   │   ├── defense-cards.md (the same 24 defense cards, shared with IR)
+│   │   └── pentester-tactic-cards.md (8 tactic cards, PT-01 to PT-08)
 │   └── expansion-deck/
-│       └── advanced-tactics.md (additional tactic variations)
+│       └── advanced-tactics.md (8 advanced tactic cards, PT-09 to PT-16)
 │
 ├── disaster-recovery/
 │   ├── core-deck/
-│   │   ├── crisis-action-cards.md (stakeholder notification cards)
-│   │   └── event-cards.md (timeline events and escalations)
+│   │   ├── crisis-action-cards.md (13 crisis action cards)
+│   │   ├── event-cards.md (12 timeline events: 6 scheduled + 6 triggered)
+│   │   └── stakeholder-cards.md (5 stakeholder trust cards)
 │   └── expansion-deck/
-│       └── advanced-scenarios.md (complex crisis scenarios)
+│       └── advanced-scenarios.md (8 complex crisis scenarios)
 │
 ├── network-building/
 │   ├── core-deck/
 │   │   ├── server-cards.md (10 server types)
 │   │   ├── security-device-cards.md (10 security devices)
 │   │   ├── architecture-cards.md (5 network architecture options)
-│   │   └── asset-cards.md (business requirement assets)
-│   └── expansion-deck/
-│       ├── legacy-systems.md (additional legacy/old systems)
-│       └── cloud-variants.md (advanced cloud deployment options)
+│   │   └── asset-cards.md (8 business requirement assets)
+│   ├── expansion-deck/
+│   │   ├── legacy-systems.md (4 legacy/old systems)
+│   │   └── cloud-variants.md (4 advanced cloud deployment options)
+│   └── standalone/
+│       ├── business-requirement-cards.md (20 requirement cards, REQ-01 to REQ-20)
+│       └── operational-event-cards.md (16 event cards, EVT-01 to EVT-16)
 │
-├── audit-compliance/
-│   ├── core-deck/
-│   │   └── audit-domain-cards.md (6 audit domain assessment cards)
-│   └── expansion-deck/
-│       ├── compliance-frameworks.md (NIST, CIS, PCI-DSS, HIPAA)
-│       └── remediation-cards.md (remediation action cards)
+├── forensics/
+│   └── core-deck/
+│       ├── investigation-cards.md (12 investigation action cards)
+│       └── evidence-cards.md (12 evidence cards + 4 findings cards)
 │
-└── shared/
-    ├── asset-cards.md (cards used across multiple modules)
-    └── generic-defense-cards.md (defenses applicable to multiple modules)
+└── audit-compliance/
+    ├── core-deck/
+    │   └── audit-domain-cards.md (6 audit domain assessment cards)
+    └── expansion-deck/
+        └── compliance-frameworks.md (11 framework cards: NIST, CIS, PCI-DSS
+                                       + 8 remediation action cards)
 ```
+
+**Note:** The 24-card Defense deck is shared between Incident Response and Hardening. Rather than a separate `shared/` folder, the same deck appears in both module folders (`incident-response/core-deck/threat-defense-cards.md` and `hardening/core-deck/defense-cards.md`) — print one physical set and use it in both modules.
 
 ---
 
@@ -64,13 +73,13 @@ cards/
 
 **Core Deck:**
 - 12 Threat Cards (organized by attack chain step)
-- 24 Defense Cards (organized by threat vector)
+- 24 Defense Cards (organized by threat vector; shared with Hardening)
 
 **Expansion Deck:**
-- 8 Advanced Threat Cards (sophisticated attack scenarios)
-- 8 Advanced Defense Cards (elite-tier controls)
+- 8 Advanced Threat Cards (supply chain, insider, IoT, cloud, DNS, physical)
+- 19 Advanced Defense Cards (whitelisting, analytics, container/cloud, playbooks, backup/DR)
 
-**Total:** 52 cards
+**Total:** 63 cards (12 + 24 + 8 + 19; the 24 defenses are shared with Hardening)
 
 **Best for:** 3-5 card attack chains, ~30-45 minute gameplay
 
@@ -80,16 +89,15 @@ cards/
 **Purpose:** Build defense-in-depth and test defenses
 
 **Core Deck:**
-- 24 Defense Cards (same as IR core, reusable)
-- 8 Pentester Tactic Cards (attack simulation tactics)
+- 24 Defense Cards (same shared deck as IR core, reusable)
+- 8 Pentester Tactic Cards (PT-01 to PT-08, DC 12-15)
 
 **Expansion Deck:**
-- Advanced Pentester Tactic variations
-- Additional defense cards for depth
+- 8 Advanced Pentester Tactic Cards (PT-09 to PT-16, DC 14-16)
 
-**Total:** 32+ cards
+**Total:** 16 tactic cards + the shared 24-card defense deck
 
-**Best for:** 5-7 turn hardening, ~30-45 minute gameplay
+**Best for:** 7 turn hardening, ~30-45 minute gameplay
 
 ---
 
@@ -97,37 +105,56 @@ cards/
 **Purpose:** Manage breach response under crisis pressure
 
 **Core Deck:**
-- Stakeholder Notification Cards (customers, regulators, media, board)
-- Event Timeline Cards (deadlines and escalations)
-- Crisis Action Cards (investigation, remediation, communication)
+- 13 Crisis Action Cards (investigation, remediation, communication, ransom decision)
+- 12 Event Timeline Cards (6 scheduled + 6 triggered deadlines and escalations)
+- 5 Stakeholder Cards (customers, regulators, media, board, executives)
 
 **Expansion Deck:**
-- Advanced scenario cards
-- Complex crisis situations
+- 8 Advanced Scenario Cards (complex crisis situations)
 
-**Total:** 20+ cards
+**Total:** 38 cards (30 core + 8 expansion)
 
-**Best for:** 7 turn crisis management, ~30-45 minute gameplay
+**Best for:** 8 turn crisis management, ~30-45 minute gameplay
 
 ---
 
 ### Network Building Module
 **Purpose:** Design IT infrastructure with trade-offs
 
-**Core Deck:**
+**Core Deck (33 cards):**
 - 10 Server Cards (Email, Web, Database, File, DC, Dev, Backup, Cloud, Legacy, Honeypot)
 - 10 Security Device Cards (Firewall, IDS, IPS, Load Balancer, VPN, Email Gateway, WAF, Segmentation, SIEM, Honeypot Network)
 - 5 Architecture Cards (Flat, Segmented 3-zone, Fully Isolated, Cloud Hybrid, Cloud First)
-- 8 Asset/Business Requirement Cards (email, web, database, file storage, identity, dev, DR, VPN)
+- 8 Asset Cards (email, web, database, file storage, identity, dev, DR, VPN)
+
+**Expansion Deck (8 cards):**
+- 4 Legacy System Cards (mainframe, custom app, ICS, obsolete OS)
+- 4 Cloud Variant Cards (microservices, serverless, managed DB, CDN)
+
+**Standalone Decks (36 cards):**
+- 20 Business Requirement Cards (REQ-01 to REQ-20)
+- 16 Operational Event Cards (EVT-01 to EVT-16)
+
+**Total:** 77 cards (33 core + 8 expansion + 36 standalone)
+
+**Best for:** 5 turn network design, ~30-45 minute gameplay
+
+---
+
+### Forensics Module
+**Purpose:** Investigate a breach, collect evidence, and attribute the attack
+
+**Core Deck (28 cards):**
+- 12 Investigation Action Cards (DISK-01/02, MEM-01/02, LOG-01/02, NET-01/02, MALW-01/02, TIMELINE-01, THREAT-01)
+- 12 Evidence Cards (EVD-01 to EVD-12)
+- 4 Findings Cards (FIND-01 to FIND-04)
 
 **Expansion Deck:**
-- Additional legacy systems
-- Advanced cloud deployment options
-- Specialized security appliances
+- PLANNED — not yet available (design notes live in the module README; no card file exists yet)
 
-**Total:** 33+ cards
+**Total:** 28 cards
 
-**Best for:** 5 turn network design, ~15-20 minute gameplay
+**Best for:** 4-7 turn investigations, ~30-45 minute gameplay
 
 ---
 
@@ -135,19 +162,17 @@ cards/
 **Purpose:** Assess security controls using compliance frameworks
 
 **Core Deck:**
-- 6 Audit Domain Assessment Cards (segmentation, identity, detection, backup, cloud, operations)
-- Scoring/Finding reference cards
+- 6 Audit Domain Assessment Cards (segmentation, identity, detection, backup, vendor/cloud, operations)
 
-**Expansion Deck:**
-- NIST CSF variant cards
-- CIS Controls variant cards
-- PCI-DSS specific cards
-- HIPAA specific cards
-- Remediation action cards
+**Expansion Deck (19 cards, all in compliance-frameworks.md):**
+- 5 NIST CSF Function Cards
+- 3 CIS Controls Cards
+- 3 PCI-DSS Cards
+- 8 Remediation Action Cards (REMEDIATION-01 to REMEDIATION-08)
 
-**Total:** 15+ cards
+**Total:** 25 cards (6 core + 19 expansion)
 
-**Best for:** 10 minute assessment, ~30-45 minute gameplay when combined with IR/DR
+**Best for:** quick assessments, ~30-45 minute gameplay (also combines well with IR/DR)
 
 ---
 
@@ -157,13 +182,13 @@ All cards are provided in markdown format with:
 - **Card Name/Title**
 - **Card Type** (Threat, Defense, Tactic, etc.)
 - **Module** (which module uses this card)
-- **Card Properties** (cost, tier, vector, step, etc.)
+- **Card Properties** (cost, tier, vector, step, DC, etc.)
 - **Description/Effect** (what the card does)
 - **Special Rules** (if applicable)
 
 Cards can be:
 1. **Printed directly** - Print markdown as-is for reference
-2. **Printed on cardstock** - Use card templates to generate printable PDFs
+2. **Printed on cardstock** - Use the A4 layout guide for printable sheets
 3. **Used digitally** - Reference markdown during gameplay
 
 ---
@@ -176,7 +201,7 @@ Cards can be:
 
 ### Hardening
 - Uses: Defense Cards, Pentester Tactic Cards
-- From which decks: IR core-deck (defense cards), Hardening core-deck (tactics), optional expansions
+- From which decks: shared defense deck (in both IR and Hardening core-decks), Hardening core-deck (tactics), optional expansion
 
 ### Disaster Recovery
 - Uses: Crisis Action Cards, Event Cards, Stakeholder Cards
@@ -186,10 +211,16 @@ Cards can be:
 ### Network Building
 - Uses: Server Cards, Security Device Cards, Architecture Cards, Asset Cards
 - From which decks: NB core-deck + NB expansion-deck
+- Standalone play adds: Business Requirement Cards + Operational Event Cards (NB standalone decks)
+
+### Forensics
+- Uses: Investigation Action Cards, Evidence Cards, Findings Cards
+- From which decks: Forensics core-deck (expansion is planned, not yet available)
+- Feeds findings into: Hardening, Network Building, and Audit modules
 
 ### Audit & Compliance
-- Uses: Audit Domain Cards, Finding Cards
-- From which decks: Audit core-deck + Audit expansion-deck
+- Uses: Audit Domain Cards, Framework Cards, Remediation Cards
+- From which decks: Audit core-deck + Audit expansion-deck (one file: compliance-frameworks.md)
 
 ---
 
@@ -197,7 +228,7 @@ Cards can be:
 
 Some cards are used across multiple modules:
 
-**Defense Cards** (shared between IR and Hardening):
+**Defense Cards** (the 24-card deck shared between IR and Hardening):
 - Email Authentication Setup (SOCIAL_ENGINEERING)
 - Multi-Factor Authentication (CREDENTIAL_ABUSE)
 - EDR Deployment (MALWARE)
@@ -205,28 +236,29 @@ Some cards are used across multiple modules:
 - DLP (DATA_EXFIL)
 - And others...
 
-**Asset Cards** (shared between modules):
+The shared defense deck is documented in **both** module folders — `incident-response/core-deck/threat-defense-cards.md` (printable layouts) and `hardening/core-deck/defense-cards.md` (compact reference). They are the same 24 cards; print once, use in both modules.
+
+**Asset/Server Cards** (referenced across modules):
 - Email Server, Web Server, Database Server, etc.
 - Used in Network Building (component selection)
 - Referenced in Incident Response (asset names in clues)
 - May be used in Disaster Recovery (what was affected)
-
-These cards are documented in `shared/` folder to avoid duplication.
 
 ---
 
 ## Reusability Notes
 
 ### Cards Shared Between IR and Hardening
-- Defense Cards: 24 cards from IR core-deck are directly reusable in Hardening
+- Defense Cards: the 24-card deck (D-01 to D-24) is directly reusable in Hardening
 - Both modules use the same 6 threat vectors (SOCIAL_ENGINEERING, WEB_EXPLOIT, CREDENTIAL_ABUSE, MALWARE, NETWORK, DATA_EXFIL)
 - Hardening adds Pentester Tactic cards to test defenses
 
 ### Cards NOT Shared (Module-Specific)
 - **Threat Cards:** Only for Incident Response (other modules don't need attack chains)
 - **Pentester Tactic Cards:** Only for Hardening (simulated red team attacks)
-- **Crisis Action Cards:** Only for Disaster Recovery (not used in other modules)
-- **Server/Device Cards:** Only for Network Building (physical infrastructure)
+- **Crisis Action / Event / Stakeholder Cards:** Only for Disaster Recovery
+- **Server/Device/Architecture Cards:** Only for Network Building (physical infrastructure)
+- **Investigation/Evidence/Findings Cards:** Only for Forensics (though Findings feed other modules)
 - **Audit Domain Cards:** Only for Audit & Compliance (assessment framework)
 
 ---
@@ -235,10 +267,8 @@ These cards are documented in `shared/` folder to avoid duplication.
 
 ### Print Templates
 See `print-templates/` folder for:
-- **card-template-standard.html** - Standard card template for all modules
-- **card-template-a4.html** - A4 sheet layout (multiple cards per page)
-- **print-guide.md** - Detailed printing instructions
-- **cutting-guide.md** - Guidelines for cutting cards
+- **a4-layout-guide.md** - A4 sheet layouts and detailed printing instructions
+- **tracker-sheets.md** - Printable tracker sheets for gameplay
 
 ### Quick Print Tips
 1. Print on cardstock (240-300 gsm) for durability
@@ -252,11 +282,10 @@ See `print-templates/` folder for:
 ## Card Reference Index
 
 See **CARD_REFERENCE.md** for:
-- Complete alphabetical index of all cards
-- Card properties quick lookup
-- Which cards work together
-- Attack vector cross-reference
-- Budget cost reference
+- Complete index of all cards in all six modules
+- Card properties quick lookup (tier, DC, cost, vector)
+- Deck file locations and card ID ranges
+- Card count summary per module
 
 ---
 
@@ -319,4 +348,4 @@ For game rules and how to use cards, see:
 
 *Incident Zero: Card Decks*
 *Modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

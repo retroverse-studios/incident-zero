@@ -10,6 +10,7 @@ This folder contains all card materials for the **Disaster Recovery Module** - w
 - 1 Threat Orchestrator escalates the crisis
 - 1+ Team(s) manage investigation, remediation, and stakeholder communication
 - Teams win by managing the crisis, containing damage, and restoring trust
+- Game clock (v2.2): 8 turns, each ~6-12 hours of narrative time (Turn 1 ≈ detection +6h, Turn 8 ≈ 72h)
 - Duration: 30-45 minutes
 
 ---
@@ -19,31 +20,25 @@ This folder contains all card materials for the **Disaster Recovery Module** - w
 ### Core Deck
 **Files:** `core-deck/crisis-action-cards.md`, `core-deck/stakeholder-cards.md`, `core-deck/event-cards.md`
 
-**Crisis Action Cards:**
-- Investigation Actions (forensics, root cause analysis, containment)
-- Remediation Actions (patching, rebuilding, restoring from backup)
-- Communication Actions (stakeholder notifications, press management)
-- Legal/Regulatory Actions (filing reports, engaging counsel)
-- Each with Budget cost and effectiveness metrics
+**Crisis Action Cards (13):**
+- Investigation Actions (ACTION-01 to ACTION-04: forensics, threat hunting, logs, third-party IR)
+- Remediation Actions (ACTION-05 to ACTION-08: patching, containment, rebuild, credential reset)
+- Communication Actions (ACTION-09 to ACTION-12: customers, regulators, media, board)
+- Crisis Decision (ACTION-13: Ransom Decision — Pay / Negotiate / Refuse) *(v2.2 — this is the "Negotiation Team" card promised in earlier editions)*
+- Each with Budget cost and deterministic track advances
 
-**Stakeholder Cards:**
-- Customers (satisfaction level tracker)
-- Regulators (compliance expectations)
-- Media (reputation management)
-- Board of Directors (trust and confidence)
-- Executive Leadership (organizational response authority)
-- Each with escalation triggers and communication requirements
+**Stakeholder Cards (5):**
+- Customers (STAKE-01), Regulators (STAKE-02), Media/Public (STAKE-03), Board of Directors (STAKE-04), Executive Leadership (STAKE-05)
+- Each with a 0-100% trust meter and escalation triggers
 
-**Event Cards:**
-- Timeline Events (deadlines that advance regardless of team actions)
-- Escalation Events (triggered by poor decisions or time passage)
-- Discovery Events (reveals new information about breach)
-- Regulatory Events (filing deadlines, notification requirements)
+**Event Cards (12):**
+- Scheduled Events (6 — placed on the 8-turn timeline at setup)
+- Triggered Events (6 — resolve when their stated condition is met)
 - Each moves the crisis forward and increases pressure
 
-**Total:** 20+ cards
+**Total:** 30 cards (13 Action + 12 Event + 5 Stakeholder). *(v2.1 shipped 29 — 12 Action + 12 Event + 5 Stakeholder; ACTION-13 makes 30.)*
 
-**Best for:** Crisis management with 7 turns, ~30-45 minute gameplay
+**Best for:** Crisis management with 8 turns, ~30-45 minute gameplay
 
 ---
 
@@ -69,21 +64,21 @@ Extends core deck with complex crisis situations:
 ## How Cards Are Used
 
 ### Crisis Action Cards
-1. **Chosen by Blue Team** - Select action each turn
-2. **Cost Budget** - Each action has resource cost
-3. **Advance Objectives** - Different actions advance different goals (investigation %, remediation %, trust %)
+1. **Chosen by Blue Team** - Select ONE action each turn (plus the free Holding Statement rule and the ACTION-13 decision, which doesn't use the action slot)
+2. **Cost Budget** - Each action has a resource cost; Budget floor is 0
+3. **Advance Objectives** - Deterministic advances to Investigation %, Remediation %, or Communication % (optional Justification d20: 11+ = +5%)
 4. **Create Cascading Effects** - Poor choices make later turns harder
 
 ### Stakeholder Cards
 1. **Represent Affected Parties** - Visible on board
-2. **Track Satisfaction/Trust** - Each stakeholder has a status
-3. **Create Escalation Points** - Unhappy stakeholders create additional pressure
-4. **Determine Victory/Defeat** - Win if most stakeholders remain satisfied
+2. **Track Satisfaction/Trust** - Each stakeholder has a 0-100% trust meter
+3. **Create Escalation Points** - Unhappy stakeholders trigger events
+4. **Determine Victory/Defeat** - Any trust meter at 0% = immediate loss; otherwise the end-of-game Reputation tier table decides the outcome
 
-### Event Cards
-1. **Drawn Each Turn** - At start of turn, event card advances crisis
-2. **Create Time Pressure** - Force decisions before team is ready
-3. **Provide Information** - Some events reveal new breach details
+### Event Cards (v2.2)
+1. **Scheduled events** are placed on the timeline at setup and resolve at the start of their turn
+2. **Triggered events** resolve when their stated condition is met (once each)
+3. **Create Time Pressure** - Deadlines pinned to the 8-turn clock
 4. **Trigger Escalations** - Major events increase stakeholder pressure
 
 ---
@@ -97,7 +92,7 @@ Extends core deck with complex crisis situations:
 
 ### Audit Findings → Disaster Recovery
 - Audit findings create modifiers in DR
-- Each failed audit domain adds Budget cost to DR actions
+- Each failed audit domain subtracts from the DR starting budget (total penalty capped at -30, v2.2)
 - Poor audit = DR becomes much more expensive
 
 ### Hardening → Disaster Recovery
@@ -123,4 +118,4 @@ For rules on how to use these cards:
 
 *Disaster Recovery Module: Card Decks*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

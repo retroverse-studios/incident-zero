@@ -10,7 +10,7 @@ This folder contains all card materials for the **Network Building Module** - wh
 - 1+ Team(s) design network infrastructure from scratch
 - Each component (servers, devices, architecture) has cost/benefit trade-offs
 - Teams win by meeting business requirements within budget constraints
-- Duration: 15-20 minutes (standalone)
+- Duration: 30-45 minutes (standalone, including setup and scoring)
 
 ---
 
@@ -45,7 +45,26 @@ This folder contains all card materials for the **Network Building Module** - wh
 
 **Total:** 33 cards
 
-**Best for:** Network design with 5 turns, ~15-20 minute gameplay
+**Best for:** Network design with 5 build turns (any number of placements per turn), ~30-45 minute session
+
+---
+
+### Standalone Deck (v2.2)
+**Files:** `standalone/business-requirement-cards.md`, `standalone/operational-event-cards.md`
+
+Drives the competitive standalone game (one of each drawn per turn):
+
+**Business Requirement Cards (20 cards, REQ-01 to REQ-20):**
+- Random quarterly business needs (product launches, M&A integration, PCI/HIPAA scope, uptime SLAs, remote workforce, ransomware readiness...)
+- Each names the requirement, what satisfies it, and the score impact
+
+**Operational Event Cards (16 cards, EVT-01 to EVT-16):**
+- Random incidents and windfalls (outages, traffic spikes, phishing waves, vendor outages, budget cuts and grants...)
+- Each states its effect and which designs mitigate it
+
+**Total:** 36 cards
+
+**Best for:** The standalone infrastructure design competition (see `../../docs/standalone-games/network-building.md`)
 
 ---
 
@@ -54,19 +73,19 @@ This folder contains all card materials for the **Network Building Module** - wh
 
 Extends core deck with specialized systems:
 
-**Legacy System Cards:**
-- Obsolete but still-in-use systems
-- Mainframe connectivity
-- Old industrial control systems
-- Custom applications tied to legacy infrastructure
+**Legacy System Cards (4 cards, LEGACY-01 to LEGACY-04):**
+- Mainframe System
+- Custom Business Application (vendor extinct)
+- Industrial Control System (ICS)
+- Obsolete Operating System
 
-**Cloud Variant Cards:**
-- Advanced SaaS options
-- Container orchestration platforms
-- Serverless architectures
-- Multi-region cloud deployment options
+**Cloud Variant Cards (4 cards, CLOUD-01 to CLOUD-04):**
+- Containerized Microservices (Kubernetes-style orchestration)
+- Serverless / Function-as-a-Service
+- Database-as-a-Service (managed database)
+- Content Delivery Network (CDN)
 
-**Total:** 8+ additional cards
+**Total:** 8 additional cards
 
 **Best for:** Complex scenarios with legacy infrastructure or cloud-native deployments
 
@@ -141,4 +160,4 @@ For rules on how to use these cards:
 
 *Network Building Module: Card Decks*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

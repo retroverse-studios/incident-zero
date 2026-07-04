@@ -1,7 +1,9 @@
 # Audit & Compliance Module: Rules & Mechanics
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
+
+> **v2.2:** this document's modifier table is **canonical** — the tables in `cards/audit-compliance/` are generated from it. See **v2.2 Playtest Edition Changes** at the bottom.
 
 ---
 
@@ -29,12 +31,14 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 | Framework | Focus | Best For |
 |-----------|-------|----------|
 | **NIST Cybersecurity Framework** | 5 Core Functions | General organizations |
-| **CIS Critical Controls** | 20 Core Controls | Defense-focused |
+| **CIS Critical Controls** | 18 Controls (CIS v8) | Defense-focused |
 | **PCI-DSS** | Payment card security | Retail/e-commerce |
 | **HIPAA** | Healthcare data | Healthcare organizations |
 | **Multi-Framework** | Mix of above | Realistic compliance |
 
 **Key Point:** Framework choice determines which audit domains are tested.
+
+**Budget note (v2.2):** core-rules gives the Audit module a starting Budget of 100 — **Budget (100) applies only when playing the optional Remediation follow-up cards** (see `cards/audit-compliance/expansion-deck/compliance-frameworks.md`, remediation section); **the assessment itself costs nothing.**
 
 ### 2. Choose Assessment Scope
 
@@ -88,7 +92,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Network Segmentation Gap
 - **Risk Level:** CRITICAL
 - **Consequence in IR:** Lateral movement easier (-1 to defending against NETWORK attacks)
-- **Consequence in DR:** Attacker access spreads to more systems (+10 crisis budget cost)
+- **Consequence in DR:** Attacker access spreads to more systems (-10 DR budget penalty)
 
 **Narrative for Teams:**
 "All of your systems are on the same network segment. Once an attacker gains access to one system, they can move freely between others."
@@ -114,7 +118,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Identity System Vulnerability
 - **Risk Level:** CRITICAL
 - **Consequence in IR:** Credential-based attacks easier (-1 to defending against CREDENTIAL_ABUSE attacks)
-- **Consequence in DR:** Full credential compromise; all user accounts compromised (+15 crisis budget cost)
+- **Consequence in DR:** Full credential compromise; all user accounts compromised (-15 DR budget penalty)
 
 **Narrative for Teams:**
 "Your identity system is overloaded with too many services and insufficient hardening. If compromised, attackers will have broad access to all user credentials."
@@ -139,7 +143,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Detection & Monitoring Gap
 - **Risk Level:** HIGH
 - **Consequence in IR:** Investigations slower (-1 to Investigation rolls; 12+ instead of 11+)
-- **Consequence in DR:** Breach undetected longer; more data stolen (+10 crisis budget cost)
+- **Consequence in DR:** Breach undetected longer; more data stolen (-10 DR budget penalty)
 
 **Narrative for Teams:**
 "You have no centralized logging or monitoring. When an attack happens, you won't know about it until data is already compromised."
@@ -165,7 +169,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Backup & Recovery Gap
 - **Risk Level:** CRITICAL (for ransomware/DR only)
 - **Consequence in IR:** None (network gap, not detection issue)
-- **Consequence in DR:** Ransomware unrecoverable; full rebuild required (+25 crisis budget cost)
+- **Consequence in DR:** Ransomware unrecoverable; full rebuild required (-25 DR budget penalty)
 
 **Narrative for Teams:**
 "You have no backup strategy. If ransomware hits, you cannot recover your data. You must either pay ransom or rebuild from scratch."
@@ -191,7 +195,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Cloud Security Gap
 - **Risk Level:** HIGH
 - **Consequence in IR:** Cloud-based attacks easier (-1 to defending against WEB_EXPLOIT attacks)
-- **Consequence in DR:** Cloud compromise requires cloud provider recovery; slow remediation (+20 crisis budget cost)
+- **Consequence in DR:** Cloud compromise requires cloud provider recovery; slow remediation (-20 DR budget penalty)
 
 **Narrative for Teams:**
 "Your cloud systems are internet-accessible without protection. Any attacker can directly target your cloud infrastructure."
@@ -214,7 +218,7 @@ The **Audit & Compliance Module** teaches players how security assessments revea
 - **Name:** Security Operations Gap
 - **Risk Level:** MEDIUM
 - **Consequence in IR:** Investigations slower (-1 to Investigation rolls)
-- **Consequence in DR:** Forensic analysis slow; can't determine breach scope (+5 crisis budget cost)
+- **Consequence in DR:** Forensic analysis slow; can't determine breach scope (-5 DR budget penalty)
 
 **Narrative for Teams:**
 "You have no centralized place to view security events. When an attack happens, investigators must pull data from multiple sources manually."
@@ -295,13 +299,21 @@ Recommendation Priority:
 
 ## Audit Scoring
 
+### One Rubric (v2.2): PASS/FAIL is primary
+
+**PASS/FAIL per domain (X/6) is the primary score.** Star ratings (1-5★) are flavor for narrative reports, with this fixed mapping:
+
+> **1-2★ = FAIL · 3★+ = PASS · "PARTIAL" counts as FAIL**
+
+**Optional (v2.2):** a 5★ (exemplary) rating in Detection grants +1 to Incident Response investigation rolls if IR is played later.
+
 ### Final Audit Score
 
 Teams receive a score reflecting their infrastructure quality:
 
 | Score | Assessment | Interpretation |
 |-------|------------|-----------------|
-| **6/6 PASS** | Enterprise-Grade | No modifiers in Phase 1; strong foundation |
+| **6/6 PASS** | Enterprise-Grade | No modifiers carried into later modules; strong foundation |
 | **5/6 PASS** | Strong Security | -1 modifier to one attack type in IR |
 | **4/6 PASS** | Adequate Security | -1 modifier to two attack types in IR |
 | **3/6 PASS** | Concerning Gaps | -1 modifier to three attack types; IR easier |
@@ -331,7 +343,7 @@ Teams receive a score reflecting their infrastructure quality:
 
 #### In Incident Response Module:
 
-Each FAIL finding creates a modifier to relevant threat types:
+Each FAIL finding creates a **-1 modifier** (one per gap — canonical, v2.2) to the relevant roll:
 
 | Audit Finding | IR Modifier | Affected Threat Type |
 |---------------|------------|----------------------|
@@ -362,37 +374,39 @@ lateral movement that would have been trivial in an unsegmented network."
 
 #### In Disaster Recovery Module:
 
-Each FAIL finding increases crisis budget costs:
+Each FAIL finding is a penalty subtracted from the DR starting budget (this table is **canonical** — v2.2):
 
-| Audit Finding | DR Cost Increase |
-|---------------|-----------------|
-| **Segmentation Gap** | +10 Budget (attacker spreads to more systems) |
-| **Identity Gap** | +15 Budget (full credential compromise) |
-| **Detection Gap** | +10 Budget (dwell time longer; more data stolen) |
-| **Backup Gap** | +25 Budget (no recovery option; expensive rebuild) |
-| **Cloud Gap** | +20 Budget (cloud provider recovery needed) |
-| **Operations Gap** | +5 Budget (forensic investigation slow) |
+| Audit Finding | DR Budget Penalty |
+|---------------|-------------------|
+| **Segmentation Gap** | -10 Budget (attacker spreads to more systems) |
+| **Identity Gap** | -15 Budget (full credential compromise) |
+| **Detection Gap** | -10 Budget (dwell time longer; more data stolen) |
+| **Backup Gap** | -25 Budget (no recovery option; expensive rebuild) |
+| **Cloud Gap** | -20 Budget (cloud provider recovery needed) |
+| **Operations Gap** | -5 Budget (forensic investigation slow) |
 
-**Example: Multiple Gaps in DR**
+**Cap (v2.2):** the total gap penalty applied to a subsequent module's budget is **capped at -30**.
+
+**Example: Multiple Gaps in DR (v2.2)**
 
 ```
 DISASTER RECOVERY PHASE:
 
-Teams start with 50 crisis budget.
+Teams start with 50 crisis budget (DR 50; for reference, IR starts at 100).
 
 Audit Failures from earlier assessment:
-- Segmentation Gap: +10
-- Detection Gap: +10
-- Backup Gap: +25
+- Segmentation Gap: -10
+- Detection Gap: -10
+- Backup Gap: -25
 
-Total Gap Costs: 45
+Raw Gap Penalty: -45 -> capped at -30
 
-Available Crisis Budget: 50 - 45 = 5
+Available Crisis Budget: 50 - 30 = 20
 
-Teams now only have 5 budget to respond.
-(Forensic investigation costs 5-15, customer notification costs 5-10)
-Teams cannot afford comprehensive response.
-Outcome: Reputation damage, likely need to pay ransom.
+With 20 Budget the team can still afford the mandatory beats
+(cheapest mandatory path is 29 -> they must lean on the free
+Holding Statement and skip actions), but the response will be
+thin. Outcome: heavy pressure, likely reputation damage.
 ```
 
 ---
@@ -562,16 +576,18 @@ Instead of compliance framework, audit against specific threat profile:
 
 ---
 
-## Quick Reference: Audit Domains & Consequences
+## Quick Reference: Audit Domains & Consequences (canonical, v2.2)
 
 | Domain | PASS Meaning | FAIL Consequence (IR) | FAIL Consequence (DR) |
 |--------|------------|----------------------|-----------------------|
-| **Segmentation** | Good isolation | -1 to NETWORK defense | +10 budget |
-| **Identity** | Proper AC | -1 to CREDENTIAL_ABUSE defense | +15 budget |
-| **Detection** | Good monitoring | -1 to Investigation | +10 budget |
-| **Backup** | Recovery capable | None | +25 budget |
-| **Cloud** | Secure cloud | -1 to WEB_EXPLOIT defense | +20 budget |
-| **Operations** | Good logging | -1 to Investigation | +5 budget |
+| **Segmentation** | Good isolation | -1 to NETWORK defense | -10 budget |
+| **Identity** | Proper AC | -1 to CREDENTIAL_ABUSE defense | -15 budget |
+| **Detection** | Good monitoring | -1 to Investigation | -10 budget |
+| **Backup** | Recovery capable | None | -25 budget |
+| **Cloud** | Secure cloud | -1 to WEB_EXPLOIT defense | -20 budget |
+| **Operations** | Good logging | -1 to Investigation | -5 budget |
+
+**Cap (v2.2):** total DR budget penalty capped at **-30**. Star flavor mapping: 1-2★ = FAIL, 3★+ = PASS, PARTIAL = FAIL.
 
 ---
 
@@ -585,6 +601,18 @@ Instead of compliance framework, audit against specific threat profile:
 
 ---
 
+## v2.2 Playtest Edition Changes
+
+1. **One canonical modifier table.** This document's table is authoritative: DR budget penalties Segmentation -10 / Identity -15 / Detection -10 / Backup -25 / Cloud -20 / Ops -5, and one -1 IR modifier per gap. The tables in `cards/audit-compliance/core-deck/audit-domain-cards.md` and `cards/audit-compliance/README.md` are regenerated from it. One-off mechanics that existed nowhere else ("+5 turn penalty", "+1 escalation point", "-2 modifier", "+1 difficulty") are deleted or folded into the canonical -1-per-gap rule.
+2. **Cap added:** the total gap penalty applied to a subsequent module's budget is capped at **-30**. The unexplained "from 120 to 190" example was replaced with real budgets (DR 50, IR 100).
+3. **One scoring rubric:** PASS/FAIL per domain (X/6) is primary. Stars are flavor with a fixed mapping — 1-2★ = FAIL, 3★+ = PASS, "PARTIAL" counts as FAIL — printed here, on the domain cards, and in the standalone guide. Optional: 5★ in Detection grants +1 to IR investigation rolls if IR is played later.
+4. **Budget note:** the module's core-rules Budget (100) applies only to the optional Remediation follow-up cards; the assessment itself costs nothing.
+5. **Fact corrections:** CIS "20 Core Controls" → 18 (CIS v8) everywhere; NIST CSF category codes corrected in the expansion deck (Protect = PR.AC/PR.AT/PR.DS/PR.IP/PR.MA/PR.PT; Respond = RS.RP/RS.CO/RS.AN/RS.MI/RS.IM); segmentation cites PR.AC-5; vendor risk cites ID.SC; incident response is CIS Control 17 (v8).
+6. **Card counts corrected:** expansion deck is 19 cards (11 framework + 8 remediation); CIS section is 3 cards; HIPAA/SOC 2 moved to "Planned".
+7. **Play aids:** scoring reference card, audit worksheet, and judge guide are moving to the print pack (coming); an inline text audit worksheet is included in the standalone guide so it is playable today.
+
+---
+
 *Audit & Compliance Module - Rules & Mechanics*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

@@ -1,5 +1,6 @@
 # Hardening Module: Complete Rules
 
+**Version:** 2.2 - Playtest Edition
 **Module Duration:** 20-45 minutes (standalone or after Incident Response)
 **Prerequisites:** None (can play standalone) or completion of Incident Response module
 **Learning Focus:** Defense-in-depth, security architecture, proactive hardening, layered controls
@@ -22,9 +23,9 @@ This module can be:
 | Aspect | Incident Response | Hardening |
 |--------|------------------|-----------|
 | **Focus** | Detect hidden threats | Build defenses against known threats |
-| **Time Pressure** | High (10 turns, 100 budget) | Lower (5-7 turns, carries budget forward) |
+| **Time Pressure** | High (variable turn limit, 100 budget) | Lower (7 turns, carries budget forward) |
 | **Actions** | Investigate, Deploy, Emergency Response | Deploy, Upgrade, Playbook, Test |
-| **Rolls Needed** | Investigation & Defense deployments | Playbook tests only (attacks use rolls) |
+| **Rolls Needed** | Investigation & Defense deployments | Test & Drill and Pentester defense rolls |
 | **Scoring** | Detection efficiency | Defense layering & breadth |
 | **Threats** | Hidden chain | Known vectors, Pentester tactics |
 
@@ -35,8 +36,11 @@ This module can be:
 ### Step 1: Determine Your Context
 
 #### Option A: Standalone Play (Fresh Start)
-Generate threat context from scratch:
-- Roll 1d4 for each threat vector (1-2=absent, 3=intermediate, 4=advanced)
+Generate threat context from scratch (v2.2 — one standard procedure):
+- Roll **1d6 for each of the six threat vectors** (SOCIAL_ENGINEERING, WEB_EXPLOIT, CREDENTIAL_ABUSE, MALWARE, NETWORK, DATA_EXFIL):
+  - **1-2:** No notable threat on this vector
+  - **3-4:** Intermediate threat on this vector
+  - **5-6:** Advanced threat on this vector
 - Or use Threat Orchestrator's chosen scenario
 - Budget: 150 (full planning allocation)
 
@@ -63,14 +67,14 @@ Threat Orchestrator describes a realistic scenario:
 - **Security Score:** 0 (will accumulate points)
 - **Turn Counter:** 1
 - **Hardening Upgrades:** 0 (track total count)
-- **Playbooks Created:** 0 (track total count)
+- **Playbooks Created:** 0 (track total count — **maximum 2 per game, v2.2**)
 - **Deployed Defenses:** [] (track list on paper/whiteboard)
 
 ### Step 3: Prepare Card Decks
 
-- **Defense Cards Deck:** Shuffle all available cards
-- **Pentester Tactic Cards:** Set aside 2-4 cards (by difficulty level)
-- **Asset Cards:** Place relevant systems on table (Email Server, Database, Workstations, etc.)
+- **Defense Cards Deck:** Shuffle all available cards (D-01 to D-24, see `cards/hardening/core-deck/defense-cards.md`)
+- **Pentester Tactic Cards:** Set aside 2-4 cards from PT-01 to PT-08 (by difficulty level, see `cards/hardening/core-deck/pentester-tactic-cards.md`)
+- **Asset Cards:** Place relevant systems on table (Email Server, Database, Workstations, etc. — shared components, see `cards/network-building/core-deck/asset-cards.md`)
 
 ### Step 4: Deal Starting Hand
 
@@ -84,7 +88,9 @@ Threat Orchestrator provides context for the hardening scenario:
 
 ---
 
-## Gameplay: 5-7 Turns
+## Gameplay: 7 Turns
+
+The Hardening module runs **7 turns** at every difficulty level (v2.2 — difficulty scales through the number of Pentester Tactics, not the turn count). One action per turn.
 
 ### Turn Structure
 
@@ -129,16 +135,18 @@ Threat Orchestrator provides context for the hardening scenario:
 - Cannot be undone (represents permanent security improvement)
 - Stays on board for remainder of module and beyond (if continuing)
 
+**Quick-Win Rule (v2.2):** You may deploy **up to 2 BASIC-tier defenses as a single action** (pay 10 Budget each). This keeps foundational hygiene affordable within the 7-turn limit.
+
 **Examples:**
 - Deploy Multi-Factor Authentication (ADVANCED - 15 Budget) on VPN access
 - Deploy EDR on all workstations (ADVANCED - 15 Budget)
 - Deploy Data Loss Prevention (DLP) on network gateways (ADVANCED - 15 Budget)
-- Deploy Email Authentication (BASIC - 10 Budget) on email systems
+- Deploy Email Authentication (BASIC - 10 Budget) and User Security Training (BASIC - 10 Budget) together as one action (v2.2 Quick-Win)
 
 **Strategic Notes:**
-- BASIC defenses (10 Budget) are cheaper but less effective against Pentester Tactics
+- BASIC defenses (10 Budget) are cheaper but carry smaller printed bonuses against Pentester Tactics
 - ADVANCED defenses (15 Budget) provide good balance of cost/effectiveness
-- ELITE defenses (25 Budget) are expensive but strongest against Pentester Tactics
+- ELITE defenses (25 Budget) are expensive but carry the largest printed bonuses against Pentester Tactics
 
 ---
 
@@ -148,7 +156,7 @@ Threat Orchestrator provides context for the hardening scenario:
 **Roll Required:** None
 
 **How it works:**
-1. Choose a Defense Card already deployed (from Phase 1 or current turn)
+1. Choose a Defense Card already deployed (earlier this game, or carried over from Incident Response)
 2. Pay 5 Budget
 3. Mark defense with **+2 effectiveness bonus** (track on paper)
 4. Optional: Describe the hardening (e.g., "Tuning behavioral analytics in EDR")
@@ -160,7 +168,7 @@ Threat Orchestrator provides context for the hardening scenario:
 - Makes defense more resistant to Pentester Tactics
 
 **Examples of Hardening:**
-- "Harden our MFA by requiring hardware tokens instead of SMS" → EDR now has +2
+- "Harden our MFA by requiring hardware tokens instead of SMS" → MFA now has +2
 - "Enhance Network Segmentation with microsegmentation inside critical zones" → NS now has +2
 - "Improve SIEM with threat intelligence integration" → SIEM now has +2
 
@@ -175,6 +183,7 @@ Threat Orchestrator provides context for the hardening scenario:
 
 **Cost:** 10 Budget per playbook
 **Roll Required:** None
+**Limit (v2.2):** Maximum **2 playbooks per game**
 
 **How it works:**
 1. Choose a specific threat vector you want to prepare for (SOCIAL ENGINEERING, WEB EXPLOIT, CREDENTIAL ABUSE, MALWARE, NETWORK, or DATA EXFIL)
@@ -197,9 +206,10 @@ Threat Orchestrator provides context for the hardening scenario:
 
 **Strategic Considerations:**
 - Playbooking is expensive (10 Budget) but provides large bonus (+3)
-- You can only use each playbook once (plan carefully)
+- You can only use each playbook once, and only create two per game (v2.2) — plan carefully
 - Encourages predicting which threats are most dangerous
 - Reflects real-world incident response playbook development
+- Playbooks alone cannot win the game: victory requires **at least 4 deployed defenses** (v2.2)
 
 ---
 
@@ -236,259 +246,128 @@ Typically after turn 3 or 4, once teams have deployed initial defenses.
 **Timing Options:**
 - **Per turn:** One Pentester Tactic drawn each turn (turns 3-6)
 - **Multiple attacks:** 2-4 Pentester Tactics total (depends on difficulty)
-- **Final challenge:** All remaining Tactics drawn at end of turn 5
+- **Final challenge:** All remaining Tactics drawn at end of turn 6
 
-### Pentester Tactic Cards (8 Total)
+### Pentester Tactic Cards (PT-01 to PT-08)
 
-Each card represents a specific attack technique the red team attempts to execute against the Blue Team's hardened defenses.
+**(v2.2)** The Hardening module uses the standard Pentester Tactic deck, **PT-01 to PT-08**, defined in [`cards/hardening/core-deck/pentester-tactic-cards.md`](../../cards/hardening/core-deck/pentester-tactic-cards.md). Each card is a realistic red-team technique with a printed **DC** (difficulty class) and a list of printed **defense bonuses** for specific Defense Cards.
 
-#### Tactic 1: "Bypass Basic Defenses"
+| Card | Tactic | Target Vectors | Difficulty | Primary Defense |
+|------|--------|----------------|------------|-----------------|
+| PT-01 | Social Engineering - Pretexting Attack | SOCIAL_ENGINEERING, CREDENTIAL_ABUSE | BASIC (DC 12) | D-02 User Training |
+| PT-02 | Malware Evasion - Living-off-the-Land | MALWARE, CREDENTIAL_ABUSE | INTERMEDIATE (DC 13) | D-08 EDR |
+| PT-03 | Credential Dumping - Mimikatz | CREDENTIAL_ABUSE, MALWARE | INTERMEDIATE (DC 13) | D-16 Credential Guard |
+| PT-04 | Lateral Movement - Network Traversal | NETWORK, CREDENTIAL_ABUSE | INTERMEDIATE (DC 13) | D-09 Network Segmentation |
+| PT-05 | Privilege Escalation - Unpatched Kernel Exploit | MALWARE, WEB_EXPLOIT | ADVANCED (DC 14) | D-03 Patch Management |
+| PT-06 | Data Exfiltration - Unmonitored Channel | DATA_EXFIL, NETWORK | ADVANCED (DC 14) | D-11 DLP |
+| PT-07 | Supply Chain Compromise - Trusted Update | MALWARE, WEB_EXPLOIT | ADVANCED (DC 14) | D-08 EDR / D-13 Threat Hunting |
+| PT-08 | Insider Threat - Malicious Administrator | CREDENTIAL_ABUSE, DATA_EXFIL, NETWORK | EXPERT (DC 15) | D-22 SIEM / D-20 Zero Trust |
 
-```
-PENTESTER TACTIC: BYPASS BASIC DEFENSES
-
-Effect: Choose one BASIC-tier (10 Budget) Defense Card that the Blue
-Team deployed. That defense is bypassed and cannot be used for this
-attack.
-
-Example: The team's basic antivirus is proven ineffective against
-this malware variant; EDR is available as alternative defense.
-
-Strategic Impact: Forces teams to layer defenses, not rely solely on
-cheap tools. Teaches defense-in-depth.
-```
-
-#### Tactic 2: "Social Engineering Specialist"
-
-```
-PENTESTER TACTIC: SOCIAL ENGINEERING SPECIALIST
-
-Effect: The next attack targeting a SOCIAL ENGINEERING vector gains
-+2 to the Blue Team's defense roll difficulty (they must roll 13+
-instead of 11+).
-
-Example: Highly skilled social engineer uses psychological tactics
-that are harder to stop.
-
-Strategic Impact: Reminds teams that user training must be continuous;
-one-time training wears off.
-```
-
-#### Tactic 3: "Persistence Expert"
-
-```
-PENTESTER TACTIC: PERSISTENCE EXPERT
-
-Effect: If the Pentester successfully lands a PERSISTENCE attack,
-create a hidden persistent threat card. Blue Team must spend 15 Budget
-to remediate it.
-
-Example: Attacker installs sophisticated persistence mechanism that
-costs extra effort to remove.
-
-Strategic Impact: Teaches the cost of advanced persistent threats and
-why early detection is critical.
-```
-
-#### Tactic 4: "Supply Chain Attack"
-
-```
-PENTESTER TACTIC: SUPPLY CHAIN ATTACK
-
-Effect: Choose one Defense Card deployed by the Blue Team. That
-defense is temporarily compromised and cannot be used for this attack.
-
-Example: One of your security tools itself is compromised; you cannot
-rely on it for this attack.
-
-Strategic Impact: Highlights risk from third-party dependencies and
-importance of vendor security assessments.
-```
-
-#### Tactic 5: "Detection Evasion"
-
-```
-PENTESTER TACTIC: DETECTION EVASION
-
-Effect: The next attack targeting a MALWARE vector bypasses SIEM and
-EDR detection benefits for this attack. (Blue Team doesn't get the
-+2 bonus from those defenses).
-
-Example: Advanced malware using evasion techniques that bypass your
-detection tools.
-
-Strategic Impact: Teaches that no single defense is foolproof; layering
-and redundancy are essential.
-```
-
-#### Tactic 6: "Budget Drain - Incident Response Overload"
-
-```
-PENTESTER TACTIC: BUDGET DRAIN - INCIDENT RESPONSE OVERLOAD
-
-Effect: Blue Team's next Defense deployment costs +10 Budget overhead
-from emergency response.
-
-Example: Managing the "attack" consumes resources; new deployments
-are more expensive and slow.
-
-Strategic Impact: Reminds teams that incident response is expensive;
-prevention is cheaper than cure.
-```
-
-#### Tactic 7: "Zero-Day Exploit"
-
-```
-PENTESTER TACTIC: ZERO-DAY EXPLOIT
-
-Effect: For this attack, Blue Team's roll difficulty increases by 3
-(they need 14+ instead of 11+). Playbooks cannot be used for this
-attack (exploit is new/unknown).
-
-Example: Brand new vulnerability with no known defense; teams must
-improvise.
-
-Strategic Impact: Emphasizes that no defense is perfect; teams must
-assume breach and have detection/recovery plans.
-```
-
-#### Tactic 8: "Multi-Vector Attack"
-
-```
-PENTESTER TACTIC: MULTI-VECTOR ATTACK
-
-Effect: The Pentester attacks two different threat vectors simultaneously.
-Blue Team must defend against both or loses -10 Reputation on one
-undefended vector.
-
-Example: Coordinated attack using phishing + malware simultaneously;
-team must split resources.
-
-Strategic Impact: Teaches that coordinated attacks are harder to defend
-against; holistic, layered strategies are essential.
-```
+For expansion play, 8 additional tactics (PT-09 to PT-16) are available in [`cards/hardening/expansion-deck/advanced-tactics.md`](../../cards/hardening/expansion-deck/advanced-tactics.md).
 
 ---
 
-### Attack Resolution: Step-by-Step
+### Attack Resolution: One Canonical Formula (v2.2)
 
 When a Pentester Tactic Card is drawn:
 
 **1. Threat Orchestrator Describes the Attack**
 
-```
-Example: "The attacker is sending a sophisticated phishing email
-with a malicious PDF attachment to multiple users. The email appears
-to come from your CFO requesting an urgent budget approval."
-```
+> Example (PT-01): "A pentester calls your IT helpdesk impersonating a VIP executive, demanding emergency access to critical systems..."
 
-**2. Tactic Card Effects Apply**
+**2. Blue Team Chooses ONE Deployed Defense to Resolve With**
 
-```
-Example (Social Engineering Specialist tactic active):
-"Social engineering is highly skilled; your team's defense roll
-difficulty is +2 (you need 13+ instead of 11+)"
-```
+> Example: "We resolve this with our User Security Training (D-02) — staff are trained to verify callers."
 
-**3. Blue Team Chooses a Defense**
+**3. Roll the Defense Roll**
 
-```
-Example: "We'll use our User Security Training defense combined
-with our Email Authentication to stop this"
-```
+> **Defense roll = d20 + printed defense bonus for the chosen defense (from the tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3, one-time, matching vector)**
+>
+> **Success if the total ≥ the tactic card's printed DC.**
 
-**4. Roll with Modifiers**
+Notes:
+- Only ONE defense's printed bonus applies per roll. If your chosen defense isn't on the tactic's bonus list, its printed bonus is +0 (upgrades and playbooks still apply).
+- **Multi-vector or multi-phase tactics** (e.g., PT-09): resolve each vector/phase as a **separate roll**, one chosen defense per roll.
+- Playbooks are discarded after use.
+
+**4. Worked Example**
 
 ```
-Base: Roll 11+ on d20
-- Apply Tactic Card penalties/bonuses
-- Apply Hardening bonuses (+2 per upgrade)
-- Apply Playbook bonuses (+3 if matching vector)
+Tactic: PT-01 Social Engineering - Pretexting (DC 12)
+Chosen defense: D-02 User Security Training (printed bonus +2 vs PT-01)
+D-02 has 1 hardening upgrade (+2)
+SOCIAL ENGINEERING playbook available (+3)
 
-Example:
-Roll 1d20 = 9
-Base needed: 11
-Tactic penalty: +2 (need 13+)
-Hardening bonus on chosen defense: +2
-Playbook bonus (SOCIAL ENGINEERING): +3
-─────────────────
-Modified roll: 9 + 2 + 3 = 14 ✓ SUCCESS (14 ≥ 13)
+Roll 1d20 = 7
+Total = 7 + 2 (printed) + 2 (upgrade) + 3 (playbook) = 14
+14 ≥ DC 12 → SUCCESS. Playbook is discarded.
 ```
 
 **5. Outcome**
 
-- **Success:** Defense holds; no reputation loss; attacks continue
-- **Failure:** Attack succeeds; -10 Reputation (represents incident); attacks continue
+- **Success:** Defense holds; count it as a **Pentester Tactic Defended** (+5 Security Score); attacks continue
+- **Failure:** Attack succeeds; apply the consequence printed on the tactic card; no score for this tactic; attacks continue
+
+*(v2.2: the old -10 Reputation penalty has been removed from Hardening — failed defenses simply score nothing and trigger the card's printed consequence. Reputation remains a Disaster Recovery mechanic.)*
 
 ---
 
 ## Scoring: Security Score Calculation
 
-### Final Security Score Formula
+### Final Security Score Formula (v2.2 — one formula, used in both rules and standalone guide)
 
 ```
 Security Score = (Defenses Deployed × 5)
                + (Hardening Upgrades × 2)
-               + (Playbooks Created × 10)
-               - (Reputation Lost)
+               + (Playbooks Created × 10)      [max 2 playbooks]
+               + (Pentester Tactics Defended × 5)
+               + (Budget Remaining / Starting Budget) × 10
 ```
 
-### Example Scoring
+### Example Scoring (7 turns, 150 starting budget)
 
 ```
-Scenario: 150 starting budget, 4 turns played
+Turn 1: Deploy D-01 Email Auth + D-02 User Training (2 BASIC as one action)  -20
+Turn 2: Deploy D-04 Firewall Rules + D-19 Backup & DR (2 BASIC)              -20
+Turn 3: Deploy D-08 EDR (ADVANCED)                                           -15
+        → PT-02 strikes: defended ✓
+Turn 4: Deploy D-09 Network Segmentation (ADVANCED)                          -15
+Turn 5: Create MALWARE playbook                                              -10
+        → PT-01 strikes: defended ✓
+Turn 6: Harden D-08 EDR (+2)                                                  -5
+Turn 7: Deploy D-11 DLP (ADVANCED)                                           -15
+        → PT-06 strikes: defended ✓ (D-11's printed +4 bonus vs DC 14 carried the roll)
 
-Defenses Deployed: 7
-  Email Auth (BASIC): 5 points
-  MFA (ADVANCED): 5 points
-  EDR (ADVANCED): 5 points
-  SIEM (ADVANCED): 5 points
-  Network Segmentation (ADVANCED): 5 points
-  DLP (ADVANCED): 5 points
-  Threat Hunting (ELITE): 5 points
-  ────────────────────────
-  Total: 7 × 5 = 35 points
+Budget spent: 100 → 50 remaining
 
-Hardening Upgrades: 6 upgrades
-  EDR upgraded 3 times: 6 points
-  MFA upgraded 2 times: 4 points
-  SIEM upgraded 1 time: 2 points
-  ─────────────────────
-  Total: 6 × 2 = 12 points
-
-Playbooks Created: 2
-  SOCIAL ENGINEERING playbook: 10 points
-  MALWARE playbook: 10 points
-  ──────────────────
-  Total: 2 × 10 = 20 points
-
-Pentester Tactics: Defended against 3 of 4
-  Won 3 defense rolls: 0 reputation loss
-  Lost 1 defense roll: -10 reputation
-
+Defenses Deployed:      7 × 5  = 35 points
+Hardening Upgrades:     1 × 2  =  2 points
+Playbooks Created:      1 × 10 = 10 points
+Tactics Defended:       3 × 5  = 15 points
+Budget Efficiency: (50/150) × 10 ≈ 3 points
 ─────────────────────────────────────
-FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
+FINAL SECURITY SCORE:            65 points → Strong (Victory)
 ```
 
-### Security Score Tiers
+### Security Score Tiers (v2.2 — rescaled for the 7-action economy)
 
 | Score | Level | Interpretation | Real-World Equivalent |
 |-------|-------|-----------------|----------------------|
-| **90-100+** | Exceptional | Enterprise-grade security posture | Large financial institution |
-| **70-89** | Strong | Comprehensive defense-in-depth | Mid-market company |
-| **50-69** | Adequate | Basic layered protection | Startup/small business |
-| **30-49** | Weak | Minimal defenses, significant gaps | Under-resourced organization |
+| **75+** | Exceptional | Enterprise-grade security posture | Large financial institution |
+| **60-74** | Strong | Comprehensive defense-in-depth | Mid-market company |
+| **45-59** | Adequate | Basic layered protection | Startup/small business |
+| **30-44** | Weak | Minimal defenses, significant gaps | Under-resourced organization |
 | **Below 30** | Vulnerable | Inadequate protection, likely to fail | High-risk organization |
 
 ---
 
 ## Winning & Losing Hardening
 
-### Victory Condition ✓
+### Victory Condition ✓ (v2.2)
 
-**Blue Team Wins Hardening if:**
-- **Final Security Score ≥ 70** (strong, comprehensive defense-in-depth)
-- **AND Budget remaining ≥ 10** (resourceful allocation, not overspent)
+**Blue Team Wins Hardening if ALL of:**
+- **Final Security Score ≥ 60** (strong, comprehensive defense-in-depth)
+- **AND at least 4 defenses deployed** (playbooks and upgrades alone cannot win)
 - **AND majority of Pentester Tactics defended against** (defenses actually work)
 
 **Interpretation:** Team successfully built layered, effective defenses within constraints.
@@ -496,27 +375,31 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 ### Defeat Condition ✗
 
 **Blue Team Loses Hardening if:**
-- **Final Security Score < 40** (inadequate overall protection)
+- **Final Security Score < 45** (inadequate overall protection)
 - **OR Budget exhausted** before completing hardening strategy
 - **OR majority of Pentester Tactics succeeded** (defenses aren't effective)
 
 **Interpretation:** Defenses are insufficient against realistic threats.
 
+Scores between 45 and 59 that meet the tactic/defense requirements count as a **partial success** — adequate protection with room to improve.
+
 ---
 
 ## Difficulty Levels
 
+All difficulty levels run **7 turns** (v2.2); difficulty scales via Pentester Tactic count.
+
 ### Beginner Hardening
 - **Starting Budget:** 150
 - **Pentester Tactics:** 2 cards
-- **Turn Limit:** 5 turns
+- **Turn Limit:** 7 turns
 - **Best For:** First-time players, teaching core mechanics
 - **Focus:** Deploy basic defenses, understand layering
 
 ### Intermediate Hardening
 - **Starting Budget:** 150
 - **Pentester Tactics:** 3 cards
-- **Turn Limit:** 6 turns
+- **Turn Limit:** 7 turns
 - **Best For:** Standard play, balanced challenge
 - **Focus:** Balance deployment, upgrades, and playbooks
 
@@ -529,8 +412,8 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 ### Expert: Continuation from Incident Response (Loss)
 - **Starting Budget:** Carry over from IR (may be low)
-- **Pentester Tactics:** 4 cards (harder variants)
-- **Turn Limit:** 5 turns (limited recovery time)
+- **Pentester Tactics:** 4 cards (harder variants, may include PT-09 to PT-16)
+- **Turn Limit:** 7 turns
 - **Best For:** Advanced play, realistic recovery scenarios
 - **Focus:** Harden after breach, limited resources
 
@@ -552,8 +435,8 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 - Team feels overwhelmed
 - Frustration rather than learning
 
-**Just Right:**
-- Teams deploy 5-7 defenses with some budget remaining
+**Just Right (within 7 actions and 150 Budget):**
+- Teams deploy 5-7 defenses with some budget remaining (the Quick-Win rule for BASIC pairs makes this achievable)
 - 50-70% of Pentester Tactics fail (defenses work)
 - Teams debate priorities and trade-offs
 - Players learn through strategic choices
@@ -570,21 +453,21 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 **Narrative:** Always frame tactics as specific scenarios:
 - "Your red team just attempted a supply chain attack..."
-- "An advanced attacker is using detection evasion techniques..."
-- "A coordinated multi-vector attack is beginning..."
+- "An advanced attacker is using living-off-the-land techniques..."
+- "A coordinated insider attack is beginning..."
 
 **Strategy:** Escalate difficulty
 - Turns 1-2: No tactics (deployment phase)
-- Turn 3: First tactic (softer: "Bypass Basic Defenses")
-- Turn 4: Second tactic (medium: "Social Engineering Specialist")
-- Turn 5+: Third/fourth tactics (harder: "Zero-Day", "Multi-Vector")
+- Turn 3: First tactic (softer: PT-01, DC 12)
+- Turn 4: Second tactic (medium: PT-02 to PT-04, DC 13)
+- Turn 5+: Third/fourth tactics (harder: PT-05 to PT-08, DC 14-15)
 
 ### Common Teaching Moments
 
-**Defense-in-Depth:** When a basic defense is bypassed, discuss why layers matter
-**Cost-Benefit:** Teams overspend on Elite defenses; discuss Intermediate alternatives
+**Defense-in-Depth:** When a chosen defense earns only a +0/+1 printed bonus, discuss why layers matter
+**Cost-Benefit:** Teams overspend on Elite defenses; discuss Advanced alternatives
 **Upgrades:** Teams ignore upgrades; show how +2 bonuses compound
-**Playbooks:** Teams underestimate playbooks; demonstrate their power (+3 bonus)
+**Playbooks:** Teams underestimate playbooks; demonstrate their power (+3 bonus) — and note the 2-per-game cap
 
 ---
 
@@ -592,9 +475,9 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 ### Extended Hardening (60 minutes)
 - Start with Budget: 200
-- Play 7-8 turns (instead of 5-7)
+- Play 9 turns (instead of 7)
 - 5-6 Pentester Tactics (instead of 2-4)
-- Allow team to create 4-5 playbooks
+- Raise the playbook cap to 3
 - More complex strategic decisions
 
 ### Compliance-Enhanced Hardening
@@ -636,10 +519,12 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 | Action | Cost | Roll | Effect | Score |
 |--------|------|------|--------|-------|
-| **Deploy Defense** | 10/15/25 | None | Active immediately | +5 |
+| **Deploy Defense** | 10/15/25 | None | Active immediately (up to 2 BASIC per action, v2.2) | +5 each |
 | **Harden Upgrade** | 5 | None | +2 effectiveness | +2 |
-| **Create Playbook** | 10 | None | One-time +3 bonus | +10 |
+| **Create Playbook** | 10 | None | One-time +3 bonus (max 2 per game, v2.2) | +10 |
 | **Test & Drill** | 0 | 11+ | Validates defense | +0 |
+
+**Pentester defense roll (v2.2):** d20 + printed bonus (one chosen defense) + upgrades (+2 each) + playbook (+3) ≥ tactic DC. Each tactic defended: +5 Score.
 
 ---
 
@@ -658,9 +543,25 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 ---
 
+## v2.2 Playtest Edition Changes
+
+Changes for playtesters to validate, and why they were made:
+
+1. **Pentester Tactics unified to the PT-01–PT-08 deck.** The 8 tactics previously embedded in this document (Bypass Basic Defenses, Zero-Day, etc.) are replaced by the printed card deck in `cards/hardening/core-deck/pentester-tactic-cards.md`. This removes duplicate, conflicting tactic definitions (including a "Persistence Expert" tactic that referenced a nonexistent PERSISTENCE vector).
+2. **One canonical resolution formula.** Defense roll = d20 + printed defense bonus for ONE chosen defense (per the tactic card) + hardening upgrades on that defense (+2 each) + relevant playbook (+3), vs. the tactic's printed DC. The old "+2 to +4 by tier", "roll 11+/13+", and multi-defense "synergy stacking" texts are removed. **Validate:** do DCs 12-15 feel fair with the printed bonuses?
+3. **Fixed turn count: 7 turns, one action per turn**, plus the **Quick-Win rule** (deploy up to 2 BASIC defenses as one action). **Validate:** can teams realistically field 5-7 defenses in 7 actions?
+4. **Single scoring formula** (shared with the standalone guide) including Pentester results and budget efficiency; tiers rescaled (win at 60+). Reputation removed from Hardening scoring — failed tactics simply score 0 and trigger their printed consequence.
+5. **Anti-playbook-spam:** playbooks capped at **2 per game**, and victory requires **≥4 deployed defenses**.
+
+**Designer note — why playbook spam can't win (v2.2 math):**
+- *Playbook-spam strategy:* 2 playbooks (cap) = 20 pts; 0 defenses = 0 pts; with no deployed defenses every Pentester roll is d20 + 0 (+3 once per playbook) vs DC 12-15, so expect ~1 of 3 tactics defended = 5 pts; budget efficiency (130/150) × 10 ≈ 9 pts. **Total ≈ 34** — below the 60 threshold, and it fails the ≥4-defenses gate regardless. **Cannot win.**
+- *Balanced layered strategy:* 7 defenses (35) + 1 upgrade (2) + 1 playbook (10) + 3 of 3 tactics defended (15) + budget efficiency (50/150 × 10 ≈ 3) = **65 → Victory.** See the worked example above.
+
+---
+
 ## Need Help?
 
-- **Questions about Incident Response?** See [Module: Incident Response](module-incident-response.md) (future)
+- **Questions about Incident Response?** See [Module: Incident Response](module-incident-response.md)
 - **Want to play multiple modules?** See [Module Combinations](../module-combinations.md)
 - **Understanding framework?** See [Framework](../FRAMEWORK.md)
 
@@ -668,5 +569,4 @@ FINAL SECURITY SCORE: 35 + 12 + 20 - 10 = 57 points
 
 *Hardening Module - Complete Rules*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
-
+*v2.2 - Playtest Edition*

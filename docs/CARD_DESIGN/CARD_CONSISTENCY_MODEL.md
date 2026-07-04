@@ -36,7 +36,7 @@ These fields appear on **EVERY card** in **EVERY module**:
 
 ## Module A: INCIDENT RESPONSE
 
-### Threat Cards (T-01 to T-16)
+### Threat Cards (T-01 to T-20)
 
 **Consistent Fields Within IR Module:**
 - `Step` - Kill chain position (INITIAL COMPROMISE, PIVOT & ESCALATE, PERSISTENCE, C2 & EXFIL)
@@ -58,7 +58,7 @@ T-01: PHISHING CAMPAIGN
 └─ Keywords: phishing | email | social engineering
 ```
 
-### Defense Cards (D-01 to D-32)
+### Defense Cards (D-01 to D-43)
 
 **Consistent Fields Within IR Module:**
 - `Tier` - Cost category (BASIC, ADVANCED, ELITE)
@@ -120,7 +120,7 @@ PT-01: SOCIAL ENGINEERING - PRETEXTING
 
 ## Module C: DISASTER RECOVERY
 
-### Crisis Action Cards (ACTION-01 to ACTION-12)
+### Crisis Action Cards (ACTION-01 to ACTION-13)
 
 **Unique Fields for Disaster Recovery Module:**
 - `Category` - Type of action (Investigation, Remediation, Communication)
@@ -170,7 +170,7 @@ STAKE-01: CUSTOMERS
 └─ Keywords: customers | trust | reputation
 ```
 
-### Event Cards (EVENT-01 to EVENT-20)
+### Event Cards (EVENT-01 to EVENT-12)
 
 **Unique Fields for Disaster Recovery Module:**
 - `Type` - Event category (Discovery, Deadline, Escalation, Legal, Regulatory, etc.)
@@ -413,6 +413,40 @@ REMEDIATION-01: IMPLEMENT MFA
 
 ---
 
+## Module F: FORENSICS
+
+The Forensics module uses three card types: **INVESTIGATION**, **EVIDENCE**, and **FINDINGS**.
+
+### Investigation Action Cards (DISK-01/02, MEM-01/02, LOG-01/02, NET-01/02, MALW-01/02, TIMELINE-01, THREAT-01)
+
+**Unique Fields for Forensics Module:**
+- `MITRE ATT&CK` - Referenced technique(s) this investigation detects
+- `Difficulty Class (DC)` - d20 roll target (DC 11-15)
+- `Cost` - Budget (5-20)
+- `Duration` - Turns the investigation takes (1-3)
+- `Success Conditions` - Success / partial success / failure outcomes
+- `Chain of Custody Notes` - Admissibility and documentation concerns
+
+### Evidence Cards (EVD-01 to EVD-12)
+
+**Unique Fields for Forensics Module:**
+- `Type` - Evidence category (Malware & Persistence, Attack Infrastructure, Credentials & Access, Lateral Movement, Exfiltration, Attack Activity)
+- `Discovery Source` - Which Investigation cards find this evidence
+- `Chain of Custody` - Admissibility rating (Strong/Moderate/Weak)
+- `Investigative Lead` - What the team can do next
+- `Impact on Progress Meters` - Attack Chain / Attribution / Timeline advances
+- `Feeds Into Modules` - Cross-module recommendations
+
+### Findings Cards (FIND-01 to FIND-04)
+
+**Unique Fields for Forensics Module:**
+- `Triggered When` - Meter threshold or completion condition that produces the finding
+- `Finding` - Synthesis conclusion drawn from evidence
+- `Recommendations` - Actions arising from the finding
+- `Feeds Into Modules` - Which modules consume the finding (Hardening, Network Building, Audit, IR)
+
+---
+
 # Part 3: Consistency Summary Table
 
 ## Universal Fields (Every Card)
@@ -440,6 +474,8 @@ REMEDIATION-01: IMPLEMENT MFA
 | **Maturity Levels** | A&C only | Audit Domain, Framework cards |
 | **Availability/Criticality** | NB only | Server, Asset cards |
 | **Network Placement** | NB, A&C | Server, Device, Architecture cards |
+| **Chain of Custody** | Forensics only | Investigation, Evidence cards |
+| **Progress Meter Impact** | Forensics only | Evidence cards |
 
 ## Card Types with Multiple Unique Elements
 
@@ -455,6 +491,9 @@ REMEDIATION-01: IMPLEMENT MFA
 | Audit Domains | **5 unique fields** | Focus, Critical For, Maturity Levels, Impact on Modules |
 | Frameworks | **4 unique fields** | Framework, Standard, Scoring, Related Frameworks |
 | Remediation | **4 unique fields** | Type, Cost, Timeline, Difficulty |
+| Investigation Cards | **5 unique fields** | MITRE ATT&CK, DC, Duration, Success Conditions, Chain of Custody Notes |
+| Evidence Cards | **5 unique fields** | Type, Discovery Source, Chain of Custody, Investigative Lead, Meter Impact |
+| Findings Cards | **4 unique fields** | Triggered When, Finding, Recommendations, Feeds Into Modules |
 
 ---
 
@@ -629,6 +668,11 @@ When creating a new card:
          │    ├─ + Cost, Security Posture (Architecture)
          │    └─ + Criticality, Data Sensitivity (Asset)
          │
+         ├──> Module Forensics
+         │    ├─ + MITRE ATT&CK, DC, Duration (Investigation)
+         │    ├─ + Type, Discovery Source, Chain of Custody (Evidence)
+         │    └─ + Triggered When, Recommendations (Findings)
+         │
          └──> Module Audit & Compliance
               ├─ + Focus, Critical For, Maturity Levels (Domain)
               ├─ + Framework, Standard, Scoring
@@ -651,6 +695,7 @@ When creating a new card:
    - Hardening: Tactic Type, Threat Level, Teaching Point
    - Disaster Recovery: Category, Duration, Stakeholder Impact
    - Network Building: Type, Complexity, Availability, Criticality
+   - Forensics: DC, Duration, Chain of Custody, Meter Impact
    - Audit & Compliance: Focus, Maturity Levels, Remediation
 
 3. **Card Type Unique** (specific to card type, not module)

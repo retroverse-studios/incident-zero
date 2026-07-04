@@ -1,7 +1,7 @@
 # Incident Response Module: Rules & Mechanics
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -15,9 +15,10 @@ This module teaches:
 
 **Key Mechanics:**
 - Hidden attack chain (3-5 Threat Cards) is pre-built by the Threat Orchestrator
-- Blue Team reveals cards by successfully investigating or deploying appropriate defenses
+- Blue Team reveals cards by successful investigation (two successes on the same chain link, v2.2) or by deploying a vector+step-matching defense
 - Uncontained Threats Penalty creates urgency—revealed threats cost 5 Budget per turn until contained
-- Emergency Response action provides a budget-intensive way to contain uncontained threats
+- Active Breach Cost (v2.2)—while any chain card remains hidden, the breach itself costs 5 Budget per turn (dwell time is never free)
+- Emergency Response action provides a way to contain uncontained threats (15 Budget, v2.2)
 
 ---
 
@@ -25,16 +26,19 @@ This module teaches:
 
 ### 1. Choose Difficulty Level
 
+Turn limits use the **Variable Game Length formula** from [Core Rules §3a](core-rules.md#3a-variable-game-length-system-v21---new): **Turn Limit = (Attack Chain Cards × 2) + 1**.
+
 | Difficulty | Chain Length | Starting Budget | Turn Limit | Best For |
 |------------|--------------|-----------------|-----------|----------|
-| **Beginner** | 3 cards | 100 | 12 turns | First playthrough, basic learning |
-| **Intermediate** | 4 cards | 100 | 10 turns | Standard play, mixed experience |
-| **Advanced** | 5 cards | 100 | 10 turns | Experienced players, challenge |
+| **Beginner** | 3 cards | 100 | 7 turns | First playthrough, basic learning |
+| **Intermediate** | 4 cards | 100 | 9 turns | Standard play, mixed experience |
+| **Advanced** | 5 cards | 100 | 11 turns | Experienced players, challenge |
 
 **Scaling Notes:**
 - Beginner: ~30 min session, teaches full kill chain with comfortable pace
 - Intermediate: ~40 min session, requires focused investigation strategy
 - Advanced: ~45 min session, demands efficient resource allocation and quick thinking
+- Advanced Threat Orchestrators can instead use the Tier + d4 system in [Core Rules §3a](core-rules.md#3a-variable-game-length-system-v21---new)
 
 ### 2. Threat Orchestrator Preparation
 
@@ -45,7 +49,7 @@ This module teaches:
    - Middle cards: PIVOT & ESCALATE, PERSISTENCE
    - Final card: C2 & EXFIL
 3. Write down clues for each hidden card on separate paper (keep hidden from Blue Team)
-4. Place relevant Asset Cards on the table (visible to all—provides scenario context)
+4. Place relevant Asset Cards on the table (visible to all—provides scenario context). Asset Cards are shared components: see `cards/network-building/core-deck/asset-cards.md`
 
 **Attack Chain Strategy Tips:**
 - Start simple (Beginner): Phishing → Lateral Movement → Database Exfil
@@ -88,8 +92,9 @@ Each turn represents approximately 2-4 hours of incident response operations.
 
 **1. START OF TURN**
 - **Apply Uncontained Threats Penalty:** For each revealed-but-uncontained threat, deduct 5 Budget from the tracker
+- **Apply Active Breach Cost (v2.2):** If at least one chain card is still unrevealed, deduct 5 Budget (the hidden breach is doing damage while you can't see it)
 - Announce current turn number and budget remaining
-- Example: "Turn 3. You have 80 Budget remaining. Your Uncontained Threats penalty is 10 Budget (2 threats × 5)."
+- Example: "Turn 3. Start-of-turn costs: 5 for your uncontained threat, plus 5 Active Breach Cost—the chain isn't fully mapped yet. Budget drops from 85 to 75."
 
 **2. BLUE TEAM'S TURN (2-3 minutes discussion)**
 - Team discusses incident response strategy
@@ -108,6 +113,14 @@ Each turn represents approximately 2-4 hours of incident response operations.
 - Check if game has been won or lost (see victory/defeat conditions below)
 - If still playing, return to START OF TURN
 
+### Sequential Discovery (v2.2 clarification)
+
+The attack chain is discovered **in order**: only the **earliest unrevealed chain card** can be investigated toward or revealed. Clues, investigation successes, and Deploy Defense reveals all target that card until it is face-up, then attention shifts to the next link. This matches how the clue system walks the kill chain.
+
+### Deployed Defense Persistence (v2.2)
+
+Deployed defenses stay on the table and keep working. **Whenever the chain link currently being targeted has an Attack Vector matching a deployed defense's Countermeasure Vector, add +2 to Investigate and Deploy Defense rolls against that link.** The Threat Orchestrator (who knows the hidden vector) announces when this bonus applies—hearing "your deployed defenses are helping here" is itself a useful clue. This rule is stated once here; other sections simply refer to it.
+
 ---
 
 ## Three Incident Response Actions
@@ -115,7 +128,7 @@ Each turn represents approximately 2-4 hours of incident response operations.
 ### Action 1: Investigate 🔎
 
 **Cost:** 5 Budget per action
-**Roll Required:** 11+ on d20
+**Roll Required:** roll + modifiers ≥ 11 on d20
 **Special Rule:** Modifiers apply and can stack
 
 **How It Works:**
@@ -131,12 +144,13 @@ Each turn represents approximately 2-4 hours of incident response operations.
 |-------|--------------|----------|
 | **+2** | Strong technical justification | "We're analyzing email headers in the mail gateway logs to identify the true sender IP and check it against threat intelligence feeds. This helps us understand the initial compromise vector." |
 | **+1** | Real security tools/techniques referenced | "We'll query our SIEM for scheduled task creation events" or "We're checking for Mimikatz usage in memory" |
+| **+2** | Deployed Defense Persistence (v2.2) | A deployed defense's vector matches the targeted chain link (see rule above) |
 | **+0** | Vague investigation | "We want to find suspicious activity" |
 
-**Success (roll + modifiers ≥ 11):**
-- TO provides a **verbal clue** about the **next card in the chain** (one card forward)
-- Example: If Phishing is revealed, successful investigation gives clue about the Lateral Movement card
-- Clue should be dramatic and progressive—give more detail with each successful investigation
+**Success (roll + modifiers ≥ 11) — Investigation successes accumulate (v2.2):**
+- **First success against a chain link:** TO provides a **verbal clue** about that card (the earliest unrevealed card in the chain)
+- **Second success against the same chain link:** **THE CARD IS REVEALED!** Place it face-up; it becomes uncontained (add 1 to the Uncontained Threats Tracker) and the team chooses a Discovery Reward
+- Clues should be dramatic and progressive—give more detail with each successful investigation
 - Budget is spent (5 is deducted)
 
 **Failure (roll + modifiers < 11):**
@@ -144,20 +158,21 @@ Each turn represents approximately 2-4 hours of incident response operations.
 - Budget is spent anyway (5 is deducted)
 - Team learns nothing but advances in time
 - Failure is realistic—not every investigation uncovers information
+- Failures do NOT count toward the two accumulated successes
 
 **Strategic Consideration:**
 - Cheap action (only 5 Budget)
-- Moderate success chance (need 11+ on d20, so ~40% without bonuses)
-- High reward for successful investigation (information about next threat)
-- Can be repeated multiple times in a game
+- Moderate success chance (need 11+ on d20, so ~50% without bonuses)
+- Two successful investigations reveal a card without needing the right Defense Card in hand (v2.2)
+- Deploy Defense (full match) is faster—one successful roll—but costs more and needs the right card
 
 ---
 
 ### Action 2: Deploy a Defense 🛡️
 
 **Cost:** 10/15/25 Budget (depending on Defense Card tier: BASIC/ADVANCED/ELITE)
-**Roll Required:** 11+ on d20
-**Special Rule:** Modifiers apply; matching defense to threat can reveal cards
+**Roll Required:** roll + modifiers ≥ 11 on d20
+**Special Rule:** Modifiers apply; matching defense to threat reveals cards immediately
 
 **How It Works:**
 
@@ -167,13 +182,13 @@ Each turn represents approximately 2-4 hours of incident response operations.
 4. **Roll 1d20**
 5. **Compare:** roll + modifiers ≥ 11?
 
-**Roll Modifiers:** Same as Investigate action (+2 for justification, +1 for tools)
+**Roll Modifiers:** Same as Investigate action (+2 for justification, +1 for tools, +2 Deployed Defense Persistence if applicable)
 
 **Success (roll + modifiers ≥ 11):**
 
-Check if Defense Card matches hidden threat:
+Check if Defense Card matches the earliest unrevealed hidden threat (sequential discovery):
 - **FULL MATCH:** Defense **Countermeasure Vector** matches threat's **Attack Vector** AND it's the **correct step in the chain**
-  - **THREAT CARD IS REVEALED!** Threat card is placed face-up on the table. Blue Team learns what they've been fighting.
+  - **THREAT CARD IS REVEALED IMMEDIATELY!** Threat card is placed face-up on the table. Blue Team learns what they've been fighting.
   - Threat card is now "uncontained" (add 1 to Uncontained Threats Tracker)
   - Defense Card is discarded (used)
   - Budget is spent
@@ -182,12 +197,12 @@ Check if Defense Card matches hidden threat:
   - Defense is deployed and stays on table (helpful for future turns)
   - Card is not revealed
   - Budget is spent
-  - Defense remains active for future investigation/defense rolls
+  - Defense remains active—see Deployed Defense Persistence (v2.2): it grants +2 to future rolls against any chain link matching its vector
 
 - **NO MATCH:** Defense doesn't address current threat
   - Defense is deployed but ineffective
   - Budget is spent
-  - Defense remains on table (might help against future threats)
+  - Defense remains on table (might grant the +2 persistence bonus against future threats)
 
 **Failure (roll + modifiers < 11):**
 - Defense fails to deploy properly
@@ -195,7 +210,7 @@ Check if Defense Card matches hidden threat:
 - Card is discarded
 - No progress made, but team learns from failure
 
-**Key Point:** Even "unsuccessful" Defense deployments can be strategically valuable. Deployed defenses stay in play and may counter later threats you didn't anticipate.
+**Key Point:** Even "unsuccessful" Defense deployments can be strategically valuable. Deployed defenses stay in play and grant +2 to rolls against later threats that match their vector (v2.2).
 
 **Strategic Consideration:**
 - Expensive action (10-25 Budget, scales with defense tier)
@@ -208,13 +223,13 @@ Check if Defense Card matches hidden threat:
 Hidden attack chain: Phishing → Lateral Movement → Database Exfil
 
 Team believes phishing is happening (first card).
-They deploy "Email Authentication Setup" (BASIC, 10 Budget).
+They deploy D-01 "Email Authentication Setup" (BASIC, 10 Budget).
 Email Authentication addresses SOCIAL ENGINEERING vector.
 
 Roll: 8 + 2 (strong justification) = 10 = FAIL
-Email deployment fails, 10 Budget wasted, but card stays.
+Email deployment fails, 10 Budget spent, card discarded.
 
-Next turn: Same team deploys "User Security Training" (BASIC, 10 Budget).
+Next turn: Same team deploys D-02 "User Security Training" (BASIC, 10 Budget).
 Roll: 13 + 1 = 14 = SUCCESS
 Defense addresses SOCIAL ENGINEERING vector and is INITIAL COMPROMISE step.
 PHISHING CAMPAIGN REVEALED! Threat card placed face-up.
@@ -225,7 +240,7 @@ Uncontained Threats increases to 1 (now costing 5 Budget per turn).
 
 ### Action 3: Emergency Response 🚨
 
-**Cost:** 25 Budget (expensive, flat cost)
+**Cost:** 15 Budget (v2.2 — repriced from 25; flat cost)
 **Roll Required:** None—this always succeeds
 **Special Rule:** Only works on previously revealed threats
 
@@ -239,7 +254,7 @@ Uncontained Threats increases to 1 (now costing 5 Budget per turn).
    - Kill active processes
    - Revoke stolen credentials
    - etc.
-3. **Pay the 25 Budget cost**
+3. **Pay the 15 Budget cost**
 4. **Card is immediately removed from play**
 5. **Uncontained Threats Tracker decreases by 1** (penalty stops for this threat)
 
@@ -250,35 +265,33 @@ Uncontained Threats increases to 1 (now costing 5 Budget per turn).
 - **Preparation for Next Module:** If continuing to Hardening or other modules, fewer threats = more budget available
 - **Complexity Reduction:** If the game feels overwhelming, emergency response simplifies the threat landscape
 
-**Example Timeline:**
+**Example Timeline (one action per turn):**
 
 ```
-Turn 1: Phishing revealed → Uncontained Threats = 1
-Turn 2: START → Deduct 5 Budget (95 remaining)
-Turn 3: Lateral Movement revealed → Phishing auto-mitigates (Uncontained = 1)
-Turn 3: Team also takes Emergency Response on Lateral Movement
-        → Pay 25 Budget, remove Lateral Movement card
-        → Uncontained Threats = 0 (no more penalties)
-        → Budget now 70
+Turn 3: Deploy Defense succeeds → PHISHING revealed → Uncontained Threats = 1
+Turn 4: START → Deduct 5 (uncontained) + 5 (Active Breach Cost, 2 cards still hidden)
+        ACTION → Emergency Response on Phishing: pay 15 Budget
+        → Phishing removed from play, Uncontained Threats = 0
+Turn 5: START → Deduct only 5 (Active Breach Cost; no uncontained threats)
 ```
 
 ---
 
-## Uncontained Threats Penalty Mechanics
+## Uncontained Threats & Active Breach Cost
 
-This is the core urgency mechanic of Incident Response. **Dwell time costs money.**
+These are the core urgency mechanics of Incident Response. **Dwell time costs money—whether you can see the threat or not.**
 
-### How the Penalty Works
+### How the Uncontained Threats Penalty Works
 
 **Step 1: Threat Revealed**
-- When a Threat Card is successfully revealed (by investigation or defense deployment)
+- When a Threat Card is successfully revealed (by two investigation successes or a full-match defense deployment)
 - Add 1 to the Uncontained Threats Tracker
 - This threat is now "active" and dangerous
 
 **Step 2: Penalty Applied at Turn Start**
 - At the **START of every turn**, deduct **5 Budget per uncontained threat**
 - Example: 2 uncontained threats = 10 Budget penalty each turn
-- This creates continuous pressure—you MUST reveal/contain threats or lose resources
+- This creates continuous pressure—you MUST contain threats or lose resources
 
 **Step 3: Auto-Mitigation**
 - When the **next card in the attack chain is revealed**, the previous uncontained threat is automatically "contained" (represents shift of attention to new priority)
@@ -287,59 +300,59 @@ This is the core urgency mechanic of Incident Response. **Dwell time costs money
 
 **Step 4: Emergency Response Containment**
 - Team can use Emergency Response action to **immediately** remove a threat from the board
-- Cost: 25 Budget (expensive, but stops the penalty immediately)
+- Cost: 15 Budget (v2.2)
 - Uncontained Threats Tracker decreases by 1
 
-### Example Walkthrough
+### Active Breach Cost (v2.2)
+
+- At the **START of every turn**, if **at least one chain card remains unrevealed**, deduct **5 Budget**
+- This represents the hidden attacker's ongoing damage: data being staged, accounts being abused, systems being backdoored
+- It stops only when the **entire chain is revealed** (which is also the victory condition, checked immediately—see below)
+- **Why (v2.2):** previously, hidden threats were free and revealed ones were penalized—an inversion that punished discovery. Now dwell time always costs, and revealing cards is how you stop the bleeding.
+
+### Example Walkthrough (v2.2 — recomputed)
 
 ```
 SETUP: 3-card chain (Phishing → Lateral Movement → Database Exfil)
+Budget 100, Turn Limit 7 [(3 × 2) + 1]
 
-Turn 1: START → 0 uncontained threats, no penalty
-        INVESTIGATION → "Email spoofing detected"
-        Clue given about next card
+Turn 1: START → Active Breach Cost -5 (95). No uncontained threats.
+        INVESTIGATE email headers (-5, 90). Roll succeeds.
+        → 1st success vs. link 1: clue about the phishing campaign.
 
-Turn 2: START → Still 0 uncontained (clue doesn't count as reveal)
-        DEFENSE DEPLOYMENT → Deploy Email Authentication
-        Roll succeeds, card matches
-        ✓ PHISHING CAMPAIGN REVEALED (card placed face-up)
-        Uncontained Threats = 1
+Turn 2: START → Active Breach Cost -5 (85).
+        INVESTIGATE mail gateway logs (-5, 80). Roll succeeds.
+        → 2nd success vs. link 1: ✓ PHISHING CAMPAIGN REVEALED (investigation reveal, v2.2)
+        Uncontained Threats = 1. Reward: Budget Grant +10 (90).
 
-Turn 3: START → Deduct 5 Budget (now 95 remaining)
-        INVESTIGATION → Investigate network logs
-        Roll succeeds
-        Clue given about Lateral Movement
+Turn 3: START → -5 (uncontained) -5 (Active Breach) = 80.
+        INVESTIGATE network logs (-5, 75). Roll succeeds.
+        → 1st success vs. link 2: clue about SMB lateral movement.
 
-Turn 4: START → Deduct 5 Budget (now 90 remaining)
-        DEFENSE → Deploy Network Segmentation (ADVANCED, 15 Budget)
-        Roll succeeds, card matches (NETWORK vector, PIVOT & ESCALATE step)
-        ✓ LATERAL MOVEMENT REVEALED (placed face-up)
-        Previous threat (Phishing) auto-mitigates (Uncontained = 1)
-        New threat (Lateral Movement) is uncontained (Uncontained = 1)
+Turn 4: START → -5 (uncontained) -5 (Active Breach) = 65.
+        DEPLOY D-09 Network Segmentation (ADVANCED, -15, 50). Roll succeeds.
+        FULL MATCH (NETWORK vector, PIVOT & ESCALATE step)
+        → ✓ LATERAL MOVEMENT REVEALED immediately (deploy reveal)
+        Phishing auto-mitigates; Lateral Movement now uncontained (still 1 total).
+        Reward: Budget Grant +10 (60).
 
-Turn 5: START → Deduct 5 Budget (now 70 remaining)
-        INVESTIGATION → Investigate database access logs
-        Roll fails
-        No progress
+Turn 5: START → -10 (50).
+        INVESTIGATE database access logs (-5, 45). Roll fails. No progress.
 
-Turn 6: START → Deduct 5 Budget (now 65 remaining)
-        EMERGENCY RESPONSE → Contain Lateral Movement
-        Cost 25 Budget
-        Card removed from play
-        Uncontained Threats = 0 (no more penalties!)
+Turn 6: START → -10 (35).
+        INVESTIGATE DLP alerts (-5, 30). Roll succeeds.
+        → 1st success vs. link 3: clue about bulk data leaving the database.
 
-Turn 7: START → No penalties!
-        INVESTIGATION → Investigate suspicious file transfers
-        Roll succeeds
-        Clue given about Database Exfil
+Turn 7: START → -10 (20).
+        DEPLOY D-11 Data Loss Prevention (ADVANCED, -15, 5). Roll succeeds.
+        FULL MATCH (DATA EXFIL vector, C2 & EXFIL step)
+        → ✓ DATABASE EXFILTRATION REVEALED — final card!
+        Victory is checked IMMEDIATELY (before any start-of-turn penalties).
 
-Turn 8: START → No penalties
-        DEFENSE → Deploy Data Loss Prevention (ELITE, 25 Budget)
-        Roll succeeds, card matches
-        ✓ DATABASE EXFILTRATION REVEALED
-
-WIN! All cards revealed with 40 Budget remaining
+WIN on the final turn with 5 Budget remaining.
 ```
+
+*(Arithmetic check, turn by turn: 100 → 95 → 90 | 85 → 80 → +10 = 90 | 80 → 75 | 65 → 50 → +10 = 60 | 50 → 45 | 35 → 30 | 20 → 5.)*
 
 ---
 
@@ -349,23 +362,26 @@ WIN! All cards revealed with 40 Budget remaining
 
 **Blue Team wins Incident Response if:**
 1. ALL threat cards in the attack chain are revealed (face-up on table), AND
-2. This happens BEFORE Turn Tracker reaches your turn limit (10, 12, or custom), AND
-3. Budget never reaches 0 (team can always continue taking actions)
+2. This happens within the turn limit (7/9/11 by chain length, per [Core Rules §3a](core-rules.md#3a-variable-game-length-system-v21---new))
 
-**Winning Scenarios:**
-- Beginner: All 3 cards revealed by Turn 8 with 30+ Budget remaining = solid victory
-- Intermediate: All 4 cards revealed by Turn 9 with 20+ Budget remaining = solid victory
-- Advanced: All 5 cards revealed by Turn 9 with 10+ Budget remaining = impressive victory
+**Victory is checked immediately when the final card is revealed (v2.2)** — before any start-of-turn penalties would apply. Revealing the last card on your final turn with 0 Budget remaining is still a win.
 
 ### Defeat Condition ✗
 
 **Blue Team loses Incident Response if:**
-1. Turn Tracker reaches the turn limit (10 for standard) with unrevealed cards remaining, OR
-2. Budget reaches 0 (team cannot take further actions even if turns remain)
+1. Turn Tracker exceeds the turn limit with unrevealed cards remaining, OR
+2. The team cannot take any legal action (see Budget Edge Rules below)
 
 **Losing Scenarios:**
 - Turns expired with only 2 of 4 cards revealed = attack succeeded
-- Budget exhausted on Turn 5 of 10 = response ran out of resources
+- Budget too low to afford any action = response ran out of resources
+
+### Budget Edge Rules (v2.2)
+
+- **Budget can never go below 0.** If a start-of-turn penalty would take you negative, stop at 0.
+- **An action requires its full cost available.** You cannot Investigate with 4 Budget, deploy a 15-Budget defense with 12, or take Emergency Response with 14.
+- **Victory is checked immediately** when the final chain card is revealed—before any start-of-turn penalties.
+- **Defeat at 0 Budget occurs only if the team cannot take any legal action.** If you have 0 Budget at the start of your turn and every action costs more than you have, the game is lost. (At 5+ Budget you can always still Investigate.)
 
 ### Victory Scoring (Optional)
 
@@ -376,9 +392,9 @@ Victory Points Formula:
 Points = (Cards Revealed / Total Cards) × 50 + (Budget Remaining / Starting Budget) × 50
 
 Examples:
-- 4 cards revealed (4/4), 35 Budget remaining: (100 × 50) + (35/100 × 50) = 50 + 17.5 = 67.5/100 (Victory with good efficiency)
-- 3 cards revealed (3/4), 15 Budget remaining: (75 × 50) + (15/100 × 50) = 37.5 + 7.5 = 45/100 (Partial victory, struggled)
-- 2 cards revealed (2/4), 0 Budget: (50 × 50) + (0 × 50) = 25/100 (Defeat)
+- 4 of 4 cards revealed, 35 Budget remaining: (4/4 × 50) + (35/100 × 50) = 50 + 17.5 = 67.5/100 (Victory with good efficiency)
+- 3 of 4 cards revealed, 15 Budget remaining: (3/4 × 50) + (15/100 × 50) = 37.5 + 7.5 = 45/100 (Partial victory, struggled)
+- 2 of 4 cards revealed, 0 Budget: (2/4 × 50) + (0 × 50) = 25/100 (Defeat)
 ```
 
 ---
@@ -393,14 +409,14 @@ When your team **successfully reveals a Threat Card**, immediately **choose ONE 
 - **Strategic Value:** More options = better chance of finding right defense for next threat
 
 ### Reward Option 2: Budget Grant 💰
-- **Effect:** Gain +15 Budget
+- **Effect:** Gain +10 Budget (v2.2 — reduced from +15 to balance the Active Breach Cost economy)
 - **When to Choose:** If you're running low on Budget and want more runway
 - **Strategic Value:** Directly extends how long you can keep investigating/defending
 
 ### Reward Option 3: Fast-Track Investigation 🚀
 - **Effect:** On your **next** Investigate action (only the next one), you succeed on 5+ instead of 11+ (still costs 5 Budget, still need justification modifiers)
-- **When to Choose:** If you want guaranteed next investigation success
-- **Strategic Value:** Guaranteed clue about next card in chain
+- **When to Choose:** If you want a near-guaranteed next investigation success
+- **Strategic Value:** Reliable progress toward the next card's clue—or its reveal (v2.2)
 
 **Important:** Choose only ONE reward per card reveal. Cannot combine rewards.
 
@@ -418,11 +434,11 @@ Every game should conclude with guided reflection connecting game mechanics to r
 
 2. **"Which action type was most effective for you—Investigate or Deploy Defense?"**
    - Some teams succeed with heavy investigation, others with defense-focused discovery
-   - Both are valid; discuss trade-offs
+   - Both are valid; discuss trade-offs (v2.2: investigation reveals need two successes but cost less)
 
-3. **"How did Uncontained Threats penalties affect your decisions?"**
+3. **"How did the Uncontained Threats penalty and Active Breach Cost affect your decisions?"**
    - Did they force you to make reactive decisions?
-   - Were they realistic representations of incident response costs?
+   - Were they realistic representations of incident response and dwell-time costs?
 
 4. **"If you replayed, what would you do differently?"**
    - Reflection on optimization and efficiency
@@ -466,7 +482,7 @@ Every game should conclude with guided reflection connecting game mechanics to r
 4. **"How does game dwell time compare to real breaches?"**
    - Average dwell time in real breaches: 200+ days
    - Game represents 2-8 hours of focused investigation
-   - Discussion of why real dwell times are so long
+   - The Active Breach Cost models why every day of dwell time hurts
 
 ---
 
@@ -476,7 +492,7 @@ Every game should conclude with guided reflection connecting game mechanics to r
 
 1. **Read the module rules completely** - Understand Investigate, Deploy Defense, and Emergency Response mechanics
 2. **Prepare your attack chain** - Pre-build or write down your 3-5 hidden cards in sequence
-3. **Write clear clues** - For each card, write 2-3 progressive clues that reveal information gradually
+3. **Write clear clues** - For each card, write 2-3 progressive clues that reveal information gradually (v2.2: expect up to two clue deliveries per card before an investigation reveal)
 4. **Organize materials** - Sort Defense Cards by tier, prepare trackers, have dice ready
 5. **Practice reading clues dramatically** - Deliver them with narrative flair to create engagement
 
@@ -499,7 +515,7 @@ Every game should conclude with guided reflection connecting game mechanics to r
 ### Balancing Difficulty During Play
 
 **The game is TOO EASY if:**
-- Team reveals all cards in turns 1-4 with 60+ Budget remaining
+- Team reveals all cards in the first half of the turn limit with 60+ Budget remaining
 - Multiple consecutive successful rolls (unlikely with d20)
 - Clues are too specific/obvious
 - Team makes no difficult decisions
@@ -507,7 +523,7 @@ Every game should conclude with guided reflection connecting game mechanics to r
 **Action:** Make clues more subtle, reduce starting budget next time, or add extra card to chain
 
 **The game is TOO HARD if:**
-- Team gets stuck after revealing only 1 card (5+ turns with no progress)
+- Team gets stuck after revealing only 1 card (4+ turns with no progress)
 - Multiple consecutive failed rolls
 - Team is frustrated rather than challenged
 - Team is out of ideas about what to investigate
@@ -515,10 +531,10 @@ Every game should conclude with guided reflection connecting game mechanics to r
 **Action:** Provide more explicit clues, increase starting budget, reduce chain length
 
 **Adjustment Options:**
-- **Chain Length:** 3 (easier) vs. 4 (medium) vs. 5 (harder)
+- **Chain Length:** 3 (easier) vs. 4 (medium) vs. 5 (harder) — the turn limit scales automatically via (chain × 2) + 1
 - **Clue Quality:** More specific/obvious (easier) vs. subtle (harder)
 - **Starting Budget:** 80 (harder) vs. 100 (medium) vs. 120 (easier)
-- **Turn Limit:** 8 (harder) vs. 10 (medium) vs. 12 (easier)
+- **Turn Limit:** formula −1 (harder) vs. formula (medium) vs. formula +1 (easier)
 
 ### Running Competitive Games (Multiple Teams)
 
@@ -542,7 +558,7 @@ If running for tournament or competitive context:
 3. T-10: SQL Database Exfiltration (C2 & EXFIL - DATA EXFIL)
 
 **Starting Budget:** 100
-**Turn Limit:** 12
+**Turn Limit:** 7 [(3 × 2) + 1]
 
 **Narrative Setup:**
 > "Your startup just deployed a new customer database. An employee clicked a malicious link in an email claiming to be from IT. Security monitoring detected unusual PowerShell activity after that. Now you're investigating what happened."
@@ -552,11 +568,11 @@ If running for tournament or competitive context:
 **Best For:** First-time players, classroom introduction
 
 **Sample Defenses in Starting Hand:**
-- Email Authentication Setup (BASIC, 10)
-- User Security Training (BASIC, 10)
-- Multi-Factor Authentication (ADVANCED, 15)
-- EDR Agent Deployment (ADVANCED, 15)
-- Data Loss Prevention (ELITE, 25)
+- D-01: Email Authentication Setup (BASIC, 10)
+- D-02: User Security Training (BASIC, 10)
+- D-07: Multi-Factor Authentication (ADVANCED, 15)
+- D-08: EDR (Endpoint Detection & Response) (ADVANCED, 15)
+- D-11: Data Loss Prevention (ADVANCED, 15)
 
 ---
 
@@ -569,7 +585,7 @@ If running for tournament or competitive context:
 4. T-09: Beaconing to C2 Server (C2 & EXFIL - NETWORK)
 
 **Starting Budget:** 100
-**Turn Limit:** 10
+**Turn Limit:** 9 [(4 × 2) + 1]
 
 **Narrative Setup:**
 > "Your organization's industry-specific website was silently compromised last month. A sophisticated attacker injected malicious code that targeted specific visitor browsers. One of your engineers visited the site and became infected. You're detecting strange network activity but aren't sure what's happening."
@@ -579,12 +595,12 @@ If running for tournament or competitive context:
 **Best For:** Experienced players, demonstrating complex kill chain
 
 **Sample Defenses:**
-- Web Application Firewall (ADVANCED, 15)
-- Network Segmentation (ADVANCED, 15)
-- Host-Based Firewall Rules (BASIC, 10)
-- EDR Agent Deployment (ADVANCED, 15)
-- Threat Hunting (ELITE, 25)
-- Memory Forensics (ELITE, 25)
+- D-18: Intrusion Prevention System (IPS) (ADVANCED, 15)
+- D-09: Network Segmentation (ADVANCED, 15)
+- D-04: Network Firewall Rules (BASIC, 10)
+- D-08: EDR (Endpoint Detection & Response) (ADVANCED, 15)
+- D-13: Threat Hunting Program (ELITE, 25)
+- D-14: Memory Forensics (ELITE, 25)
 
 ---
 
@@ -598,7 +614,7 @@ If running for tournament or competitive context:
 5. T-11: Ransomware Payload Deployment (C2 & EXFIL - MALWARE)
 
 **Starting Budget:** 100
-**Turn Limit:** 10
+**Turn Limit:** 11 [(5 × 2) + 1]
 
 **Narrative Setup:**
 > "A trusted software vendor released an update to your monitoring tools three weeks ago. Today, you're detecting ransomware-like activity across your infrastructure. You suspect the vendor update was compromised. Can you trace the attack chain before the ransomware wakes up?"
@@ -608,13 +624,13 @@ If running for tournament or competitive context:
 **Best For:** Advanced players, demonstrating supply chain risk
 
 **Sample Defenses:**
-- Vendor Security Verification (ADVANCED, 15)
-- EDR Agent Deployment (ADVANCED, 15)
-- Network Segmentation (ADVANCED, 15)
-- Ransomware-Specific Behavior Detection (ELITE, 25)
-- Kernel Exploit Mitigations (ELITE, 25)
-- Memory Forensics (ELITE, 25)
-- Data Loss Prevention (ELITE, 25)
+- D-17: Advanced Malware Sandbox (ELITE, 25) — detonates vendor updates before deployment
+- D-08: EDR (Endpoint Detection & Response) (ADVANCED, 15)
+- D-09: Network Segmentation (ADVANCED, 15)
+- D-03: Windows Update Patching (BASIC, 10) — closes the kernel exploit
+- D-14: Memory Forensics (ELITE, 25)
+- D-19: Backup & Disaster Recovery (BASIC, 10)
+- D-11: Data Loss Prevention (ADVANCED, 15)
 
 ---
 
@@ -635,8 +651,8 @@ If running for tournament or competitive context:
 ### Variation 2: Speed Mode
 
 **Compress the Game:**
-- Reduce turn limit to 8 (extra pressure)
-- Optional: Remove Uncontained Threats penalty (less bookkeeping)
+- Reduce the turn limit by 2 (e.g., a 3-card chain plays in 5 turns instead of 7)
+- Optional: Remove Uncontained Threats penalty and Active Breach Cost (less bookkeeping)
 - Budget costs stay the same
 - Budget starts at 120 to balance speed pressure
 
@@ -648,7 +664,7 @@ If running for tournament or competitive context:
 
 **Deeper Forensics:**
 - Add "Advanced Investigate" action (costs 15 Budget, rolls 11+)
-- Advanced Investigate provides more detailed clues or reveals multiple cards if targeting chain end
+- A successful Advanced Investigate counts as TWO accumulated investigation successes (i.e., it can reveal a link in one action if you already have a clue, v2.2)
 - Allows for riskier but more rewarding investigation strategy
 
 **Best For:** Players who want forensic investigation to feel more rewarding
@@ -712,9 +728,9 @@ If running for tournament or competitive context:
 
 | Action | Cost | Roll Required | Success Condition | Failure Condition |
 |--------|------|---------------|-------------------|--------------------|
-| **Investigate** | 5 Budget | 11+ on d20 | Clue about next card | No intel gained |
-| **Deploy Defense** | 10/15/25 | 11+ on d20 | Possibly reveal card | Defense not deployed |
-| **Emergency Response** | 25 Budget | None | Threat removed, penalty stops | — |
+| **Investigate** | 5 Budget | roll + modifiers ≥ 11 | 1st success: clue; 2nd success on same link: card revealed (v2.2) | No intel gained |
+| **Deploy Defense** | 10/15/25 | roll + modifiers ≥ 11 | Full match reveals card immediately | Defense not deployed |
+| **Emergency Response** | 15 Budget (v2.2) | None | Threat removed, penalty stops | — |
 
 ---
 
@@ -724,6 +740,7 @@ If running for tournament or competitive context:
 |-------|--------------|----------|
 | **+2** | Strong technical justification | "Analyze mail headers in gateway logs to identify true sender IP, check against threat intelligence" |
 | **+1** | Real security tools/techniques | "Query SIEM for scheduled tasks", "Check Mimikatz in memory", "Review EDR telemetry" |
+| **+2** | Deployed Defense Persistence (v2.2) | A deployed defense's vector matches the targeted chain link |
 | **+0** | Vague/no justification | "Find suspicious activity" |
 
 ---
@@ -732,9 +749,26 @@ If running for tournament or competitive context:
 
 | Tracker | Starts At | Changes |
 |---------|-----------|---------|
-| **Budget** | 100 | -5 per Investigate, -10/15/25 per Defense, -25 per Emergency Response, -5 per uncontained threat at turn start |
-| **Turn** | 1 | +1 each turn |
+| **Budget** | 100 | -5 per Investigate, -10/15/25 per Defense, -15 per Emergency Response, -5 per uncontained threat at turn start, -5 Active Breach Cost at turn start while any chain card is unrevealed (v2.2); floor 0 |
+| **Turn** | 1 | +1 each turn (limit = chain × 2 + 1) |
 | **Uncontained Threats** | 0 | +1 when card revealed, -1 when auto-mitigated or Emergency Response used |
+
+---
+
+## v2.2 Playtest Edition Changes
+
+Changes for playtesters to validate, and why they were made:
+
+1. **Investigation reveals (accumulating successes).** The first successful Investigation of a chain link yields a clue; a **second** successful Investigation of that same link reveals the card. Deploy Defense full-match still reveals immediately. Previously only defense deployment could reveal cards, contradicting the overview text. **Validate:** does investigation-led play feel viable but slower than defense-led play?
+2. **Deployed Defense Persistence.** A deployed defense grants **+2 to Investigate/Deploy rolls** against any chain link matching its vector. Partial/no-match deployments now have lasting value.
+3. **Active Breach Cost.** −5 Budget at the start of each turn while at least one chain card is unrevealed. Fixes the inversion where hidden threats were free; teaches that dwell time costs money.
+4. **Economy rebalance:** Budget Grant reward reduced +15 → **+10**; Emergency Response repriced 25 → **15** Budget.
+5. **Budget edge rules:** Budget floors at 0; actions require full cost; victory is checked immediately on the final reveal (before start-of-turn penalties); defeat at 0 only if no legal action exists.
+6. **Turn limits use the Variable Game Length formula** (chain × 2) + 1 → 7/9/11 turns, replacing the fixed 12/10/10 table (see [Core Rules §3a](core-rules.md#3a-variable-game-length-system-v21---new)).
+7. **Sequential discovery clarified:** only the earliest unrevealed chain card can be revealed.
+8. **Content fixes:** sample-defense lists now cite real card IDs from the canonical 24-card deck (D-01–D-24); D-11 DLP correctly listed as ADVANCED/15.
+
+**Rough balance check (3-card beginner game, 7 turns):** worst-case fixed costs are 5/turn Active Breach + 5/turn for one uncontained threat ≈ 60-70 Budget over a full game, leaving ~30-40 for actions before rewards; two Budget Grants (+20) and cheap Investigates (5) keep an investigation-led run solvent — see the worked example above, which ends at 5 Budget on turn 7.
 
 ---
 
@@ -749,4 +783,4 @@ If running for tournament or competitive context:
 
 *Incident Response Module - Rules & Mechanics*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

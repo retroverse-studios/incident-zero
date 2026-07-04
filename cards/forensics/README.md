@@ -1,6 +1,6 @@
 # Forensics Module: Card Decks
 
-**Version:** 2.1 - Investigation & Attribution Edition
+**Version:** 2.2 - Playtest Edition
 
 ---
 
@@ -17,13 +17,13 @@ The **Forensics Module** focuses on digital forensics and incident investigation
 
 | Deck | Cards | Description |
 |------|-------|-------------|
-| **Core Deck** | 24 total | Investigation Actions (12) + Evidence (12) |
-| **Expansion Deck** | 16 total | Advanced techniques + challenging scenarios |
-| **Total** | 40 cards | Complete Forensics game |
+| **Core Deck** | 28 total | Investigation Actions (12) + Evidence (12) + Findings (4) |
+| **Expansion Deck** | 16 planned | **PLANNED — not yet available.** Advanced techniques + challenging scenarios |
+| **Total available today** | 28 cards | Complete core Forensics game |
 
 ---
 
-## Core Deck (24 Cards)
+## Core Deck (28 Cards)
 
 ### Investigation Action Cards (12)
 
@@ -50,16 +50,16 @@ Investigation Action cards represent specific forensic analysis techniques that 
 
 Evidence cards represent specific findings discovered during investigations.
 
-**By Evidence Type:**
+**By Evidence Type (as printed on the cards):**
 
 | Type | Cards | Description |
 |------|-------|-------------|
-| **Malware & Persistence** | EVD-01, EVD-03, EVD-10 | Malware, scheduled tasks, behavior profiles |
-| **Credentials & Access** | EVD-04 | Suspicious logins, compromised accounts |
-| **Lateral Movement** | EVD-05 | Pass-the-hash, privilege escalation |
-| **Exfiltration** | EVD-06, EVD-11 | Data transfers, file staging artifacts |
-| **Infrastructure** | EVD-02, EVD-07 | C2 domains, attacker infrastructure map |
-| **Activity** | EVD-08, EVD-09, EVD-12 | Encryption keys, command history, anti-forensics |
+| **Malware & Persistence** (4) | EVD-01, EVD-03, EVD-08, EVD-10 | Malware, scheduled tasks, encryption keys, behavior profiles |
+| **Credentials & Access** (1) | EVD-04 | Suspicious logins, compromised accounts |
+| **Lateral Movement** (1) | EVD-05 | Pass-the-hash, privilege escalation |
+| **Exfiltration** (1) | EVD-06 | Large data transfers to attacker infrastructure |
+| **Attack Infrastructure** (2) | EVD-02, EVD-07 | C2 domains, attacker infrastructure map |
+| **Attack Activity** (3) | EVD-09, EVD-11, EVD-12 | Command history, file staging artifacts, anti-forensics |
 
 **Card Details:**
 - See [evidence-cards.md](core-deck/evidence-cards.md) for complete card specifications
@@ -67,11 +67,26 @@ Evidence cards represent specific findings discovered during investigations.
 
 ---
 
-## Expansion Deck (16 Cards)
+### Findings Cards (4)
 
-The Expansion Deck provides advanced investigation techniques and challenging forensic scenarios.
+Findings cards are synthesis/conclusion cards revealed as the investigation completes:
 
-### Advanced Investigation Actions (8 Cards)
+| Card | Finding |
+|------|---------|
+| **FIND-01** | Threat Attribution Report |
+| **FIND-02** | Attack Surface Analysis |
+| **FIND-03** | Persistence Mechanisms Discovered |
+| **FIND-04** | Investigative Gaps & Recommendations |
+
+Printed in [evidence-cards.md](core-deck/evidence-cards.md) (Findings section).
+
+---
+
+## Expansion Deck (16 Cards) — PLANNED, NOT YET AVAILABLE
+
+> **Status: PLANNED.** The expansion deck has not been produced yet. The tables below are design notes for a future release — there are no printable expansion card files. Play with the 28-card core deck.
+
+### Advanced Investigation Actions (8 Cards — design notes)
 
 | Card | Technique | DC | Cost | Advanced Challenge |
 |------|-----------|----|----|-------------------|
@@ -86,7 +101,7 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 
 ---
 
-### Advanced Evidence Cards (8 Cards)
+### Advanced Evidence Cards (8 Cards — design notes)
 
 | Card | Evidence Type | Difficulty | Description |
 |------|---------------|-----------|-------------|
@@ -105,15 +120,14 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 
 ### By Printable Deck
 
-**Core Deck (24 cards, printable on 3-4 sheets):**
+**Core Deck (28 cards, printable on 4 sheets):**
 - Sheet 1: Investigation Actions 1-6 (DISK, MEM, LOG cards)
 - Sheet 2: Investigation Actions 7-12 (NET, MALW, TIMELINE, THREAT)
 - Sheet 3: Evidence Cards 1-12 (EVD-01 through EVD-12)
 - Sheet 4: Findings Cards (FIND-01 through FIND-04)
 
-**Expansion Deck (16 cards, printable on 2 sheets):**
-- Sheet 1: Advanced Investigation Actions (ADV-01 through ADV-08)
-- Sheet 2: Advanced Evidence Cards (ADV-EVD-01 through ADV-EVD-08)
+**Expansion Deck (PLANNED — not yet available):**
+- Will add 2 sheets (8 Advanced Investigation Actions + 8 Advanced Evidence cards) when released
 
 ---
 
@@ -129,8 +143,8 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 
 1. **Download & Print:**
    - Print [investigation-cards.md](core-deck/investigation-cards.md) on cardstock
-   - Print [evidence-cards.md](core-deck/evidence-cards.md) on cardstock
-   - Print [advanced-cards.md](expansion-deck/advanced-cards.md) on cardstock (if using expansion)
+   - Print [evidence-cards.md](core-deck/evidence-cards.md) on cardstock (includes the 4 Findings cards)
+   - Expansion deck: PLANNED — no printable file exists yet
 
 2. **Cut Cards:**
    - Standard card size: 3.5" × 5.5"
@@ -138,8 +152,7 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
    - Or print with margins and use guillotine cutter
 
 3. **Organize Decks:**
-   - Core Deck: 24 cards (Investigation + Evidence + Findings)
-   - Expansion Deck: 16 cards (Advanced only)
+   - Core Deck: 28 cards (12 Investigation + 12 Evidence + 4 Findings)
    - Use card box or deck box for storage
 
 4. **Optional: Sleeve & Laminate**
@@ -162,7 +175,7 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 ### In Sequential Play (After IR/DR)
 
 1. **Use only relevant Evidence cards** for the attack chain already known
-2. **Leave advanced cards face-down** unless they apply to scenario
+2. **Leave non-relevant Evidence cards out of play** (advanced cards arrive with the planned expansion)
 3. **Investigation Actions remain the same**
 4. **Progress meters reflect prior knowledge**
 
@@ -178,18 +191,18 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 
 ### Distribution
 
-**Investigation Actions by Difficulty:**
-- Easy (DC 11-12): 3 cards (LOG-01, TIMELINE-01, NET-01)
-- Medium (DC 13-14): 6 cards (DISK-01, MEM-01, LOG-02, NET-02, MALW-01, DISK-02)
-- Hard (DC 15): 3 cards (MEM-02, MALW-02, THREAT-01)
+**Investigation Actions by Difficulty (recounted from the cards):**
+- Easy (DC 11-12): 4 cards (LOG-01 [11], DISK-01 [12], NET-01 [12], MALW-01 [12])
+- Medium (DC 13-14): 6 cards (MEM-01 [13], LOG-02 [13], TIMELINE-01 [13], DISK-02 [14], NET-02 [14], MALW-02 [14])
+- Hard (DC 15): 2 cards (MEM-02, THREAT-01)
 
-**Evidence by Type:**
-- Malware & Persistence: 3 cards
-- Credentials & Access: 1 card
-- Lateral Movement: 1 card
-- Exfiltration: 2 cards
-- Infrastructure: 2 cards
-- Activity: 3 cards
+**Evidence by Type (recounted from the cards):**
+- Malware & Persistence: 4 cards (EVD-01, EVD-03, EVD-08, EVD-10)
+- Credentials & Access: 1 card (EVD-04)
+- Lateral Movement: 1 card (EVD-05)
+- Exfiltration: 1 card (EVD-06)
+- Attack Infrastructure: 2 cards (EVD-02, EVD-07)
+- Attack Activity: 3 cards (EVD-09, EVD-11, EVD-12)
 
 **Findings by Type:**
 - Attribution Report: 1 card
@@ -209,17 +222,17 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 **Example Investigation Path:**
 1. LOG-01 (Event Log) → EVD-04 (Suspicious Login)
 2. MALW-01 (Dynamic Analysis) → EVD-01 (Malware)
-3. TIMELINE-01 (Reconstruction) → EVD-03 (Persistence)
-4. THREAT-01 (Attribution) → FIND-01 (Attribution Report)
+3. DISK-01 (Disk Image) → EVD-03 (Persistence)
+4. THREAT-01 (Attribution) → EVD-07 (Infrastructure Map) + FIND-01 (Attribution Report)
 
 ---
 
-### Advanced Scenario (TIER 3-4)
+### Advanced Scenario (TIER 3-4) — requires the PLANNED expansion deck
 - Use all core Investigation Actions
-- Combine with Expansion cards
+- Combine with Expansion cards (not yet available — design note only)
 - Require multiple evidence sources for findings
 
-**Example Investigation Path:**
+**Example Investigation Path (future expansion):**
 1. DISK-02 (File Carving) → ADV-EVD-01 (Cloud Compromise)
 2. MEM-02 (Deep Memory) → ADV-EVD-04 (Firmware Rootkit)
 3. NET-02 (Deep Packet Analysis) → ADV-EVD-06 (Nation-State)
@@ -232,21 +245,27 @@ The Expansion Deck provides advanced investigation techniques and challenging fo
 
 ### Investigation → Evidence Flow
 
+Regenerated (v2.2) from the "Discovery Source" section printed on each Evidence card — the cards are canonical:
+
 ```
-DISK-01 ──→ EVD-01, EVD-03, EVD-11
-MEM-01 ──→ EVD-02, EVD-04, EVD-09
-LOG-01 ──→ EVD-04, EVD-05
-LOG-02 ──→ EVD-05, EVD-09
-NET-01 ──→ EVD-02, EVD-06
-NET-02 ──→ EVD-06, EVD-08
-MALW-01 ──→ EVD-01, EVD-10
-MALW-02 ──→ EVD-01, EVD-08
-TIMELINE ──→ EVD-09, EVD-11
-THREAT-01 ──→ EVD-07, FIND-01
+DISK-01 ──→ EVD-01, EVD-03, EVD-05, EVD-09, EVD-11, EVD-12
+DISK-02 ──→ EVD-01, EVD-05, EVD-08, EVD-11, EVD-12
+MEM-01  ──→ EVD-01, EVD-03, EVD-05, EVD-12
+MEM-02  ──→ EVD-01, EVD-05, EVD-08, EVD-09, EVD-12
+LOG-01  ──→ EVD-03, EVD-04, EVD-12
+LOG-02  ──→ EVD-04, EVD-05, EVD-06, EVD-09, EVD-11, EVD-12
+NET-01  ──→ EVD-02, EVD-05, EVD-06, EVD-07, EVD-11
+NET-02  ──→ EVD-02, EVD-06
+MALW-01 ──→ EVD-01, EVD-02, EVD-03, EVD-06, EVD-08, EVD-09,
+            EVD-10, EVD-11, EVD-12
+MALW-02 ──→ EVD-01, EVD-02, EVD-07, EVD-08, EVD-10, EVD-12
+TIMELINE-01 ──→ EVD-04
+THREAT-01   ──→ EVD-07 (and triggers FIND-01)
 ```
 
 Each Investigation Action typically discovers one or more Evidence cards.
 Multiple Investigation Actions may point to the same Evidence (corroboration).
+Every Evidence card (EVD-01 through EVD-12) is discoverable by at least one Investigation Action.
 
 ---
 
@@ -266,7 +285,7 @@ Multiple Investigation Actions may point to the same Evidence (corroboration).
 ## Frequently Asked Questions
 
 **Q: Can I mix Core and Expansion decks?**
-A: Yes! Expansion cards add complexity and advanced scenarios. Recommended only for experienced players (TIER 3-4).
+A: The Expansion Deck is PLANNED and not yet available. When released, expansion cards will add complexity and advanced scenarios, recommended only for experienced players (TIER 3-4).
 
 **Q: How many Investigation Actions should I have in hand?**
 A: In core deck play, typically 2-3 actions available at any time. Expansion deck increases options to 4-5.
@@ -287,18 +306,18 @@ A: Check the "Discovery Source" section on each Evidence card. It lists which In
 
 ## Card Availability
 
-All Forensics cards are available for printing:
+All core Forensics cards are available for printing:
 
 ### Core Deck Files
 - [investigation-cards.md](core-deck/investigation-cards.md) - 12 Investigation Action cards
 - [evidence-cards.md](core-deck/evidence-cards.md) - 12 Evidence + 4 Findings cards
 
 ### Expansion Deck Files
-- [advanced-cards.md](expansion-deck/advanced-cards.md) - 8 Advanced Actions + 8 Advanced Evidence
+- PLANNED — not yet available (see the design notes above)
 
 ### Tracking Sheets & Templates
-- [Forensics Progress Meter Tracker](../assets/forensics-tracker-template.xlsx)
-- [Investigation Log Worksheet](../assets/forensics-investigation-log.xlsx)
+- Progress Meter Tracker: print templates coming in the print pack. Until then, draw a simple 4-meter tracker on paper: four rows labeled Timeline Completeness, Attack Chain Reconstruction, Attribution Confidence, Evidence Chain of Custody, each marked 0-100% in 5% steps.
+- Investigation Log: a plain sheet with columns Turn / Action / Cost / Roll vs. DC / Result / Evidence discovered / Chain of custody note.
 
 ---
 
@@ -325,9 +344,13 @@ Want to create additional Forensics cards? Follow the [Card Consistency Model](.
 
 ## Version History
 
-- **v2.1** (Current) - Investigation & Attribution Edition
-  - 24 Core Deck cards (Investigation + Evidence + Findings)
-  - 16 Expansion Deck cards (Advanced scenarios)
+- **v2.2** (Current) - Playtest Edition
+  - Deck summaries recounted from the actual cards (28-card core deck: 12 + 12 + 4)
+  - Evidence-flow map regenerated from the cards' Discovery Sources
+  - Expansion deck marked PLANNED (design notes only; dead links removed)
+- **v2.1** - Investigation & Attribution Edition
+  - 28 Core Deck cards (Investigation + Evidence + Findings)
+  - 16 Expansion Deck cards specified (design)
   - Full MITRE ATT&CK integration
   - Chain of custody tracking for legal admissibility
 

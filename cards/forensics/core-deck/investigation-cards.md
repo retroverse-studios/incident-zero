@@ -1,6 +1,6 @@
 # Forensics Module: Investigation Action Cards (Core Deck)
 
-**Version:** 2.1 - Investigation & Attribution Edition
+**Version:** 2.2 - Playtest Edition
 **Card Count:** 12 Investigation Action Cards
 **Printable:** Yes (see printing instructions below)
 
@@ -9,6 +9,10 @@
 ## Overview
 
 Investigation Action cards represent specific forensic analysis techniques that investigators can deploy to discover evidence about the attack. Each card has a **Difficulty Class (DC)** that represents the skill required to successfully complete the investigation, a **Cost** in Budget, and a **Duration** showing how many turns the investigation takes.
+
+**Duration rule (v2.2):** Starting an investigation with Duration N occupies your action (and its Budget cost) on the turn you start it. Counting that turn as turn 1, the roll is made and the results arrive at the START of turn N — so Duration 1 resolves immediately, Duration 2 at the start of the next turn, Duration 3 two turns after starting. Only ONE multi-turn investigation may be in flight at a time; you may take other actions while waiting.
+
+**No Double Counting (v2.2):** When an investigation discovers an Evidence card, apply ONLY the Evidence card's printed meter impacts (plus the +5% Chain of Custody handling bonus for stating how it was preserved). The "Advance" line in each card's SUCCESS block applies only when no Evidence card is produced (e.g., no suitable undiscovered Evidence remains); partial-success advance lines apply as printed.
 
 ---
 
@@ -36,11 +40,12 @@ Each Investigation Action Card includes:
 ║              DISK-01: DISK IMAGE & ANALYSIS                    ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Forensic Disk Imaging & Analysis                    ║
-║ MITRE ATT&CK: T1005 (Data Staged), T1025 (Data from Removable) ║
+║ MITRE ATT&CK: T1005 (Data from Local System), T1025 (Data from ║
+║              Removable Media)                                  ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 12                                           ║
 ║ Budget Cost: 10                                                ║
-║ Duration: 2 turns (or execute in 1 turn if budget allows)      ║
+║ Duration: 2 turns (v2.2 rush: pay +5 Budget for Duration 1)    ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ DESCRIPTION:                                                   ║
 ║ Create a bit-for-bit disk image of the compromised system,     ║
@@ -57,7 +62,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 12):                                        ║
 ║ Discover ONE Evidence card from: Malware Sample, Persistence   ║
 ║ Mechanism, or Downloaded Malware evidence set.                 ║
-║ Advance: Timeline Completeness +10%, Attack Chain +15%         ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Timeline Completeness +10%, Attack Chain +15%                  ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll DC-2 to DC-1 = 10-11):                  ║
 ║ Discover INCOMPLETE Evidence card (partial findings).          ║
@@ -72,7 +78,7 @@ Each Investigation Action Card includes:
 ║ ✓ All evidence from this source is admissible in court         ║
 ║                                                                 ║
 ║ SKILL MODIFIERS:                                               ║
-║ +2 if investigator has formal GCIH/CCNA-Security training      ║
+║ +2 if investigator has formal GCIH/GCFE training               ║
 ║ +1 if investigator has IT administration background            ║
 ║ +1 if team provides detailed explanation of imaging process    ║
 ╠════════════════════════════════════════════════════════════════╣
@@ -94,7 +100,7 @@ Each Investigation Action Card includes:
 ║              DISK-02: FILE SYSTEM CARVING                      ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Advanced File Recovery & Data Carving               ║
-║ MITRE ATT&CK: T1005 (Data Staged), T1485 (Data Destruction)   ║
+║ MITRE ATT&CK: T1074 (Data Staged), T1485 (Data Destruction)   ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 14                                           ║
 ║ Budget Cost: 15                                                ║
@@ -116,7 +122,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 14):                                        ║
 ║ Discover ONE Evidence card from: Deep Malware Samples,         ║
 ║ Encryption Keys Found, or Hidden Backdoor evidence.            ║
-║ Advance: Attack Chain +20%, Chain of Custody +10%              ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +20%, Chain of Custody +10%                       ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 12-13):                                  ║
 ║ Discover partial data (e.g., fragments of deleted file).       ║
@@ -155,8 +162,8 @@ Each Investigation Action Card includes:
 ║              MEM-01: MEMORY DUMP & ANALYSIS                    ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Volatile Memory Forensics (RAM analysis)            ║
-║ MITRE ATT&CK: T1120 (Peripheral Device Discovery), T1057       ║
-║              (Process Discovery), T1518 (Software Discovery)   ║
+║ MITRE ATT&CK: T1055 (Process Injection), T1057 (Process        ║
+║              Discovery), T1518 (Software Discovery)            ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 13                                           ║
 ║ Budget Cost: 15                                                ║
@@ -180,7 +187,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 13):                                        ║
 ║ Discover ONE Evidence card from: Active Malware Process,       ║
 ║ C2 Connection, or Injected Code evidence.                      ║
-║ Advance: Attack Chain +20%, Timeline Completeness +10%         ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +20%, Timeline Completeness +10%                  ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 11-12):                                  ║
 ║ Discover evidence of suspicious process (incomplete details).  ║
@@ -217,8 +225,8 @@ Each Investigation Action Card includes:
 ║              MEM-02: MEMORY FORENSICS DEEP DIVE                ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Advanced Volatile Memory Analysis                   ║
-║ MITRE ATT&CK: T1112 (Modify System Image), T1187 (Forced Auth) ║
-║              T1140 (Deobfuscate/Decode Files or Information)   ║
+║ MITRE ATT&CK: T1112 (Modify Registry), T1055 (Process          ║
+║              Injection), T1140 (Deobfuscate/Decode Files)      ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 15                                           ║
 ║ Budget Cost: 20                                                ║
@@ -243,7 +251,8 @@ Each Investigation Action Card includes:
 ║ Discover TWO Evidence cards: One from malware behavior set     ║
 ║ (e.g., Encryption Keys, Command History) + one from attack     ║
 ║ technique set (e.g., Code Injection Method, Exploitation Used).║
-║ Advance: Attack Chain +25%, Attribution +20%                   ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +25%, Attribution +20%                            ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 13-14):                                  ║
 ║ Discover ONE complete Evidence + incomplete second evidence.   ║
@@ -282,7 +291,8 @@ Each Investigation Action Card includes:
 ║              LOG-01: EVENT LOG ANALYSIS                        ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Windows/Linux Log Examination                       ║
-║ MITRE ATT&CK: T1552 (Unsecured Credentials), T1098 (Account)   ║
+║ MITRE ATT&CK: T1552 (Unsecured Credentials), T1098 (Account    ║
+║              Manipulation)                                     ║
 ║              T1021 (Remote Services), T1078 (Valid Accounts)   ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 11                                           ║
@@ -306,7 +316,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 11):                                        ║
 ║ Discover ONE Evidence card from: Suspicious Login Timeline,    ║
 ║ Privilege Escalation Attempt, or Service Installation evidence.║
-║ Advance: Timeline Completeness +15%, Attack Chain +10%         ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Timeline Completeness +15%, Attack Chain +10%                  ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 9-10):                                   ║
 ║ Discover partial timeline (logs are fragmented or unclear).    ║
@@ -366,7 +377,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 13):                                        ║
 ║ Discover ONE Evidence card from: Lateral Movement Pattern,     ║
 ║ Complete Attack Timeline, or Attacker Command Sequence.        ║
-║ Advance: Timeline Completeness +20%, Attack Chain +25%         ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Timeline Completeness +20%, Attack Chain +25%                  ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 11-12):                                  ║
 ║ Discover partial timeline (some systems missing logs).         ║
@@ -427,7 +439,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 12):                                        ║
 ║ Discover ONE Evidence card from: C2 Server Evidence,           ║
 ║ Exfiltration Traffic Pattern, or Suspicious Domain Lookup.     ║
-║ Advance: Attack Chain +20%, Attribution +15%                   ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +20%, Attribution +15%                            ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 10-11):                                  ║
 ║ Discover suspicious traffic but destination unclear.           ║
@@ -465,8 +478,8 @@ Each Investigation Action Card includes:
 ║              NET-02: PACKET CAPTURE DEEP ANALYSIS              ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Advanced Protocol Forensics & Reconstruction        ║
-║ MITRE ATT&CK: T1557 (Adversary-in-the-Middle), T1040 (Traffic ║
-║              Rerouting), T1004 (Winlogon Helper DLL)           ║
+║ MITRE ATT&CK: T1557 (Adversary-in-the-Middle), T1040 (Network ║
+║              Sniffing), T1071 (Application Layer Protocol)     ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 14                                           ║
 ║ Budget Cost: 15                                                ║
@@ -490,7 +503,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 14):                                        ║
 ║ Discover TWO Evidence cards from: Exploitation Traffic,        ║
 ║ C2 Protocol Details, or Attacker Reconnaissance Pattern.       ║
-║ Advance: Attack Chain +25%, Attribution +25%                   ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +25%, Attribution +25%                            ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 12-13):                                  ║
 ║ Discover ONE complete evidence + incomplete second.            ║
@@ -552,7 +566,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 12):                                        ║
 ║ Discover ONE Evidence card from: Malware Behavior Profile,     ║
 ║ Persistence Mechanism Created, or C2 Callback Observed.        ║
-║ Advance: Attack Chain +20%, Attribution +10%                   ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +20%, Attribution +10%                            ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 10-11):                                  ║
 ║ Malware behavior observed but some details unclear.            ║
@@ -567,7 +582,7 @@ Each Investigation Action Card includes:
 ║ ✓ Admissible (widely accepted malware analysis evidence)      ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ SKILL MODIFIERS:                                               ║
-║ +2 if investigator has CRT (Certified Reverse Engineer - Malware)║
+║ +2 if investigator has GREM (GIAC Reverse Engineering Malware) ║
 ║ +1 if incident responder with malware analysis training        ║
 ║ +1 if detailed explanation of behavioral analysis approach     ║
 ║ -1 if malware implements anti-sandbox techniques               ║
@@ -589,8 +604,9 @@ Each Investigation Action Card includes:
 ║              MALW-02: MALWARE ANALYSIS (STATIC)                ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Code Reverse Engineering & Analysis                 ║
-║ MITRE ATT&CK: T1140 (Deobfuscate/Decode Files), T1113 (Screen  ║
-║              Capture), T1005 (Data Staged)                     ║
+║ MITRE ATT&CK: T1140 (Deobfuscate/Decode Files), T1027          ║
+║              (Obfuscated Files or Information), T1071          ║
+║              (Application Layer Protocol)                      ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 14                                           ║
 ║ Budget Cost: 10                                                ║
@@ -614,7 +630,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 14):                                        ║
 ║ Discover ONE Evidence card from: Malware Source Code Analysis, ║
 ║ Hardcoded C2 Server, or Code Similarity to Known Family.       ║
-║ Advance: Attack Chain +20%, Attribution +25%                   ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attack Chain +20%, Attribution +25%                            ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 12-13):                                  ║
 ║ Understand some code features but full analysis incomplete.    ║
@@ -653,7 +670,7 @@ Each Investigation Action Card includes:
 ║              TIMELINE-01: TIMELINE RECONSTRUCTION              ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Event Correlation & Chronological Analysis          ║
-║ MITRE ATT&CK: T1005 (Data Staged), T1087 (Account Discovery), ║
+║ MITRE ATT&CK: T1074 (Data Staged), T1087 (Account Discovery), ║
 ║              T1046 (Network Service Discovery)                 ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 13                                           ║
@@ -677,7 +694,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 13):                                        ║
 ║ Discover ONE Evidence card: Complete Attack Timeline with      ║
 ║ key decision points and transitions between phases identified. ║
-║ Advance: Timeline Completeness +25%, Attack Chain +15%         ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Timeline Completeness +25%, Attack Chain +15%                  ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 11-12):                                  ║
 ║ Partial timeline with some events missing or unclear.          ║
@@ -714,7 +732,7 @@ Each Investigation Action Card includes:
 ║              THREAT-01: THREAT ATTRIBUTION ANALYSIS            ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Technique: Threat Intelligence & Attribution                   ║
-║ MITRE ATT&CK: S#### (Software/Group categories)                ║
+║ MITRE ATT&CK: G#### group / S#### software identification      ║
 ║              Requires synthesis of all prior evidence           ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Difficulty Class: 15                                           ║
@@ -741,7 +759,8 @@ Each Investigation Action Card includes:
 ║ SUCCESS (roll ≥ DC 15):                                        ║
 ║ Discover ONE Evidence card: Threat Attribution Report with     ║
 ║ confidence level (60-90%) linking to specific threat group.    ║
-║ Advance: Attribution Confidence +35%, Attack Chain +10%        ║
+║ Advance (only if no Evidence card produced):                   ║
+║ Attribution Confidence +35%, Attack Chain +10%                 ║
 ║                                                                 ║
 ║ PARTIAL SUCCESS (roll 13-14):                                  ║
 ║ Partial attribution (likely group/profile but not 100% certain)║
@@ -821,7 +840,7 @@ A: Yes, but some combinations are more efficient. Multiple investigations often 
 A: Skill required. Easier investigations (LOG-01, TIMELINE-01) have DC 11-13. Complex investigations (MEM-02, THREAT-01) have DC 14-15.
 
 **Q: Why do some investigations take 3 turns?**
-A: They represent weeks of real forensic work compressed into game turns.
+A: They represent weeks of real forensic work compressed into game turns. Mechanically (v2.2): pay the cost and use your action on the turn you start; the roll and results arrive at the start of the turn the Duration completes. Only one multi-turn investigation may be in flight at a time.
 
 **Q: What modifiers apply to my roll?**
 A: Skill (+1 to +3), narrative explanation (+1 to +2), prior investigations (+1), challenge circumstances (-1 to -2).
@@ -830,7 +849,12 @@ A: Skill (+1 to +3), narrative explanation (+1 to +2), prior investigations (+1)
 
 ## Version History
 
-- **v2.1** (Current) - Investigation & Attribution Edition
+- **v2.2** (Current) - Playtest Edition
+  - Duration rule defined; DISK-01 rush option priced (+5 Budget for Duration 1)
+  - No Double Counting rule: Evidence card impacts replace success advance lines
+  - MITRE ATT&CK ID/name corrections (T1005, T1074, T1112, T1040, T1055, T1027, T1071)
+  - Credential corrections (GCIH/GCFE, GREM)
+- **v2.1** - Investigation & Attribution Edition
   - 12 Investigation Action Cards across 6 forensic disciplines
   - Difficulty Classes 11-15 with clear success criteria
   - Integration with MITRE ATT&CK framework

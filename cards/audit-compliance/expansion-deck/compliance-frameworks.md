@@ -1,6 +1,6 @@
 # Audit & Compliance Module: Compliance Frameworks & Remediation (Expansion)
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
@@ -9,7 +9,7 @@
 
 **Compliance Framework Cards** extend the Audit & Compliance module with industry-specific and regulation-specific assessment frameworks beyond the generic 6-domain audit.
 
-- **Total Cards:** 16 (8 framework variants + 8 remediation action cards)
+- **Total Cards:** 19 (11 framework variant cards + 8 remediation action cards)
 - **Used In:** Audit & Compliance expansion (specialized assessments)
 - **Prerequisite:** Complete generic audit with 6 domains
 - **Purpose:** Deep-dive assessment using specific compliance frameworks
@@ -60,7 +60,7 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 ### FRAMEWORK-NIST-02: Protect Function
 **Framework:** NIST CSF
-**Function:** Protect (AC - Access Control, AT - Awareness, DE - Data Security, IR - Info Protection, SC - Security Continuity)
+**Function:** Protect (PR.AC - Identity Management & Access Control, PR.AT - Awareness & Training, PR.DS - Data Security, PR.IP - Information Protection Processes, PR.MA - Maintenance, PR.PT - Protective Technology)
 **Focus:** Building security controls to prevent/slow attacks
 
 **Assessment Criteria:**
@@ -130,7 +130,7 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 ### FRAMEWORK-NIST-04: Respond Function
 **Framework:** NIST CSF
-**Function:** Respond (RP - Response Planning, CM - Communications Management)
+**Function:** Respond (RS.RP - Response Planning, RS.CO - Communications, RS.AN - Analysis, RS.MI - Mitigation, RS.IM - Improvements)
 **Focus:** Responding to breaches/attacks
 
 **Assessment Criteria:**
@@ -165,7 +165,7 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 ### FRAMEWORK-NIST-05: Recover Function
 **Framework:** NIST CSF
-**Function:** Recover (RC - Recovery Planning, IM - Improvements)
+**Function:** Recover (RC.RP - Recovery Planning, RC.IM - Improvements, RC.CO - Communications)
 **Focus:** Recovering from breaches and improving for next time
 
 **Assessment Criteria:**
@@ -198,7 +198,7 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 ---
 
-## CIS Controls (4 cards)
+## CIS Controls (3 cards)
 **Relevance:** General US/Canada, healthcare, financial, government
 **Key Standard:** CIS Controls (18 prioritized security controls)
 
@@ -284,6 +284,8 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 **Remediation Cards** represent specific actions to address compliance findings. These can be used after an audit to remediate identified gaps.
 
+**Budget note (v2.2):** these cards are the only place the Audit module's starting Budget (100, per core rules) is spent — the assessment itself costs nothing.
+
 ### REMEDIATION-01: Implement MFA
 **Cost:** 5 Budget
 **Timeline:** 2-4 weeks
@@ -299,7 +301,7 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 - User device (phone or security key)
 - Application/system support for MFA
 
-**Prerequisites:**
+**Impact:**
 - Reduces DOMAIN-02 (Access Control) findings
 - Makes credential attacks (T-03, T-06) harder
 - Improves Incident Response and Disaster Recovery modifiers
@@ -523,4 +525,4 @@ Organizations must often comply with specific regulatory frameworks. Each framew
 
 *Audit & Compliance Module: Compliance Frameworks & Remediation (Expansion)*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

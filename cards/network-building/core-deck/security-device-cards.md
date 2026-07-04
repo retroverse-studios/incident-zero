@@ -1,7 +1,7 @@
 # Network Building Module: Security Device Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -11,7 +11,7 @@
 
 - **Total Cards:** 10 (SEC-01 to SEC-10)
 - **Used In:** Network Building module
-- **Cost Range:** 6-20 Budget depending on capability and throughput
+- **Cost Range:** 6-15 Budget depending on capability and throughput
 - **Placement:** Between network segments or at network perimeter
 
 ---
@@ -20,7 +20,7 @@
 
 ### SEC-01: Firewall (Perimeter)
 **Type:** Perimeter Control
-**Cost:** 8 Budget
+**Cost:** 12 Budget
 **Placement:** Network edge (between internet and internal network)
 **Primary Function:** Block unauthorized inbound/outbound traffic
 
@@ -52,7 +52,7 @@ Traditional stateful firewall (Cisco ASA, Palo Alto Networks, Fortinet FortiGate
 
 ### SEC-02: Intrusion Detection System (IDS)
 **Type:** Threat Detection
-**Cost:** 12 Budget
+**Cost:** 10 Budget
 **Placement:** Internal network (behind firewall, in front of critical systems)
 **Primary Function:** Detect suspicious network traffic patterns
 
@@ -119,7 +119,7 @@ Network-based IPS (actively protective version of IDS). Can block traffic in add
 
 ### SEC-04: Load Balancer
 **Type:** Availability & Performance
-**Cost:** 6 Budget
+**Cost:** 8 Budget
 **Placement:** In front of multiple web servers
 **Primary Function:** Distribute traffic across multiple servers
 
@@ -144,13 +144,13 @@ Load balancer (F5, Citrix NetScaler, nginx, HAProxy) distributes incoming traffi
 
 **Health Check Mechanism:** Monitors backend servers; removes unhealthy servers automatically
 
-**Cost-Benefit:** Low cost (6 Budget) but high value if you have multiple web servers
+**Cost-Benefit:** Low cost (8 Budget) but high value if you have multiple web servers
 
 ---
 
 ### SEC-05: VPN Gateway
 **Type:** Remote Access Control
-**Cost:** 7 Budget
+**Cost:** 9 Budget
 **Placement:** Network perimeter (between internet and internal network)
 **Primary Function:** Secure remote access for employees/contractors
 
@@ -182,7 +182,7 @@ VPN concentrator (Cisco AnyConnect, Palo Alto Prisma Access, F5 BIG-IP) that cre
 
 ### SEC-06: Email Gateway
 **Type:** Email Security
-**Cost:** 9 Budget
+**Cost:** 6 Budget
 **Placement:** Network perimeter (filters incoming/outgoing email)
 **Primary Function:** Filter spam, phishing, and malware in email
 
@@ -354,12 +354,12 @@ Network of decoy systems (not SRV-10 honeypot server, but entire segment) design
 
 | Card | Device Type | Cost | Primary Vectors | Placement |
 |------|-------------|------|-----------------|-----------|
-| SEC-01 | Firewall (Perimeter) | 8 | NETWORK, CREDENTIAL | Perimeter |
-| SEC-02 | IDS | 12 | MALWARE, NETWORK | Internal |
+| SEC-01 | Firewall (Perimeter) | 12 | NETWORK, CREDENTIAL | Perimeter |
+| SEC-02 | IDS | 10 | MALWARE, NETWORK | Internal |
 | SEC-03 | IPS | 14 | MALWARE, WEB, NETWORK | Internal |
-| SEC-04 | Load Balancer | 6 | NETWORK (availability) | Web Tier |
-| SEC-05 | VPN Gateway | 7 | CREDENTIAL, NETWORK | Perimeter |
-| SEC-06 | Email Gateway | 9 | SOCIAL_ENG, MALWARE | Perimeter |
+| SEC-04 | Load Balancer | 8 | NETWORK (availability) | Web Tier |
+| SEC-05 | VPN Gateway | 9 | CREDENTIAL, NETWORK | Perimeter |
+| SEC-06 | Email Gateway | 6 | SOCIAL_ENG, MALWARE | Perimeter |
 | SEC-07 | WAF | 11 | WEB, MALWARE | Web Tier |
 | SEC-08 | Network Segmentation | 10 | CREDENTIAL, NETWORK | Internal |
 | SEC-09 | SIEM | 15 | Multiple (detection) | Central |
@@ -370,43 +370,42 @@ Network of decoy systems (not SRV-10 honeypot server, but entire segment) design
 ## Cost-Benefit Analysis
 
 ### Tier 1 (Essential for Any Organization)
-- SEC-01 (Firewall): 8 Budget - baseline perimeter control
+- SEC-01 (Firewall): 12 Budget - baseline perimeter control
 - SEC-09 (SIEM): 15 Budget - essential for detection
-- **Subtotal: 23 Budget** (minimum viable security monitoring)
+- **Subtotal: 27 Budget** (minimum viable security monitoring)
 
 ### Tier 2 (Advanced Organizations)
-- SEC-02 (IDS): 12 Budget
+- SEC-02 (IDS): 10 Budget
 - SEC-03 (IPS): 14 Budget - or choose IDS+IPS combo for redundancy
 - SEC-08 (Segmentation): 10 Budget - critical for limiting lateral movement
-- **Subtotal: 36 Budget** (adds detection + prevention + segmentation)
+- **Subtotal: 34 Budget** (adds detection + prevention + segmentation)
 
 ### Tier 3 (Specialized Protections)
-- SEC-06 (Email Gateway): 9 Budget - for email-heavy organizations
+- SEC-06 (Email Gateway): 6 Budget - for email-heavy organizations
 - SEC-07 (WAF): 11 Budget - if you have public web application
-- SEC-05 (VPN): 7 Budget - if you have remote workers
-- SEC-04 (Load Balancer): 6 Budget - if you need web app redundancy
+- SEC-05 (VPN Gateway): 9 Budget - if you have remote workers
+- SEC-04 (Load Balancer): 8 Budget - if you need web app redundancy
 - SEC-10 (Honeypot): 8 Budget - advanced detection tool
-- **Subtotal: 41 Budget** (specialized for specific scenarios)
+- **Subtotal: 42 Budget** (specialized for specific scenarios)
 
 ---
 
-## Gameplay Strategy Notes
+## Gameplay Strategy Notes (v2.2)
 
-### Small Organization (Budget: 100)
-- Firewall (8) + SIEM (15) = baseline
-- Add Email Gateway (9) + Network Segmentation (10) for total 42
-- Remaining 58 for servers
+Budgets are 40-60 by difficulty (Beginner 60 / Standard 50 / Advanced 40), and the Required servers eat most of it — plan security spending around what's left.
 
-### Medium Organization (Budget: 120)
-- Firewall (8) + SIEM (15) + Email Gateway (9) = baseline 32
-- Add IDS (12) + Network Segmentation (10) + Honeypot (8) = 30 more
-- Total security devices: 62
-- Remaining 58 for servers
+### Beginner (Budget: 60)
+- Dedicated servers for every Required item cost 46, leaving ~14 for security
+- Good picks: Email Gateway (6) + Honeypot Network (8) = 14, or Segmentation Switch (10) + a small reserve
 
-### Large Organization (Budget: 150)
-- Deploy multiple devices: Firewall + IDS + IPS + WAF + Email Gateway + SIEM + Segmentation + Honeypot
-- Cost all devices: ~100 Budget
-- Remaining 50 for servers
+### Standard (Budget: 50)
+- Cloud-hosting Email + Web on a Cloud Workload trims the Required servers to ~35, leaving ~15
+- Good picks: Segmentation Switch (10) or IDS (10) plus a 5-Budget contingency reserve, or Email Gateway (6) + Honeypot Network (8)
+
+### Advanced (Budget: 40)
+- Every device is a sacrifice; expect to record big detection gaps
+- Email Gateway (6) is the best value per Budget; a lone Segmentation Switch (10) pays off in every later module
+- Firewall (12) and SIEM (15) are usually out of reach — note the gap and move on
 
 ---
 
@@ -425,4 +424,4 @@ Network of decoy systems (not SRV-10 honeypot server, but entire segment) design
 
 *Network Building Module: Security Device Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

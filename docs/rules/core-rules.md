@@ -1,6 +1,6 @@
 # Incident Zero: Core Rules & Mechanics
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
@@ -37,8 +37,8 @@ Represent attacker actions. Each card includes:
 - **Why This Works:** Educational explanation (revealed after discovery)
 
 **Deck Composition:**
-- **12 Base Threat Cards** (see [cards/core-deck/threat-defense-cards.md](../../cards/core-deck/threat-defense-cards.md))
-- **8 Expansion Threat Cards** (see [cards/expansion-decks/advanced-threats.md](../../cards/expansion-decks/advanced-threats.md))
+- **12 Base Threat Cards** (see [cards/incident-response/core-deck/threat-defense-cards.md](../../cards/incident-response/core-deck/threat-defense-cards.md))
+- **8 Expansion Threat Cards** (see [cards/incident-response/expansion-deck/advanced-threats.md](../../cards/incident-response/expansion-deck/advanced-threats.md))
 
 ---
 
@@ -50,8 +50,8 @@ Represent security controls. Each card includes:
 - **Description:** What the defense does and when it applies
 
 **Deck Composition:**
-- **24 Base Defense Cards** (see [cards/core-deck/threat-defense-cards.md](../../cards/core-deck/threat-defense-cards.md))
-- **Variable Expansion Defenses** (see [cards/expansion-decks/advanced-defenses.md](../../cards/expansion-decks/advanced-defenses.md))
+- **24 Base Defense Cards** (see [cards/incident-response/core-deck/threat-defense-cards.md](../../cards/incident-response/core-deck/threat-defense-cards.md))
+- **19 Expansion Defenses** (see [cards/incident-response/expansion-deck/advanced-defenses.md](../../cards/incident-response/expansion-deck/advanced-defenses.md))
 
 **Examples:**
 - BASIC: Email Authentication Setup, User Security Training, Firewall Rules (10 Budget)
@@ -63,17 +63,17 @@ Represent security controls. Each card includes:
 #### Pentester Tactic Cards
 Represent sophisticated attack techniques used in Hardening module (and potentially others).
 
-**8 Total Tactics:**
-1. Bypass Basic Defenses
-2. Social Engineering Specialist
-3. Persistence Expert
-4. Supply Chain Attack
-5. Detection Evasion
-6. Budget Drain - Incident Response Overload
-7. Zero-Day Exploit
-8. Multi-Vector Attack
+**8 Core Tactics (PT-01 to PT-08):**
+1. PT-01: Social Engineering - Pretexting Attack
+2. PT-02: Malware Evasion - Living-off-the-Land Technique
+3. PT-03: Credential Dumping - Mimikatz Attack
+4. PT-04: Lateral Movement - Network Traversal
+5. PT-05: Privilege Escalation - Unpatched Kernel Exploit
+6. PT-06: Data Exfiltration - Unmonitored Channel
+7. PT-07: Supply Chain Compromise - Trusted Software Update
+8. PT-08: Insider Threat - Malicious Administrator
 
-See [module-hardening.md](module-hardening.md#pentester-tactic-cards-8-total) for full descriptions.
+See [cards/hardening/core-deck/pentester-tactic-cards.md](../../cards/hardening/core-deck/pentester-tactic-cards.md) for full card text, plus 8 expansion tactics (PT-09 to PT-16) in [advanced-tactics.md](../../cards/hardening/expansion-deck/advanced-tactics.md).
 
 ---
 
@@ -135,25 +135,26 @@ Result: FAIL (10 < 11)
 Abstract resource representing time, money, personnel, and tools. Spent to take actions, buy defenses, or conduct investigations.
 
 **Budget Allocation by Module:**
-- **Incident Response:** Start at 100
+- **Network Building:** Start at 40-60 (by difficulty; see module rules)
 - **Hardening:** Start at 150 (or carry over from IR)
+- **Incident Response:** Start at 100
 - **Disaster Recovery:** Start at 50 (emergency fund)
-- **Network Building:** Start at 150
-- **Audit & Compliance:** Start at 100
+- **Forensics:** Start at 75
+- **Audit & Compliance:** Start at 100 (used only for optional remediation cards)
 
 **Budget Spending:**
 - **Investigate action:** 5 Budget
 - **Deploy Defense:** 10/15/25 Budget (by tier)
-- **Emergency Response (IR):** 25 Budget
+- **Emergency Response (IR):** 15 Budget (v2.2; was 25)
+- **Active Breach Cost (IR, v2.2):** -5 Budget at start of each turn while any chain card remains unrevealed
 - **Harden Upgrade (Hardening):** 5 Budget
 - **Create Playbook (Hardening):** 10 Budget
-- **Forensic Investigation (DR):** 5-15 Budget
-- **Stakeholder Communication (DR):** 0-10 Budget
-- **Evidence Preservation (DR):** 5-20 Budget
-- **Remediation (DR):** 10-25 Budget
-- **Ransom Payment (DR):** 10-30 Budget
+- **Crisis Action cards (DR):** 5-20 Budget per card (ACTION-01 to ACTION-12; the free "Holding Statement" costs 0)
+- **Ransom Decision (DR, ACTION-13):** Pay 20 / Negotiate 5 / Refuse 0
 
 **Budget = 0:** Team loses (cannot take further actions)
+
+*Exception (Disaster Recovery, v2.2): Budget floor is 0 and the free Holding Statement action remains available — DR is never lost by running out of Budget; DR's loss condition is any stakeholder trust reaching 0%.*
 
 ---
 
@@ -372,17 +373,19 @@ Awarded when player references actual security tools or real attack/defense tech
 1. When a threat card is **revealed**, add 1 to Uncontained Threats Tracker
 2. At START of each turn, deduct **5 Budget per uncontained threat**
 3. When **next card in chain is revealed**, previous threat is auto-mitigated (-1 from tracker)
-4. When **Emergency Response action is used**, remove a revealed threat (-1 from tracker)
+4. When **Emergency Response action is used** (15 Budget), remove a revealed threat (-1 from tracker)
 
-**Purpose:** Creates urgency - dwell time costs money. Teaches real-world incident response costs.
+**Companion rule — Active Breach Cost (v2.2):** while at least one chain card remains **unrevealed**, deduct an additional flat -5 Budget at the start of each turn. Hidden attackers cost money too.
 
-**Example:**
+**Purpose:** Creates urgency - dwell time costs money, whether you've found the attacker yet or not. Teaches real-world incident response costs.
+
+**Example (uncontained penalty only; Active Breach Cost also applies while cards remain hidden):**
 ```
 Turn 1: Phishing revealed → Uncontained Threats = 1
-Turn 2: START → Deduct 5 Budget (99 remaining)
+Turn 2: START → Deduct 5 Budget (95 remaining from 100)
 Turn 3: Lateral Movement revealed → Phishing auto-mitigated (Uncontained = 1)
 Turn 3: START → Deduct 5 Budget
-Turn 4: Emergency Response on Lateral Movement → Uncontained Threats = 0
+Turn 4: Emergency Response on Lateral Movement (15 Budget) → Uncontained Threats = 0
 ```
 
 ---
@@ -432,24 +435,20 @@ Turn 4: Emergency Response on Lateral Movement → Uncontained Threats = 0
 
 **Key Rule:** Modifiers are **additive** and can stack.
 
-**Example (Hardening Module):**
+**Example (Hardening Module, canonical formula — v2.2):**
 ```
-Pentester Attack: Detection Evasion (adds +2 to difficulty)
-Base roll needed: 11+
-With tactic: 13+
+Pentester Tactic: PT-02 Living-off-the-Land (DC 13)
 
-Team's defense has:
-- Hardening upgrade: +2
-- Hardening upgrade: +2
-- Playbook bonus: +3
+Defense roll = d20
+  + printed bonus for the ONE defense chosen (D-08 EDR vs PT-02: +3)
+  + hardening upgrades on that defense (+2 each; one upgrade: +2)
+  + relevant playbook (+3)
 
-Roll needed: 13+ (from tactic)
-Team's total bonus: +7
-Effective roll needed: 6+ (13 - 7)
-
-If team rolls 8:
-8 + 7 (bonuses) = 15 ≥ 6 = SUCCESS
+Team rolls 8:
+8 + 3 (EDR) + 2 (upgrade) + 3 (playbook) = 16 ≥ 13 = SUCCESS
 ```
+
+Only the single chosen defense's printed bonus applies — deployed defenses do not stack with each other against one tactic.
 
 ---
 
@@ -483,6 +482,8 @@ If team rolls 8:
 | **10** | Standard | Balanced, most scenarios |
 | **12** | Easy | Exploration, learning |
 
+*Note (v2.2): Incident Response derives its turn limit from the Variable Game Length formula — (Attack Chain Cards × 2) + 1 → 7/9/11 turns (see §3a). The table above is for modules with educator-set limits.*
+
 ---
 
 ## Educational Objectives
@@ -495,6 +496,7 @@ If team rolls 8:
 | **Hardening** | Defense-in-depth, layering, proactive security | Cost-benefit analysis, security architecture |
 | **Disaster Recovery** | Crisis management, stakeholder communication | Risk assessment, incident cost |
 | **Network Building** | Network design, asset security, architecture | Infrastructure hardening, threat modeling |
+| **Forensics** | Digital forensics, chain of custody, attribution | Evidence handling, MITRE ATT&CK mapping |
 | **Audit & Compliance** | Security assessment, governance, compliance | Risk identification, remediation prioritization |
 
 ### By Game Mechanic
@@ -600,11 +602,11 @@ If team rolls 8:
 
 ## Card Reference
 
-For complete card descriptions and images, see:
-- **Base Threat Cards** [cards/core-deck/threat-defense-cards.md](../../cards/core-deck/threat-defense-cards.md)
-- **Base Defense Cards** [cards/core-deck/threat-defense-cards.md](../../cards/core-deck/threat-defense-cards.md)
-- **Expansion Threats** [cards/expansion-decks/advanced-threats.md](../../cards/expansion-decks/advanced-threats.md)
-- **Expansion Defenses** [cards/expansion-decks/advanced-defenses.md](../../cards/expansion-decks/advanced-defenses.md)
+For complete card descriptions, see:
+- **Base Threat & Defense Cards** [cards/incident-response/core-deck/threat-defense-cards.md](../../cards/incident-response/core-deck/threat-defense-cards.md)
+- **Expansion Threats** [cards/incident-response/expansion-deck/advanced-threats.md](../../cards/incident-response/expansion-deck/advanced-threats.md)
+- **Expansion Defenses** [cards/incident-response/expansion-deck/advanced-defenses.md](../../cards/incident-response/expansion-deck/advanced-defenses.md)
+- **All decks indexed** [cards/CARD_REFERENCE.md](../../cards/CARD_REFERENCE.md)
 
 ---
 
@@ -612,10 +614,11 @@ For complete card descriptions and images, see:
 
 For complete rules on each module:
 
-- **Incident Response Module:** [module-incident-response.md](module-incident-response.md)
-- **Hardening Module:** [module-hardening.md](module-hardening.md)
-- **Disaster Recovery Module:** [module-disaster-recovery.md](module-disaster-recovery.md)
 - **Network Building Module:** [module-network-building.md](module-network-building.md)
+- **Hardening Module:** [module-hardening.md](module-hardening.md)
+- **Incident Response Module:** [module-incident-response.md](module-incident-response.md)
+- **Disaster Recovery Module:** [module-disaster-recovery.md](module-disaster-recovery.md)
+- **Forensics Module:** [module-forensics.md](module-forensics.md)
 - **Audit & Compliance Module:** [module-audit-compliance.md](module-audit-compliance.md)
 
 ---
@@ -639,7 +642,8 @@ For complete rules on each module:
 - **End of turn:** Advance tracker, draw card, apply effects
 
 ### Penalties & Bonuses
-- **Uncontained Threats:** -5 Budget per threat per turn (IR only)
+- **Uncontained Threats:** -5 Budget per revealed-uncontained threat per turn (IR only)
+- **Active Breach Cost (v2.2):** -5 Budget per turn while any chain card is unrevealed (IR only)
 - **Pentester Tactics:** Add difficulty/modify actions (Hardening)
 - **Reputation:** Track 0-100, affects outcome (DR)
 

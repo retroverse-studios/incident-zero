@@ -31,7 +31,7 @@ This folder contains all card materials for the **Hardening Module** - where tea
 
 **Total:** 32 cards
 
-**Best for:** Defense-in-depth gameplay with 5-7 turn hardening phase
+**Best for:** Defense-in-depth gameplay with the 7-turn hardening phase (v2.2)
 
 ---
 
@@ -40,11 +40,15 @@ This folder contains all card materials for the **Hardening Module** - where tea
 
 Extends core deck with advanced pentester tactics:
 
-**Advanced Tactic Cards (8 cards):**
-- Supply chain attack simulations
-- Advanced persistence techniques
-- Detection evasion tactics
-- Zero-day exploitation scenarios
+**Advanced Tactic Cards (8 cards, PT-09 to PT-16):**
+- PT-09: Multi-Vector Attack (coordinated campaign)
+- PT-10: Zero-Day Exploitation
+- PT-11: Ransomware Deployment & Encryption
+- PT-12: APT Campaign (multi-turn persistent threat)
+- PT-13: Cloud Misconfiguration Attack
+- PT-14: IoT/OT Compromise
+- PT-15: Firmware/BIOS Attack
+- PT-16: Container Escape
 
 **Total:** 8 additional cards
 

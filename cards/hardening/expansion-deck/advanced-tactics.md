@@ -1,7 +1,9 @@
 # Hardening Module: Advanced Pentester Tactics (Expansion)
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
+
+**Difficulty → DC mapping (v2.2):** BASIC = DC 12, INTERMEDIATE = DC 13, ADVANCED = DC 14, EXPERT = DC 15, EXPERT+ = DC 16. The Outcome threshold on every card equals its printed DC. Resolution uses the canonical formula in [Module: Hardening](../../../docs/rules/module-hardening.md): d20 + printed bonus for ONE chosen defense + upgrades (+2 each) + playbook (+3) vs DC.
 
 ---
 
@@ -39,10 +41,12 @@ A pentester orchestrates a coordinated multi-vector attack that combines multipl
 - **Phase 2 (Malware):** D-06 (+1), D-08 (+3), D-13 (+2), D-17 (+2) for this phase
 - **Phase 3 (Lateral Movement):** D-04 (+1), D-09 (+3), D-10 (+2), D-15 (+2) for this phase
 - **Phase 4 (Data Exfil):** D-11 (+4), D-22 (+2), D-24 (+1) for this phase
-- **Synergy Bonus:** If Blue Team deployed defenses covering all 4 vectors, +1 additional bonus to final roll
+- **Card Effect — Full Coverage:** If Blue Team has deployed defenses covering all 4 targeted vectors, add +1 to each phase roll
+
+**Resolution (v2.2):** Each phase is a **separate roll** against DC 14, with **one chosen defense per roll** (that phase's bonus list).
 
 **Outcome:**
-- **Blue Team Succeeds (DC 14 on FINAL phase roll):** Comprehensive defense stops the attack chain
+- **Blue Team Succeeds (14+ on every phase roll):** Comprehensive defense stops the attack chain
 - **Blue Team Fails ANY phase:** Attack progresses; Blue Team loses 1d4 security score points per failed phase and must deploy emergency response
 
 **Teaching Point:** Modern attacks are sophisticated and multi-faceted. No single defense can stop them. Comprehensive defense-in-depth with coordinated response is essential. Defense teams must practice responding to coordinated attacks.
@@ -52,7 +56,7 @@ A pentester orchestrates a coordinated multi-vector attack that combines multipl
 ### PT-10: Zero-Day Exploitation - Unknown Vulnerability
 **Tactic Type:** Initial Access / Execution
 **Target Vectors:** MALWARE, WEB_EXPLOIT
-**Difficulty:** ADVANCED (defeat DC 15)
+**Difficulty:** EXPERT (defeat DC 15)
 
 **Description:**
 A pentester exploits a previously unknown vulnerability (zero-day) in a critical business application. Traditional defenses (patching, signature-based detection, vulnerability scanning) cannot help because the vulnerability isn't public. Only behavioral detection or proactive hunting can identify this attack. Can your advanced monitoring catch what signature-based tools cannot?
@@ -73,7 +77,7 @@ A pentester exploits a previously unknown vulnerability (zero-day) in a critical
 - **D-21 (Container Security):** +2 bonus (isolates exploited application)
 
 **Outcome:**
-- **Blue Team Succeeds (14+):** EDR or threat hunting detects post-exploitation activity before damage
+- **Blue Team Succeeds (15+):** EDR or threat hunting detects post-exploitation activity before damage
 - **Blue Team Fails:** Zero-day achieves initial access; Blue Team suffers -1 penalty to all rolls for remainder of game (blind spot in defenses)
 
 **Special Rule:** If Blue Team has NOT deployed at least 2 of {D-08, D-13, D-17}, they cannot succeed at this challenge (add clause: "You must have behavioral detection to stop unknown exploits").
@@ -85,7 +89,7 @@ A pentester exploits a previously unknown vulnerability (zero-day) in a critical
 ### PT-11: Ransomware Deployment & Encryption
 **Tactic Type:** Impact / Extortion
 **Target Vectors:** MALWARE, DATA_EXFIL, NETWORK
-**Difficulty:** ADVANCED (defeat DC 15)
+**Difficulty:** EXPERT (defeat DC 15)
 
 **Description:**
 A pentester deploys ransomware that encrypts critical business data and demands payment for decryption keys. The attack combines malware execution, persistence, and data exfiltration (to threaten public disclosure if ransom not paid). This is the culmination of a successful attack chain. Can your defenses prevent data encryption, and can your backup strategy save you?
@@ -109,7 +113,7 @@ A pentester deploys ransomware that encrypts critical business data and demands 
   - DC becomes 12 (easier to recover than prevent)
 
 **Outcome:**
-- **Blue Team Succeeds (13+):** Ransomware prevented or successfully recovered from backup
+- **Blue Team Succeeds (15+ on prevention roll, or 12+ on recovery roll under Option B):** Ransomware prevented or successfully recovered from backup
 - **Blue Team Fails:** Data encrypted; immediate loss of 25% of remaining Budget, and all data-dependent operations suffer -2 penalty for remainder of game
 
 **Special Rule - Immutable Backup Check:** If Blue Team deployed D-19, they also need verification that backups are immutable and tested. If backup testing procedures weren't mentioned in D-19 deployment, the bonus only applies if they roll 15+.
@@ -121,7 +125,7 @@ A pentester deploys ransomware that encrypts critical business data and demands 
 ### PT-12: APT Campaign - Multi-Turn Persistent Threat
 **Tactic Type:** Advanced Persistent Threat / Long-term Compromise
 **Target Vectors:** CREDENTIAL_ABUSE, MALWARE, NETWORK, DATA_EXFIL
-**Difficulty:** EXPERT (defeat DC 16)
+**Difficulty:** EXPERT+ (defeat DC 16)
 
 **Description:**
 A pentester simulates an Advanced Persistent Threat (APT) campaign that maintains presence across multiple turns. Each turn, the APT performs new reconnaissance, persistence, lateral movement, or data exfiltration activities. The Blue Team must detect and eradicate the APT before it achieves critical objectives. This is a multi-turn challenge that escalates difficulty.
@@ -148,7 +152,7 @@ Each turn, Blue Team must roll 1d20 to detect the APT activity:
   - D-10 (SIEM Correlation): +2 bonus (correlates multi-step APT behavior)
   - D-13 (Threat Hunting): +3 bonus (proactive hunting finds APT indicators)
   - D-22 (SIEM Enterprise): +3 bonus (advanced correlation detects APT patterns)
-  - D-23 (IR Playbooks): +1 bonus (clear detection procedures in playbooks)
+  - D-23 (IR Program & Runbooks): +1 bonus (clear detection procedures in runbooks)
   - D-24 (Threat Intelligence): +2 bonus (known APT indicators in threat feeds)
 
 - **Eradication Phase (if detected):**
@@ -157,10 +161,10 @@ Each turn, Blue Team must roll 1d20 to detect the APT activity:
   - D-20 (Zero Trust): +2 bonus (APT cannot spread even with stolen credentials)
 
 **Outcome:**
-- **Blue Team Succeeds (15+ each turn):** APT detected and eradicated before achieving 3 objectives
-- **Blue Team Fails (any turn < 15):** APT progresses to next action; if 3 objectives achieved, game is lost
+- **Blue Team Succeeds (roll ≥ current DC, base 16):** APT detected and eradicated before achieving 3 objectives
+- **Blue Team Fails (roll < current DC):** APT progresses to next action; if 3 objectives achieved, game is lost
 
-**Special Rule - Escalating Difficulty:** Each turn the APT remains undetected, DC increases by 1 (Turn 1: DC 15, Turn 2: DC 16, Turn 3: DC 17, etc.)
+**Special Rule - Escalating Difficulty:** Each turn the APT remains undetected, DC increases by 1 (Turn 1: DC 16, Turn 2: DC 17, Turn 3: DC 18, etc.)
 
 **Teaching Point:** APTs are sophisticated, well-resourced, and patient. They expect to remain undetected for months or years. Early detection is critical. Continuous monitoring, threat intelligence integration, and advanced hunting are essential for APT detection.
 
@@ -191,7 +195,7 @@ A pentester discovers misconfigured cloud resources (S3 bucket, Azure storage, G
 **Special Cloud Defense:** If Blue Team deployed cloud-specific hardening (e.g., cloud security posture management tools, cloud-native IAM), add +2 bonus.
 
 **Outcome:**
-- **Blue Team Succeeds (13+):** Misconfiguration detected and remediated before exfiltration
+- **Blue Team Succeeds (14+):** Misconfiguration detected and remediated before exfiltration
 - **Blue Team Fails:** Cloud data is exfiltrated; -1 penalty to all rolls for remainder of game, plus immediate 15 Budget cost for cloud forensics
 
 **Teaching Point:** Cloud security is fundamentally different from on-premises. Shared responsibility model requires organizations to actively manage cloud configuration. Cloud misconfigurations are the #1 cloud vulnerability. Continuous posture scanning is essential.
@@ -222,7 +226,7 @@ A pentester compromises IoT or Operational Technology (OT) devices (industrial c
 **Special OT Defense:** If Blue Team has deployed OT-specific monitoring and segmentation, add +2 bonus.
 
 **Outcome:**
-- **Blue Team Succeeds (13+):** OT compromise detected and isolated before impact
+- **Blue Team Succeeds (14+):** OT compromise detected and isolated before impact
 - **Blue Team Fails:** OT systems compromised; physical operations affected, -2 penalty to all rolls for remainder of game, plus potential safety/liability consequences (narrative impact)
 
 **Teaching Point:** OT security is distinct from IT security. OT systems cannot be patched like IT systems. Network segmentation is the primary defense. OT-specific monitoring and threat hunting are essential. Organizations with manufacturing, utilities, or building management need specialized OT security strategies.
@@ -252,7 +256,7 @@ A pentester with physical or remote access targets system firmware (BIOS/UEFI) o
 **Special Firmware Defense:** If Blue Team deployed secure boot, TPM attestation, and hardware validation, add +2 additional bonus.
 
 **Outcome:**
-- **Blue Team Succeeds (14+):** Firmware tampering detected and system reimaged
+- **Blue Team Succeeds (15+):** Firmware tampering detected and system reimaged
 - **Blue Team Fails:** Firmware-level persistence established; -2 penalty to all rolls for remainder of game, Blue Team loses control of compromised system
 
 **Teaching Point:** Firmware attacks are extremely sophisticated but increasingly common in APT campaigns. Secure Boot and TPM are standard defenses but must be enabled and properly configured. Firmware supply chain security is critical. Organizations should consider firmware integrity verification in procurement.
@@ -283,7 +287,7 @@ A pentester, operating from within a compromised container, exploits a container
 **Special Container Defense:** If Blue Team has deployed comprehensive container security (runtime monitoring + pod security policies + network policies), add +2 additional bonus.
 
 **Outcome:**
-- **Blue Team Succeeds (14+):** Container escape prevented or detected before host compromise
+- **Blue Team Succeeds (15+):** Container escape prevented or detected before host compromise
 - **Blue Team Fails:** Attacker escapes container to host; immediate +1 for all subsequent attacks, gains ability to compromise other containers
 
 **Teaching Point:** Container security is distinct from traditional OS security. Container runtimes have historically had significant vulnerabilities. Runtime security monitoring is essential. Kubernetes network policies and pod security standards are critical controls. Organizations using containers must keep runtimes patched and actively monitor for escape attempts.
@@ -295,10 +299,10 @@ A pentester, operating from within a compromised container, exploits a container
 | Card | Tactic | Vectors | Difficulty | Primary Defense |
 |------|--------|---------|------------|-----------------|
 | PT-09 | Multi-Vector Attack | Multiple | ADVANCED (DC 14) | Integrated Response |
-| PT-10 | Zero-Day Exploitation | MALWARE, WEB | ADVANCED (DC 15) | Behavioral Detection |
-| PT-11 | Ransomware Deployment | MALWARE, EXFIL | ADVANCED (DC 15) | Backup & DR |
-| PT-12 | APT Campaign | Multiple | EXPERT (DC 16) | Threat Hunting |
-| PT-13 | Cloud Misconfiguration | MALWARE, CA, EXFIL | ADVANCED (DC 14) | Cloud Posture |
+| PT-10 | Zero-Day Exploitation | MALWARE, WEB | EXPERT (DC 15) | Behavioral Detection |
+| PT-11 | Ransomware Deployment | MALWARE, EXFIL, NETWORK | EXPERT (DC 15) | Backup & DR |
+| PT-12 | APT Campaign | Multiple | EXPERT+ (DC 16) | Threat Hunting |
+| PT-13 | Cloud Misconfiguration | Multiple | ADVANCED (DC 14) | Cloud Posture |
 | PT-14 | IoT/OT Compromise | NETWORK, MALWARE | ADVANCED (DC 14) | OT Segmentation |
 | PT-15 | Firmware Attack | MALWARE, NETWORK | EXPERT (DC 15) | Hardware Attestation |
 | PT-16 | Container Escape | MALWARE, NETWORK | EXPERT (DC 15) | Runtime Security |
@@ -310,7 +314,7 @@ A pentester, operating from within a compromised container, exploits a container
 ### When to Use Advanced Tactics
 
 1. **Experienced Teams:** Players familiar with core tactics (PT-01 to PT-08)
-2. **Longer Games:** Extend Hardening gameplay to 7-10 turns instead of 5-7
+2. **Longer Games:** Extend Hardening gameplay to 9 turns instead of the standard 7 (v2.2)
 3. **Specialized Environments:** Organizations with cloud, IoT, or containerized infrastructure
 4. **Challenge Play:** Teams want more difficulty and realism
 
@@ -382,4 +386,4 @@ Possible additional advanced tactics:
 
 *Hardening Module: Advanced Pentester Tactics*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

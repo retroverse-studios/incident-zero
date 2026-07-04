@@ -41,24 +41,24 @@ Each domain card includes:
 ---
 
 ### Expansion Deck
-**Files:** `expansion-deck/compliance-frameworks.md`, `expansion-deck/remediation-cards.md`
+**File:** `expansion-deck/compliance-frameworks.md` (framework variant cards AND the remediation action cards — see its remediation section)
 
 Extends core deck with compliance-specific assessments:
 
-**Compliance Framework Variant Cards:**
-- **NIST Cybersecurity Framework (CSF)** - 5 functions (Identify, Protect, Detect, Respond, Recover)
-- **CIS Controls** - 18 controls organized by priority
-- **PCI-DSS** - Payment card specific requirements (12 major requirements)
-- **HIPAA** - Healthcare specific requirements (privacy, security, breach notification)
-- **SOC 2** - Service organization controls
+**Compliance Framework Variant Cards (11):**
+- **NIST Cybersecurity Framework (CSF)** - 5 cards (Identify, Protect, Detect, Respond, Recover)
+- **CIS Controls** - 3 cards (18 controls, CIS v8, organized by priority)
+- **PCI-DSS** - 3 cards (12 major requirements)
 
-**Remediation Action Cards:**
+**Remediation Action Cards (8):**
 - Specific fixes for common findings
 - Resource requirements and timelines
-- Budget costs for remediation
+- Budget costs for remediation (this is where the Audit module's Budget of 100 is spent — the assessment itself costs nothing)
 - Testing/validation requirements
 
-**Total:** 16+ additional cards
+**Planned (not yet in the deck):** HIPAA and SOC 2 framework cards.
+
+**Total:** 19 additional cards (11 framework + 8 remediation)
 
 **Best for:** Comprehensive compliance assessment with framework-specific rules
 
@@ -86,19 +86,22 @@ Extends core deck with compliance-specific assessments:
 
 ---
 
-## Modifier Generation
+## Modifier Generation (generated from the canonical table in `docs/rules/module-audit-compliance.md`, v2.2)
 
-When Audit is played before Incident Response:
+**Each FAILED audit domain (1-2★; 3★+ = PASS, PARTIAL = FAIL) creates exactly one modifier:**
 
-**Each Failed Audit Domain creates modifiers:**
-- Network Segmentation failure: -1 to IR defense deployment rolls
-- Access Control failure: +1 difficulty for credential-based attacks
-- Detection failure: +5 turn penalty in IR investigation
-- Backup failure: +15 Budget cost in DR module
-- Third-Party failure: +1 escalation point in DR
-- Ops failure: -1 to IR investigation rolls
+| Failed Domain | IR Modifier | DR Budget Penalty |
+|---------------|-------------|-------------------|
+| Segmentation | -1 to NETWORK defenses | -10 |
+| Identity/Access Control | -1 to CREDENTIAL_ABUSE defenses | -15 |
+| Detection | -1 to Investigation rolls | -10 |
+| Backup | None | -25 |
+| Third-Party/Cloud | -1 to WEB_EXPLOIT defenses | -20 |
+| Security Ops | -1 to Investigation rolls | -5 |
 
-Example: If team fails 3 audit domains, IR becomes significantly harder.
+**Cap (v2.2):** the total gap penalty applied to a subsequent module's budget is capped at **-30**.
+
+Example: if a team fails 3 audit domains, IR carries three -1 modifiers and DR loses up to 30 starting Budget.
 
 ---
 
@@ -110,9 +113,9 @@ Example: If team fails 3 audit domains, IR becomes significantly harder.
 - Reinforces importance of preventive controls
 
 ### Audit → Disaster Recovery
-- Failed audits increase DR action costs
+- Failed audits subtract from the DR starting budget (capped at -30 total)
 - No backup capability = much slower recovery
-- Poor ops = more escalations
+- Poor ops = slower forensics
 
 ### Audit → Hardening
 - Findings guide hardening priorities
@@ -158,4 +161,4 @@ For rules on how to use these cards:
 
 *Audit & Compliance Module: Card Decks*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

@@ -1,6 +1,9 @@
 # Incident Zero: Network Building Standalone Mini-Game
 ## Infrastructure Design Competition
 
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
+
 ---
 
 ## Overview
@@ -8,7 +11,7 @@
 **Network Building Standalone** is a **30-45 minute competitive resource management game** where teams design IT infrastructure under budget constraints with random business requirements and operational challenges.
 
 **Core Concept:**
-- **Budget:** Limited funding (50 Network Budget tokens)
+- **Budget:** Limited funding (40-60 Network Budget tokens by difficulty; 50 standard)
 - **Requirements:** Random business needs forcing tough trade-offs
 - **Randomness:** Equipment failures, budget surprises, requirement changes
 - **Scoring:** Multi-dimensional (security, budget efficiency, capability, resilience)
@@ -27,29 +30,29 @@
 
 ### Turns & Time
 
-**Game Duration: 5-6 turns × 4-5 minutes per turn = 20-30 minutes gameplay**
+**Game Duration: 5-7 turns (by difficulty) × 4-5 minutes per turn = 20-30 minutes gameplay**
 - **Setup:** 5 minutes (explain rules, distribute materials)
 - **Gameplay:** 20-30 minutes
 - **Scoring & Debrief:** 5-10 minutes
 - **Total:** 30-45 minutes
 
-**Each turn = represents ~1 quarter of fiscal year**
-- Team decides: Deploy server OR security device OR handle random event
-- Roll for business requirement (what service needed this quarter?)
-- Roll for operational incident (failure, budget change, etc.)
+**Each turn represents ~1 quarter of the fiscal year:**
+- Reveal a Business Requirement (what does the business need this quarter?)
+- Reveal an Operational Event (failure, budget change, attack, opportunity)
+- Team deploys components, handles the event, or passes
 
 ---
 
 ## Game Components
 
 ### Network Budget Tokens
-- **Starting Budget:** 50 Network Budget
-- **Costs:** Servers (3-15), Security Devices (6-15), Architecture (0-12)
+- **Starting Budget:** 50 Network Budget (Standard; see Difficulty Levels)
+- **Costs:** Servers (3-12), Security Devices (6-15), Architecture (0-12)
 - **Tokens:** Physical tokens, spreadsheet, or tracking sheet
 
 ### Component Cards
 
-#### SERVER CARDS (Print 30-40 copies distributed randomly)
+#### SERVER CARDS (print from `cards/network-building/core-deck/server-cards.md`)
 Each has: Type, Cost, Capacity, Security Profile
 
 ```
@@ -69,99 +72,72 @@ Each has: Type, Cost, Capacity, Security Profile
 - File Server (6 Budget, 2 capacity, Low security)
 - Domain Controller (12 Budget, 2 capacity, Medium security)
 - Development Server (5 Budget, 3 capacity, Low security)
-- Backup System (9 Budget, 1 capacity, High security)
+- Backup Server (9 Budget, 1 capacity, High security)
 - Cloud Workload (4 Budget, 2 capacity, Medium security)
 - Legacy System (3 Budget, 1 capacity, Very Low security)
 - Honeypot Decoy (7 Budget, 1 capacity, Medium security)
 
-#### SECURITY DEVICE CARDS (Print 20-30 copies distributed randomly)
-Each has: Type, Cost, Effect
+**Overload rule:** a server may host more services than its capacity for **+1 Budget per extra service** — but overloaded servers are a recorded risk (see Variations, now a standard rule).
+
+#### SECURITY DEVICE CARDS (print from `cards/network-building/core-deck/security-device-cards.md`)
+Each has: Type, Cost, Benefit
 
 ```
 ┌──────────────────────┐
 │ FIREWALL             │
 │ Cost: 12             │
-│ Effect: +1 Network   │
-│ Segmentation         │
+│ Blocks traffic       │
+│ between network      │
+│ zones (segmentation) │
 └──────────────────────┘
 ```
 
-**Security Device Types Available:**
-- Firewall (12 Budget, +1 Network Segmentation)
-- IDS (10 Budget, +1 Detection)
-- IPS (14 Budget, +2 Web/Network Protection)
-- Email Gateway (6 Budget, +1 Phishing Protection)
-- WAF (11 Budget, +1 Web Protection)
-- SIEM (15 Budget, +1 Detection, +1 Investigation)
-- Network Segmentation Switch (10 Budget, +1 Network Segmentation)
-- VPN Concentrator (9 Budget, enables remote access)
-- Load Balancer (8 Budget, improves capacity)
-- Honeypot Network (8 Budget, +1 Detection)
+**Security Device Types Available (v2.2 — benefits stated in plain language; the Scoring section says what each counts as):**
+- Firewall (12 Budget) — blocks traffic between network zones; counts as *Firewall* and toward *segmentation*
+- IDS (10 Budget) — spots attacks in progress; counts as *detection*
+- IPS (14 Budget) — blocks known exploits in real time; counts as *detection*
+- Email Gateway (6 Budget) — filters phishing and email malware
+- WAF (11 Budget) — protects web applications from injection/XSS attacks
+- SIEM (15 Budget) — central logging and alerting; counts as *detection*, helps audits
+- Network Segmentation Switch (10 Budget) — isolates network zones; counts as *segmentation*
+- VPN Gateway (9 Budget) — secure remote access for staff
+- Load Balancer (8 Budget) — spreads load across duplicated services; counts as *redundancy*
+- Honeypot Network (8 Budget) — decoy segment that exposes intruders; counts as *detection*
 
-#### BUSINESS REQUIREMENT CARDS (Print 20-30 copies)
-Random quarterly business needs
+#### BUSINESS REQUIREMENT CARDS (print from `cards/network-building/standalone/business-requirement-cards.md`)
+20 cards (REQ-01 to REQ-20) of random quarterly business needs. Each names the requirement, what satisfies it, and the score impact.
 
 ```
 ┌──────────────────────┐
 │ BUSINESS REQUIREMENT │
-│ TURN CARD            │
 ├──────────────────────┤
-│ Q2: "New Product     │
+│ REQ-01: "New Product │
 │ Launch Website"      │
 │                      │
-│ Must provide: Web    │
-│ server capability    │
+│ Satisfied by: Web    │
+│ Server or cloud web  │
 │                      │
-│ Consequence if       │
-│ missing: -5 points   │
+│ Missed: -5 points    │
 └──────────────────────┘
 ```
 
-**Requirement Examples:**
-- "New Product Launch Website" → Need Web Server
-- "Acquire Customer Database" → Need Database Server
-- "Work-From-Home Program" → Need VPN
-- "Comply with HIPAA" → Need Backup + Encryption (or lose -10 points)
-- "Scale Email System" → Upgrade Email Server OR add Load Balancer
-- "Security Audit Required" → Need SIEM OR lose -5 points
-- "Major Breach Incident" → Need Incident Response capabilities (IDS/IPS/SIEM) OR lose -15 points
-- "Company Merger Announced" → Need 2x capacity on multiple systems OR lose -10 points
-- "New Subsidiary Office" → Need Remote Access (VPN) OR lose -5 points
-- "Ransomware Attack Industry" → Need Backup System AND Detection OR lose -20 points
-
-#### OPERATIONAL EVENT CARDS (Print 15-20 copies)
-Random incidents, opportunities, challenges
+#### OPERATIONAL EVENT CARDS (print from `cards/network-building/standalone/operational-event-cards.md`)
+16 cards (EVT-01 to EVT-16) of random incidents, opportunities, and challenges. Each states its effect and which designs mitigate it.
 
 ```
 ┌──────────────────────┐
 │ OPERATIONAL EVENT    │
 ├──────────────────────┤
-│ "Email Server Failed"│
+│ EVT-01: "Email       │
+│ Server Failure"      │
 │                      │
-│ Cost to Fix: 5 Budget│
-│ (Emergency repair)   │
+│ Pay 5 Budget to fix  │
+│ OR -10 points        │
 │                      │
-│ OR                   │
-│                      │
-│ Skip: -10 points     │
-│ (Users upset)        │
+│ Mitigated by:        │
+│ redundant/cloud email│
 └──────────────────────┘
 ```
-
-**Event Examples:**
-- "Email Server Failed" → Cost 5 to fix OR -10 points
-- "Budget Increase - Emergency Funds" → +10 Budget (one time)
-- "Budget Cut - Fiscal Crisis" → -10 Budget this turn
-- "File Server Filling Up" → Add capacity OR -5 points (service degradation)
-- "Honeypot Caught an Attack" → +5 points (detection worked!)
-- "Cloud Service Outage" → Cloud servers unavailable this turn
-- "Executive Demands HIPAA Compliance" → Must have Backup OR -20 points
-- "Competitor Got Hacked" → Must add IDS/IPS OR -5 points (board pressure)
-- "New Hire Wants Remote Access" → Must have VPN OR -3 points (employee leaves)
-- "IT Staff Burnout" → Can only deploy 1 device this turn (cost 1 extra budget)
-- "Price Drop on Security" → Deploy device at -2 cost (limited time)
-- "Ransomware Variant Detected in Wild" → Must have Backup OR face -25 points next turn
-- "Board Approves IT Capex Increase" → +15 Budget (major boost)
 
 ---
 
@@ -169,14 +145,14 @@ Random incidents, opportunities, challenges
 
 ### 1. Explain Scoring System
 
-**Final Score = Security Score + Budget Score + Capability Score + Resilience Score**
+**Final Score = Security Score + Budget Score + Capability Score + Resilience Score − Requirement/Event penalties (+ bonuses)**
 
 Teams win by maximizing total score, not just saving budget.
 
 ### 2. Distribute Starting Materials
 
 **Each Team Receives:**
-- Starting Budget: 50 Network Budget tokens
+- Starting Budget: 50 Network Budget tokens (Standard difficulty)
 - Infrastructure Summary Sheet (to track what they've built)
 - Score Tracking Sheet
 - Network Diagram Worksheet (optional, for visualization)
@@ -184,8 +160,8 @@ Teams win by maximizing total score, not just saving budget.
 ### 3. Create Card Decks
 
 **Shuffle and place face-down:**
-- Business Requirement Card deck (1 per turn, 5-6 cards total)
-- Operational Event Card deck (1 per turn, 5-6 cards total)
+- Business Requirement deck (all 20 cards; 1 drawn per turn)
+- Operational Event deck (all 16 cards; 1 drawn per turn)
 
 ### 4. Brief Teams
 
@@ -211,7 +187,7 @@ After 6 quarters (turns), we'll score your infrastructure. Highest score wins."*
 
 **Team Notes:**
 - What service is needed?
-- When is deadline? (end of this turn or can you defer?)
+- When is the deadline? (end of this turn unless the card says otherwise)
 - What's the penalty if you skip? (points deduction)
 
 **Teams Discuss: Do we have it? If not, how do we get it?**
@@ -227,15 +203,16 @@ After 6 quarters (turns), we'll score your infrastructure. Highest score wins."*
 
 **Teams Decide:** How to handle the incident?
 
-#### **Phase 3: Team Takes One Action (2-3 minutes)**
+#### **Phase 3: Team Actions (2-3 minutes) (v2.2)**
 
-**Teams Choose ONE:**
+**Teams may take ANY NUMBER of the following actions, in any order, limited only by budget** (previously one action per turn):
 
 ##### **Action A: Deploy a Server**
 - **Select a Server Card** from available servers
 - **Pay the Cost** (from budget)
-- **Mark Capacity** on infrastructure sheet
+- **Mark Capacity** on infrastructure sheet (overloading costs +1 Budget per extra service)
 - **Consequence:** Servers stay deployed (can't remove them)
+- **Duplicates allowed:** each copy costs full price
 
 **Example:**
 "We're deploying a Database Server on-premises. Cost: 10 budget. Remaining: 40 budget. This satisfies the Q2 acquisition requirement. No penalty!"
@@ -243,25 +220,25 @@ After 6 quarters (turns), we'll score your infrastructure. Highest score wins."*
 ##### **Action B: Deploy a Security Device**
 - **Select a Security Device Card**
 - **Pay the Cost**
-- **Note the Bonus** (what it improves)
+- **Note the Benefit** (what it protects and what it counts as for scoring)
 - **Can be deployed multiple times** (multiple firewalls, IDS on different segments, etc.)
 
 **Example:**
-"We're deploying an IDS on our internal network. Cost: 10 budget. This gives us +1 Detection capability. Remaining: 30 budget. If a Honeypot Event comes up, we'll have detection."
+"We're deploying an IDS on our internal network. Cost: 10 budget. Remaining: 30 budget. That gives us detection — if a ransomware or insider event comes up, we're covered."
 
 ##### **Action C: Handle Operational Event**
-- **Select the event cost** (fix it, skip it, upgrade it)
+- **Select the event option** (fix it, skip it, upgrade it)
 - **Deduct cost from budget**
 - **Update score** (penalties if skipped)
 
 **Example:**
 "Email Server failed. We're paying 5 budget for emergency repair. That lets us avoid the -10 penalty. Remaining: 25 budget."
 
-##### **Action D: Pass This Turn**
+##### **Action D: Pass**
 - **Cost:** 0
-- **Effect:** Don't deploy anything
-- **Use When:** Budget is low OR you're satisfied with current design
-- **Note:** Still suffer any requirement penalties or event consequences
+- **Effect:** End the turn without (further) deployments
+- **Use When:** Budget is low OR you're satisfied with current design OR you're holding a reserve for surprises
+- **Note:** You still suffer any requirement penalties or event consequences
 
 #### **Phase 4: End of Turn Accounting (30 seconds)**
 
@@ -279,76 +256,81 @@ After 6 quarters (turns), we'll score your infrastructure. Highest score wins."*
 
 ### Scoring Dimensions
 
-**Final Score = Security + Budget + Capability + Resilience**
+**Final Score = Security + Budget + Capability + Resilience − requirement/event penalties (+ bonuses)**
+
+Requirement and event penalties/bonuses (from the cards) are tracked as they happen and applied to the final total. Dimension scores can go negative.
 
 #### 1. SECURITY SCORE (0-30 points)
 Measures defensive capability against attacks
 
 | Security Metric | Points | How Scored |
 |-----------------|--------|-----------|
-| **IDS/IPS Deployed** | +5 | Detect/prevent network attacks |
+| **IDS or IPS Deployed** | +5 | Detect/prevent network attacks |
 | **SIEM Deployed** | +5 | Centralized logging & detection |
+| **Firewall Deployed** | +4 | Perimeter / zone enforcement |
+| **Backup Server Deployed** | +4 | Ransomware recovery |
 | **Email Gateway Deployed** | +3 | Phishing protection |
 | **WAF Deployed** | +3 | Web application protection |
-| **Firewall Deployed** | +3 | Network segmentation |
-| **Honeypot Deployed** | +2 | Early warning system |
-| **Backup System Deployed** | +4 | Ransomware recovery |
-| **Network Segmentation** | +2 | Lateral movement prevention |
+| **Honeypot Deployed** | +3 | Early warning system |
+| **Network Segmentation** | +3 | Lateral movement prevention (Segmentation Switch or segmented architecture) |
 
-**Maximum Security Score: 30 points**
+**Maximum Security Score: 30 points** (5+5+4+4+3+3+3+3 = 30)
 
 **Examples:**
 - Only Email Gateway: 3 points (basic phishing defense, weak)
 - IDS + SIEM + Email Gateway: 13 points (good detection)
-- Full suite (IDS + IPS + SIEM + Email Gateway + WAF + Firewall + Backup + Honeypot): 30 points (enterprise-grade, but expensive)
+- Full suite (IDS + SIEM + Firewall + Backup + Email Gateway + WAF + Honeypot + Segmentation): 30 points (enterprise-grade, but expensive)
 
-#### 2. BUDGET SCORE (0-20 points)
-Efficiency of spending relative to capability gained
+#### 2. BUDGET SCORE (0-20 points) (v2.2)
+Rewards **smart utilization**: meeting the business's needs within budget while keeping a small contingency reserve. Hoarding budget is NOT rewarded — an unspent token did no work.
 
-**Budget Remaining → Points:**
-- 40+ budget left: 20 points (very efficient; built minimum viable)
-- 30-39 budget left: 15 points (efficient)
-- 20-29 budget left: 10 points (moderate)
-- 10-19 budget left: 5 points (spent most of it)
-- 0-9 budget left: 0 points (spent everything)
+**Budget Remaining at Game End → Points:**
 
-**Logic:** Efficient infrastructure uses less budget for same capability.
+| Budget Remaining | Points | Reading |
+|------------------|--------|---------|
+| **5-15 left** | 20 | Requirements met, plus a contingency reserve for surprises |
+| **1-4 left** | 15 | Fully invested, but nothing left for the next incident |
+| **0 left** | 10 | Ran completely dry |
+| **16-25 left** | 10 | Under-invested; capability probably missing |
+| **26+ left** | 5 | Hoarding — budget is not the goal |
+
+**Anti-hoarding check:** if the team missed **2 or more** Business Requirements during the game, halve their Budget Score (round down). Saving money by failing the business is not efficiency.
 
 **Examples:**
-- Spent 45, left 5: 0 points (over-spent)
-- Spent 30, left 20: 10 points (balanced)
-- Spent 20, left 30: 15 points (lean infrastructure)
+- Spent 42, left 8: 20 points (met needs, kept a reserve)
+- Spent 46, left 4: 15 points (all-in; one bad event from trouble)
+- Spent 20, left 30: 5 points (a pile of tokens and a network full of gaps)
 
 #### 3. CAPABILITY SCORE (0-25 points)
-Does infrastructure meet business requirements?
-
-**Each Business Requirement met = Points**
+Does infrastructure meet business needs?
 
 | Capability | Points | Notes |
 |-----------|--------|-------|
-| **Email Server** | +3 | Basic business function |
-| **Web Server** | +3 | Public presence / e-commerce |
-| **Database Server** | +4 | High-value data management |
-| **File Server** | +2 | Internal collaboration |
+| **Email Service** | +3 | Basic business function (Email Server or cloud-hosted) |
+| **Web Service** | +3 | Public presence / e-commerce |
+| **Database Service** | +4 | High-value data management |
+| **File Storage** | +2 | Internal collaboration |
 | **Domain Controller** | +3 | User identity & security |
-| **Development Server** | +2 | Innovation capability |
-| **Backup System** | +3 | Disaster recovery |
-| **Remote Access (VPN)** | +2 | Work-from-home support |
+| **Development Capability** | +2 | Dev Server or dev via overload |
+| **Backup Server** | +3 | Disaster recovery |
+| **Remote Access (VPN Gateway)** | +2 | Work-from-home support |
 | **Cloud Workload** | +2 | Scalability & redundancy |
+| **Honeypot** | +1 | Early-warning capability |
+
+**Maximum Capability Score: 25 points** (3+3+4+2+3+2+3+2+2+1 = 25)
 
 **Penalties for Missing Key Services:**
-- No Email Server: -5 points (business can't communicate)
-- No Web Server (if required): -5 points
-- No Database Server (if required): -10 points (major data loss)
-- No Backup (if ransomware event): -25 points (catastrophic)
-- No VPN (if remote access needed): -3 points (employee satisfaction)
+- No Email service: **-5** (business can't communicate)
+- No Database service: **-10** (core data has no home)
+- No Domain Controller: **-3** (no central identity)
+- No VPN Gateway *(only if a remote-work requirement card was drawn)*: **-3**
 
-**Maximum Capability Score: 25 points**
+*(Ransomware consequences for missing backups come from the event cards themselves — see EVT-11.)*
 
 **Examples:**
-- Has: Email, Web, Database, File, Domain Controller, Backup → 19 points (good)
-- Has: Email, Web, Database, File, Domain, Backup, VPN, Honeypot → 24 points (excellent)
-- Missing: Database (when required) → 10 points (penalty kicks in)
+- Email, Web, Database, File, Domain Controller, Backup: 3+3+4+2+3+3 = **18 points** (good)
+- The same plus VPN Gateway and a Honeypot: 18+2+1 = **21 points** (excellent)
+- Email, Web, File, Domain, Backup but NO Database: 3+3+2+3+3 = 14, minus 10 = **4 points** (the penalty bites)
 
 #### 4. RESILIENCE SCORE (0-25 points)
 Ability to survive and recover from failures
@@ -357,224 +339,102 @@ Ability to survive and recover from failures
 
 | Factor | Points | Criteria |
 |--------|--------|----------|
-| **Backup System** | +8 | Can recover from ransomware/data loss |
-| **Redundancy** | +5 | Multiple servers in same role OR load balancing |
+| **Backup Server** | +8 | Can recover from ransomware/data loss |
 | **Detection** | +7 | IDS/IPS/SIEM can spot attacks early |
+| **Redundancy** | +5 | Duplicate server in the same role OR Load Balancer |
 | **Isolation** | +3 | Network segmentation prevents spread |
-| **Recovery Plan** | +2 | Has both Backup and incident response |
+| **Recovery Plan** | +2 | Has BOTH Backup Server and detection |
 
-**Penalties for Vulnerabilities:**
-- No Backup (if disaster occurs): -20 points (major liability)
-- Single point of failure (all critical services on one server): -5 points
-- No detection capability (can't see attacks): -3 points
-- Flat network (no segmentation): -2 points
+**Maximum Resilience Score: 25 points** (8+7+5+3+2 = 25)
 
-**Maximum Resilience Score: 25 points**
+**Penalties for Vulnerabilities (v2.2):**
+- No Backup Server: **-10** (one disaster from catastrophe)
+- Single point of failure (all critical services on one server): **-5**
+- No detection capability: **-3**
+- Flat network (no segmentation): **-2**
 
 **Examples:**
-- Backup + Detection + Segmentation + Redundancy: 23 points (very resilient)
-- Backup + Detection, but no redundancy: 15 points (adequate)
-- No Backup, no detection: 0 points (high risk)
+- Backup + Detection + Segmentation + Redundancy: 8+7+3+5, +2 recovery plan = **25 points** (maximum; very resilient)
+- Backup + Detection, flat network, no redundancy: 8+7+2−2 = **15 points** (adequate)
+- No backup, no detection, flat network: −10−3−2 = **−15 points** (high risk; yes, scores go negative)
 
 ---
 
 ## Final Scoring Example
 
-### Team A's Infrastructure
+### Team A's Infrastructure (resilience-first)
 
-**Built:**
+**Built (total 46 of 50; 4 remaining):**
 - Email Server (8): handles email
 - Web Server (7): public website
 - Database Server (10): customer data
 - File Server (6): internal files
-- Domain Controller (12): user identity
-- Backup System (9): disaster recovery
-- IDS (10): network detection
+- Backup Server (9): disaster recovery
 - Email Gateway (6): phishing defense
-- Firewall (12): network boundary
 
-**Total Spent:** 80... Wait, that's over budget!
-
-**Let me recalculate:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- File Server: 6
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Subtotal: 58 (over budget!)**
-
-**Real Team A (Budget conscious):**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- File Server: 6
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Total: 58... still over!**
-
-**Revised Team A (Actually under budget):**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- File Server: 6
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Total: 58 (OVER BUDGET)**
-
-**Let me recalculate more carefully:**
-- Email: 8
-- Web: 7
-- Database: 10
-- File: 6
-- Domain: 12
-- Backup: 9
-- Email Gateway: 6
-- **Actual Total: 58 (over 50)**
-
-**Revised Team A (Practical):**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- File Server: 6
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Total if we drop Email Gateway: 52 (STILL OVER!)**
-
-**Let me try again more carefully:**
-- Email: 8
-- Web: 7
-- Database: 10
-- Domain: 12
-- Backup: 9
-- Email Gateway: 6
-- **Total: 52 (over 50)**
-
-**Team A Final (Realistic):**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Total Spent: 52 (OVER!)**
-
-**OK, ACTUALLY Team A Final:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- File Server: 6
-- Backup System: 9
-- Email Gateway: 6
-- **Total: 46 / 50 (4 left)**
-- **No Domain Controller** (too expensive; skipped for budget)
+*Check: 8+7+10+6+9+6 = 46 ✓. No Domain Controller (too expensive; skipped for budget). Flat network.*
 
 **Scoring Team A:**
 
-**Security Score:** 
+**Security Score:**
 - Email Gateway: +3
-- No IDS/IPS/SIEM/Honeypot: 0
-- No Backup detection: (backup is there, but no redundancy for detection)
-- **Total: 3 points**
+- Backup Server: +4
+- No IDS/IPS/SIEM/Firewall/WAF/Honeypot/Segmentation: 0
+- **Total: 7 points**
 
 **Budget Score:**
-- 4 budget remaining out of 50
-- (50-4)/50 = 92% spent = efficient
-- **Score: 0 points (very little left)**
-
-Actually, let me recalculate Budget Score more intuitively:
-- 4 budget left: 20 points (very efficient!)
-- **Actually makes sense: Left with 4 out of 50 = highly utilized**
-
-**Budget Score: 20 points (very efficient)**
+- 4 budget remaining → 1-4 band
+- **Total: 15 points**
 
 **Capability Score:**
-- Email Server: +3
-- Web Server: +3
-- Database Server: +4
-- File Server: +2
-- Backup System: +3
-- Missing Domain Controller: -3 (identity system critical)
+- Email +3, Web +3, Database +4, File +2, Backup +3 = 15
+- No Domain Controller: −3
 - **Total: 12 points**
 
 **Resilience Score:**
-- Backup System: +8
-- No redundancy: 0
-- No detection: -3
-- **Total: 5 points**
+- Backup Server: +8
+- No detection: −3
+- Flat network: −2
+- **Total: 3 points**
 
-**Team A Final Score: 3 + 20 + 12 + 5 = 40 points**
+**Team A Final Score: 7 + 15 + 12 + 3 = 37 points**
 
 ---
 
-### Team B's Infrastructure (Different Strategy)
+### Team B's Infrastructure (security-first, no backup)
 
-**Built:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- Domain Controller: 12
-- Backup System: 9
-- IDS: 10
-- Email Gateway: 6
-- **Total: 62 (OVER!)**
+**Built (total 47 of 50; 3 remaining):**
+- Email Server (8)
+- Web Server (7)
+- Database Server (10)
+- Domain Controller (12)
+- IDS (10)
 
-**Revised Team B:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- Domain Controller: 12
-- Backup System: 9
-- IDS: 10
-- **Total: 56 (OVER!)**
-
-**Team B Final:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- Domain Controller: 12
-- Backup System: 9
-- Email Gateway: 6
-- **Total: 52 (OVER by 2!)**
-
-**Team B Actually:**
-- Email Server: 8
-- Web Server: 7
-- Database Server: 10
-- Domain Controller: 12
-- IDS: 10
-- **Total: 47 / 50 (3 left)**
-- **No Backup System** (sacrificed for security)
+*Check: 8+7+10+12+10 = 47 ✓. No Backup Server (sacrificed for detection). Flat network.*
 
 **Scoring Team B:**
 
 **Security Score:**
 - IDS: +5
-- Email Gateway: +3
-- No Backup: 0
-- **Total: 8 points**
+- **Total: 5 points**
 
 **Budget Score:**
-- 3 left out of 50: 20 points (very efficient)
-- **Total: 20 points**
+- 3 left → 1-4 band
+- **Total: 15 points**
 
 **Capability Score:**
-- Email, Web, Database, Domain: +3+3+4+3 = 13
-- Missing Backup: -3 (not critical but missing)
-- **Total: 10 points**
+- Email +3, Web +3, Database +4, Domain Controller +3 = 13
+- **Total: 13 points**
 
 **Resilience Score:**
-- No Backup: -20 (major vulnerability if disaster strikes!)
-- IDS Detection: +7
-- **Total: -13 points (NEGATIVE!)**
+- Detection: +7
+- No Backup Server: −10
+- Flat network: −2
+- **Total: −5 points (negative!)**
 
-**Team B Final Score: 8 + 20 + 10 + (-13) = 25 points**
+**Team B Final Score: 5 + 15 + 13 − 5 = 28 points**
 
-**RESULT: Team A (40) beats Team B (25)**
+**RESULT: Team A (37) beats Team B (28)**
 
 **Lesson:** Having Backup is critical for resilience, even if it means fewer security devices.
 
@@ -585,18 +445,18 @@ Actually, let me recalculate Budget Score more intuitively:
 ### Setup for Multiple Teams
 
 **Each team:**
-- Separate budget (50 tokens each)
+- Separate budget (50 tokens each at Standard)
 - Separate infrastructure tracking sheet
 - Separate score tracker
 
 **Simultaneous Play:**
-- All teams reveal requirement and event at same time
-- Teams take turns choosing action (round-robin) OR all teams choose simultaneously
+- All teams reveal the same requirement and event at the same time
+- Teams take turns choosing actions (round-robin) OR all teams act simultaneously
 - Simultaneous is faster; rotating turns allows player agency
 
 ### Scoreboard
 
-**Track all teams' scores throughout game:**
+**Track all teams' scores throughout game (illustrative):**
 
 | Team | Sec | Budget | Cap | Res | TOTAL |
 |------|-----|--------|-----|-----|-------|
@@ -604,7 +464,7 @@ Actually, let me recalculate Budget Score more intuitively:
 | **Team B** | 12 | 15 | 18 | 10 | **55** |
 | **Team C** | 5 | 10 | 8 | 2 | **25** |
 
-**Winner:** Team with highest total score after Turn 6
+**Winner:** Team with highest total score after the final turn
 
 ### Tie-Breaking
 
@@ -621,251 +481,214 @@ Actually, let me recalculate Budget Score more intuitively:
 
 **Each game is different because:**
 
-1. **Card Order Randomized:** Shuffle Business Requirement and Operational Event decks each game
-2. **Card Selection:** To (or random selection) decides which requirements/events appear
+1. **Card Order Randomized:** Shuffle both decks each game — a 5-7 turn game uses only 5-7 of the 20 requirements and 16 events
+2. **Card Selection:** The Threat Orchestrator may curate the decks (see difficulty options on the card files)
 3. **Consequence Ordering:** Early disasters force different choices than late surprises
 
 **Example Game Flow Variations:**
 
 **Game 1 (Tough Start):**
-- Turn 1: Ransomware threat appears → Must buy Backup + Detection early
-- Turn 2: Budget cut → Can't afford nice devices
-- Turn 3: Merger announcement → Need more capacity
+- Turn 1: Ransomware wave (REQ-12) → Must buy Backup + Detection early
+- Turn 2: Budget cut (EVT-05) → Can't afford nice devices
+- Turn 3: M&A integration (REQ-08) → Need more capacity
 - Result: Teams forced into defensive posture
 
 **Game 2 (Growth-Focused):**
-- Turn 1: New product launch → Need Web Server
-- Turn 2: Acquisition target → Need Database
-- Turn 3: Expansion bonus → +15 budget!
+- Turn 1: Product launch (REQ-01) → Need Web Server
+- Turn 2: Data acquisition (REQ-02) → Need Database
+- Turn 3: Emergency funds (EVT-06) → +10 budget!
 - Result: Teams build bigger, more capable infrastructure
 
-### Modified Difficulty Levels
+### Difficulty Levels (v2.2 — more budget = easier)
 
 **Beginner Mode (Generous):**
-- Starting Budget: 60 (instead of 50)
-- Cards are drawn kindly (fewer disasters)
+- Starting Budget: **60**
+- Kind decks (remove EVT-11 and REQ-12 before shuffling)
 - Turn Limit: 7 (extra time)
 
-**Normal Mode (Standard):**
-- Starting Budget: 50
+**Standard Mode:**
+- Starting Budget: **50**
 - Random card draws
 - Turn Limit: 6
 
-**Hard Mode (Challenging):**
-- Starting Budget: 40 (tight budget)
-- Disaster cards more frequent
+**Advanced Mode (Challenging):**
+- Starting Budget: **40** (tight budget)
+- Harsh decks (remove EVT-06, EVT-07, EVT-16 — fewer breaks)
 - Requirement penalties doubled
 - Turn Limit: 5
 
 ---
 
-## Example Full Game Walkthrough (6 Turns)
+## Example Full Game Walkthrough (6 Turns, Standard 50)
 
 ### TURN 1
 
 **Phase 1: Business Requirement**
-*TO flips card: "Executive Demands Website Redesign - Need modern web server capability. If missing by end of Q1: -5 points."*
+*TO flips card: "New Product Launch Website — need modern web server capability. If missing by end of Q1: -5 points."*
 
 **Phase 2: Operational Event**
-*TO flips card: "Budget Good News! State tax rebate arrives. +10 Budget bonus (one time)."*
+*TO flips card: "Emergency Funds! A surprise rebate arrives. +10 Budget (one time)."*
 
 **Budget update: 50 + 10 = 60**
 
-**Phase 3: Team Action**
-"We're deploying a Web Server to meet the website redesign requirement. Cost: 7 budget. Remaining: 53 budget. We're not taking the detection risk, but we know we need a backup system eventually."
+**Phase 3: Team Actions**
+"We're deploying a Web Server to meet the launch requirement. Cost: 7 budget. Remaining: 53. We know we'll need a backup server eventually — holding the rest for now."
 
 **Phase 4: End of Turn**
 - Infrastructure: Web Server
 - Budget: 53
-- Score pending (calculated at end)
 
 ---
 
 ### TURN 2
 
 **Phase 1: Business Requirement**
-*"Acquire Customer Data Company - Must have functioning Database Server by end of Q2 or lose 10 points."*
+*"Customer Data Acquisition — must have a functioning Database by end of Q2 or lose 10 points."*
 
 **Phase 2: Operational Event**
-*"Email Server Failed - Cost 5 budget for emergency repair OR skip and lose 10 points."*
+*"Email Server Failure — pay 5 budget for emergency repair OR skip and lose 10 points."*
 
-**Phase 3: Team Action**
-"We're deploying a Database Server (cost: 10 budget) to handle the acquisition. This is critical. For the email server, we'll pay 5 budget for the repair rather than lose 10 points. Total cost this turn: 15 budget. Remaining: 38 budget."
+The team has no email server, so the TO rules the event inert — there's nothing to break. *(TO tip: when an event targets a component the team doesn't own, it fizzles — but it's a great moment to point at the capability gap.)*
 
-**Infrastructure update:** Web Server, Database Server
-**Budget:** 38
+**Phase 3: Team Actions**
+"We're deploying a Database Server (10 budget) to handle the acquisition — that's critical. The failure event doesn't apply to us, so no repair cost. Total this turn: 10. Remaining: 43."
+
+**Infrastructure:** Web Server, Database Server
+**Budget:** 43
 
 ---
 
 ### TURN 3
 
 **Phase 1: Business Requirement**
-*"Ransomware Variant Detected in Wild - You must deploy Backup capability AND Detection capability OR lose 20 points next turn."*
+*"Ransomware Wave in Sector — you need Backup AND Detection capability OR lose 20 points."*
 
 **Phase 2: Operational Event**
-*"Cloud Service Price Drop - Deploy cloud workload at -2 cost (limited time offer)."*
+*"Vendor Promotion — next security device this turn costs 2 less."*
 
-**Phase 3: Team Action**
+**Phase 3: Team Actions**
 "Critical quarter. We're deploying:
-- Backup System (9 budget)
-- IDS (10 budget)
-This prevents the 20-point penalty. We're using the Cloud Service discount to get Cloud Workload at cost 2 (normally 4). Total: 21 budget. Remaining: 17 budget."
+- Backup Server (9 budget)
+- IDS at the promo discount (10 − 2 = 8 budget)
+That satisfies the ransomware requirement. We'll also grab a Cloud Workload (4) for future flexibility. Total: 21 budget. Remaining: 22."
 
 **Infrastructure:** Web, Database, Backup, IDS, Cloud Workload
-**Budget:** 17
+**Budget:** 22
 
 ---
 
 ### TURN 4
 
 **Phase 1: Business Requirement**
-*"Work-From-Home Initiative - Need remote access capability. Missing: -3 points."*
+*"Work-From-Home Program — need remote access capability. Missing: -3 points."*
 
 **Phase 2: Operational Event**
-*"IT Staff Burnout - Can only deploy 1 device this turn (additional cost: 1 budget per device beyond 1)."*
+*"IT Staff Burnout — you may deploy at most ONE component this turn."*
 
-**Phase 3: Team Action**
-"We need remote access. We're deploying VPN Concentrator (9 budget). With the burnout penalty (no extra devices possible this turn). Remaining: 8 budget."
+**Phase 3: Team Actions**
+"We need remote access, and burnout limits us to one deployment. VPN Gateway it is (9 budget). Remaining: 13."
 
-**Infrastructure:** Web, Database, Backup, IDS, Cloud, VPN
-**Budget:** 8
+**Infrastructure:** Web, Database, Backup, IDS, Cloud, VPN Gateway
+**Budget:** 13
 
 ---
 
 ### TURN 5
 
 **Phase 1: Business Requirement**
-*"Email Security Compliance - Must have Email Gateway OR lose 5 points."*
+*"Cyber-Insurance Renewal — Backup + Email Gateway + detection: +5 points if all present, -5 if not."*
 
 **Phase 2: Operational Event**
-*"Data Center Upgrade - Existing on-prem systems get free redundancy (no cost). Instant +5 points to Resilience."*
+*"Hardware Recall — pick an on-prem server: pay 3 budget or it's offline this quarter."*
 
-**Phase 3: Team Action**
-"We deploy Email Gateway (6 budget). We also get free redundancy from the data center upgrade (nice!). Remaining: 2 budget."
+**Phase 3: Team Actions**
+"We deploy an Email Gateway (6 budget) — with our Backup and IDS that completes the insurance checklist: +5 points. For the recall we pay 3 to keep the Database Server online (it's load-bearing). Total: 9. Remaining: 4."
 
-**Infrastructure:** Web, Database, Backup, IDS, Cloud, VPN, Email Gateway (+ Redundancy bonus)
-**Budget:** 2
+**Infrastructure:** Web, Database, Backup, IDS, Cloud, VPN Gateway, Email Gateway
+**Budget:** 4
 
 ---
 
 ### TURN 6 (Final Turn)
 
 **Phase 1: Business Requirement**
-*"Executive Demands HIPAA Compliance Audit - Must have Domain Controller + SIEM + Backup OR lose 15 points."*
+*"Single Sign-On Rollout — must have a Domain Controller OR lose 5 points."*
 
 **Phase 2: Operational Event**
-*"No incident this turn."*
+*"Quiet Quarter — no incident."*
 
-**Phase 3: Team Action**
-"We can't deploy Domain Controller (12 budget, we only have 2). We already have Backup. We DON'T have SIEM. We'll skip all deployment and take the -15 penalty."
+**Phase 3: Team Actions**
+"A Domain Controller costs 12; we have 4. We can't buy it. We pass and take the -5 penalty."
 
-**Final Infrastructure:**
+**Final Infrastructure & Budget Check:**
 - Web Server (7)
 - Database Server (10)
-- Backup System (9)
-- IDS (10)
+- Backup Server (9)
+- IDS (10, paid 8 with promo)
 - Cloud Workload (4)
-- VPN Concentrator (9)
+- VPN Gateway (9)
 - Email Gateway (6)
-- **Total Spent: 55 (over budget!)**
-
-**Wait, let me recalculate:**
-- Web: 7
-- Database: 10
-- Backup: 9
-- IDS: 10
-- Cloud: 4
-- VPN: 9
-- Email Gateway: 6
-- **Total: 55 (5 OVER BUDGET?!)**
-
-**ISSUE: This team exceeded budget. Let me revise the scenario...**
-
-Actually, in Turn 1 they got +10 bonus, so:
-- Start: 50
-- Turn 1 Bonus: +10 = 60
-- Turn 2: -15 = 45
-- Turn 3: -21 = 24
-- Turn 4: -9 = 15
-- Turn 5: -6 = 9
-- Turn 6: Can't afford Domain Controller
-
-**Final Budget: 9 remaining (very tight!)**
+- Recall fee (3)
+- **Total spent: 7+10+9+8+4+9+6+3 = 56 of 60 available (50 start + 10 windfall)**
+- **Final Budget: 4 remaining ✓**
 
 ---
 
-## FINAL SCORING
-
-### This Team's Scores:
+## FINAL SCORING (Walkthrough Team)
 
 **Security Score:**
 - IDS: +5
 - Email Gateway: +3
-- No SIEM: -3 (missing critical detection)
-- No Firewall/WAF/Honeypot: 0
-- **Total: 5 points**
+- Backup Server: +4
+- **Total: 12 points**
 
 **Budget Score:**
-- 9 budget remaining out of 60 (after bonus)
-- (60-9)/60 = 85% spent = efficient
-- **Score: 5 points**
+- 4 remaining → 1-4 band
+- Missed only 1 requirement (no halving)
+- **Total: 15 points**
 
 **Capability Score:**
-- Web: +3
-- Database: +4
-- Backup: +3
-- VPN: +2
-- Email Gateway: +3 (counts as service)
-- Missing Domain Controller: -3
-- Missing Email Server: -5 (wait, they have Email Gateway but not Email Server? That's an issue)
-
-Actually, let me clarify: Email Gateway is a security device, not a server. They still need an Email Server to process email.
-
-**REVISED: Missing Email Server**
-- **-5 penalty (no email capability)**
-
-**Capability Score:**
-- Web: +3
-- Database: +4
-- Backup: +3
-- VPN: +2
-- Missing Email Server: -5
-- Missing Domain Controller: -3
-- **Total: 4 points**
+- Web +3, Database +4, Backup +3, VPN +2, Cloud +2 = 14
+- No Email service: −5 *(an Email Gateway is a security device — it filters mail, it doesn't host mailboxes; they never deployed an Email Server or cloud email)*
+- No Domain Controller: −3
+- **Total: 6 points**
 
 **Resilience Score:**
-- Backup System: +8
-- Redundancy (from data center): +5
-- IDS Detection: +7
-- No Network Segmentation: 0
-- **Total: 20 points**
+- Backup Server: +8
+- Detection (IDS): +7
+- Recovery Plan (backup + detection): +2
+- Flat network: −2
+- **Total: 15 points**
 
-**FINAL SCORE: 5 + 5 + 4 + 20 = 34 points**
+**Requirement/Event adjustments:**
+- Turn 5 insurance bonus: +5
+- Turn 6 missed SSO requirement: −5
 
-**Lesson:** This team prioritized resilience but sacrificed capability (missing email and identity systems) and budget efficiency was poor.
+**FINAL SCORE: 12 + 15 + 6 + 15 + 5 − 5 = 48 points**
+
+**Lesson:** This team survived the ransomware quarter and kept every event in check — but never bought email or identity. Detection and backups scored well; missing core business services bled capability points all game.
 
 ---
 
 ## Variations & House Rules
 
-### Variation 1: "Overload Servers"
-**Optional Rule:** Allow servers to exceed capacity at +1 cost per extra service.
-- Example: Deploy 3 services on a 2-capacity server for +1 budget per extra service
-- Creates trade-off: Save budget now OR pay more for overloaded risk
+### Overload Servers (v2.2 — now a STANDARD rule, not a variation)
+Servers may exceed capacity at **+1 Budget per extra service**. This is the same rule as the Network Building module.
+- Example: 3 services on a 2-capacity server costs +1 budget
+- Trade-off: cheaper than a new server now, but overloaded servers are recorded risks (single point of failure; events and later modules punish them)
 
-### Variation 2: "Upgrade Existing"
-**Optional Rule:** Allow teams to upgrade servers already deployed (swap for better one, pay difference).
-- Example: Replace File Server (2 capacity) with Domain Controller (2 capacity + identity services)
-- Costs difference only (DC costs 12, File costs 6 = 6 extra budget)
+### Variation 1: "Upgrade Existing"
+**Optional Rule:** Allow teams to upgrade servers already deployed (swap for a better one, pay the difference).
+- Example: Replace File Server (6) with Domain Controller (12) — pay 6, keep the hosted services
 - Creates flexibility but adds complexity
 
-### Variation 3: "Disaster Strikes Mid-Game"
-**Optional Rule (High Difficulty):** If Ransomware event is drawn but team has NO Backup, they immediately lose 25 points AND must deploy Backup by next turn (mandatory).
-- Creates urgent decision point
+### Variation 2: "Disaster Strikes Mid-Game"
+**Optional Rule (High Difficulty):** If EVT-11 (Ransomware Strikes) is drawn and the team has NO Backup Server, they take the -20 immediately AND must deploy a Backup Server by the end of the next turn (mandatory).
+- Creates an urgent decision point
 - Teaches that failures have compounding consequences
 
-### Variation 4: "Tech Debt"
-**Optional Rule:** Each legacy server deployed costs 1 extra budget per turn to maintain (not paid upfront).
+### Variation 3: "Tech Debt"
+**Optional Rule:** Each Legacy System deployed costs 1 extra budget per turn to maintain (not paid upfront).
 - Teaches that cheap solutions have hidden costs
 - Creates long-term vs. short-term thinking
 
@@ -883,7 +706,7 @@ Actually, let me clarify: Email Gateway is a security device, not a server. They
 
 4. **"How does this relate to real IT budgeting?"**
 5. **"What did you learn about balancing security with other concerns?"**
-6. **"If this network gets attacked (Phase 1), which vulnerabilities do you see?"**
+6. **"If this network gets attacked (Incident Response module), which vulnerabilities do you see?"**
 
 ### Competitive Reflection
 
@@ -897,43 +720,47 @@ Actually, let me clarify: Email Gateway is a security device, not a server. They
 ### Scoring Summary (1 page)
 
 ```
-NETWORK BUILDING STANDALONE SCORING
+NETWORK BUILDING STANDALONE SCORING (v2.2)
 
 SECURITY SCORE (max 30):
-  IDS/IPS: +5
-  SIEM: +5
-  Email Gateway: +3
-  WAF: +3
-  Firewall: +3
-  Honeypot: +2
-  Backup: +4
-  Network Segmentation: +2
+  IDS or IPS: +5 | SIEM: +5 | Firewall: +4 | Backup: +4
+  Email Gateway: +3 | WAF: +3 | Honeypot: +3 | Segmentation: +3
 
-BUDGET SCORE (max 20):
-  40+ left: 20 pts | 30-39: 15 pts | 20-29: 10 pts | 10-19: 5 pts | 0-9: 0 pts
+BUDGET SCORE (max 20) — smart utilization, not hoarding:
+  5-15 left: 20 | 1-4 left: 15 | 0 left: 10 | 16-25 left: 10 | 26+ left: 5
+  Missed 2+ requirements? Halve it (round down).
 
 CAPABILITY SCORE (max 25):
   Email: +3 | Web: +3 | Database: +4 | File: +2 | Domain: +3
-  Dev: +2 | Backup: +3 | VPN: +2 | Cloud: +2
-  Penalties: -Email -5 | -Database -10 | -Backup -25 | -VPN -3
+  Dev: +2 | Backup: +3 | VPN: +2 | Cloud: +2 | Honeypot: +1
+  Penalties: no Email -5 | no Database -10 | no DC -3
+             no VPN (if remote-work card drawn) -3
 
 RESILIENCE SCORE (max 25):
-  Backup: +8 | Redundancy: +5 | Detection: +7 | Segmentation: +3
-  Penalties: -No Backup -20 | -No Redundancy -5 | -No Detection -3
+  Backup: +8 | Detection: +7 | Redundancy: +5 | Segmentation: +3
+  Recovery Plan (Backup AND Detection): +2
+  Penalties: no Backup -10 | single point of failure -5
+             no Detection -3 | flat network -2
+
+FINAL = Security + Budget + Capability + Resilience
+        − requirement/event penalties (+ bonuses)
 ```
 
 ### Component Quick Reference
 
 ```
-SERVERS (Capacity / Cost / Security Profile):
-  Email (1/8/Low) | Web (1/7/Low) | Database (1/10/Med)
-  File (2/6/Low) | Domain (2/12/Med) | Dev (3/5/Low)
-  Backup (1/9/High) | Cloud (2/4/Med) | Legacy (1/3/VLow) | Honeypot (1/7/Med)
+SERVERS (Cost / Capacity / Security Profile):
+  Email (8/1/Low) | Web (7/1/Low) | Database (10/1/Med)
+  File (6/2/Low) | Domain (12/2/Med) | Dev (5/3/Low)
+  Backup (9/1/High) | Cloud (4/2/Med) | Legacy (3/1/VLow) | Honeypot (7/1/Med)
+  Overload: +1 Budget per service beyond capacity
 
-SECURITY DEVICES (Cost / Effect):
-  Firewall (12) | IDS (10) | IPS (14) | Email Gateway (6)
-  WAF (11) | SIEM (15) | Segmentation (10) | VPN (9)
-  Load Balancer (8) | Honeypot Network (8)
+SECURITY DEVICES (Cost — benefit):
+  Firewall (12 — zone control) | IDS (10 — detection) | IPS (14 — detection+blocking)
+  Email Gateway (6 — anti-phishing) | WAF (11 — web app defense)
+  SIEM (15 — detection+logging) | Segmentation Switch (10 — isolation)
+  VPN Gateway (9 — remote access) | Load Balancer (8 — redundancy)
+  Honeypot Network (8 — detection/deception)
 ```
 
 ---
@@ -943,15 +770,32 @@ SECURITY DEVICES (Cost / Effect):
 This is a complete, standalone 30-45 minute competitive mini-game.
 
 **To run a session:**
-1. Print server and device cards
-2. Prepare requirement and event card decks
-3. Give each team budget tracker
-4. Run 6 turns (4-5 min each)
+1. Print server and device cards (`cards/network-building/core-deck/`)
+2. Print the requirement and event decks (`cards/network-building/standalone/`)
+3. Give each team a budget tracker
+4. Run 5-7 turns (4-5 min each, per difficulty)
 5. Calculate final scores
 6. Declare winner
 7. 10-minute debrief
 
-**Next: Ready to create Audit Standalone variations?**
+---
 
-*Incident Zero: Network Building Standalone Mini-Game*  
+## v2.2 Playtest Edition Changes
+
+Summary of changes for playtesters:
+
+1. **Difficulty labels unified with the module:** Beginner 60 / Standard 50 / **Advanced** 40 (was "Hard"). More budget = easier.
+2. **Any-number actions (v2.2):** Phase 3 now allows any number of deployments per turn, matching the module rules; the old "one action" wording contradicted the game's own walkthrough.
+3. **Real card decks:** Business Requirements (20 cards, REQ-01..REQ-20) and Operational Events (16 cards, EVT-01..EVT-16) now exist as printable files in `cards/network-building/standalone/`; inline example lists replaced by references to them.
+4. **Budget Score redefined around smart utilization:** the table now rewards finishing with a 5-15 token contingency reserve and no longer rewards hoarding (the old table gave 20 points for 40+ unspent, while the examples assumed the opposite). Anti-hoarding check added.
+5. **Scoring tables recomputed:** Security items now sum to the stated max 30; Capability items sum to 25 (Honeypot +1 added — it was in an example but missing from the table); Resilience factors sum to 25 and penalties were rebalanced (no Backup −10). All worked examples now add up.
+6. **Worked examples rebuilt:** Team A (37) and Team B (28) are clean, verified builds; the 6-turn walkthrough's budget ledger reconciles (56 spent of 60 available, 4 left, score 48). All AI drafting scratch-work removed.
+7. **Overload is standard:** +1 Budget per extra service beyond capacity — same rule as the module.
+8. **Terminology:** "VPN Gateway" (was VPN Concentrator), "Backup Server" (was Backup System); device "+1 stat" effects replaced with plain-language benefits tied to the scoring categories.
+9. **Component costs verified** against the module rules (the canonical source): servers 3-12, devices 6-15.
+
+---
+
+*Incident Zero: Network Building Standalone Mini-Game*
 *Infrastructure design competition with multi-dimensional scoring*
+*v2.2 - Playtest Edition*

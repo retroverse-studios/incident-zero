@@ -1,18 +1,26 @@
 # Disaster Recovery Module: Stakeholder Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
 
 ---
 
 ## Overview
 
-**Stakeholder Cards** represent the key groups affected by a data breach. Each stakeholder has trust/satisfaction level (0-100%) that changes based on team actions. Stakeholders can escalate if not managed (causing additional Events and budget costs).
+**Stakeholder Cards** represent the key groups affected by a data breach. Each stakeholder has a trust/satisfaction level (0-100%) that changes based on team actions. Stakeholders can escalate if not managed (triggering Events and budget costs).
 
 - **Total Cards:** 5 (STAKE-01 to STAKE-05)
 - **Used In:** Disaster Recovery module (governance during crisis)
-- **Tracking:** Each stakeholder has Trust Meter (0-100%)
+- **Tracking:** Each stakeholder has a Trust Meter, clamped to 0-100%
 - **Purpose:** Manage stakeholder relationships while responding to breach
+
+### Trust Thresholds & Loss (v2.2 — the ONE authoritative rule)
+
+- **Below 20% = CRITICAL warning state.** Not a loss — it triggers escalation events (see Event Cards) and signals imminent danger.
+- **Any stakeholder trust at 0% = immediate loss ("the company collapses").** This takes precedence over everything else.
+- Otherwise, the outcome is determined by the end-of-game Reputation tier table in the module rules.
+
+All older thresholds ("<30% trust = loss", "keep above 30/40/50 to win") are removed in v2.2.
 
 ---
 
@@ -22,7 +30,7 @@
 **Stakeholder Type:** External
 **Primary Concern:** Data privacy and service availability
 **Trust Meter:** Starts at 50%
-**Escalation:** Trust drops 10% per turn if no communication; critical at <20%
+**Decay (v2.2):** From Turn 3 onward, if the team has completed no Communication-category action (the free Holding Statement counts), Customer trust -10 at the start of each turn. This does not stack with the Turn-5 notification penalty (EVENT-03) — apply one, not both, per turn. Below 20% = CRITICAL warning state (may trigger EVENT-05).
 
 **Description:**
 The customers whose data was breached. They want to know:
@@ -52,14 +60,12 @@ The customers whose data was breached. They want to know:
   - Second breach during response: -30%
   - "No comment" from company: -15%
 
-**Win Condition:**
-- Keep customer trust above 30% to avoid game loss
-- Ideally maintain above 50% for positive outcome
+**Goal:**
+- Ideally maintain above 50% for a positive outcome (trust feeds the final Reputation computation)
 
-**Lose Condition:**
-- Customer trust drops to 0% = company collapse
-- Mass lawsuits filed
-- Company bankruptcy/acquisition
+**Loss (v2.2 single rule):**
+- Customer trust at 0% = company collapses (immediate loss)
+- Narrative: mass churn, lawsuits, bankruptcy/acquisition
 
 **Crisis Actions That Help:**
 - ACTION-09 (Customer Notification): +15% trust
@@ -77,7 +83,7 @@ The customers whose data was breached. They want to know:
 **Stakeholder Type:** Government/Legal
 **Primary Concern:** Compliance with breach notification laws
 **Trust Meter:** Starts at 60%
-**Escalation:** Drops 15% if not notified within required timeframe; fines assessed
+**Escalation (v2.2):** If ACTION-10 is not completed, Regulator trust -10 at the start of each turn from Turn 6 (see EVENT-02). Below 20% = CRITICAL warning state (triggers EVENT-06 Regulatory Fine).
 
 **Description:**
 Government agencies that regulate data privacy:
@@ -101,29 +107,25 @@ Government agencies that regulate data privacy:
   - Proactive remediation: +5%
 
 - **Decreases Confidence:**
-  - Missing notification deadline: -30%
+  - Notification late (Turns 6-8, un-notified): -10% per turn (the single v2.2 late-regulator penalty)
   - No investigation: -20%
   - Hiding breach information: -50%
   - Similar breach before (poor history): -10%
   - Inadequate response: -15%
 
-**Regulatory Requirements Vary:**
-- **California CCPA:** Notification within "without unreasonable delay"
-- **GDPR:** Notification within 72 hours (EU)
+**Regulatory Requirements Vary (real-world flavor; the in-game clock is GDPR 72h = end of Turn 8):**
+- **GDPR (EU):** Notify supervisory authority within 72 hours; fines up to €20M or 4% of global turnover, whichever is HIGHER
+- **California:** Notify without unreasonable delay; CCPA statutory damages fuel class actions
 - **HIPAA:** Notification within 60 days (healthcare)
-- **State Laws:** Usually 30-60 days, varies by state
 - **Sector-Specific:** Finance, healthcare have stricter rules
 
-**Win Condition:**
+**Goal:**
 - Maintain regulatory confidence above 50%
-- Comply with notification requirements
-- Avoid major fines (100K-millions range)
+- Comply with the Turn-8 notification requirement
 
-**Lose Condition:**
-- Regulatory confidence drops to 0% = company penalty
-- Major fines (potentially 10-20% of company revenue)
-- Criminal prosecution possible
-- Company license revoked (in regulated sectors)
+**Loss (v2.2 single rule):**
+- Regulator trust at 0% = company collapses (immediate loss)
+- Narrative: crippling fines, criminal prosecution, license revoked
 
 **Crisis Actions That Help:**
 - ACTION-10 (Regulatory Notification): +20% confidence
@@ -159,7 +161,7 @@ Media outlets, journalists, bloggers, social media. Media decides whether breach
 **What Affects Media Coverage:**
 - **Positive Factors:**
   - Proactive media statement (ACTION-11): +20%
-  - Quick notification (within 24-48 hours): +15%
+  - Quick notification (customers notified by end of Turn 5): +15%
   - CEO takes responsibility: +10%
   - Transparent communication: +10%
   - Third-party validation: +5%
@@ -176,16 +178,14 @@ Media outlets, journalists, bloggers, social media. Media decides whether breach
 - Negative media → customers leave, stock price drops, suppliers question
 - Scandal media → business collapse possible, bankruptcy risk
 
-**Win Condition:**
+**Goal:**
 - Maintain media trust above 40%
 - Frame narrative as "company handled responsibly"
-- Minimize negative coverage
+- Minimize negative coverage (below 20% = CRITICAL warning; triggers EVENT-07)
 
-**Lose Condition:**
-- Media presents company as negligent/criminal
-- Social media amplifies negative narrative
-- Stock price crashes (if public company)
-- Consumer boycott possible
+**Loss (v2.2 single rule):**
+- Media trust at 0% = company collapses (immediate loss)
+- Narrative: negligence narrative sticks, stock crash, consumer boycott
 
 **Crisis Actions That Help:**
 - ACTION-11 (Media Management): +20% coverage
@@ -234,33 +234,29 @@ Board of directors (and C-level executives if private company). Board must:
   - Executive hiding information: -40%
   - Multiple breaches: -30%
 
-**Board Decision Points:**
-- **Turn 3:** First board meeting (ACTION-12 happens)
+**Board Decision Points (v2.2 clock):**
+- **Turn 3:** Board Meeting (EVENT-04; ACTION-12 should be done before it)
   - Board decides if CEO retains confidence
   - Major spending approvals (forensics, lawyers, PR)
   - Disclosure decisions
 
-- **Turn 5:** Mid-crisis assessment
-  - Board may fire CEO (if confidence <40%)
+- **Turn 5:** Mid-crisis assessment (EVENT-09 Shareholder Pressure, if public)
   - Shareholder communication
-  - Restructuring decisions
+  - Restructuring discussions
 
-- **Turn 7:** End-game assessment
-  - Board decides if company survives
+- **Turn 8:** End-game assessment
+  - Board reviews the response as part of final scoring
   - Long-term damage control
   - Leadership changes finalized
 
-**Win Condition:**
+**Goal:**
 - Maintain board confidence above 50%
 - Board authorizes necessary spending
-- Executives retain their positions
-- Company survives intact
+- Executives retain their positions (below 20% = CRITICAL warning state)
 
-**Lose Condition:**
-- Board confidence drops to 0% = CEO fired
-- Shareholder lawsuits
-- Company forced to sell
-- Bankruptcy filing possible
+**Loss (v2.2 single rule):**
+- Board trust at 0% = company collapses (immediate loss)
+- Narrative: CEO fired, forced sale, bankruptcy filing
 
 **Crisis Actions That Help:**
 - ACTION-12 (Board Notification): +20% confidence
@@ -316,17 +312,14 @@ C-level executives (CEO, CTO, CFO, CISO, General Counsel) who must:
 - Replacement executives are less effective initially
 - Crisis becomes harder to manage
 
-**Win Condition:**
+**Goal:**
 - Maintain executive morale above 50%
-- Prevent key executive resignations
-- Executives remain focused on response
-- Company leadership stays intact
+- Prevent key executive resignations (below 30% triggers EVENT-11; below 20% = CRITICAL warning state)
+- While Executive trust is below 30%, the Justification bonus is unavailable (see EVENT-11)
 
-**Lose Condition:**
-- Key executives resign (cascading departures)
-- Leadership vacuum causes chaos
-- Crisis response deteriorates
-- Company collapses
+**Loss (v2.2 single rule):**
+- Executive trust at 0% = company collapses (immediate loss)
+- Narrative: executive exodus, leadership vacuum, chaos
 
 **Crisis Actions That Help:**
 - Regular communication: +5% per turn
@@ -343,13 +336,15 @@ C-level executives (CEO, CTO, CFO, CISO, General Counsel) who must:
 
 ## Stakeholder Summary
 
-| Stakeholder | Type | Start Trust | Critical Level | Primary Actions |
+| Stakeholder | Type | Start Trust | Critical Warning | Primary Actions |
 |------------|------|------------|-----------------|-----------------|
 | Customers | External | 50% | <20% | ACTION-09 (notify), ACTION-11 (PR) |
 | Regulators | Government | 60% | <20% | ACTION-10 (notify), ACTION-01/04 (forensics) |
 | Media | External | 40% | <20% | ACTION-11 (PR), ACTION-09 (transparency) |
-| Board | Internal | 70% | <40% | ACTION-12 (notify), ACTION-04 (guidance) |
-| Executives | Internal | 80% | <40% | Regular communication, success indicators |
+| Board | Internal | 70% | <20% | ACTION-12 (notify), ACTION-04 (guidance) |
+| Executives | Internal | 80% | <20% (resignations from <30%) | Regular communication, success indicators |
+
+**Reminder (v2.2):** critical is a *warning state* only. The single loss condition is any trust meter at 0%. Meters clamp to 0-100%.
 
 ---
 
@@ -396,37 +391,28 @@ Stakeholders influence each other:
 
 ## Escalation Mechanics
 
-Each stakeholder has escalation triggers:
+Each stakeholder's escalation matches a Triggered Event (see Event Cards — those are the authoritative conditions):
 
 ### Customers Escalate If:
-- Not notified within 48-72 hours
-- Trust drops below 20%
-- Learn about breach from media before company notification
-- **Escalation:** Class action lawsuit filed (see Event Cards)
+- Not notified by end of Turn 5 (ACTION-09), OR trust drops below 20%
+- **Escalation:** EVENT-05 Class Action Lawsuit
 
 ### Regulators Escalate If:
-- Not notified within legal deadline (30-60 days)
-- No investigation underway
-- Company appears to be hiding information
-- **Escalation:** Regulatory fine assessed, investigation launched
+- Not notified by Turn 6 onward (ACTION-10; legal deadline end of Turn 8)
+- Trust drops below 20%
+- **Escalation:** -10 trust per un-notified turn (EVENT-02); EVENT-06 Regulatory Fine
 
 ### Media Escalates If:
-- Company is silent ("no comment")
-- Executives dodge reporters
-- Social media discovers negative information
-- **Escalation:** Media frenzy (negative coverage spiral)
+- No Communication action completed by end of Turn 3, OR trust drops below 20%
+- **Escalation:** EVENT-07 Media Frenzy
 
 ### Board Escalates If:
-- Response is inadequate or chaotic
-- Board confidence drops below 40%
-- CEO loses control
-- **Escalation:** Board votes to remove CEO
+- Unprepared for the Turn 3 Board Meeting (EVENT-04), or Shareholder Pressure lands badly (EVENT-09)
+- **Escalation:** heavy trust losses; at 0% the company collapses
 
 ### Executives Escalate If:
-- Morale drops too low
-- Key executives receive personal blame
-- Career prospects look bad
-- **Escalation:** Executive resignations, leadership void
+- Morale drops below 30%
+- **Escalation:** EVENT-11 Executive Resignation (and loss of the Justification bonus)
 
 ---
 
@@ -440,10 +426,10 @@ Each stakeholder has escalation triggers:
 3. Include trust meter on each card (0-100% indicator)
 4. Include escalation triggers
 5. Cut along dotted lines
-6. Create a "Stakeholder Tracker" reference card for game management
+6. Stakeholder tracker sheet: see print pack (coming)
 
 ---
 
 *Disaster Recovery Module: Stakeholder Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

@@ -1,6 +1,6 @@
 # Forensics Module: Evidence & Findings Cards (Core Deck)
 
-**Version:** 2.1 - Investigation & Attribution Edition
+**Version:** 2.2 - Playtest Edition
 **Card Count:** 12 Evidence Cards + 4 Findings Cards = 16 Total
 **Printable:** Yes
 
@@ -11,6 +11,10 @@
 **Evidence Cards** represent specific findings discovered during forensic investigations. They document what was found, how it was found, and what investigative leads it provides.
 
 **Findings Cards** represent conclusions drawn from the evidence—these feed recommendations into Hardening, Network Building, and Audit modules.
+
+**Chain of Custody rule (v2.2):** **+5% Chain of Custody every time an Evidence card is discovered AND the team states how it was preserved (hash, imaging, log export); the TO may award +10% for exemplary handling.** This stacks with any Chain of Custody impact printed on the card.
+
+**No Double Counting (v2.2):** When an investigation discovers an Evidence card, apply ONLY the Evidence card's printed "Impact on Progress Meters" (plus the Chain of Custody handling bonus above). The investigation card's own advance line applies only when no Evidence card is produced (e.g., partial success).
 
 ---
 
@@ -456,7 +460,7 @@ Each Evidence Card includes:
 ╠════════════════════════════════════════════════════════════════╣
 ║ Type: Malware & Persistence                                    ║
 ║ MITRE ATT&CK: T1140 (Deobfuscate/Decode), T1552 (Unsecured    ║
-║              Credentials), T1005 (Data Staged)                 ║
+║              Credentials), T1074 (Data Staged)                 ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ DESCRIPTION:                                                   ║
 ║ Encryption keys recovered from memory, disk, or malware code   ║
@@ -519,8 +523,8 @@ Each Evidence Card includes:
 ║              EVD-09: ATTACKER COMMAND HISTORY                  ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Type: Attack Activity                                          ║
-║ MITRE ATT&CK: T1059 (Command & Scripting Interpreter), T1086   ║
-║              (PowerShell)                                      ║
+║ MITRE ATT&CK: T1059 (Command & Scripting Interpreter),         ║
+║              T1059.001 (PowerShell)                            ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ DESCRIPTION:                                                   ║
 ║ Recovered history of commands executed by attacker on          ║
@@ -600,7 +604,8 @@ Each Evidence Card includes:
 ║ Example Output:                                                ║
 ║ - Name: conhost.exe (masquerading as Windows process)          ║
 ║ - Creates files: C:\Users\*\AppData\Local\Temp\app.exe         ║
-║ - Registry: HKLM\Software\Microsoft\Windows\Run (persistence)  ║
+║ - Registry: HKLM\Software\Microsoft\Windows\CurrentVersion\Run ║
+║   (persistence)                                                ║
 ║ - Network: Connects to update.badsite.ru:443 every 15 minutes  ║
 ║ - Capabilities: Credential harvesting, File encryption, C2    ║
 ║                                                                 ║
@@ -650,7 +655,8 @@ Each Evidence Card includes:
 ║              EVD-11: FILE STAGING ARTIFACTS                    ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Type: Attack Activity                                          ║
-║ MITRE ATT&CK: T1005 (Data Staged), T1074 (Data Staged)         ║
+║ MITRE ATT&CK: T1074 (Data Staged), T1005 (Data from Local      ║
+║              System)                                           ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ DESCRIPTION:                                                   ║
 ║ Evidence of attacker staging files before exfiltration. Files  ║
@@ -716,8 +722,8 @@ Each Evidence Card includes:
 ║              EVD-12: ANTI-FORENSICS EVIDENCE                   ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ Type: Attack Activity                                          ║
-║ MITRE ATT&CK: T1070 (Indicator Removal), T1485 (Data Destruction║
-║              ), T1551 (Modify Authentication Process)          ║
+║ MITRE ATT&CK: T1070 (Indicator Removal), T1485 (Data           ║
+║              Destruction), T1556 (Modify Authentication Process)║
 ╠════════════════════════════════════════════════════════════════╣
 ║ DESCRIPTION:                                                   ║
 ║ Evidence that attacker actively tried to cover their tracks    ║
@@ -918,10 +924,10 @@ These are synthesis cards representing conclusions from forensic findings:
 
 ## Evidence Card Combinations
 
-### Fast Track (Quick Investigation - 3 Turns)
-- EVD-04: Suspicious Admin Login → identifies credential compromise
-- EVD-03: Persistence Mechanism → shows attacker goal (staying in)
-- EVD-02: C2 Domain → identifies attacker infrastructure
+### Fast Track (Quick Investigation - 4 Turns, respecting Durations)
+- EVD-04: Suspicious Admin Login (LOG-01, Duration 1) → identifies credential compromise
+- EVD-03: Persistence Mechanism (DISK-01 rushed to Duration 1 for +5 Budget) → shows attacker goal (staying in)
+- EVD-02: C2 Domain (NET-01, Duration 2 — started turn 3, resolves start of turn 4) → identifies attacker infrastructure
 
 **Result:** Quick understanding of attack progression without full attribution
 
@@ -964,7 +970,12 @@ A: Reference specific Evidence cards when describing findings to Threat Orchestr
 
 ## Version History
 
-- **v2.1** (Current) - Investigation & Attribution Edition
+- **v2.2** (Current) - Playtest Edition
+  - Chain of Custody earn rule (+5% per documented Evidence discovery; TO may award +10%)
+  - No Double Counting rule stated in intro
+  - MITRE ATT&CK ID/name corrections (EVD-08, EVD-09, EVD-11, EVD-12)
+  - EVD-10 registry path corrected (HKLM\Software\Microsoft\Windows\CurrentVersion\Run)
+- **v2.1** - Investigation & Attribution Edition
   - 12 Evidence Cards across 6 categories
   - 4 Findings Cards for conclusions
   - Integration with Investigation Action Cards

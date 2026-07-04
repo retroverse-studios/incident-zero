@@ -2,18 +2,17 @@
 
 > A modular cybersecurity board game for educational environments
 
-![banner](assets/incident-zero-banner.png)
-
 ## Play. Learn. Master Cybersecurity.
 
-**Incident Zero** is a hands-on tabletop game that teaches cybersecurity concepts through strategic gameplay. Choose from 5 modular games or combine them for endless learning possibilities.
+**Incident Zero** is a hands-on tabletop game that teaches cybersecurity concepts through strategic gameplay. Choose from 6 modular games or combine them for endless learning possibilities.
 
-### 🎮 5 Modules. Infinite Combinations.
+### 🎮 6 Modules. Infinite Combinations.
 
+- **Network Building** - Design and secure network infrastructure
 - **Hardening** - Build layered defenses against known threats
 - **Incident Response** - Detect and investigate hidden attack chains
-- **Network Building** - Design and secure network infrastructure
 - **Disaster Recovery** - Manage a breach crisis under pressure
+- **Forensics** - Investigate compromised systems and attribute attacks
 - **Audit & Compliance** - Conduct security assessments
 
 ### ✨ For Educators & Security Teams
@@ -29,7 +28,7 @@ Perfect for classrooms, security training, team building, and professional devel
 ## Quick Start
 
 ### 1. Choose Your Game
-Pick from 5 standalone modules or combine multiple games for deeper learning.
+Pick from 6 standalone modules or combine multiple games for deeper learning.
 
 ### 2. Gather Materials
 Print card decks, game boards, and player aids from our documentation.

@@ -1,7 +1,7 @@
 # Network Building Module: Asset Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -113,10 +113,9 @@ Centralized database for customer data, financial records, operational data. Dat
 - Requires database activity monitoring (DAM) for audit
 
 **Team Design Validation:**
-✓ **Must Include:** Database Server or equivalent data store
+✓ **Must Include:** Database Server or equivalent data store (Cloud Workload hosting is allowed but is a recorded risk)
 ✓ **Should Include:** Network Segmentation to isolate database access
 ✓ **Should Include:** Backup Server for disaster recovery
-✓ **Should Include:** DLP for sensitive data protection
 ✗ **Failure Condition:** No database = Asset unsatisfied OR unsecured database access = audit finding
 
 ---
@@ -167,8 +166,8 @@ Centralized identity system (Active Directory, Azure AD, Okta) that authenticate
 
 **Network Requirements:**
 - **Server:** Domain Controller (SRV-05) in admin segment
-- **Protection:** Credential Guard for LSASS protection
-- **Optional:** Backup Domain Controller for redundancy
+- **Protection:** Network Segmentation Switch (SEC-08) — keep the DC in an isolated admin zone
+- **Optional:** Second Domain Controller for redundancy (full price)
 
 **Security Considerations:**
 - Domain Controller is most sensitive system (compromise = total infrastructure access)
@@ -185,15 +184,16 @@ Centralized identity system (Active Directory, Azure AD, Okta) that authenticate
 
 **Team Design Validation:**
 ✓ **Must Include:** Domain Controller (on-premises or Azure AD)
-✓ **Should Include:** MFA for administrative access
-✓ **Should Include:** Backup Domain Controller
-✗ **Failure Condition:** No identity system = cannot manage users/access = game loss
+✓ **Should Include:** Network Segmentation (isolated admin zone)
+✓ **Should Include:** Second Domain Controller for redundancy (optional, full price)
+✗ **Failure Condition:** No identity system = the Identity requirement is unsatisfied (design incomplete)
 
 ---
 
 ### ASSET-06: Development
 **Business Function:** Software development and testing environment
 **Criticality:** Medium (important but not production-critical)
+**Requirement Strength:** Recommended (v2.2) — may be satisfied by overloading another server (+1 Budget per extra service)
 **Impact if Down:** Low-Medium (development delays, but not immediate business impact)
 **Compliance Requirements:** Secrets management (API keys not hardcoded), code scanning
 
@@ -220,7 +220,7 @@ Development and testing infrastructure where software developers build and test 
 - Requires MFA for code repository access
 
 **Team Design Validation:**
-✓ **Should Include:** Development Server for software development
+✓ **Should Include:** Development Server, OR dev services overloaded onto another server (allowed, +1 Budget)
 ✓ **Should Isolate:** Dev network from production network
 ✓ **Should Scan:** Code for hardcoded secrets
 ✗ **Failure Condition:** Using production database in dev = data exposure/compliance violation
@@ -230,6 +230,7 @@ Development and testing infrastructure where software developers build and test 
 ### ASSET-07: Disaster Recovery
 **Business Function:** Recovery capability for business continuity
 **Criticality:** Very High (determines if business survives major attack/disaster)
+**Requirement Strength:** Required (v2.2)
 **Impact if Down:** Catastrophic (cannot recover from major incident)
 **Compliance Requirements:** Backup retention, recovery SLA (RTO/RPO)
 
@@ -258,7 +259,7 @@ Backup and disaster recovery capability. Organization needs ability to recover f
 ✓ **Must Include:** Backup Server with off-site capability
 ✓ **Must Test:** Recovery procedures (quarterly)
 ✓ **Must Implement:** 3-2-1 strategy
-✗ **Failure Condition:** No backup = cannot recover from ransomware = game loss in DR module
+✗ **Failure Condition (v2.2):** No Backup Server = automatic FAIL on the Disaster Recovery requirement, recorded as a CRITICAL gap (not an instant game loss — but ransomware in later modules becomes unrecoverable)
 
 ---
 
@@ -305,7 +306,7 @@ VPN or similar remote access solution for employees working from home, traveling
 | ASSET-02 | Web | Medium | SRV-02 | WAF |
 | ASSET-03 | Database | Very High | SRV-03 | Network Segmentation |
 | ASSET-04 | File Storage | High | SRV-04 | Network Segmentation |
-| ASSET-05 | Identity | Very High | SRV-05 | Credential Guard |
+| ASSET-05 | Identity | Very High | SRV-05 | Network Segmentation |
 | ASSET-06 | Development | Medium | SRV-06 | Network Isolation |
 | ASSET-07 | Disaster Recovery | Very High | SRV-07 | Immutable Backups |
 | ASSET-08 | VPN/Remote Access | Medium | SEC-05 | MFA |
@@ -383,18 +384,18 @@ Asset Cards determine impact assessment:
 
 ---
 
-## Team Validation Checklist
+## Team Validation Checklist (v2.2)
 
-**After team completes network design, verify each Asset is satisfied:**
+**After team completes network design, verify each Asset is satisfied. The checklist only names components that can actually be purchased from the Network Building decks; items in parentheses are recommended, not mandatory.**
 
-- [ ] ASSET-01 (Email) - Email Server + Email Gateway
-- [ ] ASSET-02 (Web) - Web Server + WAF + Load Balancer (optional)
-- [ ] ASSET-03 (Database) - Database Server + Network Segmentation + DLP
-- [ ] ASSET-04 (File Storage) - File Server + Network Segmentation
-- [ ] ASSET-05 (Identity) - Domain Controller + Credential Guard + Backup DC
-- [ ] ASSET-06 (Development) - Development Server + Network Isolation
-- [ ] ASSET-07 (Disaster Recovery) - Backup Server + Off-site + Immutable
-- [ ] ASSET-08 (VPN) - VPN Gateway + MFA
+- [ ] ASSET-01 (Email) - Email Server or Cloud Workload hosting email (+ Email Gateway recommended)
+- [ ] ASSET-02 (Web) - Web Server or Cloud Workload hosting web (+ WAF and/or Load Balancer recommended)
+- [ ] ASSET-03 (Database) - Database Server or Cloud Workload hosting the database (+ Network Segmentation recommended)
+- [ ] ASSET-04 (File Storage) - File Server, or file storage on another server's spare capacity/overload (+ Network Segmentation recommended) — Recommended requirement
+- [ ] ASSET-05 (Identity) - Domain Controller (+ Network Segmentation for an admin zone recommended)
+- [ ] ASSET-06 (Development) - Development Server, or dev services via overload — Recommended requirement
+- [ ] ASSET-07 (Disaster Recovery) - Backup Server — Required; no backup = automatic FAIL on this requirement
+- [ ] ASSET-08 (VPN) - VPN Gateway — Recommended requirement
 
 **If any Asset is unsatisfied or under-defended:**
 - Network design is incomplete
@@ -405,4 +406,4 @@ Asset Cards determine impact assessment:
 
 *Network Building Module: Asset Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

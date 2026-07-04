@@ -1,17 +1,18 @@
 # Network Building Module: Server Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
 ## Overview
 
-**Server Cards** represent the core computational systems that run your business. Each server has cost (Budget), complexity, and security properties that affect network design.
+**Server Cards** represent the core computational systems that run your business. Each server has cost (Budget), capacity (how many services it can host), complexity, and security properties that affect network design.
 
 - **Total Cards:** 10 (SRV-01 to SRV-10)
 - **Used In:** Network Building module
-- **Cost Range:** 3-25 Budget depending on type and complexity
+- **Cost Range:** 3-12 Budget depending on type and criticality
+- **Capacity:** Number of services the server can host before the Overload rule applies (+1 Budget per extra service)
 - **Complexity Range:** 1-4 (affects maintenance overhead, represented narratively)
 
 ---
@@ -21,6 +22,7 @@
 ### SRV-01: Email Server
 **Type:** Business Critical
 **Cost:** 8 Budget
+**Capacity:** 1 service
 **Complexity:** 2/4
 **Availability Requirement:** 99.9% (almost always needed)
 
@@ -50,7 +52,8 @@ Central email system (Exchange, Postfix, or cloud-based like Office 365). Handle
 
 ### SRV-02: Web Server
 **Type:** Business Critical
-**Cost:** 6 Budget
+**Cost:** 7 Budget
+**Capacity:** 1 service
 **Complexity:** 2/4
 **Availability Requirement:** 99.5% (critical during business hours)
 
@@ -82,7 +85,8 @@ Public-facing web application server (Apache, Nginx, IIS). Hosts corporate websi
 
 ### SRV-03: Database Server
 **Type:** Business Critical
-**Cost:** 12 Budget
+**Cost:** 10 Budget
+**Capacity:** 1 service
 **Complexity:** 3/4
 **Availability Requirement:** 99.9% (critical for business operations)
 
@@ -117,7 +121,8 @@ Relational or NoSQL database (SQL Server, PostgreSQL, MongoDB, Oracle). Stores c
 
 ### SRV-04: File Server
 **Type:** Business Critical
-**Cost:** 7 Budget
+**Cost:** 6 Budget
+**Capacity:** 2 services
 **Complexity:** 2/4
 **Availability Requirement:** 99% (needed during business hours)
 
@@ -151,7 +156,8 @@ File storage and sharing system (SMB/CIFS, NFS, or cloud file sharing). Stores s
 
 ### SRV-05: Domain Controller
 **Type:** Business Critical
-**Cost:** 10 Budget
+**Cost:** 12 Budget
+**Capacity:** 2 services
 **Complexity:** 3/4
 **Availability Requirement:** 99.5% (core infrastructure dependency)
 
@@ -187,6 +193,7 @@ Active Directory or LDAP domain controller. Master repository of all user identi
 ### SRV-06: Development Server
 **Type:** Business Important
 **Cost:** 5 Budget
+**Capacity:** 3 services
 **Complexity:** 2/4
 **Availability Requirement:** 80% (nice to have, can work around)
 
@@ -221,6 +228,7 @@ Development and testing environment for software development. Lower security req
 ### SRV-07: Backup Server
 **Type:** Business Critical (Different Tier)
 **Cost:** 9 Budget
+**Capacity:** 1 service
 **Complexity:** 2/4
 **Availability Requirement:** 95% (needed for recovery scenarios)
 
@@ -249,7 +257,7 @@ Backup and archival storage system (dedicated appliance, NAS, or cloud backup li
 **Interactions:**
 - Used with Asset Card "Disaster Recovery"
 - Critical for Disaster Recovery module (backup resilience determines recovery speed)
-- If backup is compromised, cannot recover from ransomware (immediately lose game)
+- If backup is missing or compromised, the team automatically FAILS the Disaster Recovery requirement (v2.2) — a CRITICAL gap carried into other modules
 - Incident Response mentions backup verification in defenses
 
 ---
@@ -257,6 +265,7 @@ Backup and archival storage system (dedicated appliance, NAS, or cloud backup li
 ### SRV-08: Cloud Workload
 **Type:** Increasingly Business Critical
 **Cost:** 4 Budget
+**Capacity:** 2 services
 **Complexity:** 2/4 (but different concerns than on-premises)
 **Availability Requirement:** 99% (vendor manages SLA)
 
@@ -292,6 +301,7 @@ Cloud-hosted application or service (AWS EC2, Azure VM, GCP Compute Engine, or f
 ### SRV-09: Legacy System
 **Type:** Business Important (Legacy)
 **Cost:** 3 Budget
+**Capacity:** 1 service
 **Complexity:** 3/4 (difficult to maintain, patch, or secure)
 **Availability Requirement:** 90% (supported but aging)
 
@@ -326,7 +336,8 @@ Aging system running outdated OS (Windows XP, older Linux, proprietary systems) 
 
 ### SRV-10: Honeypot Decoy
 **Type:** Security Tool (Non-Business)
-**Cost:** 2 Budget
+**Cost:** 7 Budget
+**Capacity:** 1 service (decoy only — hosts no real business service)
 **Complexity:** 1/4 (purposefully simple and unmonitored-looking)
 **Availability Requirement:** N/A (false resource)
 
@@ -359,28 +370,32 @@ Deliberately exposed fake server or user account designed to detect compromise a
 
 ## Server Card Summary
 
-| Card | Server Type | Cost | Complexity | Availability | Key Risk |
-|------|-------------|------|-----------|--------------|----------|
-| SRV-01 | Email Server | 8 | 2/4 | 99.9% | Phishing, Credential Abuse |
-| SRV-02 | Web Server | 6 | 2/4 | 99.5% | Web Exploits, RCE |
-| SRV-03 | Database Server | 12 | 3/4 | 99.9% | SQL Injection, Data Exfil |
-| SRV-04 | File Server | 7 | 2/4 | 99% | SMB Laterals, Ransomware |
-| SRV-05 | Domain Controller | 10 | 3/4 | 99.5% | Mimikatz, Complete Compromise |
-| SRV-06 | Development | 5 | 2/4 | 80% | Lateral Movement, Data Leak |
-| SRV-07 | Backup Server | 9 | 2/4 | 95% | Ransomware, Recovery Failure |
-| SRV-08 | Cloud Workload | 4 | 2/4 | 99% | Misconfiguration, IAM Abuse |
-| SRV-09 | Legacy System | 3 | 3/4 | 90% | Known Vulns, Cannot Patch |
-| SRV-10 | Honeypot | 2 | 1/4 | N/A | Detection, Early Warning |
+| Card | Server Type | Cost | Capacity | Complexity | Availability | Key Risk |
+|------|-------------|------|----------|-----------|--------------|----------|
+| SRV-01 | Email Server | 8 | 1 | 2/4 | 99.9% | Phishing, Credential Abuse |
+| SRV-02 | Web Server | 7 | 1 | 2/4 | 99.5% | Web Exploits, RCE |
+| SRV-03 | Database Server | 10 | 1 | 3/4 | 99.9% | SQL Injection, Data Exfil |
+| SRV-04 | File Server | 6 | 2 | 2/4 | 99% | SMB Laterals, Ransomware |
+| SRV-05 | Domain Controller | 12 | 2 | 3/4 | 99.5% | Mimikatz, Complete Compromise |
+| SRV-06 | Development | 5 | 3 | 2/4 | 80% | Lateral Movement, Data Leak |
+| SRV-07 | Backup Server | 9 | 1 | 2/4 | 95% | Ransomware, Recovery Failure |
+| SRV-08 | Cloud Workload | 4 | 2 | 2/4 | 99% | Misconfiguration, IAM Abuse |
+| SRV-09 | Legacy System | 3 | 1 | 3/4 | 90% | Known Vulns, Cannot Patch |
+| SRV-10 | Honeypot | 7 | 1 | 1/4 | N/A | Detection, Early Warning |
 
 ---
 
 ## Gameplay Notes
 
 ### Budget Considerations
-- **Cheapest:** Honeypot (2), Cloud Workload (4), Development (5)
-- **Mid-range:** Web Server (6), File Server (7), Email Server (8), Backup Server (9)
-- **Most Expensive:** Domain Controller (10), Database Server (12)
-- **Total budget:** 76 for all servers (teams must prioritize)
+- **Cheapest:** Legacy System (3), Cloud Workload (4), Development (5)
+- **Mid-range:** File Server (6), Web Server (7), Honeypot (7), Email Server (8), Backup Server (9)
+- **Most Expensive:** Database Server (10), Domain Controller (12)
+- **Total cost of all 10 servers:** 71 Budget (teams must prioritize)
+
+### Capacity & Overload (v2.2)
+- Capacity = how many services a server can host at its printed cost
+- Extra services beyond capacity cost +1 Budget each and mark the server OVERLOADED (a recorded gap for later modules)
 
 ### Complexity Considerations
 - High complexity servers (DC, Database, Legacy) require more operational overhead
@@ -411,10 +426,10 @@ Each server fulfills one or more Asset Card requirements:
    - **Blue:** SRV-06, SRV-08, SRV-09 (Business Important - can work around)
    - **Green:** SRV-10 (Security Tool - special purpose)
 3. Cut along dotted lines
-4. Consider creating a separate "Server Reference Card" with costs and complexity for quick lookup
+4. Consider creating a separate "Server Reference Card" with costs, capacity, and complexity for quick lookup
 
 ---
 
 *Network Building Module: Server Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

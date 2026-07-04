@@ -2,7 +2,7 @@
 
 **Version:** 1.0 - Design Discussion
 **Date:** October 2025
-**Status:** For Review & Playtesting
+**Status:** ✅ SUPERSEDED — this proposal was adopted (with adjustments) as the [Variable Game Length System](VARIABLE_GAME_LENGTH_SYSTEM.md), which is now part of core rules (v2.1). This document is kept for design history only; where the two differ (e.g., Tier 4 turn ranges), VARIABLE_GAME_LENGTH_SYSTEM.md is authoritative.
 
 ---
 

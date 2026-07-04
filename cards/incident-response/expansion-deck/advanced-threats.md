@@ -5,7 +5,7 @@ This document provides additional Threat Cards for expanding **Incident Zero** g
 
 ---
 
-## ADDITIONAL THREAT CARDS (6 Cards)
+## ADDITIONAL THREAT CARDS (8 Cards)
 
 ### Supply Chain Attack Threats
 
@@ -17,7 +17,7 @@ This document provides additional Threat Cards for expanding **Incident Zero** g
 │ COMPROMISED SOFTWARE VENDOR UPDATE  │
 ├─────────────────────────────────────┤
 │ Step:    INITIAL COMPROMISE         │
-│ Vector:  WEB EXPLOIT                │
+│ Vector:  MALWARE                    │
 ├─────────────────────────────────────┤
 │ CLUE FOR THREAT ORCHESTRATOR:       │
 │ "Your monitoring systems detect     │
@@ -375,17 +375,17 @@ This document provides additional Threat Cards for expanding **Incident Zero** g
 ## Integrating Expansion Threats into Your Game
 
 ### Attack Vector Summary (Expansion Cards)
-- **WEB EXPLOIT:** Compromised Software Vendor Update (T-13)
-- **MALWARE:** Malicious Third-Party Library Injection (T-14), Disgruntled Employee Sabotage (T-16)
+- **MALWARE:** Compromised Software Vendor Update (T-13, v2.2 — trojanized update is a MALWARE vector), Malicious Third-Party Library Injection (T-14), Disgruntled Employee Sabotage (T-16)
 - **NETWORK:** Compromised IoT Device as Pivot Point (T-17)
 - **CREDENTIAL ABUSE:** Cloud API Token Theft & Abuse (T-18), Physical Access + Badge Cloning (T-20)
 - **DATA EXFIL:** Malicious Insider Data Theft (T-15), DNS Tunneling Data Exfiltration (T-19)
+- **WEB EXPLOIT / SOCIAL ENGINEERING:** No expansion threats (covered by core deck T-01, T-02)
 
 ### Suggested Scenario Combinations
 
 #### Scenario 4: "Supply Chain Nightmare" (5-card chain - Expert)
 Teaches: Third-party risk management, vendor security assessment, incident response at scale
-1. **Compromised Software Vendor Update** (Initial Compromise) → WEB EXPLOIT
+1. **Compromised Software Vendor Update** (Initial Compromise) → MALWARE
 2. **Lateral Movement via SMB** (Pivot & Escalate) → NETWORK
 3. **Scheduled Task Persistence** (Persistence) → MALWARE
 4. **Beaconing to C2 Server** (C2 & Exfil) → NETWORK
@@ -434,40 +434,48 @@ Teaches: Complex attack coordination, detecting collusion, multi-vector threats
 
 ## Recommended Defense Cards for Expansion Threats
 
+**(v2.2)** Entries now cite real card IDs from the core deck (D-01 to D-24) and expansion deck (D-25 to D-43, see `advanced-defenses.md`). Concepts without a printed card are marked **(custom — not in deck)** and make good custom-card projects.
+
 ### For Supply Chain Attacks (T-13, T-14)
-- **Software Composition Analysis (SCA)** - ADVANCED - Scans dependencies for known vulnerabilities and unauthorized packages
-- **Vendor Security Assessment Program** - ADVANCED - Vets third-party vendors before deployment
-- **Code Signing Verification** - ELITE - Validates digital signatures on all updates before deployment
+- **D-31: Container Image Scanning** - BASIC - Scans images/dependencies for known vulnerabilities and malicious packages
+- **D-29: Process Behavior Analysis** - ADVANCED - Catches legitimate apps compromised by supply chain attacks
+- **D-40: Playbook: Supply Chain Breach Response** - ELITE - Coordinated vendor/industry response
+- **D-17: Advanced Malware Sandbox** (core) - ELITE - Detonates updates before deployment
+- **Vendor Security Assessment Program** (custom — not in deck) - Vets third-party vendors before deployment
 
 ### For Insider Threats (T-15, T-16)
-- **Privileged Access Management (PAM)** - ELITE - Monitors and controls privileged user activities in real-time
-- **User & Entity Behavior Analytics (UEBA)** - ELITE - Detects anomalous behavior from trusted accounts
-- **Badge & Offboarding Audit** - ADVANCED - Verifies that terminated employees' access is fully revoked
-- **Physical Security Integration** - ADVANCED - Monitors badge logs and CCTV correlated with system access
+- **D-28: Baseline Behavior Learning System** - ADVANCED - UEBA-style detection of anomalous behavior from trusted accounts
+- **D-39: Playbook: Insider Threat Response** - ELITE - Cross-functional HR/legal/security coordination
+- **D-12: Password Manager & Vault** (core) - ADVANCED - Audited, controlled privileged credential access
+- **D-20: Zero Trust Access Control** (core) - ELITE - Even admins require authorization for sensitive access
+- **Badge & Offboarding Audit** (custom — not in deck) - Verifies that terminated employees' access is fully revoked
 
 ### For IoT Device Compromise (T-17)
-- **IoT Device Inventory & Classification** - BASIC - Catalogues all IoT devices and creates security policies for each
-- **Network Segmentation for IoT** - ADVANCED - Isolates IoT networks from critical systems
-- **Firmware Update Automation** - ADVANCED - Automatically patches and updates IoT firmware
-- **IoT Behavioral Monitoring** - ELITE - Detects anomalous network traffic from IoT devices
+- **D-09: Network Segmentation** (core) - ADVANCED - Isolates IoT networks from critical systems
+- **D-28: Baseline Behavior Learning System** - ADVANCED - Detects anomalous network traffic from IoT devices
+- **D-25: Application Whitelisting** - BASIC - Blocks unauthorized binaries on managed endpoints the IoT pivot targets
+- **IoT Device Inventory & Classification** (custom — not in deck) - Catalogues all IoT devices with per-device policies
+- **Firmware Update Automation** (custom — not in deck) - Automatically patches IoT firmware
 
 ### For Cloud API Abuse (T-18)
-- **API Key Secrets Scanning** - ADVANCED - Scans repositories and storage for exposed API keys
-- **Cloud Identity & Access Management (IAM) Hardening** - ADVANCED - Implements least-privilege access and MFA for API calls
-- **Cloud Audit Logging & Monitoring** - ADVANCED - Monitors all API calls and detects anomalous patterns
-- **API Rate Limiting & Anomaly Detection** - ELITE - Detects and blocks unusual API activity
+- **D-34: Cloud Configuration Auditing** - BASIC - Detects exposed credentials and misconfigured resources
+- **D-35: Cloud Access & Permission Auditing** - ADVANCED - Least-privilege IAM, revokes stale credentials
+- **D-36: Cloud Compliance & Audit Trail** - ELITE - Monitors all API calls, immutable forensic trail
+- **API Rate Limiting & Anomaly Detection** (custom — not in deck) - Detects and blocks unusual API activity
 
 ### For DNS Tunneling (T-19)
-- **DNS Query Content Analysis** - ELITE - Inspects DNS queries for encoded data patterns
-- **DNS Rate Limiting & Anomaly Detection** - ADVANCED - Detects suspicious DNS query patterns
-- **Internal DNS Monitoring** - BASIC - Monitors DNS traffic for unusual destinations
-- **DNS Filtering Service** - ADVANCED - Blocks known malicious domains and suspicious patterns
+- **D-30: Machine Learning Anomaly Detection** - ELITE - Flags encoded-data patterns and statistical outliers in DNS queries
+- **D-28: Baseline Behavior Learning System** - ADVANCED - Detects deviation from normal DNS query patterns
+- **D-05: Log Centralization** (core) - BASIC - Centralizes DNS query logs for analysis
+- **D-24: Threat Intelligence Integration** (core) - ADVANCED - Blocks known tunneling domains
+- **DNS Rate Limiting** (custom — not in deck) - Throttles suspicious DNS query volume
 
 ### For Physical Security Bypass (T-20)
-- **Multi-Factor Physical Access Controls** - ADVANCED - Requires badge + biometric for sensitive areas
-- **RFID Encryption & Frequency Hopping** - ELITE - Uses encrypted, dynamic badges resistant to cloning
-- **Environmental Controls (CCTV + Sensors)** - ADVANCED - Integrates video monitoring with access logs
-- **Hardware Inventory Management** - BASIC - Tracks and audits all equipment in secure areas
+- **D-38: Playbook: Credential Compromise Response** - ADVANCED - Rapid revocation once cloned-badge abuse is detected
+- **D-28: Baseline Behavior Learning System** - ADVANCED - Correlates badge/system access anomalies
+- **Multi-Factor Physical Access Controls** (custom — not in deck) - Requires badge + biometric for sensitive areas
+- **RFID Encryption & Frequency Hopping** (custom — not in deck) - Cloning-resistant badges
+- **Environmental Controls (CCTV + Sensors)** (custom — not in deck) - Integrates video monitoring with access logs
 
 ---
 
@@ -565,7 +573,7 @@ Teaches: Complex attack coordination, detecting collusion, multi-vector threats
 
 | Card | Title | Step | Vector | Difficulty |
 |------|-------|------|--------|------------|
-| T-13 | Compromised Software Vendor Update | INITIAL | WEB EXPLOIT | Hard |
+| T-13 | Compromised Software Vendor Update | INITIAL | MALWARE | Hard |
 | T-14 | Malicious Third-Party Library Injection | INITIAL | MALWARE | Medium |
 | T-15 | Malicious Insider Data Theft | C2 & EXFIL | DATA EXFIL | Very Hard |
 | T-16 | Disgruntled Employee Sabotage | PIVOT & ESCALATE | MALWARE | Hard |
@@ -583,7 +591,7 @@ Teaches: Complex attack coordination, detecting collusion, multi-vector threats
 - [ ] Add expansion cards to scenario briefings with "*Advanced Scenario*" label
 - [ ] Brief threat orchestrators on real-world context (provided above)
 - [ ] Adjust starting budget (+20) if using expansion cards to offset higher difficulty
-- [ ] Consider extending turn limit (8-12) for scenarios with 5+ cards
+- [ ] Set the turn limit with the Variable Game Length formula: (chain cards × 2) + 1 (e.g., 11 turns for 5 cards, 13 for 6 — see core rules §3a)
 - [ ] Create hybrid scenarios mixing base + expansion cards for variety
 
 ---

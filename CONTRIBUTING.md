@@ -291,7 +291,6 @@ See [LICENSE](LICENSE) for full license details.
 
 Contributors are recognized in:
 - PR/Issue comments (GitHub)
-- [CONTRIBUTORS.md](CONTRIBUTORS.md) file (for significant contributions)
 - Changelog entries
 - README acknowledgments (for major contributions)
 

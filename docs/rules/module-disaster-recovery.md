@@ -1,7 +1,9 @@
 # Disaster Recovery Module: Rules & Mechanics
 
-**Version:** 2.1 - Balanced & Refined Edition
+**Version:** 2.2 - Playtest Edition
 **Last Updated:** October 2025
+
+> **v2.2:** the card system is canonical. The Disaster Recovery game is played with 12 Crisis Action cards (plus ACTION-13), 12 Event cards, and 5 Stakeholder cards. Track advances are deterministic — dice are used only for the optional Justification bonus and ACTION-13's "no guarantee" roll. See `cards/disaster-recovery/` for the cards themselves and **v2.2 Playtest Edition Changes** at the bottom of this document for what changed.
 
 ---
 
@@ -19,21 +21,38 @@ This is not a "second chance" to solve the attack chain. Instead, it simulates t
 
 ### Educational Purpose
 
-**Phase 1 (Incident Response):** Teaches proactive threat detection and investigation  
-**Phase 2 - Hardening (Win):** Teaches proactive defense and resilience  
-**Phase 2 - Disaster Recovery (Lose):** Teaches crisis management, consequences, and recovery
+**Incident Response:** Teaches proactive threat detection and investigation
+**Hardening (typically after an IR win):** Teaches proactive defense and resilience
+**Disaster Recovery (typically after an IR loss):** Teaches crisis management, consequences, and recovery
 
 ---
 
-## Phase 2: Disaster Recovery Phase Setup
+## Components (v2.2)
+
+| Component | Count | Purpose |
+|-----------|-------|---------|
+| Crisis Action cards (ACTION-01 to ACTION-13) | 13 | The actions teams play each turn |
+| Event cards (EVENT-01 to EVENT-12) | 12 | 6 Scheduled + 6 Triggered pressure events |
+| Stakeholder cards (STAKE-01 to STAKE-05) | 5 | Five trust meters (0-100%) |
+| Progress tracks | 3 | Investigation %, Remediation %, Communication % (0-100%) |
+| d20 | 1 | Optional Justification bonus; ACTION-13 "no guarantee" roll |
+| Track/trust sheets | — | See print pack (coming) — a piece of paper works fine |
+
+**Money mapping:** 1 Budget ≈ $50K. All dollar figures (fines, ransoms) use this mapping unless marked narrative-only.
+
+---
+
+## Entering the DR Phase
 
 ### Prerequisites for DR Phase
 
-**Trigger:** Team failed Phase 1 by either:
+**Trigger:** Team lost the Incident Response module by either:
 - Reaching Turn 10 with unrevealed cards remaining, OR
 - Running out of Budget (reaching 0)
 
 **Outcome:** The attack chain proceeded undetected. The threat actor succeeded.
+
+*(Standalone play: skip Incident Response and start here — see the standalone guide.)*
 
 ### Discovery & Revelation
 
@@ -50,391 +69,301 @@ The Threat Orchestrator **reveals the entire unrevealed attack chain** to the Bl
 4. Dumped admin credentials (CREDENTIAL ABUSE)
 5. Exfiltrated your entire customer database (DATA EXFIL)
 
-The attacker is now threatening to publish the data unless you pay $500,000. You have 48 hours to respond."
+The attacker is now threatening to publish the data unless you pay $1M (20 Budget). You have 72 hours before regulators must be notified."
 
 ---
 
-### DR Phase Setup Steps
+## Setup (v2.2)
 
-1. **Reveal Total Damage:**
-   - Calculate data breach impact: Record count × Sensitivity level = **Initial Breach Cost**
-   - Estimate business interruption if applicable
-   - Document timeline of attack progression
+1. **Establish DR Budget:**
+   - Starting DR Budget = **50** (flat crisis allocation — insurance, emergency funds)
+   - If entering from Incident Response: add any remaining IR budget (operational reserves)
+   - If an Audit was played earlier: subtract audit gap penalties (total capped at -30 — see module-audit-compliance.md)
+   - **Budget floor is 0.** Budget can never go negative; the free Holding Statement action is always available.
 
-2. **Establish DR Budget:**
-   - Starting DR Budget = **50** (flat allocation for crisis response)
-   - This is **separate from Phase 1 budget** (represents insurance, emergency funds, etc.)
-   - Blue Team also has any remaining Phase 1 budget available (represents operational reserves)
-   - **Total Available Budget for DR = (Phase 1 Remaining + 50)**
+2. **Set the three progress tracks to 0%:** Investigation, Remediation, Communication.
 
-3. **Create Crisis Situation Card:**
-   - Document the attack details, customer impact, and attacker demands
-   - Set timelines (48-72 hours for disclosure decisions, negotiations, etc.)
-   - List stakeholders requiring notification
+3. **Set the five stakeholder trust meters to their starting values:** Customers 50%, Regulators 60%, Media 40%, Board 70%, Executives 80%. Meters clamp to 0-100%.
 
-4. **Initialize Tracking Sheets:**
-   - **Damage Assessment Tracker** (what was compromised)
-   - **Stakeholder Communication Log** (who needs to know, when, what)
-   - **Forensic Investigation Tracker** (evidence collection, analysis)
-   - **Financial Impact Sheet** (investigation costs, notifications, PR, legal)
-   - **Reputation/Trust Score** (starts at 100, decreases based on response quality)
+4. **Build the Event Timeline:** place the 6 Scheduled events on their turns (EVENT-01 Turn 2, EVENT-04 Turn 3, EVENT-03 + EVENT-09 Turn 5, EVENT-02 Turn 6, EVENT-12 Turn 7). Lay the 6 Triggered events face-up where their conditions can be read.
 
-5. **Set Up Disclosure Timeline:**
-   - **6-hour mark:** Internal discovery (already happened)
-   - **12-hour mark:** Regulatory notification deadline (if applicable)
-   - **24-hour mark:** Customer notification deadline (varies by regulation)
-   - **48-hour mark:** Public disclosure and media response
-   - **72-hour mark:** Investigation completion and reporting
+5. **Ransom scenarios:** note the ransom deadline (default: start of Turn 5) and put ACTION-13 where the team can see it.
+
+6. **Reputation is NOT tracked during play.** It is **computed once, at game end** (see Final Scoring). During play, the three tracks and five trust meters are the whole state.
 
 ---
 
-## Phase 2 Disaster Recovery Mechanics
+## The Crisis Clock (v2.2) — ONE clock
 
-### Action Types in DR Phase
+The game lasts **8 turns**. Each turn is one crisis phase of ~6-12 hours of narrative time:
 
-Instead of Investigation/Deploy Defense, teams make **Crisis Response Actions**:
+| Turn | Narrative Time | Key Deadline |
+|------|----------------|--------------|
+| 1 | Detection +6h | Internal discovery |
+| 2 | +12h | Internal legal/executive escalation complete (narrative; this was mislabeled a "regulatory deadline" in v2.1 — the regulatory anchor is GDPR 72h) |
+| 3 | +18h | Board Meeting (EVENT-04) |
+| 4 | +24h | Day 1 ends |
+| 5 | +36h | **Customer notification recommended (ACTION-09)**; default ransom deadline (ACTION-13) |
+| 6 | +48h | Regulatory escalation begins (EVENT-02): -10 Regulator trust per un-notified turn |
+| 7 | +60h | Government subpoena (EVENT-12) |
+| 8 | +72h | **GDPR 72-hour deadline: ACTION-10 must be complete. Game ends.** |
 
----
+All deadlines on every card use this clock. There are no 12-hour, 24-hour, 30-day, or 60-day timers anymore; the former 30/60-day deadlines are deferred final-scoring consequences (see Final Scoring).
 
-#### **Action A: Forensic Investigation 🔍**
-
-**Cost:** 5-15 Budget (depending on depth)
-
-**Action:** The team describes a specific forensic investigation to determine:
-- Extent of data compromise
-- Timeline of attack
-- What systems were affected
-- Whether attacker still has access
-
-**Investigation Options & Costs:**
-
-| Investigation | Cost | Duration | Result |
-|--------------|------|----------|--------|
-| Quick log review | 5 | Immediate | General timeline |
-| Forensic image (1 system) | 10 | 2-4 hours | Detailed evidence |
-| Full network forensics | 15 | 6-8 hours | Complete picture |
-| Threat hunting for backdoors | 15 | Ongoing | Persistence detection |
-| Attacker infrastructure analysis | 10 | 4-6 hours | Attribution hints |
-
-**Outcomes:**
-- **Success (roll 11+):** Gain critical information for stakeholder communication and remediation
-- **Partial Success (roll 8-10):** Get some useful data but miss important details
-- **Failure (roll < 8):** Investigation inconclusive, creates liability and requires more investigation later
-
-**Educational Purpose:** Teaches that thorough forensics take time and money, but are critical for:
-- Legal/regulatory compliance
-- Attribution and threat intelligence
-- Prevention of future attacks
-- Customer confidence
+*(Exception: EVENT-08 Second Breach extends play to Turn 10, once per game. Scoring deadlines do not move.)*
 
 ---
 
-#### **Action B: Stakeholder Communication & Notification 📢**
+## Turn Sequence (v2.2)
 
-**Cost:** 0-10 Budget (depending on scope)
+Each turn:
 
-**Action:** The team chooses WHO to notify and WHEN:
+**1. START OF TURN**
+- Complete any in-flight multi-turn action that finishes now (apply its track advance)
+- Reveal and resolve this turn's Scheduled event
+- Check all un-fired Triggered events; resolve any whose condition is met
+- Apply decay/deadline penalties (e.g., Customer decay, Regulator -10/turn from Turn 6 if un-notified)
 
-**Stakeholder Groups & Notification Requirements:**
+**2. TEAM ACTION (2-3 minutes discussion)**
+- Play **ONE** Crisis Action card: pay its Budget cost, apply its track advance
+  - **Multi-turn actions (Duration N):** the card occupies your action slot only on the turn started; its advance completes at the start of the Nth following turn. Only one multi-turn action in flight at a time.
+  - **Or** take the free **Holding Statement** (0 Budget, +5% Communication; always available, counts as a Communication action for decay purposes)
+- **Optional Justification bonus (v2.2):** if the team gives a strong, specific technical justification for the action, the TO may allow a d20 roll — on 11+, that action's track advance gains +5%. This is the only d20 in track advancement, and it is a bonus, never a gate.
+- **ACTION-13 (Ransom Decision)** may be declared at any time before the ransom deadline; it does not use the action slot and happens once per game.
 
-| Stakeholder | Regulatory | Cost | Timing | Impact on Reputation |
-|------------|-----------|------|--------|-------------------|
-| **Internal Leadership** | Required | 0 | Immediately | N/A (internal) |
-| **Legal Team** | Required | 5 | Within 2 hours | N/A |
-| **Affected Customers** | Required* | 10 | 24-72 hours** | -10 per day late |
-| **Regulatory Bodies** | Required* | 5 | 24-72 hours** | -5 if late |
-| **Insurance Company** | Recommended | 0 | Within 24h | -2 if missed |
-| **Credit Monitoring (if PII)** | Required* | 15 | Within 48h | -15 if missed |
-| **Public Media Statement** | Optional | 0 (or 20 for PR firm) | 48-72h | Variable |
+**3. APPLY STAKEHOLDER EFFECTS**
+- Apply the played action's trust effects (table below)
 
-*Varies by regulation (GDPR, CCPA, HIPAA, PCI-DSS, state breach notification laws)
+**4. END OF TURN**
+- Check the loss condition: **any stakeholder trust at 0% = immediate loss ("the company collapses")**
+- Advance the turn counter
 
-**Notification Quality:** 
-- **Pro (Full transparency):** +3 Reputation - "We're investigating and will share details"
-- **Standard (Required info only):** No change - "Here's what happened, here's what we're doing"
-- **Defensive (Minimize info):** -2 Reputation - "We're handling it internally" (looks like cover-up)
+### Action → Trust Effects (v2.2 canonical table)
 
-**Notification Timing:**
-- **Early (within timeline):** No reputation penalty
-- **On-time (at deadline):** No penalty
-- **Late (after deadline):** -10 Reputation per day late (regulatory violation)
+| Action | Trust effects when completed |
+|--------|------------------------------|
+| ACTION-01 Forensic Analysis | Regulators +10, Board +5 |
+| ACTION-02 Threat Hunting | — |
+| ACTION-03 Log Analysis | — |
+| ACTION-04 Third-Party IR | Regulators +15, Board +15 |
+| ACTION-05 Patch & Harden | Executives +5 |
+| ACTION-06 Containment | Executives +5 |
+| ACTION-07 Rebuild from Backup | Executives +5, Customers +5, Board +5 |
+| ACTION-08 Credential Reset | Executives +5 |
+| ACTION-09 Customer Notification | Customers +15, Media +5 |
+| ACTION-10 Regulatory Notification | Regulators +20 |
+| ACTION-11 Media Management | Media +20, Customers +10 |
+| ACTION-12 Board Communication | Board +20, Executives +5 |
+| ACTION-13 Ransom Decision | — (scoring effects only) |
+| Holding Statement (free) | — (stops Customer decay) |
 
-**Example Communication Action:**
-"We're issuing a transparent customer notification admitting the breach extent, offering 2 years of credit monitoring, and outlining our investigation findings. Cost 10 Budget, Professional approach."
-→ **Result:** +3 Reputation, stakeholder trust maintained
-
----
-
-#### **Action C: Evidence & Data Preservation 🔒**
-
-**Cost:** 5-20 Budget (depending on scope)
-
-**Action:** Preserve forensic evidence, isolate breached systems, secure backups
-
-**Preservation Options & Costs:**
-
-| Action | Cost | Effect |
-|--------|------|--------|
-| Isolate breached systems (network air-gap) | 5 | Prevents further attacker access; may impact business |
-| Preserve logs & evidence (chain of custody) | 10 | Critical for investigation and legal proceedings |
-| Backup customer data (offline copy) | 15 | Enables recovery; prevents double-extortion loss |
-| Memory forensics on infected systems | 10 | Finds attacker tools still in RAM |
-| Threat intelligence collection | 5 | Helps with attribution, IOCs |
-
-**Outcomes:**
-- **Success:** Evidence preserved properly, admissible in court, supports investigation
-- **Failure:** Evidence contaminated, chain of custody broken, reduces legal standing
-
-**Educational Purpose:** Teaches that forensic procedures must follow legal standards or evidence becomes inadmissible.
+Where a Stakeholder card lists a range (e.g., "+2-5%"), this table is the single authoritative value (v2.2).
 
 ---
 
-#### **Action D: Remediation & System Hardening 🛡️**
+## Deadlines (v2.2)
 
-**Cost:** 10-25 Budget (depending on scope)
-
-**Action:** Remove attacker access and harden systems to prevent re-compromise
-
-**Remediation Options & Costs:**
-
-| Action | Cost | Effect |
-|--------|------|--------|
-| Change all compromised credentials | 5 | Essential but basic |
-| Patch vulnerability used in initial access | 10 | Prevents same attack vector |
-| Rebuild compromised systems (fresh OS) | 15 | Most thorough but time-consuming |
-| Deploy additional monitoring/detection | 10 | Prevents future undetected access |
-| Implement firewall rules to block attacker IP/domains | 5 | Reactive; attacker may use new infrastructure |
-| Full security infrastructure upgrade | 25 | Comprehensive but expensive |
-
-**Outcomes:**
-- **Success:** System hardened, attacker access removed, risk of re-breach reduced
-- **Partial Success:** Some vulnerabilities remain, re-breach risk moderate
-- **Failure:** Remediation incomplete, attacker may maintain persistence
-
-**Educational Purpose:** Teaches that proper incident remediation is expensive, time-consuming, and critical to prevent repeat attacks.
+| Deadline | Turn | If missed |
+|----------|------|-----------|
+| Internal legal/executive escalation | End of Turn 2 | Narrative only |
+| Customer notification (ACTION-09) | End of Turn 5 (recommended) | Customer trust -10 per later turn; EVENT-05 Class Action may trigger; never notified = -15 Reputation at final scoring |
+| Ransom decision (ACTION-13) | Start of Turn 5 (default; +2 turns if NEGOTIATE) | Treated as REFUSE; data-publication event fires |
+| Regulatory notification (ACTION-10) — **GDPR 72h** | End of Turn 8 (escalating from Turn 6) | Regulator trust -10 per turn from Turn 6 while un-notified; never notified = -20 Reputation at final scoring (deferred fine) |
 
 ---
 
-#### **Action E: Attacker Negotiation & Ransom Decision 💰** *(if applicable)*
+## Ransomware & ACTION-13 (v2.2)
 
-**Cost:** Variable (negotiation) or Ransom Amount (payment)
+If the scenario includes a ransom/extortion demand, the team must resolve **ACTION-13: Ransom Decision** before the ransom deadline (default: start of Turn 5). Exactly one option, once per game:
 
-**Action:** If the attacker is demanding payment (ransomware, extortion), the team must decide:
+| Option | Cost | Reputation (at scoring) | Effect |
+|--------|------|-------------------------|--------|
+| **PAY** | 20 Budget (≈ $1M) | -15 | Data-publication event skipped/cancelled; +20% Remediation immediately. **No guarantee:** TO rolls d20 — on 1-5 the keys don't work: no refund, +0% Remediation (publication stays cancelled). |
+| **NEGOTIATE** | 5 Budget | -5 | Data-publication event delayed by 2 turns (default: to start of Turn 7). |
+| **REFUSE** | 0 Budget | 0 (**-20 if the data-publication event later triggers**) | No payment, no delay. |
 
-**Option 1: Pay the Ransom**
-- **Cost:** Amount attacker demands (usually 10-30% of revenue, represented as a percentage of budget)
-- **Effect:** Potential decryption key, but no guarantee
-- **Reputation:** -15 (seen as capitulating to criminals; funds future attacks)
-- **Legal risk:** May violate sanctions laws; doesn't guarantee data deletion
+**Data-publication event:** if the team has not PAID by the (possibly delayed) deadline, the attacker publishes the stolen data: Customer trust -20, Media trust -15, plus the REFUSE scoring penalty if applicable.
 
-**Option 2: Refuse & Negotiate**
-- **Cost:** 5-10 Budget (negotiator/lawyer fees)
-- **Roll:** Negotiate (roll 10+ to convince attacker to lower demands)
-- **Success:** Attacker may reduce demands or agree not to publish
-- **Failure:** Attacker publishes/encrypts anyway
-- **Reputation:** +5 (seen as standing against extortion)
-
-**Option 3: Negotiate with Law Enforcement**
-- **Cost:** 0 (law enforcement typically free, but limited resources)
-- **Roll:** Law Enforcement Investigation (roll 12+ to identify attacker; very hard)
-- **Success:** Attacker arrested or infrastructure seized (data may still be leaked, but criminal prosecuted)
-- **Failure:** Investigation ongoing, no immediate resolution
-- **Timeline:** Takes months/years
+**Corrected facts (v2.2):** payment may violate OFAC sanctions if the threat actor is sanctioned; many insurers restrict or exclude ransom coverage. The FBI discourages payment. Payment guarantees nothing.
 
 **Decision Framework for Teams:**
-- **Small company, limited budget:** Often pays (can't afford extended downtime)
-- **Large company, security-conscious:** Often refuses (sets precedent, funds crime)
-- **Critical infrastructure:** May negotiate with government assistance
-- **Regulated industry:** May be prohibited from paying certain threat actors
+- **Small company, limited budget:** may pay (can't afford extended downtime)
+- **Large company, security-conscious:** often refuses (sets precedent, funds crime)
+- **Critical infrastructure:** may negotiate with government assistance
+- **Regulated industry / sanctioned actor:** payment may be legally impossible
 
-**Educational Purpose:** Teaches the ethical and practical considerations of ransom decisions; no "right" answer, depends on risk tolerance.
-
----
-
-### DR Phase Turns & Timeline
-
-**Each "Turn" in DR Phase = 6 hours of real time**
-
-| Turn | Real Time | Key Deadline | Actions Available |
-|------|-----------|--------------|-------------------|
-| Turn 1 | Hour 0-6 | Internal discovery & legal notification | Investigation, Evidence Preservation, Legal prep |
-| Turn 2 | Hour 6-12 | Regulatory bodies notification (12h) | Investigation, Customer notification prep |
-| Turn 3 | Hour 12-18 | Customer notifications begin (24h window) | Investigation, Remediation begins, Stakeholder communication |
-| Turn 4 | Hour 18-24 | Customer notifications complete (48h) | Remediation, Negotiation if applicable |
-| Turn 5 | Hour 24-30 | Media & public disclosure | Public statement, Reputation management |
-| Turn 6 | Hour 30-36 | Investigation completion pressure | Final forensics, Final remediation |
-| Turn 7 | Hour 36-48 | Crisis period ends | Post-incident analysis |
-
-**Maximum Turns:** 7 turns (48 hours of crisis management)
-
-Each turn, the Blue Team chooses **ONE** action.
+**Educational Purpose:** the ethical and practical considerations of ransom decisions; no "right" answer — it depends on risk tolerance.
 
 ---
 
-### Financial Impact Tracking
+## Financial Impact Tracking
 
-As teams take actions, the cost accumulates beyond their Budget:
+**Immediate Costs (paid from DR Budget, floor 0):**
+- Crisis Action card costs (see the Crisis Action deck)
+- Event costs (subpoena legal fees, regulatory fine, lost revenue)
+- Ransom payment or negotiation (ACTION-13)
 
-**Immediate Costs (paid from DR Budget):**
-- Forensic investigation
-- Stakeholder notification
-- Evidence preservation
-- Remediation efforts
+**Deferred/Ongoing Costs (narrative-only; discuss in debrief):**
+- Credit monitoring, legal costs, long-tail regulatory exposure, customer churn
+- Real-world scale: GDPR fines run up to €20M or 4% of global turnover, **whichever is higher**; total breach costs typically run to millions
 
-**Deferred/Ongoing Costs (tracked separately, affect final score):**
-- Credit monitoring (if PII breached): 2-5% of revenue
-- Legal costs: 1-3% of revenue
-- Regulatory fines: 2-10% of revenue (GDPR fines up to 4% of global revenue)
-- PR & reputation recovery: 1-5% of revenue
-- Customer churn & loss of trust: 5-20% of revenue (variable)
+The scoring system captures deferred consequences as Reputation penalties (below) rather than as a parallel money ledger.
 
-**Ransom Paid (if applicable):**
-- 10-30% of annual revenue
+---
 
-**Cost Summary Example:**
+## Final Scoring (v2.2): Computing Reputation
+
+**Reputation is computed once, at game end.** The three tracks and five trust meters drive play; Reputation (0-100) is the outcome measure.
+
 ```
-Phase 1 Failed with: 15 Budget remaining
+FINAL REPUTATION = 100, then apply:
 
-DR Setup:
-- DR Budget: 50
-- Total Available: 65
+1. TRACK RESULTS (per track: Investigation, Remediation, Communication)
+   50-100%  ->  -0
+   25-49%   ->  -5
+   10-24%   ->  -10
+   0-9%     ->  -20
 
-DR Phase Spending:
-- Forensic Investigation (full): 15
-- Customer Notification (transparent): 10
-- Evidence Preservation: 10
-- Remediation & Patch: 15
-- PR Firm & Media Response: 10
-Total DR Spending: 60 (remaining: 5)
+2. STAKEHOLDER TRUST (average of the five meters at game end)
+   70%+     ->  +5
+   50-69%   ->  0
+   30-49%   ->  -10
+   below 30 ->  -20
 
-Deferred Costs (not from budget, but tracked):
-- Credit Monitoring: 50,000 (2% of revenue estimate)
-- Legal Costs: 30,000 (1% of revenue)
-- Regulatory Fine: 40,000 (GDPR violation = up to 4%)
-- Customer Churn: 120,000 (estimated 10% revenue loss)
-- Total Deferred: 240,000
+3. DECISION & EVENT MODIFIERS (each applies at most once)
+   +5   Customers notified transparently by end of Turn 5 (ACTION-09)
+   +3   per completed quality investigation (ACTION-01 or ACTION-04),
+        MAX +6 total per game
+   -5   ACTION-13 NEGOTIATE          (only one ACTION-13
+   -15  ACTION-13 PAY                 modifier can apply)
+   -20  ACTION-13 REFUSE and data was published
+   -10  EVENT-05 Class Action triggered
+   -10  EVENT-06 Regulatory Fine triggered
+   -10  EVENT-08 Second Breach triggered
+   -15  Customers never notified in-game (deferred statutory violation)
+   -20  Regulators never notified in-game (deferred GDPR fine)
 
-Final Financial Impact:
-DR Budget Spent: 60 out of 65 (92% utilized)
-Deferred Costs: 240,000+ (ongoing)
-Total Incident Cost: ~300,000+ (varies by size of company)
+4. CLAMP the result to 0-100.
 ```
 
+### Outcome Tiers (v2.2 — the ONE tier table, identical in the standalone guide)
+
+| Final Reputation | Outcome | Interpretation |
+|------------------|---------|----------------|
+| **85-100** | Exemplary | Crisis well-managed; stakeholder trust preserved; the organization recovers |
+| **70-84** | Managed | Adequate response; some damage; recovery likely |
+| **55-69** | Damaged | Poor response; significant customer loss; regulatory scrutiny; recovery uncertain |
+| **40-54** | Mismanaged | Major reputational/financial damage; leadership changes likely |
+| **Below 40** | Catastrophic | Company survival in question; CEO likely replaced |
+
+### Loss Conditions (v2.2 — ONE authoritative list, in precedence order)
+
+1. **Any stakeholder trust meter at 0% at any point = immediate loss.** "The company collapses." Nothing else matters.
+2. **Otherwise**, the game ends after Turn 8 (Turn 10 if EVENT-08 fired) and the outcome is the tier table above.
+
+**Below 20% trust is a CRITICAL warning state only** — it triggers escalation events but is never itself a loss. The old "<30% trust = loss" rule is removed.
+
+### Optional Difficulty Variant: Scope-Scaled Start
+
+Default: the Reputation computation starts at **100** for every game. As a clearly-labelled optional difficulty variant, start the computation lower for bigger breaches:
+
+| Scope | Records | Start computation at |
+|-------|---------|----------------------|
+| Small (Beginner) | ~50K | 100 (default) |
+| Medium (Intermediate) | ~500K | 90 |
+| Large (Advanced) | 5M+ | 80 |
+
 ---
 
-### Reputation/Trust Score System
+## Worked Example (v2.2, recomputed)
 
-**Starting Reputation:** 100 (fully trusted)
+**Scenario: "The Ransomware Nightmare"** — customer database encrypted and exfiltrated (500K records), ransom demand $1M (20 Budget), publication threatened. Standalone play, default difficulty. Budget 50.
 
-**Reputation Modifiers During DR:**
+| Turn | Action (cost) | Tracks | Events & trust |
+|------|---------------|--------|----------------|
+| 1 | ACTION-02 Threat Hunting (8); justification roll 14 → +5% | Inv 20 | — |
+| 2 | ACTION-06 Containment (8) | Rem 15 | EVENT-01: no media action yet → Media 40→30. Exec +5 → 85 |
+| 3 | ACTION-10 Notify Regulators (8); declare ACTION-13 **NEGOTIATE** (5) | Comm 10 | Customer decay (no Communication action completed yet at start of turn): Customers 50→40. Regulators 60→80. EVENT-04 unprepared (no ACTION-12) → Board 70→50. Publication delayed to start of Turn 7 |
+| 4 | ACTION-05 Patch & Harden (10) | Rem 35 | No more decay (ACTION-10 completed). Exec +5 → 90 |
+| 5 | ACTION-09 Customer Notification (10) | Comm 30 | Customers 40→55, Media 30→35. EVENT-03 passed → +5 Rep at scoring. (Private company: skip EVENT-09) |
+| 6 | Holding Statement (0) | Comm 35 | EVENT-02: already notified → Regulators +5 → 85. EVENT-08 check: Rem 35 ≥ 30 → does not fire |
+| 7 | Holding Statement (0) | Comm 40 | Data published (unpaid): Customers 55→35, Media 35→20. EVENT-12: Exec 90→80, Budget 1→0, Inv +5% → 25 |
+| 8 | Holding Statement (0) | Comm 45 | Media at 20 (not below 20) → EVENT-07 does not fire. Game ends |
 
-| Action | Reputation Change |
-|--------|------------------|
-| Transparent customer notification (early) | +5 |
-| On-time regulatory notification | +2 |
-| Successful forensic investigation (no delays) | +3 |
-| Quick remediation & system hardening | +3 |
-| Public accountability & lessons learned | +3 |
-| **Late customer notification** | -10 per day |
-| **Inadequate forensics or evidence loss** | -5 |
-| **Failed remediation (re-compromise)** | -15 |
-| **Attempting to cover up/mislead** | -20 |
-| **Regulatory fine for negligence** | -10 |
-| **Ransomware payment** | -15 |
-| **Customer churn/class action lawsuit** | -10 |
+**Budget spent:** 8+8+8+5+10+10 = 49 of 50 (then -5 subpoena fees, floored at 0).
 
-**Final Reputation Tiers:**
-- **90-100:** Crisis well-managed; customer trust recovered; industry sees as responsible
-- **75-89:** Adequate response; some customer concern; regulatory scrutiny
-- **60-74:** Poor response; significant customer loss; regulatory investigation likely
-- **40-59:** Very poor response; major reputational damage; industry loses trust
-- **Below 40:** Catastrophic; company may not survive; CEO likely replaced
+**Final state:** Tracks: **Inv 25, Rem 35, Comm 45.** Trust: Customers 35, Regulators 85, Media 20, Board 50, Executives 80 → **average 54**.
+
+**Scoring:**
+- Tracks: Inv 25 (-5), Rem 35 (-5), Comm 45 (-5) → **-15**
+- Trust average 54 → **0**
+- Modifiers: +5 (transparent customer notification by Turn 5), -5 (NEGOTIATE) → **0**
+- **Final Reputation: 100 - 15 = 85 → Exemplary (barely!)**
+
+**Lessons visible in the example:** the team skipped board prep (Board Meeting hurt), never bought media management (publication nearly triggered a frenzy at Media 20), and threading the ransom deadline with NEGOTIATE bought exactly enough time to notify everyone first. One different choice and this is a 70s game.
+
+**Mandatory-path check (v2.2):** the cheapest mandatory beats — investigate (ACTION-03: 5), notify regulators (ACTION-10: 8), notify customers (ACTION-09: 10), remediate (ACTION-08: 6) — cost **29 Budget**. A stronger path (ACTION-02 + ACTION-10 + ACTION-09 + ACTION-05 + ACTION-06) costs **44**. Both fit a 50-Budget team with room for events.
+
+---
+
+## Sample Disaster Recovery Scenarios (v2.2 card sequences)
+
+### Scenario: "The Ransomware Nightmare"
+See the worked example above. Key tension: ransom decision vs. notification deadlines.
+
+### Scenario: "The Insider Data Theft"
+
+**Attack chain revealed:** disgruntled employee → lateral movement → Mimikatz → insider data theft. Data already for sale on dark web (no ransom demand — skip ACTION-13).
+
+**Suggested line of play (Budget 50-60):**
+1. Turn 1: ACTION-03 Log Analysis (5) — establish the insider's access timeline
+2. Turn 2: ACTION-01 Forensic Analysis (12, Duration 2) — evidence for HR/legal/prosecution
+3. Turn 3: ACTION-10 Regulatory/Law-Enforcement Notification (8) — FBI referral
+4. Turn 4: (forensics completes: +25% Inv, +3 at scoring) ACTION-08 Credential Reset (6)
+5. Turn 5: ACTION-09 Customer Notification (10) — transparent disclosure
+6. Turn 6-8: ACTION-06 Containment (8), then Holding Statements
+
+**Teaching point:** insider threats hit Executive and Board trust hardest; internal communication matters as much as external.
+
+### Scenario: "The Supply Chain Compromise"
+
+**Attack chain revealed:** compromised vendor update → lateral movement → cloud API token theft → DNS tunneling exfiltration → persistent C2.
+
+**Teaching point:** teams quickly realize they **cannot finish remediation by Turn 8** — ACTION-07 rebuilds and ACTION-04 third-party IR eat the clock and the budget. That is the lesson: some incidents transition to months-long response. Expect a "Damaged"-tier result even from good play, and debrief why (complex incidents score lower on the same rubric).
 
 ---
 
 ## DR Phase Outcomes & Debrief
 
-### Phase 2 DR Completion (after 7 turns or team finishes actions)
-
-**Final Scoring:**
-
-```
-Forensic Investigation Quality (0-25 points)
-- Thorough investigation: 25 points
-- Adequate investigation: 15 points
-- Poor investigation: 5 points
-- No investigation: 0 points
-
-Stakeholder Communication (0-20 points)
-- All stakeholders notified on-time & transparently: 20
-- Most stakeholders notified timely: 15
-- Late or incomplete notifications: 5
-- Failed to notify required parties: 0 (regulatory violation)
-
-Incident Containment (0-20 points)
-- Attacker access fully removed, hardened: 20
-- Partially contained, some vulnerabilities remain: 10
-- Poorly contained, re-breach risk high: 5
-- Inadequate containment: 0
-
-Financial Management (0-15 points)
-- Minimized costs, efficient response: 15
-- Moderate spending: 10
-- Excessive spending or ransom paid: 5
-- Uncontrolled costs: 0
-
-Reputation Management (0-20 points)
-- Final Reputation Score (90-100): 20 points
-- Final Reputation Score (75-89): 15 points
-- Final Reputation Score (60-74): 10 points
-- Final Reputation Score (40-59): 5 points
-- Final Reputation Score (Below 40): 0 points
-
-TOTAL DR PHASE SCORE: 0-100 points
-```
-
-### DR "Win" vs "Lose" Outcomes
-
-**DR Phase WIN (60+ points):**
-"Your team's swift and thorough response minimized damage. Though the breach occurred, your transparent communication, proper forensics, and effective remediation preserved customer trust. The organization will recover, though the incident cost significant resources. Key learning: Next time, detect earlier."
-
-**DR Phase ACCEPTABLE (40-59 points):**
-"Your response was adequate but not optimal. Customers are concerned but mostly stayed. Regulatory bodies are investigating. The organization will recover, but reputation damage is longer-term. Key learning: Response procedures need improvement."
-
-**DR Phase POOR (Below 40 points):**
-"Your response was inadequate. Major customer loss, regulatory fines, and significant reputational damage. This incident may impact leadership changes and requires extensive recovery. Key learning: Breach response procedures must be pre-planned and tested."
-
----
-
-## Mandatory Lessons Learned Debrief (20 minutes)
+### Mandatory Lessons Learned Debrief (20 minutes)
 
 After DR Phase completion, run a structured debrief:
 
-### Part 1: Attack Analysis (5 minutes)
+#### Part 1: Attack Analysis (5 minutes)
 1. **What was the initial compromise vector?** Why did defenses fail?
 2. **How far did the attacker progress?** What could have stopped them?
 3. **What was the attacker's objective?** (Data theft? Ransomware? Persistence?)
 
-### Part 2: Detection Failures (5 minutes)
-1. **Why wasn't this detected in Phase 1?** What signs did we miss?
+#### Part 2: Detection Failures (5 minutes)
+1. **Why wasn't this detected during Incident Response?** What signs did we miss?
 2. **What defense would have caught this attack?**
 3. **What monitoring/logging was inadequate?**
 
-### Part 3: Response Evaluation (5 minutes)
+#### Part 3: Response Evaluation (5 minutes)
 1. **Was the forensic investigation adequate?** What gaps remained?
 2. **Did we communicate effectively with stakeholders?** What went wrong?
-3. **Was remediation thorough enough to prevent re-breach?**
+3. **Was remediation thorough enough to prevent re-breach?** (Did EVENT-08 fire?)
 
-### Part 4: Prevention for Next Time (5 minutes)
+#### Part 4: Prevention for Next Time (5 minutes)
 1. **What one thing would you deploy first if you replayed?**
 2. **How would you prioritize defenses differently?**
 3. **What process improvements would help next time?**
 
 ---
 
-## Comparison: Phase 2 Hardening vs. Phase 2 Disaster Recovery
+## Comparison: Hardening vs. Disaster Recovery (the two post-IR paths)
 
-### Win Phase 1 → Phase 2 Hardening
+### Win Incident Response → Hardening
 - **Focus:** Proactive security improvements
 - **Mindset:** "We won, now how do we make sure this never happens again?"
 - **Timeline:** Leisurely (30 minutes); planning for future
@@ -444,208 +373,15 @@ After DR Phase completion, run a structured debrief:
 - **Educational Value:** Defense-in-depth, layered security, cost-benefit analysis
 - **Realism:** How Fortune 500 companies think about security
 
-### Lose Phase 1 → Phase 2 Disaster Recovery
+### Lose Incident Response → Disaster Recovery
 - **Focus:** Crisis management and damage control
 - **Mindset:** "We failed to detect; now manage the fallout"
-- **Timeline:** Urgent (48 hours); crisis response
-- **Budget:** Limited emergency funds; costly but necessary
-- **Outcome:** Reputation/Financial Impact (0-100 scale)
-- **Key Mechanic:** Forensics, communication, remediation under pressure
+- **Timeline:** Urgent (8 turns / 72 narrative hours); crisis response
+- **Budget:** Limited emergency funds; every card has a cost
+- **Outcome:** Reputation (0-100, computed at game end)
+- **Key Mechanic:** Action cards vs. an event timeline, under deadlines
 - **Educational Value:** Incident response procedures, stakeholder management, consequences
-- **Realism:** Real-world breach management; what actually happens when detection fails
-
----
-
-## Sample Disaster Recovery Scenarios
-
-### Scenario: "The Ransomware Nightmare" (4-card chain failure)
-
-**Attack Chain (revealed at start of DR):**
-1. Phishing Email with Malicious Attachment
-2. Lateral Movement via SMB
-3. Scheduled Task Persistence
-4. Ransomware Deployment
-
-**Breach Impact:**
-- All customer data encrypted (500,000 records)
-- Ransom demand: 50 Bitcoin (~$2M)
-- Business systems down 36 hours (ongoing)
-- Public media coverage beginning
-
-**Initial Situation:**
-- DR Budget: 50
-- Remaining Phase 1 Budget: 5
-- Total: 55 Budget
-- Reputation: 100 (starts high; decreases with poor decisions)
-
-**Timeline Pressure:**
-- Turn 1 (6h): Internal discovery
-- Turn 2 (12h): Regulatory notification deadline
-- Turn 3 (18h): Customer notification begins (24h window starts)
-- Turn 4 (24h): Media coverage intensifies
-- Turn 5 (30h): Ransom deadline (attacker threatens to publish data)
-- Turn 6 (36h): Business impact critical (systems still down)
-- Turn 7 (42h): First customer lawsuits filed
-
-**Recommended Action Sequence:**
-1. **Turn 1:** Forensic Investigation (10 Budget) - Determine scope of encryption
-2. **Turn 2:** Evidence Preservation (10 Budget) - Secure backups before further encryption
-3. **Turn 3:** Customer Notification (10 Budget) - Transparent communication about ransom demand
-4. **Turn 4:** Negotiation Decision (0 Budget or Ransom) - Pay, negotiate, or refuse?
-5. **Turn 5:** Remediation (10 Budget) - Deploy patches, reset credentials
-6. **Turn 6:** Backup Recovery (5-10 Budget) - Begin system restoration from backups
-7. **Turn 7:** Final Communication (0 Budget) - Update stakeholders on recovery timeline
-
-**Deferred Costs:**
-- Ransom (if paid): 50 Bitcoin (~$2M)
-- Regulatory fine (GDPR violation): 2-4% of revenue
-- Customer notification & credit monitoring: 2% of revenue
-- Business interruption & customer churn: 5-10% of revenue
-- Legal costs: 1% of revenue
-
-**Total Incident Cost:** $3M+ (industry average for ransomware)
-
-**Likely Outcome:** 45-60 Reputation points (depending on response quality)
-
----
-
-### Scenario: "The Insider Data Theft" (4-card chain failure)
-
-**Attack Chain (revealed at start of DR):**
-1. Disgruntled Employee Sabotage
-2. Lateral Movement via SMB
-3. Mimikatz Credential Dumping
-4. Malicious Insider Data Theft
-
-**Breach Impact:**
-- Customer database (500,000 records) exfiltrated
-- Competitor intelligence and source code also stolen
-- Employee went to competitor/foreign entity
-- Data already for sale on dark web
-
-**Initial Situation:**
-- DR Budget: 50
-- Remaining Phase 1 Budget: 10
-- Total: 60 Budget
-- Reputation: 100
-
-**Complexity Factors:**
-- HR involvement required (personnel issue)
-- Legal complexity (employee likely sued for breach of contract)
-- Criminal referral (FBI may investigate)
-- Forensic complexity (need to prove insider's involvement)
-
-**Recommended Action Sequence:**
-1. **Turn 1:** Evidence Preservation (10 Budget) - Preserve employee's digital footprint before deletion
-2. **Turn 2:** Internal Investigation + Legal (5 Budget) - HR & legal review of insider's activities
-3. **Turn 3:** Forensic Investigation (10 Budget) - Detailed analysis of data access patterns
-4. **Turn 4:** Law Enforcement Notification (0 Budget) - FBI referral for criminal investigation
-5. **Turn 5:** Customer Notification (10 Budget) - Transparent disclosure of breach
-6. **Turn 6:** Remediation (10 Budget) - Credential reset, access review for other privileged employees
-7. **Turn 7:** Insider Threat Program (5 Budget) - Deploy behavioral monitoring to prevent future insider threats
-
-**Deferred Costs:**
-- Regulatory fine: 2-4% of revenue
-- Customer notification: 2% of revenue
-- Customer churn: 5-15% of revenue (higher for insider threat)
-- Legal costs (employee lawsuit, criminal prosecution): 2% of revenue
-- Insider Threat Program deployment: 1% of revenue
-
-**Total Incident Cost:** $2M-$4M (depends on customer base size)
-
-**Reputation Challenges:** Insider threats are particularly damaging to trust; reputation recovery slower
-
-**Likely Outcome:** 40-55 Reputation points (insider threats harder to recover from)
-
----
-
-### Scenario: "The Supply Chain Compromise" (5-card chain failure)
-
-**Attack Chain (revealed at start of DR):**
-1. Compromised Software Vendor Update
-2. Lateral Movement via SMB
-3. Cloud API Token Theft
-4. DNS Tunneling Data Exfiltration
-5. Beaconing to C2 Server (persistence established)
-
-**Breach Impact:**
-- Attacker has persistent backdoor in your infrastructure
-- Customer data partially exfiltrated (investigating full scope)
-- Attack affects 100+ other organizations (industry-wide supply chain compromise)
-- Regulatory & media attention is severe
-- Attacker likely nation-state (high-complexity attack)
-
-**Initial Situation:**
-- DR Budget: 50
-- Remaining Phase 1 Budget: 0 (spent everything investigating but didn't find it)
-- Total: 50 Budget
-- Reputation: 100
-
-**Complexity Factors:**
-- Multiple organizations affected (industry-wide response coordination)
-- Vendor communications required (shared victim status)
-- Government/CISA involvement (critical infrastructure if applicable)
-- Extremely complex forensics (supply chain tracing)
-- Extended investigation timeline (months, not hours)
-
-**Recommended Action Sequence:**
-1. **Turn 1:** Forensic Investigation (15 Budget) - Identify compromised vendor and scope
-2. **Turn 2:** Vendor Coordination (0 Budget) - Work with vendor and other organizations
-3. **Turn 3:** Evidence Preservation (10 Budget) - Chain of custody for attribution
-4. **Turn 4:** Regulatory Notification (5 Budget) - CISA & industry regulators
-5. **Turn 5:** Customer Notification (10 Budget) - Transparent about supply chain compromise
-6. **Turn 6:** Threat Intelligence (5 Budget) - IOC analysis for attribution/tracking
-7. **Turn 7:** Remediation (Not possible in 7 turns - mark as ongoing)
-
-**Critical Decision Point:**
-Teams quickly realize they **cannot fully remediate in 48 hours** due to complexity. Instead, they must:
-- Isolate the compromised software
-- Begin long-term forensic investigation
-- Coordinate with vendor, government, and other organizations
-- Accept that this is a months-long incident response
-
-**Deferred Costs:**
-- Regulatory fine: 2-4% of revenue
-- Customer notification: 2% of revenue
-- Incident investigation team (extended): 3-5% of revenue
-- System rebuilds and re-platforming: 2-3% of revenue
-- Customer churn: 5-10% of revenue
-- Reputational damage: Long-term (recovery takes 12+ months)
-
-**Total Incident Cost:** $5M+ (supply chain incidents are very expensive)
-
-**Learning:** Some incidents are too complex to "solve" in phase 2; they transition to ongoing incident response
-
-**Likely Outcome:** 30-45 Reputation points (complex incidents naturally have lower scores due to timeline)
-
----
-
-## Advanced DR Rules: Second-Phase Escalation
-
-### If DR Phase Goes Poorly (Reputation <40)
-
-**Optional Rule:** Teams can request **Executive Intervention**
-
-- **Cost:** 10 Budget (bringing in outside crisis management firm)
-- **Effect:** Get ONE additional turn (turn 8)
-- **Limited Help:** Can redo ONE previous action with better outcome
-- **Realistic Model:** Companies often bring in outside forensic firms or crisis PR agencies when internal response fails
-
-**Example:** "We botched customer notification. Cost 10 Budget to hire PR firm to re-communicate and salvage relationship."
-
----
-
-### If Attacker Has Persistence (Some attacks establish ongoing access)
-
-**Optional Rule:** Post-Incident Follow-Up (Turn 8+)
-
-After 48-hour crisis period, if the Threat Orchestrator reveals "The attacker maintains persistence," the team can:
-- Spend additional turns (1 per turn) to conduct "Threat Hunting"
-- Attempt to find and remove backdoors
-- Cost: 10 Budget per threat hunting turn
-- Success: Roll 12+ to find and remove persistence
-
-**Realistic Model:** Some breaches aren't fully "cleaned up" in 48 hours; threats are discovered weeks/months later
+- **Realism:** Real-world breach management; Target, Yahoo, Equifax situations
 
 ---
 
@@ -653,55 +389,24 @@ After 48-hour crisis period, if the Threat Orchestrator reveals "The attacker ma
 
 ### Option 1: Standalone Play (Single Path)
 - **Setup:** 10 min
-- **Choose Path:** 2 min (based on flip coin or predetermined)
-- **Play Phase 1 OR DR Phase:** 30-40 min
+- **Play DR:** 30-40 min
 - **Debrief:** 10-15 min
 - **Total:** 60-75 minutes
 
 ### Option 2: Full Campaign (Both Paths)
 - **Setup:** 10 min
-- **Play Phase 1:** 30-40 min
-- **Checkpoint:** 2 min (determine if win or lose)
-- **Play Phase 2 (Hardening or DR):** 20-30 min
+- **Play Incident Response:** 30-40 min
+- **Checkpoint:** 2 min (determine win or lose)
+- **Play second module (Hardening or DR):** 20-30 min
 - **Debrief:** 15 min
 - **Total:** 90-120 minutes
 
-### Option 3: Tournament Mode (Multiple Teams, Both Paths)
+### Option 3: Tournament Mode
 - **Setup:** 10 min
-- **All teams play Phase 1 simultaneously:** 40 min
-- **Teams split by outcome:**
-  - Winners → Phase 2 Hardening (30 min)
-  - Losers → Phase 2 Disaster Recovery (30 min)
-- **Final Scoring & Awards:** 15 min
-- **Debrief:** 10 min
+- **All teams play Incident Response simultaneously:** 40 min
+- **Teams split by outcome:** Winners → Hardening (30 min); Losers → DR (30 min)
+- **Final Scoring & Awards:** 15 min; **Debrief:** 10 min
 - **Total:** 2-2.5 hours
-
----
-
-## Disaster Recovery Phase Materials (Required)
-
-### New Tracking Sheets Needed
-
-1. **Crisis Situation Card** - Breach details, timeline, attacker demands
-2. **Damage Assessment Sheet** - What was compromised, scope, sensitivity
-3. **Forensic Investigation Tracker** - Evidence collected, timeline, findings
-4. **Stakeholder Communication Log** - Who was notified, when, what was said, response
-5. **Financial Impact Sheet** - Budget spent, deferred costs, total incident cost
-6. **Reputation Tracking Chart** - Reputation score over time, modifiers applied
-7. **Remediation Checklist** - Systems hardened, credentials reset, vulnerabilities patched
-8. **Debrief Worksheet** - Lessons learned, prevention strategies, process improvements
-
-### Optional: DR-Specific Cards (Alternative to Freeform)
-
-Instead of open-ended actions, you can create specific **Crisis Action Cards** for teams to draw from:
-- "Forensic Lab Activated" - Forensic investigation action
-- "Legal Team Briefing" - Stakeholder communication
-- "Incident Command Center" - Coordination across teams
-- "Evidence Chain of Custody" - Preservation procedures
-- "Customer Crisis Hotline" - Customer communication
-- "Remediation Squad Deployed" - System hardening
-- "Negotiation Team" - Ransom decision
-- "CEO Press Conference" - Public communication
 
 ---
 
@@ -725,7 +430,7 @@ Instead of open-ended actions, you can create specific **Crisis Action Cards** f
 - Communicate effectively with diverse audiences (customers, regulators, media)
 - Balance transparency with liability reduction
 - Manage expectations during crisis
-- Follow regulatory notification requirements
+- Follow regulatory notification requirements (the GDPR 72-hour anchor)
 
 **Long-term Recovery:**
 - Incident doesn't end when systems are "fixed"
@@ -735,7 +440,7 @@ Instead of open-ended actions, you can create specific **Crisis Action Cards** f
 
 ### Discussion Questions After DR Phase
 
-**For Teams That Had Better Detection (Lost Phase 1 by Turn 9-10):**
+**For Teams That Had Better Detection (Lost Incident Response by Turn 9-10):**
 - "If you'd detected the attack one turn earlier, what would have changed?"
 - "What one additional control would have triggered detection?"
 - "How does dwell time (time from compromise to detection) affect these costs?"
@@ -747,28 +452,22 @@ Instead of open-ended actions, you can create specific **Crisis Action Cards** f
 
 **For All Teams:**
 - "How much did this incident actually cost (total financial + reputational)?"
-- "If Phase 1 detection saves 80% of these costs, what should you invest in detection?"
+- "If detection during Incident Response saves 80% of these costs, what should you invest in detection?"
 - "How would a pre-prepared incident response plan have helped?"
 - "What's the value of having a Disaster Recovery plan before you need it?"
 
 ### Real-World Context for DR Phase
 
-**Average Breach Costs (2023 data):**
+**Average Breach Costs (2023 data; narrative-only):**
 - **Detection Time (Dwell Time):** 206 days average
 - **Cost per Compromised Record:** $4.50 (varies by industry)
 - **Total Average Cost:** $4.5M (for 1M records)
-- **Cost Breakdown:**
-  - Detection & Analysis: 25%
-  - Containment & Eradication: 20%
-  - Recovery & Restoration: 20%
-  - Legal & Regulatory: 15%
-  - PR & Communications: 10%
-  - Customer Notifications: 10%
+- **Cost Breakdown:** Detection & Analysis 25%, Containment & Eradication 20%, Recovery & Restoration 20%, Legal & Regulatory 15%, PR & Communications 10%, Customer Notifications 10%
 
 **Common Mistakes in Real Incidents:**
 - Poor forensic planning → Extended investigation costs
 - Late customer notification → Regulatory fines + brand damage
-- Inadequate remediation → Re-compromise (adds cost)
+- Inadequate remediation → Re-compromise (in-game: EVENT-08)
 - Ransom payment → Funds future attacks; doesn't guarantee data deletion
 - No incident plan → Chaos and poor decisions
 
@@ -782,124 +481,53 @@ Instead of open-ended actions, you can create specific **Crisis Action Cards** f
 
 ---
 
-## Comparison Matrix: Phase 2 Outcomes
-
-### Win Phase 1 → Hardening Phase
-
-| Aspect | Outcome |
-|--------|---------|
-| **Time** | 30+ minutes (leisurely planning) |
-| **Budget** | Remains high; focuses on investment |
-| **Pressure** | Low; strategic decisions |
-| **Focus** | "How do we prevent this next time?" |
-| **Controls Deployed** | Multiple layers (defense-in-depth) |
-| **Score Range** | 70-100 (Security Score) |
-| **Key Metric** | Defense capabilities |
-| **Emotional Tone** | Achievement-focused; optimistic |
-| **Real-World Equivalent** | Fortune 500 post-acquisition security planning |
-
-### Lose Phase 1 → Disaster Recovery Phase
-
-| Aspect | Outcome |
-|--------|---------|
-| **Time** | 48 hours (crisis mode) |
-| **Budget** | Limited emergency funds; every decision has cost |
-| **Pressure** | High; time-sensitive with external deadlines |
-| **Focus** | "How do we manage this disaster?" |
-| **Actions Taken** | Forensics, communication, containment (reactive) |
-| **Score Range** | 0-100 (Reputation/Financial Impact) |
-| **Key Metric** | Response quality and cost management |
-| **Emotional Tone** | Crisis-focused; pressurized |
-| **Real-World Equivalent** | Actual breach response; Target, Yahoo, Equifax situations |
-
----
-
-## Recommended Play Sequence
-
-### Classroom Session: First Exposure (90 minutes)
-
-1. **Setup (10 min):** Explain both Phase 2 paths
-2. **Play Phase 1 (35 min):** Standard 3-4 card chain, beginner difficulty
-3. **Outcome Determined (2 min):** Did they win or lose?
-4. **Play Phase 2 (25 min):** Either Hardening or DR based on outcome
-5. **Debrief (15 min):** Lessons learned from the path they took
-6. **Optional: Brief Against Path (3 min):** "If you'd won/lost instead, here's what would have happened"
-
-### Advanced Session: Comparative Play (2.5 hours)
-
-1. **Setup (10 min)**
-2. **Split Teams (2-3 teams per group):**
-   - Half play Scenario A (designed to be winnable)
-   - Half play Scenario B (designed to be challenging)
-3. **Phase 1 (40 min):** All play simultaneously
-4. **Phase 2a - Winners (30 min):** Play Hardening
-5. **Phase 2b - Losers (30 min):** Play DR
-6. **Compare & Contrast (20 min):** 
-   - Show both paths side-by-side
-   - Discuss cost differences
-   - Analyze decision quality
-7. **Debrief (10 min)**
-
-### Tournament Mode (Tournament organizer sees both paths)
-
-Each team experiences one path (win or lose) and sees the results. Organizer can optionally:
-- Show "what if" scenarios for losing teams
-- Discuss how different choices in Phase 1 led to Phase 2 path
-- Emphasize detection importance
-
----
-
 ## Variants & Extensions
 
 ### Variant: "Instant Replay" Recovery
 
-**Optional Rule (for motivated teams):**
-
-If a team does **exceptionally well** in Disaster Recovery phase (Reputation 85+):
-
-After Crisis Period ends, they can attempt:
-- **Recovery Analysis:** Spend 5 Budget for deep forensic review
-- **Root Cause Analysis:** Identify systemic failure that allowed Phase 1 loss
-- **Prevention Investment:** Spend remaining budget to deploy detection that would have caught this
-
-This models the concept of "turning crisis into opportunity" - some organizations emerge stronger after breaches.
-
-**Example:** "Our forensic analysis revealed we had no SIEM. Cost 5 Budget for analysis, 15 Budget to deploy SIEM. If we replay, we'd detect this attack."
+If a team scores **85+ (Exemplary)**, they can attempt a post-game Recovery Analysis: spend 5 remaining Budget for a deep forensic review, identify the systemic failure that allowed the Incident Response loss, and describe the detection investment that would have caught it. Models "turning crisis into opportunity."
 
 ### Variant: "Ongoing Breach" (Extended Campaign)
 
-For advanced play, Phase 2 DR doesn't necessarily end the incident:
-
-- **Week 2 Post-Breach:** Threat hunting discovers backdoor still active
-- **Week 4:** Attacker attempts lateral movement again
-- **Week 8:** New variant of attack appears
-
-Teams make decisions across extended timeline, learning that some breaches have long tails.
+Disaster Recovery doesn't necessarily end the incident: Week 2 threat hunting discovers a backdoor still active; Week 4 the attacker tries again; Week 8 a new variant appears. Replay DR with the Second Breach event pre-armed. Teams learn that some breaches have long tails.
 
 ### Variant: "Insurance & Legal" Module
 
-Add Negotiation Mechanics:
-- **Insurance Negotiation:** Do they cover this incident? (Cost: 5 Budget to negotiate; Outcome: 0-50% coverage)
-- **Litigation Preparedness:** How much forensic evidence prepared for lawsuits? (Affects future legal costs)
-- **Regulatory Settlement:** Can you negotiate with regulators? (Cost: 5 Budget; Outcome: 0-75% fine reduction)
+Add negotiation flavor at debrief: Did the insurer cover this incident? (Many policies restrict or exclude ransom coverage.) How much forensic evidence was preserved for lawsuits? Could you have negotiated the regulatory settlement?
 
 ---
 
 ## Final Thought: Why This Matters
 
-**Phase 1 (Incident Response)** teaches: "Catch attacks early"
-**Phase 2 - Hardening (Win)** teaches: "Prevent future attacks"
-**Phase 2 - Disaster Recovery (Lose)** teaches: **"Plan for what you'll miss"**
+**Incident Response** teaches: "Catch attacks early"
+**Hardening (after a win)** teaches: "Prevent future attacks"
+**Disaster Recovery (after a loss)** teaches: **"Plan for what you'll miss"**
 
 Together, they create a complete incident response curriculum:
-1. **Detection & Investigation** (Phase 1)
-2. **Hardening & Prevention** (Phase 2 - Win path)
-3. **Crisis Management & Recovery** (Phase 2 - Disaster Recovery path)
+1. **Detection & Investigation** (Incident Response)
+2. **Hardening & Prevention** (Hardening — win path)
+3. **Crisis Management & Recovery** (Disaster Recovery — loss path)
 
 Students learn that **even with perfect security, breaches can happen**. The question isn't "Will we be attacked?" but "When we're attacked, will we respond effectively?"
 
 ---
 
-*Disaster Recovery Phase for Incident Zero*  
-*For teams that experience the cost of failed detection*  
+## v2.2 Playtest Edition Changes
+
+1. **Card system is canonical.** The freeform Actions A-E from v2.1 are replaced by the 13 Crisis Action cards; track advances are deterministic (no success/failure rolls). The optional Justification d20 (11+ → +5%) is the only roll in track advancement; ACTION-13's "no guarantee" roll is the only other die.
+2. **One clock:** 8 turns, ~6-12 narrative hours each, Turn 1 ≈ detection +6h to Turn 8 ≈ 72h (fixes the v2.1 7×6h = 42h vs. "48 hours" arithmetic). GDPR 72-hour regulatory notification = ACTION-10 by end of Turn 8, escalating penalties (-10 Regulator trust/turn) from Turn 6. Customer notification recommended by Turn 5. The v2.1 "12-hour regulatory deadline" is relabeled as internal legal/executive escalation. The 30-day/60-day event deadlines are re-expressed as deferred final-scoring penalties (-20 / -15 Reputation).
+3. **Reputation reconciled with the percent tracks:** the three tracks + five trust meters drive play; final Reputation (0-100) is computed once at game end (start 100; track tiers, trust average, decision/event modifiers; clamp 0-100). One outcome tier table (85/70/55/40), identical here and in the standalone guide.
+4. **Single values for former contradictions:** negotiation reputation effect **-5**; late-regulator penalty **-10/turn**; transparent-notification bonus **+5**; starting reputation **flat 100** (scope-scaled 90/80 is an optional difficulty variant); turn count **8**.
+5. **Event deck procedure:** 12 events split into 6 Scheduled (placed on the timeline at setup) + 6 Triggered (fire once when their condition is met). EVENT-08's "additional 7-turn cycle" is now "+2 turns, once per game."
+6. **Multi-turn actions defined once:** Duration N occupies the action slot only on the start turn; the advance completes at the start of the Nth following turn; one in-flight multi-turn action at a time. ACTION-04's "runs alongside other actions" text was aligned to this rule.
+7. **ACTION-13 Ransom Decision added** (Pay 20 / Negotiate 5 / Refuse 0, with the exact effects above) — this is the "Negotiation Team" card promised in v2.1.
+8. **Bounds & loss:** Budget floor 0 (free Holding Statement always available); trust meters and Reputation clamp 0-100; one loss list — any trust meter at 0% = immediate loss, otherwise the tier table. "<30% = loss" removed; "<20%" is a critical warning state only.
+9. **Money mapping:** 1 Budget ≈ $50K; remaining dollar figures are narrative-only.
+10. **Fact corrections:** OFAC/insurance wording for ransom payment; GDPR fine = €20M or 4% of global turnover, whichever is HIGHER; California/CCPA "without unreasonable delay" + statutory damages; turnover-scale fines attributed to GDPR-style regimes (not the FTC).
+11. **Balance:** forensic-quality Reputation bonus capped at +6 per game; mandatory-path cost verified at 29-44 Budget against the 50 starting budget.
+
+---
+
+*Disaster Recovery Phase for Incident Zero*
+*For teams that experience the cost of failed detection*
 *Emphasizing that response quality matters as much as prevention*

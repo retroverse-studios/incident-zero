@@ -1,7 +1,7 @@
 # Network Building Module: Architecture Cards
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -179,7 +179,7 @@ Each connection between segments requires explicit allow rule.
 ---
 
 ### ARCH-04: Cloud Hybrid (Mixed On-Premises & Cloud)
-**Cost:** 7 Budget
+**Cost:** 8 Budget
 **Complexity:** 3/5 (cloud adds complexity)
 **Security Posture:** Medium-High (cloud provider handles some security)
 **Performance:** Medium (internet latency for cloud communication)
@@ -228,7 +228,7 @@ Internet → Firewall → On-Premises Segment
 ---
 
 ### ARCH-05: Cloud First (Cloud-Only Infrastructure)
-**Cost:** 3 Budget
+**Cost:** 6 Budget
 **Complexity:** 2/5 (cloud provider manages complexity)
 **Security Posture:** Medium (cloud provider security + customer configuration)
 **Performance:** Excellent (cloud provider optimization)
@@ -291,7 +291,7 @@ Internet → Cloud Edge
 
 | Aspect | Flat | 3-Zone | Fully Isolated | Cloud Hybrid | Cloud First |
 |--------|------|--------|----------------|--------------|------------|
-| **Cost (Budget)** | 0 | 5 | 12 | 7 | 3 |
+| **Cost (Budget)** | 0 | 5 | 12 | 8 | 6 |
 | **Complexity** | 1/5 | 2/5 | 4/5 | 3/5 | 2/5 |
 | **Lateral Movement Risk** | Very High | Medium | Very Low | Medium-High | Medium |
 | **Incident Response Difficulty** | Very Easy | Medium | Hard | Hard | Hard |
@@ -371,8 +371,8 @@ Choosing architecture affects remaining budget for servers and security devices:
 - ARCH-01 (Flat): 0 Budget cost, frees up budget for servers
 - ARCH-02 (3-Zone): 5 Budget cost, medium budget remaining
 - ARCH-03 (Fully Isolated): 12 Budget cost, significant budget consumed
-- ARCH-04 (Cloud Hybrid): 7 Budget cost, cloud connectivity cost
-- ARCH-05 (Cloud First): 3 Budget cost, low cost (cloud provider manages infrastructure)
+- ARCH-04 (Cloud Hybrid): 8 Budget cost, cloud connectivity cost
+- ARCH-05 (Cloud First): 6 Budget cost, low cost (cloud provider manages infrastructure)
 
 ### Firewall Rule Complexity
 Higher security architectures require more firewall rules:
@@ -418,4 +418,4 @@ Does your organization use cloud?
 
 *Network Building Module: Architecture Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

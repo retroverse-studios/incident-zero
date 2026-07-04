@@ -165,22 +165,27 @@
 │ Vector:  MALWARE                    │
 ├─────────────────────────────────────┤
 │ CLUE FOR THREAT ORCHESTRATOR:       │
-│ "EDR telemetry shows a suspicious   │
-│ process creating a scheduled task   │
-│ with SYSTEM privileges. The         │
-│ scheduled task executes a           │
-│ PowerShell script that attempts to  │
-│ access the Domain Controller. The   │
-│ script appears to be using living-  │
-│ off-the-land techniques."           │
+│ "EDR telemetry shows a low-privilege│
+│ process loading a proof-of-concept  │
+│ exploit for an unpatched local      │
+│ privilege escalation vulnerability  │
+│ in the Windows kernel. Seconds      │
+│ later, the same process spawned a   │
+│ child running as SYSTEM. Patch      │
+│ reports show this host is three     │
+│ months behind on kernel updates."   │
 ├─────────────────────────────────────┤
 │ WHY THIS WORKS:                     │
-│ Kernel exploits bypass security     │
-│ boundaries. Attackers use built-in  │
-│ Windows tools (PowerShell, schtasks)│
-│ to avoid detection. Unpatched       │
-│ systems and over-privileged service │
-│ accounts make this highly effective.│
+│ Kernel exploits abuse memory-       │
+│ corruption or logic flaws (think    │
+│ Dirty Pipe or win32k CVEs) to jump  │
+│ from a standard user to SYSTEM or   │
+│ root. Public PoC code often appears │
+│ within days of disclosure, so       │
+│ unpatched hosts are easy targets.   │
+│ Rapid patching, EDR behavioral      │
+│ detection, and least privilege      │
+│ limit the damage.                   │
 └─────────────────────────────────────┘
 ```
 
@@ -262,9 +267,10 @@
 ├─────────────────────────────────────┤
 │ CLUE FOR THREAT ORCHESTRATOR:       │
 │ "Registry analysis detects a new    │
-│ entry in HKLM\\System\\CurrentVersion│
-│ \\Run pointing to an executable in  │
-│ an unusual location. The binary has │
+│ entry under HKLM\Software\Microsoft\│
+│ Windows\CurrentVersion\Run pointing │
+│ to an executable in an unusual      │
+│ location. The binary has            │
 │ obfuscated metadata and a fake      │
 │ digital signature. It executes at   │
 │ every system startup."              │
@@ -428,6 +434,8 @@ Defense cards counter specific Attack Vectors:
 
 ## SAMPLE DEFENSE CARD DECK (24 Cards)
 
+**Note (v2.2):** This deck is identical to `cards/hardening/core-deck/defense-cards.md` (the two modules share one physical deck). Cards are grouped by tier; card IDs are stable and do not renumber when a card's tier changes, so IDs within a section are not always contiguous. D-18, D-19, D-23, and D-24 were retiered in v2.2, and D-24 is dual-tagged (counts as a match for either listed vector).
+
 ### BASIC DEFENSES (10 Budget Each)
 
 #### Card D-01: Email Authentication Setup
@@ -587,6 +595,62 @@ Defense cards counter specific Attack Vectors:
 │ polymorphic malware. Useful as part │
 │ of defense-in-depth but insufficient│
 │ as primary defense.                 │
+└─────────────────────────────────────┘
+```
+
+#### Card D-19: Backup & Disaster Recovery
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ BACKUP & DISASTER RECOVERY          │
+│ (BASIC - 10 Budget)                 │
+├─────────────────────────────────────┤
+│ Countermeasure: MALWARE             │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Implement the 3-2-1 backup          │
+│ strategy: 3 copies of data, 2       │
+│ different storage types, 1 offsite  │
+│ copy. Test restore procedures       │
+│ quarterly.                          │
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Enables rapid recovery from         │
+│ ransomware. Ensures data            │
+│ availability even if primary        │
+│ systems are compromised. Critical   │
+│ for business continuity.            │
+└─────────────────────────────────────┘
+```
+
+#### Card D-23: IR Program & Runbooks
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ IR PROGRAM & RUNBOOKS               │
+│ (BASIC - 10 Budget)                 │
+├─────────────────────────────────────┤
+│ Countermeasure: NETWORK             │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Establish an incident response      │
+│ program with detailed runbooks for  │
+│ common scenarios: malware infection,│
+│ data exfiltration, ransomware,      │
+│ insider threats, supply chain       │
+│ compromise. Include roles,          │
+│ responsibilities, and communication │
+│ plans.                              │
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Enables faster, more coordinated    │
+│ response when incidents occur.      │
+│ Reduces confusion during high-      │
+│ pressure situations. Improves       │
+│ incident containment and recovery   │
+│ time.                               │
 └─────────────────────────────────────┘
 ```
 
@@ -756,6 +820,60 @@ Defense cards counter specific Attack Vectors:
 └─────────────────────────────────────┘
 ```
 
+#### Card D-18: Intrusion Prevention System (IPS)
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ INTRUSION PREVENTION SYSTEM (IPS)   │
+│ (ADVANCED - 15 Budget)              │
+├─────────────────────────────────────┤
+│ Countermeasure: WEB EXPLOIT         │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Deploy network-based IPS with       │
+│ exploit signatures. Monitor for     │
+│ known CVE exploitation patterns.    │
+│ Configure WAF (Web Application      │
+│ Firewall) rules for SQL injection,  │
+│ XSS, and other OWASP Top 10 attacks.│
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Blocks exploitation attempts in     │
+│ transit. Prevents watering hole and │
+│ web exploit attacks. Most effective │
+│ when combined with patching.        │
+└─────────────────────────────────────┘
+```
+
+#### Card D-24: Threat Intelligence Integration
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ THREAT INTELLIGENCE INTEGRATION     │
+│ (ADVANCED - 15 Budget)              │
+├─────────────────────────────────────┤
+│ Countermeasures: NETWORK,           │
+│                  DATA EXFIL         │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Subscribe to threat intelligence    │
+│ feeds (MISP, VirusTotal, AlienVault │
+│ OTX). Integrate IOCs (Indicators of │
+│ Compromise) into firewall, SIEM,    │
+│ and proxy. Participate in           │
+│ information sharing communities.    │
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Enables faster detection of known   │
+│ malicious IPs and domains.          │
+│ Identifies emerging threats         │
+│ targeting your industry. Reduces    │
+│ detection time from days to minutes.│
+└─────────────────────────────────────┘
+```
+
 ---
 
 ### ELITE DEFENSES (25 Budget Each)
@@ -897,29 +1015,87 @@ Defense cards counter specific Attack Vectors:
 └─────────────────────────────────────┘
 ```
 
-#### Card D-18: Intrusion Prevention System (IPS)
+#### Card D-20: Zero Trust Access Control
 ```
 ┌─────────────────────────────────────┐
 │ DEFENSE CARD                        │
 ├─────────────────────────────────────┤
-│ INTRUSION PREVENTION SYSTEM (IPS)   │
+│ ZERO TRUST ACCESS CONTROL           │
 │ (ELITE - 25 Budget)                 │
 ├─────────────────────────────────────┤
-│ Countermeasure: WEB EXPLOIT         │
+│ Countermeasure: CREDENTIAL ABUSE    │
 ├─────────────────────────────────────┤
 │ DESCRIPTION:                        │
-│ Deploy network-based IPS with       │
-│ exploit signatures. Monitor for     │
-│ known CVE exploitation patterns.    │
-│ Configure WAF (Web Application      │
-│ Firewall) rules for SQL injection,  │
-│ XSS, and other OWASP Top 10 attacks.│
+│ Implement zero-trust architecture:  │
+│ verify every access request         │
+│ regardless of source. Deploy device │
+│ identity, user identity, and        │
+│ behavior analytics. Implement       │
+│ conditional access policies.        │
 ├─────────────────────────────────────┤
 │ EFFECT:                             │
-│ Blocks exploitation attempts in     │
-│ transit. Prevents watering hole and │
-│ web exploit attacks. Most effective │
-│ when combined with patching.        │
+│ Eliminates implicit trust based on  │
+│ network location. Even compromised  │
+│ devices cannot access sensitive     │
+│ resources without proper            │
+│ authentication and behavior         │
+│ validation.                         │
+└─────────────────────────────────────┘
+```
+
+#### Card D-21: Container Security & Orchestration
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ CONTAINER SECURITY & ORCHESTRATION  │
+│ (ELITE - 25 Budget)                 │
+├─────────────────────────────────────┤
+│ Countermeasure: MALWARE             │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Deploy container runtime security   │
+│ (Falco, Sysdig). Implement image    │
+│ scanning for vulnerabilities. Use   │
+│ policy enforcement engines (OPA/    │
+│ Gatekeeper). Implement network      │
+│ policies for container              │
+│ segmentation.                       │
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Detects container escape attempts.  │
+│ Prevents vulnerable images from     │
+│ running. Limits lateral movement    │
+│ within containerized environments.  │
+│ Critical for modern cloud           │
+│ applications.                       │
+└─────────────────────────────────────┘
+```
+
+#### Card D-22: Security Information & Event Management (SIEM)
+```
+┌─────────────────────────────────────┐
+│ DEFENSE CARD                        │
+├─────────────────────────────────────┤
+│ SECURITY INFO & EVENT MGMT (SIEM)   │
+│ (ELITE - 25 Budget)                 │
+├─────────────────────────────────────┤
+│ Countermeasure: NETWORK             │
+├─────────────────────────────────────┤
+│ DESCRIPTION:                        │
+│ Deploy enterprise SIEM (Splunk,     │
+│ ELK, QRadar). Centralize logs from  │
+│ all sources. Implement automated    │
+│ correlation rules, threat           │
+│ intelligence integration, and       │
+│ incident response workflows.        │
+├─────────────────────────────────────┤
+│ EFFECT:                             │
+│ Provides centralized visibility     │
+│ into all security events. Enables   │
+│ rapid threat detection and          │
+│ investigation. Foundation for a     │
+│ mature incident response program.   │
 └─────────────────────────────────────┘
 ```
 
@@ -952,17 +1128,19 @@ Defense cards counter specific Attack Vectors:
 - C2 & EXFIL: 4 cards
 
 ### Defense Cards (24 Total)
-- BASIC (10 Budget): 6 cards
-- ADVANCED (15 Budget): 6 cards
-- ELITE (25 Budget): 6 cards
+- BASIC (10 Budget): 8 cards — D-01, D-02, D-03, D-04, D-05, D-06, D-19, D-23
+- ADVANCED (15 Budget): 8 cards — D-07, D-08, D-09, D-10, D-11, D-12, D-18, D-24
+- ELITE (25 Budget): 8 cards — D-13, D-14, D-15, D-16, D-17, D-20, D-21, D-22
 
-**Distribution by Countermeasure:**
-- SOCIAL ENGINEERING: 2 defenses
-- WEB EXPLOIT: 2 defenses
-- CREDENTIAL ABUSE: 4 defenses
-- MALWARE: 6 defenses
-- NETWORK: 4 defenses
-- DATA EXFIL: 2 defenses
+**Distribution by Countermeasure (v2.2):**
+- SOCIAL ENGINEERING: 2 defenses (D-01, D-02)
+- WEB EXPLOIT: 2 defenses (D-03, D-18)
+- CREDENTIAL ABUSE: 4 defenses (D-07, D-12, D-16, D-20)
+- MALWARE: 8 defenses (D-05, D-06, D-08, D-13, D-14, D-17, D-19, D-21)
+- NETWORK: 7 defenses (D-04, D-09, D-10, D-15, D-22, D-23, D-24)
+- DATA EXFIL: 2 defenses (D-11, D-24)
+
+**Note:** 24 cards total. D-24 is dual-tagged (NETWORK + DATA EXFIL) and appears in both rows, so the vector rows sum to 25 tags across 24 cards.
 
 ---
 
@@ -988,25 +1166,17 @@ Defense cards counter specific Attack Vectors:
 
 ---
 
-## Expansion Ideas
+## Expansion Decks
 
-### Additional Threat Cards to Create
-- Supply chain attacks
-- Insider threats
-- IoT device compromise
-- Cloud API abuse
-- DNS tunneling for data exfil
-- Physical security bypass
+The ideas below have been built out as printable expansion cards:
 
-### Additional Defense Cards to Create
-- Application whitelisting
-- Behavioral analytics
-- Container security
-- Cloud security posture management
-- Incident response playbooks
-- Backup & disaster recovery
+### Expansion Threat Cards (T-13 to T-20)
+Supply chain attacks, insider threats, IoT device compromise, cloud API abuse, DNS tunneling, and physical security bypass — see `../expansion-deck/advanced-threats.md`.
+
+### Expansion Defense Cards (D-25 to D-43)
+Application whitelisting, behavioral analytics, container security, cloud security posture management, response playbooks, and backup/DR variants — see `../expansion-deck/advanced-defenses.md`.
 
 ---
 
 *Sample card sheets for Incident Zero board game*
-*For complete game rules, see incident-zero-game-spec.md*
+*For complete game rules, see `docs/rules/core-rules.md` and `docs/rules/module-incident-response.md`*

@@ -1,7 +1,7 @@
 # Network Building Module: Rules & Mechanics
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -27,11 +27,13 @@ The **Network Building Module** teaches players how to design IT infrastructure 
 
 | Difficulty | Budget | Recommended Use |
 |------------|--------|-----------------|
-| **Beginner** | 40 | Learning networks, constrained decisions |
+| **Beginner** | 60 | Learning networks; roomier budget, easier trade-offs |
 | **Standard** | 50 | Balanced play, typical scenario |
-| **Advanced** | 60 | Strategic depth, more options |
+| **Advanced** | 40 | Tight budget; hard trade-offs, strategic depth |
 
 **Budget represents:** Time, money, and resources for infrastructure design
+
+**(v2.2)** More budget = easier. Beginner gets the most budget; Advanced gets the least.
 
 ### 2. Starting Scenario
 
@@ -55,7 +57,7 @@ Components fall into **5 categories**:
 | **File Server** | 6 | 2 | File storage | Often over-privileged; lateral movement point |
 | **Domain Controller** | 12 | 2 | User identity (AD/Kerberos) | Critical; full compromise if breached |
 | **Development Server** | 5 | 3 | Dev/testing environment | Weak security; staging ground for attacks |
-| **Backup System** | 9 | 1 | Data backup | Should be isolated; ransomware recovery |
+| **Backup Server** | 9 | 1 | Data backup | Should be isolated; ransomware recovery |
 | **Cloud Workload** | 4 | 2 | General cloud compute | Less control; API/credential exposure |
 | **Legacy System** | 3 | 1 | Old/unmaintained system | High exploitability; hard to patch |
 | **Honeypot Decoy** | 7 | 1 | Detection trap | Detects attackers; wastes attacker time |
@@ -73,7 +75,7 @@ Components fall into **5 categories**:
 | **Intrusion Detection (IDS)** | 10 | Network monitoring | Detects lateral movement (+1 investigation modifier in IR) |
 | **Intrusion Prevention (IPS)** | 14 | Network blocking | Blocks exploits passively |
 | **Load Balancer** | 8 | Traffic distribution | Improves availability without extra capacity |
-| **VPN Concentrator** | 9 | Remote access | Enables secure remote work; attack surface if weak |
+| **VPN Gateway** | 9 | Remote access | Enables secure remote work; attack surface if weak |
 | **Email Gateway** | 6 | Email filtering | Stops phishing; reduces SOCIAL_ENGINEERING risk |
 | **Web Application Firewall (WAF)** | 11 | App-level defense | Protects web servers from app attacks |
 | **Network Segmentation Switch** | 10 | Microsegmentation | Creates isolated network zones |
@@ -94,23 +96,28 @@ How servers are logically organized and connected:
 
 **Architecture decisions are NON-NEGOTIABLE** - teams must pick one to organize their network.
 
-#### Category 4: Business Requirements
+#### Category 4: Business Requirements (v2.2)
 
-Teams MUST provide these services (cannot skip):
+Teams MUST satisfy every **Required** item by end of game. **Recommended** items are not mandatory, but skipping one is recorded as a gap (and costs points at scoring).
 
-| Requirement | Must Host On | Cost | Business Impact |
-|------------|-------------|------|-----------------|
-| **Email** | Email Server | 0 | Required; non-negotiable |
-| **Web Presence** | Web Server | 0 | Required; online business |
-| **Customer Database** | Database Server | 0 | Required; core data |
-| **File Storage** | File Server | 0 | Required; document sharing |
-| **User Identity (AD/Kerberos)** | Domain Controller | 0 | Required; access control |
-| **Email Backup** | Backup System OR File Server | 0 | Recommended; recovery option |
-| **Development/Testing** | Dev Server | 0 | Required; software development |
-| **Disaster Recovery** | Cloud or isolated system | 8 (if cloud) | Optional; recovery plan |
-| **Remote Work VPN** | VPN Concentrator | 0 | Required; modern workforce |
+| Requirement | Status | Satisfied By | Notes |
+|------------|--------|--------------|-------|
+| **Email** | Required | Email Server, OR hosted on a Cloud Workload | Non-negotiable |
+| **Web Presence** | Required | Web Server, OR hosted on a Cloud Workload | Online business |
+| **Customer Database** | Required | Database Server, OR hosted on a Cloud Workload | Cloud-hosting the crown jewels is a recorded risk |
+| **User Identity (AD/Kerberos)** | Required | Domain Controller | No substitute |
+| **Disaster Recovery (Backup)** | Required (v2.2) | Backup Server | No backup = automatic FAIL on this requirement, recorded as a CRITICAL gap (not an instant game loss) |
+| **File Storage** | Recommended (v2.2) | File Server, OR spare capacity/overload on another server | Gap if missing |
+| **Development/Testing** | Recommended (v2.2) | Dev Server, OR overload another server | Overloading a server for dev is explicitly allowed |
+| **Remote Work VPN** | Recommended (v2.2) | VPN Gateway | Gap if missing: risky remote-access workarounds |
 
-**Key Rule:** Business requirements are fixed. Teams must find places to host them, even if it means overloading servers or making difficult trade-offs.
+**Key Rule:** Required items are fixed. Teams must find places to host them, even if it means cloud-hosting or overloading servers.
+
+**Affordability Check (v2.2)** — the Required list fits every difficulty:
+
+- **Dedicated servers for every Required item:** Email 8 + Web 7 + Database 10 + Domain Controller 12 + Backup 9 = **46** → affordable at Standard (50, leaves 4) and Beginner (60, leaves 14)
+- **Advanced (40):** cloud-host Email + Web on one Cloud Workload (4): 4 + 10 + 12 + 9 = **35** (leaves 5). Hosting the Database on a second Cloud Workload drops it to **29** (leaves 11) — cheap, but every substitution is a recorded gap
+- File Storage can ride the Domain Controller's spare capacity slot (free) or overload any server (+1 Budget)
 
 #### Category 5: Hosting Model
 
@@ -126,15 +133,19 @@ Physical location of infrastructure:
 
 ## Gameplay Loop (15-20 minutes)
 
-### Turn Structure
+### Turn Structure (v2.2)
 
-**Teams take 5 "Build Turns"** (~3-4 minutes each to discuss and decide)
+**Teams take 5 "Build Turns"** (~3-4 minutes each to discuss and decide).
 
-**Each turn, teams choose ONE action:**
+**Each turn is a design-review phase (v2.2):** the team may take **any number of actions** — place as many components as they can afford — before ending the turn. Turns are not a one-purchase limit; they are checkpoints where the design gets stress-tested.
+
+**Between turns**, the Threat Orchestrator reveals a development: draw one Operational Event or Business Requirement card from the standalone decks (`cards/network-building/standalone/`), or narrate one (a stakeholder demand, a vendor issue, a budget change). This gives teams a reason to revisit the design each turn.
+
+**Available actions:**
 
 ### Action 1: Place a Server
 
-**Cost:** Server cost (3-15 Budget)
+**Cost:** Server cost (3-12 Budget)
 **Effect:** Add server to infrastructure
 
 **How It Works:**
@@ -143,11 +154,11 @@ Physical location of infrastructure:
 3. Pay the cost
 4. Track remaining budget
 
-**Example Turn:**
-"We're placing a Domain Controller on-premises (12 Budget). It will host user identity and our SIEM system. Remaining budget: 38."
+**Example:**
+"We're placing a Domain Controller on-premises (12 Budget). It will host user identity, with a spare capacity slot for file storage. Remaining budget: 38."
 
 **Constraints:**
-- Can't place a server type twice unless you have the budget for both
+- **Duplicates allowed (v2.2):** you may deploy more than one server of the same type; each copy costs full price
 - Can't host a required service on a server that doesn't exist
 - Can OVERLOAD servers (see Overload Mechanic below)
 
@@ -165,7 +176,7 @@ Physical location of infrastructure:
 4. Track placement on network diagram
 
 **Example Turn:**
-"We're deploying a Firewall between our DMZ and Internal network (12 Budget). This blocks unauthorized traffic between zones. Remaining budget: 28."
+"We're deploying a Firewall between our DMZ and Internal network (12 Budget). This blocks unauthorized traffic between zones. Remaining budget: 26."
 
 ---
 
@@ -185,7 +196,7 @@ Physical location of infrastructure:
 - DMZ: Email and Web servers (internet-facing)
 - Internal: File servers and user workstations
 - Sensitive: Database and Domain Controller
-Remaining budget: 23."
+Remaining budget: 21."
 
 ---
 
@@ -205,12 +216,12 @@ Remaining budget: 23."
 
 ---
 
-### Action 5: Pass / Skip Turn
+### Action 5: End Turn / Pass
 
 **Cost:** 0
-**Effect:** No action; preserve budget
+**Effect:** Take no further actions this turn; preserve budget
 
-**Use When:** Satisfied with current design or running low on budget
+**Use When:** Satisfied with current design or holding budget in reserve for surprises
 
 ---
 
@@ -222,18 +233,19 @@ Remaining budget: 23."
 
 **Solution:** Overload servers (put more services on one server than intended)
 
-**How It Works:**
+**How It Works (v2.2):**
 - If a server has capacity for 2 services, you can put 3+ on it
-- **Benefit:** Save 3-15 Budget (don't need another server)
+- **Cost:** +1 Budget per extra service beyond capacity (paid when the service is added)
+- **Benefit:** Still far cheaper than buying another server
 - **Risk:** Overloaded server is harder to isolate; compromise affects multiple services
 
 **Example Scenario:**
 "Budget remaining: 5. Still need to host Development Services.
 
 Option A: Buy Dev Server for 5 (leaves 0 budget)
-Option B: Put Dev on File Server (0 cost, overload by 1)
+Option B: Put Dev on our File Server, which already hosts File Storage and Email Backup (2/2). Overload by 1: pay 1 Budget (leaves 4)
 
-We choose B: File Server becomes (File Storage, Dev Services - OVERLOADED)"
+We choose B: File Server becomes (File Storage, Email Backup, Dev Services — OVERLOADED 3/2)"
 
 **Consequences (Discovered Later):**
 - Overloaded servers are easier to pivot from (when other modules investigate)
@@ -253,12 +265,12 @@ Teams inevitably leave security gaps:
 | **No Segmentation** | Too expensive (5-12) | 5-12 | All servers accessible after initial compromise |
 | **No Firewall** | Too expensive (12) | 12 | Can't enforce zone boundaries |
 | **Legacy Systems** | Cheap (3) | 7+ | Easy to exploit; unpatched vulnerabilities |
-| **Overloaded Servers** | Budget pressure | 3-15 | Multi-service compromise; hard to isolate |
+| **Overloaded Servers** | Budget pressure | 2-11 (server cost minus overload fees) | Multi-service compromise; hard to isolate |
 | **No Detection** (no IDS/SIEM) | Expensive (10-15) | 10-15 | Attacks undetected; investigations harder |
 | **No Email Gateway** | Phishing defense (6) | 6 | Phishing easier in IR module |
 | **No Honeypot** | Luxury item (7) | 7 | Attackers move silently |
 | **All Cloud or All On-Prem** | Simplicity | 0 | Security model doesn't fit actual architecture |
-| **No Backup System** | Expensive (9) | 9 | Ransomware = no recovery |
+| **No Backup Server** | Expensive (9) | 9 | Automatic FAIL on the Disaster Recovery requirement |
 | **No SIEM** | Most expensive (15) | 15 | Investigation takes longer |
 
 **Key Insight:** These gaps are discovered when other modules test the network (Audit, Incident Response, Disaster Recovery).
@@ -272,66 +284,72 @@ Teams inevitably leave security gaps:
 Teams create an **Infrastructure Summary Card**:
 
 ```
-YOUR NETWORK ARCHITECTURE
+YOUR NETWORK ARCHITECTURE (Standard, 50 Budget)
 
 SERVERS DEPLOYED:
-- Email Server (On-Prem) - Hosts: Email only
-- Web Server (Cloud/AWS) - Hosts: Web + VPN
+- Cloud Workload (AWS) - Hosts: Email + Web (2/2, cloud-hosted)
 - Database Server (On-Prem) - Hosts: Customer Database
-- File Server (On-Prem) - Hosts: File Storage, Dev Services (OVERLOADED 3/2)
-- Domain Controller (On-Prem) - Hosts: Identity, SIEM (2/2)
+- Domain Controller (On-Prem) - Hosts: Identity, File Storage,
+  Dev Services (OVERLOADED 3/2, +1 Budget paid)
+- Backup Server (On-Prem, isolated) - Hosts: Backups / DR
 
 ARCHITECTURE: Segmented (3 zones)
-- DMZ: Email (On-Prem), Web (Cloud)
-- Internal: File Server, Users
-- Sensitive: Database, Domain Controller
+- DMZ: (cloud workload fronts the internet)
+- Internal: Users
+- Sensitive: Database, Domain Controller, Backup Server
 
 SECURITY DEVICES:
-- Firewall (DMZ ↔ Internal)
-- IDS (Internal network)
 - Email Gateway (incoming mail)
-- SIEM (logging, investigation)
-- NO IPS, NO Honeypot, NO Segmentation Switch
+- NO Firewall, NO IDS/SIEM, NO VPN Gateway, NO Honeypot
 
-HOSTING: Hybrid (50% on-prem, 50% cloud)
+HOSTING: Hybrid (cloud front end, on-prem crown jewels)
 
 BUDGET SPENT: 47/50 (3 remaining)
+- Cloud Workload 4 + Database 10 + Domain Controller 12 + Backup 9
+  + Segmented Architecture 5 + Email Gateway 6 + Overload 1 = 47
 
 IDENTIFIED GAPS (for other modules):
-- Overloaded File Server (multi-service risk)
-- No IPS (web exploits pass through)
-- No Honeypot (attackers move silently)
-- Cloud servers not on private network
+- Overloaded Domain Controller (identity + files + dev on one box)
+- No IDS/SIEM (attacks undetected; investigations harder)
+- No VPN Gateway (remote workers use risky workarounds)
+- Email and Web share one cloud workload (single point of failure)
 ```
 
 ---
 
 ## Scoring & Network Assessment
 
-### Infrastructure Quality Score
+### Infrastructure Quality Score (v2.2)
 
 After building, teams receive a score reflecting their design choices:
 
 | Metric | Score |
 |--------|-------|
-| **Budget Efficiency** | Budget Remaining / Starting Budget × 10 points |
-| **Redundancy** | Multiple backup paths = +5 points |
-| **Segmentation** | Implemented segmentation = +10 points |
-| **Detection** | Deployed IDS/SIEM = +5 points |
-| **Recovery** | Deployed backup system = +5 points |
+| **Requirements** | +2 per Required item satisfied (Email, Web, Database, Identity, Backup) — max +10 |
+| **Segmentation** | Implemented Segmented or Fully Isolated architecture = +10 |
+| **Detection** | Deployed IDS, IPS, or SIEM = +5 |
+| **Recovery** | Deployed Backup Server = +5 |
+| **Redundancy** | Duplicated a critical server or deployed a Load Balancer = +5 |
+| **Contingency Reserve** | 5-15 Budget remaining = +5; 1-4 remaining = +2; 0 or 16+ remaining = 0 |
 
-**Example Scoring:**
-- Budget remaining: 3/50 = 0.6 points
-- Segmentation implemented: +10 points
-- IDS + SIEM deployed: +5 points
-- Backup system: +5 points
-- **Total: ~20 points**
+**Maximum: 40 points.** The reserve bonus rewards smart utilization — meet the requirements *and* keep a small cushion; hoarding budget scores nothing.
 
-**Interpretation Tiers:**
-- **30-40 points:** Enterprise-grade design; comprehensive protection
-- **20-29 points:** Good design; most critical gaps covered
-- **10-19 points:** Adequate design; some gaps remain
-- **Below 10 points:** High risk; many gaps; future modules will be challenging
+**Example Scoring (the sample network above, Standard 50):**
+- All 5 Required items satisfied: +10
+- Segmentation implemented: +10
+- No IDS/IPS/SIEM: 0
+- Backup Server deployed: +5
+- No redundancy: 0
+- 3 Budget remaining: +2
+- **Total: 27 points — Good design**
+
+**Interpretation Tiers (v2.2):**
+- **32-40 points:** Enterprise-grade design; comprehensive protection
+- **22-31 points:** Good design; most critical gaps covered
+- **12-21 points:** Adequate design; some gaps remain
+- **Below 12 points:** High risk; many gaps; future modules will be challenging
+
+*Reachability check: at Beginner (60), a team can score the full 40 — e.g., Cloud Workload 4 (Email+Web) + Database 10 + Domain Controller 12 (Identity + File) + Backup 9 + Segmented 5 + IDS 10 + second Cloud Workload 4 (redundant web) = 54 spent, 6 remaining → 10+10+5+5+5+5 = 40.*
 
 ### Gap Registry
 
@@ -373,7 +391,7 @@ When Network Building leads to other modules:
 
 ### Before the Game
 
-1. **Clarify business requirements** - Teams must provide email, web, database, file storage, identity, dev
+1. **Clarify business requirements** - Teams must provide email, web, database, identity, and backup (file storage, dev, and VPN are recommended)
 2. **Show budget constraints** - 50 Budget is tight; teams will make difficult choices
 3. **Emphasize consequences** - Choices made here affect all future modules
 4. **Prepare Infrastructure Card template** - For documenting final network
@@ -396,7 +414,7 @@ When Network Building leads to other modules:
 
 ## Sample Scenarios
 
-### Scenario 1: "Startup Network" (Beginner, 40 Budget)
+### Scenario 1: "Startup Network" (Advanced, 40 Budget)
 
 **Constraint:** Very limited budget; must make hard choices
 
@@ -426,7 +444,7 @@ When Network Building leads to other modules:
 
 ---
 
-### Scenario 3: "Enterprise Hardening" (Advanced, 60 Budget)
+### Scenario 3: "Enterprise Hardening" (Beginner, 60 Budget)
 
 **Constraint:** Good budget; comprehensive design possible
 
@@ -475,7 +493,7 @@ After Incident Response or Disaster Recovery:
 
 | Component | Cost | Notes |
 |-----------|------|-------|
-| **Servers** | 3-12 | Higher cost = more capacity |
+| **Servers** | 3-12 | Higher cost = more critical function |
 | **Devices** | 6-15 | Higher cost = more capability |
 | **Architecture** | 0-12 | One per game; segmented is best balance |
 | **Hosting** | 0-8 | Usually free; some cloud options cost |
@@ -492,6 +510,21 @@ After Incident Response or Disaster Recovery:
 
 ---
 
+## v2.2 Playtest Edition Changes
+
+Summary of rule changes for playtesters (all labelled "(v2.2)" in the text above):
+
+1. **Difficulty direction fixed:** more budget = easier. Beginner 60 / Standard 50 / Advanced 40 (previously Beginner had the *least* budget).
+2. **Action economy fixed:** each Build Turn, teams may place **any number** of components they can afford. Turns are design-review checkpoints; between turns the TO reveals an Operational Event or Business Requirement (see the standalone decks in `cards/network-building/standalone/`). Previously 5 turns × 1 action made the mandatory requirements physically impossible to place.
+3. **Requirement list rebalanced:** Required = Email, Web, Database, Identity, Disaster Recovery (Backup). Recommended = File Storage, Development, Remote Work VPN. Backup is now Required (missing backup = automatic FAIL on that requirement, not an instant game loss). Development is Recommended and may be hosted by overloading. Email/Web/Database may be cloud-hosted on Cloud Workloads, which keeps the Required list affordable even at Advanced (40): dedicated build = 46; cloud-assisted builds = 35 or 29.
+4. **Overload now costs +1 Budget per extra service** beyond capacity (was free). Matches the standalone game.
+5. **Duplication rule:** multiple servers of the same type are allowed; each costs full price (replaces the old vacuous "unless you have the budget for both" wording).
+6. **Scoring rescaled:** new Requirements metric (+2 each, max 10), Contingency Reserve bonus (+5 for finishing with 5-15 Budget — smart utilization, not hoarding), and tiers rescaled to reachable bands (32-40 / 22-31 / 12-21 / <12). Max score 40 is verified reachable at Beginner.
+7. **Terminology unified:** "VPN Gateway" (was VPN Concentrator) and "Backup Server" (was Backup System) everywhere.
+8. **Examples corrected:** the sample Infrastructure Summary and all in-text budget arithmetic now add up.
+
+---
+
 *Network Building Module - Rules & Mechanics*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

@@ -1,7 +1,7 @@
 # Hardening Module: Defense Cards (Shared with Incident Response)
 
-**Version:** 2.1 - Balanced & Refined Edition
-**Last Updated:** October 2025
+**Version:** 2.2 - Playtest Edition
+**Last Updated:** July 2026
 
 ---
 
@@ -23,6 +23,8 @@ These 24 Defense Cards are **shared between the Incident Response and Hardening 
 - **ADVANCED (15 Budget):** Specialized investigative techniques (8 cards)
 - **ELITE (25 Budget):** Cutting-edge detection and response (8 cards)
 
+**Note (v2.2):** Tiers are grouped by section below. Card IDs are stable and do not renumber when a card's tier changes, so IDs within a section are not always contiguous.
+
 ### Countermeasure Vectors
 - `SOCIAL_ENGINEERING`
 - `WEB_EXPLOIT`
@@ -30,6 +32,8 @@ These 24 Defense Cards are **shared between the Incident Response and Hardening 
 - `MALWARE`
 - `NETWORK`
 - `DATA_EXFIL`
+
+**Vectors: plural convention (v2.2):** Most defenses list a single vector. A few list two (marked "Vectors:"). A dual-tagged defense counts as a vector match for **either** listed vector.
 
 ---
 
@@ -107,6 +111,32 @@ Deploy signature-based antivirus across all endpoints. Enable automatic definiti
 
 ---
 
+### D-19: Backup & Disaster Recovery
+**Tier:** BASIC (10 Budget) *(v2.2 — retiered from ELITE; 3-2-1 backups are fundamental hygiene)*
+**Vector:** MALWARE
+
+Implement 3-2-1 backup strategy: 3 copies of data, 2 different storage types, 1 offsite copy. Test restore procedures quarterly.
+
+**Effect:** Enables rapid recovery from ransomware. Ensures data availability even if primary systems are compromised. Critical for business continuity.
+
+**Used Against:** T-07, T-08, T-10, T-11, T-12 (Persistence and exfil attacks)
+
+---
+
+### D-23: IR Program & Runbooks
+**Tier:** BASIC (10 Budget) *(v2.2 — retiered from ELITE and renamed from "Incident Response Playbooks" to avoid confusion with the Hardening "Create Playbook" action)*
+**Vector:** NETWORK
+
+Establish an incident response program with detailed runbooks for common scenarios: malware infection, data exfiltration, ransomware, insider threats, supply chain compromise. Include roles, responsibilities, communication plans.
+
+**Effect:** Enables faster, more coordinated response when incidents occur. Reduces confusion during high-pressure situations. Improves incident containment and recovery time.
+
+**Used Against:** T-09, T-10, T-11, T-12 (All C2 & Exfil attacks)
+
+---
+
+## ADVANCED TIER DEFENSES (15 Budget Each)
+
 ### D-07: Multi-Factor Authentication (MFA)
 **Tier:** ADVANCED (15 Budget)
 **Vector:** CREDENTIAL_ABUSE
@@ -130,8 +160,6 @@ Deploy EDR agent on all endpoints. Monitor process execution, file creation, reg
 **Used Against:** T-05 (Priv Esc), T-07, T-08 (Persistence)
 
 ---
-
-## ADVANCED TIER DEFENSES (15 Budget Each)
 
 ### D-09: Network Segmentation
 **Tier:** ADVANCED (15 Budget)
@@ -181,6 +209,32 @@ Deploy enterprise password vault (CyberArk, HashiCorp Vault). Enforce strong uni
 
 ---
 
+### D-18: Intrusion Prevention System (IPS)
+**Tier:** ADVANCED (15 Budget) *(v2.2 — retiered from ELITE; IPS/WAF appliances are standard mid-tier controls)*
+**Vector:** WEB_EXPLOIT
+
+Deploy network-based IPS with exploit signatures. Monitor for known CVE exploitation patterns. Configure WAF (Web Application Firewall) rules for SQL injection, XSS, and OWASP Top 10 attacks.
+
+**Effect:** Blocks exploitation attempts in transit. Prevents watering hole and web exploit attacks. Most effective when combined with patching.
+
+**Used Against:** T-02 (Watering Hole), T-05 (Exploits)
+
+---
+
+### D-24: Threat Intelligence Integration
+**Tier:** ADVANCED (15 Budget) *(v2.2 — retiered from ELITE; community feeds like MISP/OTX are affordable)*
+**Vectors:** NETWORK, DATA_EXFIL *(v2.2 — dual-tagged; counts as a match for either vector)*
+
+Subscribe to threat intelligence feeds (MISP, VirusTotal, AlienVault OTX). Integrate IOCs (Indicators of Compromise) into firewall, SIEM, and proxy. Participate in information sharing communities.
+
+**Effect:** Enables faster detection of known malicious IPs and domains. Identifies emerging threats targeting your industry. Reduces detection time from days to minutes.
+
+**Used Against:** T-09 (C2 Beaconing), T-10, T-11, T-12 (Exfil detection)
+
+---
+
+## ELITE TIER DEFENSES (25 Budget Each)
+
 ### D-13: Threat Hunting Program
 **Tier:** ELITE (25 Budget)
 **Vector:** MALWARE
@@ -204,8 +258,6 @@ Deploy memory capture and analysis (Volatility, Memoryze). Create memory images 
 **Used Against:** T-06 (Mimikatz), T-07, T-08 (In-memory attacks)
 
 ---
-
-## ELITE TIER DEFENSES (25 Budget Each)
 
 ### D-15: Deception Technology (Honeypots)
 **Tier:** ELITE (25 Budget)
@@ -240,30 +292,6 @@ Deploy advanced sandboxing solution (Cuckoo, Detonate, hybrid-analysis). Analyze
 **Effect:** Detects zero-day malware and unknown exploits. Analyzes evasion tactics. Generates detection rules for SIEM. Prevents spread of novel malware.
 
 **Used Against:** T-05 (Privilege Escalation), T-07, T-08 (Malware persistence)
-
----
-
-### D-18: Intrusion Prevention System (IPS)
-**Tier:** ELITE (25 Budget)
-**Vector:** WEB_EXPLOIT
-
-Deploy network-based IPS with exploit signatures. Monitor for known CVE exploitation patterns. Configure WAF (Web Application Firewall) rules for SQL injection, XSS, and OWASP Top 10 attacks.
-
-**Effect:** Blocks exploitation attempts in transit. Prevents watering hole and web exploit attacks. Most effective when combined with patching.
-
-**Used Against:** T-02 (Watering Hole), T-05 (Exploits)
-
----
-
-### D-19: Backup & Disaster Recovery
-**Tier:** ELITE (25 Budget)
-**Vector:** MALWARE
-
-Implement 3-2-1 backup strategy: 3 copies of data, 2 different storage types, 1 offsite copy. Test restore procedures quarterly. Implement immutable backups.
-
-**Effect:** Enables rapid recovery from ransomware. Ensures data availability even if primary systems are compromised. Critical for business continuity.
-
-**Used Against:** T-07, T-08, T-10, T-11, T-12 (Persistence and exfil attacks)
 
 ---
 
@@ -303,46 +331,22 @@ Deploy enterprise SIEM (Splunk, ELK, QRadar). Centralize logs from all sources. 
 
 ---
 
-### D-23: Incident Response Playbooks
-**Tier:** ELITE (25 Budget)
-**Vector:** NETWORK
-
-Create detailed incident response playbooks for common scenarios: malware infection, data exfiltration, ransomware, insider threats, supply chain compromise. Include roles, responsibilities, communication plans.
-
-**Effect:** Enables faster, more coordinated response when incidents occur. Reduces confusion during high-pressure situations. Improves incident containment and recovery time.
-
-**Used Against:** T-09, T-10, T-11, T-12 (All C2 & Exfil attacks)
-
----
-
-### D-24: Threat Intelligence Integration
-**Tier:** ELITE (25 Budget)
-**Vector:** NETWORK
-
-Subscribe to threat intelligence feeds (MISP, VirusTotal, AlienVault OTX). Integrate IOCs (Indicators of Compromise) into firewall, SIEM, and proxy. Participate in information sharing communities.
-
-**Effect:** Enables faster detection of known malicious IPs and domains. Identifies emerging threats targeting your industry. Reduces detection time from days to minutes.
-
-**Used Against:** T-09 (C2 Beaconing), T-10, T-11, T-12 (Exfil detection)
-
----
-
 ## Defense Card Summary
 
-### Distribution by Tier
-- **BASIC (10 Budget):** 8 cards (D-01 to D-08)
-- **ADVANCED (15 Budget):** 8 cards (D-09 to D-16) *Note: includes both 15-budget ADVANCED cards*
-- **ELITE (25 Budget):** 8 cards (D-17 to D-24)
+### Distribution by Tier (v2.2)
+- **BASIC (10 Budget):** 8 cards — D-01, D-02, D-03, D-04, D-05, D-06, D-19, D-23
+- **ADVANCED (15 Budget):** 8 cards — D-07, D-08, D-09, D-10, D-11, D-12, D-18, D-24
+- **ELITE (25 Budget):** 8 cards — D-13, D-14, D-15, D-16, D-17, D-20, D-21, D-22
 
-### Distribution by Vector
+### Distribution by Vector (v2.2)
 - **SOCIAL_ENGINEERING:** D-01, D-02 (2 cards)
 - **WEB_EXPLOIT:** D-03, D-18 (2 cards)
 - **CREDENTIAL_ABUSE:** D-07, D-12, D-16, D-20 (4 cards)
-- **MALWARE:** D-06, D-08, D-13, D-14, D-17, D-19, D-21 (7 cards)
+- **MALWARE:** D-05, D-06, D-08, D-13, D-14, D-17, D-19, D-21 (8 cards)
 - **NETWORK:** D-04, D-09, D-10, D-15, D-22, D-23, D-24 (7 cards)
-- **DATA_EXFIL:** D-11 (1 card)
+- **DATA_EXFIL:** D-11, D-24 (2 cards)
 
-**Note:** Total includes multiple vector assignments per card (cards protect against multiple vectors)
+**Note:** 24 cards total. D-24 is dual-tagged (NETWORK + DATA_EXFIL) and appears in both rows, so vector-row counts sum to 25 tags across 24 cards.
 
 ---
 
@@ -353,19 +357,23 @@ Blue Team selects a Defense Card from their hand and deploys it:
 - **Cost:** 10/15/25 Budget depending on tier
 - **Roll Required:** None—automatic success
 - **Effect:** Defense immediately becomes active and counts toward Security Score
+- **(v2.2)** Two BASIC defenses may be deployed together as a single action
 
-### Pentester Challenge
-When a Pentester Tactic is drawn (see Pentester Tactic Cards file), it challenges one or more deployed defenses:
-- Blue Team rolls 1d20 to defend
-- Deployed defenses provide +2 to +4 bonus depending on tier
-- If defense fails, attacker gains ground; if defense succeeds, attacker is repelled
+### Pentester Challenge (v2.2 — one canonical formula)
+When a Pentester Tactic is drawn (see Pentester Tactic Cards file), the Blue Team chooses **one** deployed defense to resolve it with:
+
+> **Defense roll = d20 + printed defense bonus for the chosen defense (from the tactic card's bonus list) + hardening upgrades on that defense (+2 each) + relevant playbook (+3)**
+>
+> Success if the total is **≥ the tactic card's printed DC**.
+
+See [Module: Hardening](../../../docs/rules/module-hardening.md) for the full resolution procedure and a worked example.
 
 ### Strategic Layering
 Multiple defenses work together:
-- BASIC defenses are cheap but weak against tactics
+- BASIC defenses are cheap but carry small printed bonuses against tactics
 - ADVANCED defenses provide good cost/effectiveness balance
-- ELITE defenses are expensive but strongest against sophisticated tactics
-- Layering multiple defenses provides synergy bonuses (total +1 per additional relevant defense)
+- ELITE defenses are expensive but carry the largest printed bonuses against sophisticated tactics
+- Layering across vectors matters: each tactic card lists which defenses earn bonuses, so broad coverage means you always have a strong defense to choose
 
 ---
 
@@ -400,4 +408,4 @@ This allows educators to:
 
 *Hardening Module: Defense Cards*
 *Part of Incident Zero, a modular cybersecurity board game*
-*v2.1 - Balanced & Refined Edition*
+*v2.2 - Playtest Edition*

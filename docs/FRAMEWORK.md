@@ -2,7 +2,7 @@
 
 ## Core Philosophy
 
-**Incident Zero** is a modular, flexible educational game system. Rather than a rigid "phase" structure, we offer **5 interchangeable modules** that educators can combine in any way that serves their learning objectives.
+**Incident Zero** is a modular, flexible educational game system. Rather than a rigid "phase" structure, we offer **6 interchangeable modules** that educators can combine in any way that serves their learning objectives.
 
 - **Educators choose** which modules to play
 - **Educators sequence** the modules in any order
@@ -12,7 +12,7 @@
 
 ---
 
-## The 5 Core Modules
+## The 6 Core Modules
 
 ### 1. Incident Response Module
 **Duration:** 30-45 minutes (solo), 20-35 minutes (in combination)
@@ -54,7 +54,17 @@
 
 ---
 
-### 5. Audit & Compliance Module
+### 5. Forensics Module (NEW in v2.1)
+**Duration:** 30-45 minutes (solo), 25-35 minutes (in combination)
+**Focus:** Digital forensics, evidence handling, attack attribution
+**Best For:** Teaching chain of custody, investigation methodology, MITRE ATT&CK technique mapping
+
+**Standalone:** Players investigate a compromised system, gathering evidence to build attribution, timeline, attack chain, and chain-of-custody progress
+**In Combination:** Investigates the breach from Incident Response or Disaster Recovery; discovered evidence informs Hardening or Audit priorities
+
+---
+
+### 6. Audit & Compliance Module
 **Duration:** 30-45 minutes (solo), 15-20 minutes (in combination)
 **Focus:** Security compliance, audit procedures, governance
 **Best For:** Teaching regulatory frameworks, security assessment, governance workflows
@@ -89,6 +99,7 @@ Play any single module standalone. All modifiers are generated during setup via:
 - Hardening solo
 - Disaster Recovery solo
 - Network Building solo
+- Forensics solo
 - Audit & Compliance solo
 
 #### Linear Sequences (Recommended Paths)
@@ -111,6 +122,14 @@ Incident Response (Loss) → Disaster Recovery → Audit
 - Post-incident audit and compliance
 - **Modifiers:** Breach scope → DR decisions → Compliance findings
 
+**Path B2: Detect & Investigate**
+```
+Incident Response → Forensics
+```
+- Attack detected (win or lose)
+- Forensic investigation attributes the attack and reconstructs the timeline
+- **Modifiers:** Revealed attack chain → Evidence availability and investigation focus
+
 **Path C: Build, Test, Fix**
 ```
 Network Building → Audit → Hardening
@@ -122,13 +141,15 @@ Network Building → Audit → Hardening
 
 **Path D: Complete Lifecycle**
 ```
-Network Building → Incident Response → Hardening → Audit
+Network Building → Hardening → Incident Response → Disaster Recovery → Forensics → Audit
 ```
 - Design secure network
+- Build layered defenses
 - Test against attack
-- Harden based on findings
+- Manage the breach crisis
+- Investigate and attribute
 - Audit final posture
-- **Duration:** 2+ hours (advanced, comprehensive)
+- **Duration:** 4-5 hours (advanced, comprehensive; split across sessions)
 
 #### Custom Combinations
 Educators can mix modules any way they choose:
@@ -218,6 +239,10 @@ START: What do you want to teach?
 │  └─ Play: Audit & Compliance module solo
 │     (30-45 min, assessment & findings)
 │
+├─ "Digital forensics & attribution"
+│  └─ Play: Forensics module solo
+│     (30-45 min, evidence & investigation)
+│
 ├─ "Complete incident lifecycle"
 │  └─ Play: Incident Response → Disaster Recovery → Audit
 │     (90-120 min, full arc, defeat scenario)
@@ -231,8 +256,8 @@ START: What do you want to teach?
 │     (90-120 min, planning-focused)
 │
 ├─ "Everything"
-│  └─ Play: Network Building → Incident Response → Hardening → Audit
-│     (2+ hours, comprehensive, advanced)
+│  └─ Play: Network Building → Hardening → Incident Response → Disaster Recovery → Forensics → Audit
+│     (4-5 hours, comprehensive, advanced)
 │
 └─ "Custom"
    └─ Pick any combination, generate modifiers for gaps
@@ -253,9 +278,10 @@ Every module includes:
 ### Common Mechanics
 
 **Resource Management:**
-- Budget (Incident Response, Hardening, Disaster Recovery)
+- Budget (Incident Response, Hardening, Disaster Recovery, Network Building, Forensics)
 - Time/Turns (all modules)
 - Reputation/Morale (Disaster Recovery, Audit)
+- Progress Meters (Forensics: Attribution, Timeline, Attack Chain, Chain of Custody)
 
 **Decision Making:**
 - Choose action from limited options (3-5 choices)
@@ -269,6 +295,7 @@ Every module includes:
 - Compliance Violations (Audit)
 - Network Vulnerabilities (Network Building)
 - Breach Scope (Disaster Recovery)
+- Anti-Forensics & Evidence Degradation (Forensics)
 
 **Debrief Questions:**
 - What was the decision point?
@@ -283,12 +310,13 @@ Every module includes:
 Which modules work well together?
 
 ```
-                 IR    Hard   DR    Net    Audit
-Incident Resp.   -     ✓✓    ✓✓    ✓     ✓
-Hardening        ✓✓    -     ✓     ✓✓    ✓✓
-Disaster Rec.    ✓✓    ✓     -     ✓     ✓✓
-Network Build.   ✓     ✓✓    ✓     -     ✓✓
-Audit            ✓     ✓✓    ✓✓    ✓✓    -
+                 IR    Hard   DR    Net    For    Audit
+Incident Resp.   -     ✓✓    ✓✓    ✓      ✓✓     ✓
+Hardening        ✓✓    -     ✓     ✓✓     ✓      ✓✓
+Disaster Rec.    ✓✓    ✓     -     ✓      ✓✓     ✓✓
+Network Build.   ✓     ✓✓    ✓     -      ✓      ✓✓
+Forensics        ✓✓    ✓     ✓✓    ✓      -      ✓✓
+Audit            ✓     ✓✓    ✓✓    ✓✓     ✓✓     -
 
 Legend:
 ✓✓ = Highly compatible (strong modifier flow)
@@ -296,9 +324,9 @@ Legend:
 -  = Same module (obviously)
 
 Example:
-- Incident Response + Hardening = ✓✓ (strong flow)
+- Incident Response + Forensics = ✓✓ (revealed attack chain feeds the investigation)
 - Network Building + Hardening = ✓✓ (complementary)
-- Audit + Compliance = ✓ (independent, minimal flow)
+- Forensics + Audit = ✓✓ (findings drive assessment focus)
 ```
 
 ---
@@ -317,12 +345,14 @@ docs/
 │   ├── module-hardening.md        # Full Hardening rules
 │   ├── module-disaster-recovery.md# Full DR rules
 │   ├── module-network-building.md # Full Network rules
+│   ├── module-forensics.md        # Full Forensics rules
 │   └── module-audit-compliance.md # Full Audit rules
 └── standalone-games/
     ├── incident-response.md       # IR solo setup & play
     ├── hardening.md               # Hardening solo setup & play
     ├── disaster-recovery.md       # DR solo setup & play
     ├── network-building.md        # Network solo setup & play
+    ├── forensics.md               # Forensics solo setup & play
     └── audit-compliance.md        # Audit solo setup & play
 ```
 
@@ -330,13 +360,14 @@ docs/
 
 ## Version Notes
 
-**Current:** v2.1 (Balanced & Refined)
+**Current:** v2.2 (Playtest Edition)
 
 **Modules based on:**
 - Incident Response v2.1 with Uncontained Threats & Pentester Tactics
-- Hardening as alternative Phase 2 outcome
-- Disaster Recovery as alternative Phase 2 outcome
+- Hardening as the post-detection defensive module (typically follows an IR win)
+- Disaster Recovery as the breach-crisis module (typically follows an IR loss)
 - Network Building from original design (needs v2.1 refresh)
+- Forensics added in v2.1 (investigation & attribution)
 - Audit & Compliance from original design (needs v2.1 refresh)
 
 **Pending Refinements:**
@@ -355,7 +386,7 @@ docs/
 
 *"I only have 45 minutes"* → Play one module solo (Incident Response or Hardening)
 
-*"I want to teach the complete lifecycle"* → Play all 5 modules in sequence (2+ hours)
+*"I want to teach the complete lifecycle"* → Play all 6 modules in sequence (4-5 hours, split across sessions)
 
 *"My students need crisis management training"* → Play Disaster Recovery solo
 
