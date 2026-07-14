@@ -859,13 +859,13 @@ Add real-time multiplayer — the full tabletop experience online.
 **Style decision (2026-07-14, supersedes the plain "8-bit pixel" note above):** after a four-way generated style test, the locked identity is **pixel noir** — high-contrast black-and-white 8-bit pixel art, chiaroscuro/venetian-blind shadows, a single green phosphor glow as the only color accent, scanlines. It keeps the Phase A retro-terminal identity, adds the investigation mood, and prints cleanly in grayscale (classroom-friendly). The canonical style prompt prefix lives in `assets/art/README.md`; every generated asset must use it. Generated via limn (Gemini/Imagen fallback while the SwarmUI backends are down; prompts + params are committed as `.json` sidecars so assets can be re-rendered with the pixel-art-xl LoRA later).
 
 Priority order:
-- [ ] **Card backs** (~8, one per card type) — the only art with gameplay function: hidden decks (Threat, Pentester Tactic, Event) need uniform backs for face-down play
+- [x] **Card backs** (10, one per card type; `assets/art/backs/`) — done 2026-07-14
 - [ ] **Card-type + vector icons** (~15 small vectors) — doubles as the colorblind-accessibility fix from #10 (replace color-only coding)
-- [ ] **Hero banner** — README, docsify coverpage, GitHub social preview; worth doing early as the retro identity's first test piece
-- [ ] Designed tracker sheets (replace ASCII layouts) — low priority
+- [ ] **Hero banner** — README, docsify coverpage, GitHub social preview
+- [x] Designed tracker sheets → **play mats** (`downloads/print-pack/`) — done 2026-07-14
 - [ ] Per-card illustrations — lowest priority; optional 2"×2" image space already reserved in card layouts
 
-None of this blocks playtesting — playtest with text cards.
+**Direction change (2026-07-14):** the "playtest before building presentation assets" gate is removed — the goal now is that the game as-is looks like a finished product (full print pack, mats, board tiles). Playtesting still informs balance, but no longer blocks production polish.
 
 ---
 

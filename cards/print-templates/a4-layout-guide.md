@@ -34,29 +34,51 @@ If your printer needs more margin, drop to a **2 × 4 grid (8 cards per sheet)**
 
 ---
 
-## Ready-Made PDF Print Pack (Incident Response)
+## Ready-Made PDF Print Pack (all modules)
 
 `downloads/print-pack/` has ready-to-print PDFs (3 × 3 cards per A4 page,
 fronts and pixel-noir backs on alternating pages):
 
-- `ir-core.pdf` — 12 Threat + 24 Defense cards (core deck)
-- `ir-expansion.pdf` — 8 advanced Threats + 19 advanced Defenses
+| PDF | Contents |
+|-----|----------|
+| `ir-core.pdf` | 12 Threats + 24 Defenses |
+| `ir-expansion.pdf` | 8 advanced Threats + 19 advanced Defenses |
+| `hardening-core.pdf` | 8 Pentester Tactics + the 24 shared Defenses |
+| `hardening-expansion.pdf` | 8 advanced Tactics |
+| `forensics-core.pdf` | 12 Investigations + 16 Evidence |
+| `disaster-recovery-core.pdf` | 13 Crisis Actions + 12 Events + 5 Stakeholders |
+| `disaster-recovery-expansion.pdf` | 8 advanced Scenarios |
+| `network-building-core.pdf` | 10 Servers + 10 Devices + 8 Assets + 5 Architectures |
+| `network-building-expansion.pdf` | 4 Cloud variants + 4 Legacy systems |
+| `network-building-standalone.pdf` | 20 Business Requirements + 16 Operational Events |
+| `audit-core.pdf` | 6 Audit Domains |
+| `audit-expansion.pdf` | 19 Framework cards |
+| `play-mats.pdf` | Universal tracker + Forensics/DR/Audit/Network module mats (A4 landscape) |
+| `network-zone-tiles.pdf` | 5 zone tiles that butt together into the network board |
 
 **Duplex printer:** print double-sided, flip on long edge — backs land behind
 their fronts. **Single-sided:** print odd pages only for face-up cards, or all
 pages and glue front/back sheets together. Cut along the edge marks.
 
+**Play mats:** print on plain A4 (landscape), laminate + dry-erase or use coins
+as track markers. They replace the ASCII tracker sheets below.
+
+**Zone tiles (Network Building):** lay the five tiles in a row —
+Internet Edge → DMZ → Internal Network → Data Center, Cloud beside the edge —
+and place Server/Device cards sideways on the printed slots. In follow-on
+modules, threat tokens sit on the compromised zone.
+
 Regenerate after any card edit (markdown stays the single source of truth):
 
 ```
-python3 tools/cardgen/build_print_pack.py
+python3 tools/cardgen/build_print_pack.py   # card decks
+python3 tools/cardgen/build_mats.py         # play mats
+python3 tools/cardgen/build_tiles.py        # network zone tiles
 ```
-
-Other modules aren't in the pack yet — for those, use the manual options below.
 
 ## Making Cards From the Markdown Files
 
-The quickest playable approach for decks without a PDF yet:
+Manual fallback options if you can't print the PDFs:
 
 ### Option 1: Table-fold cards (fastest)
 1. Open the card file (e.g., `cards/incident-response/core-deck/threat-defense-cards.md`)

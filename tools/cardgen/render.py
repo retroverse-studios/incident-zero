@@ -26,6 +26,10 @@ TYPE_COLORS = {
     "Investigation Card": "#1E6E6C",
     "Evidence Card": "#5C6570",
     "Audit Domain": "#6E4A2B",
+    "Framework Card": "#6E4A2B",
+    "Asset Card": "#2E7D46",
+    "Requirement Card": "#2E7D46",
+    "Scenario Card": "#5F3B93",
 }
 FALLBACK_COLOR = "#333333"
 INK = "#161616"
@@ -76,7 +80,11 @@ def _layout_height(draw, card, f, max_w):
     h = 0
     title_lines = wrap(draw, card["title"].upper(), f["title"], max_w)
     h += len(title_lines) * round(f["title"].size * 1.15) + 26
-    h += len(card["fields"]) * round(f["field"].size * 1.5) + 20
+    for label, value in card["fields"].items():
+        lw = draw.textlength(f"{label.upper()}: ", font=f["label"])
+        h += len(wrap(draw, value, f["field"], max_w - lw)) * round(f["field"].size * 1.5)
+    if card["fields"]:
+        h += 20
     for label, text in card["sections"]:
         if label:
             h += round(f["label"].size * 1.6)
@@ -93,14 +101,24 @@ def render_face(card, module=""):
 
     # shrink type until the card fits above the footer
     scale = 1.0
-    while scale > 0.62:
+    band_h = 96
+    avail = CARD_H - band_h - 30 - 70  # header, padding, footer
+    while scale > 0.52:
         f = fonts(scale)
-        band_h = 96
-        avail = CARD_H - band_h - 30 - 70  # header, padding, footer
         if _layout_height(draw, card, f, max_w) <= avail:
             break
         scale -= 0.05
     f = fonts(scale)
+    # last resort: drop trailing sections; the markdown keeps the full text
+    truncated = False
+    card = dict(card, sections=list(card["sections"]))
+    while len(card["sections"]) > 1 and _layout_height(draw, card, f, max_w) > avail:
+        card["sections"].pop()
+        truncated = True
+    if truncated:
+        print(f"  note: {card['id']} trimmed to fit; card points to module rules")
+    if _layout_height(draw, card, f, max_w) > avail:
+        print(f"  WARNING: {card['id']} still overflows at minimum text size")
 
     # frame + header band
     draw.rectangle([10, 10, CARD_W - 11, CARD_H - 11], outline=INK, width=3)
@@ -118,10 +136,12 @@ def render_face(card, module=""):
     y += 16
 
     for label, value in card["fields"].items():
-        draw.text((MARGIN, y), f"{label.upper()}: ", font=f["label"], fill=MUTED)
-        x = MARGIN + draw.textlength(f"{label.upper()}: ", font=f["label"])
-        draw.text((x, y), value, font=f["field"], fill=INK)
-        y += round(f["field"].size * 1.5)
+        label_txt = f"{label.upper()}: "
+        draw.text((MARGIN, y), label_txt, font=f["label"], fill=MUTED)
+        x = MARGIN + draw.textlength(label_txt, font=f["label"])
+        for line in wrap(draw, value, f["field"], max_w - (x - MARGIN)):
+            draw.text((x, y), line, font=f["field"], fill=INK)
+            y += round(f["field"].size * 1.5)
     if card["fields"]:
         y += 20
 
@@ -133,6 +153,9 @@ def render_face(card, module=""):
             draw.text((MARGIN, y), line, font=f["body"], fill=INK)
             y += round(f["body"].size * 1.32)
         y += 26
+
+    if truncated:
+        draw.text((MARGIN, CARD_H - 106), "▸ CONTINUED IN MODULE RULES", font=f["label"], fill=GLOW)
 
     footer = f"INCIDENT ZERO{' · ' + module.upper() if module else ''}"
     fw = draw.textlength(footer, font=f["footer"])
@@ -180,6 +203,10 @@ BACK_FOR_TYPE = {
     "Device Card": ("network.png", "Network"),
     "Architecture Card": ("network.png", "Network"),
     "Audit Domain": ("audit.png", "Audit"),
+    "Framework Card": ("audit.png", "Framework"),
+    "Asset Card": ("network.png", "Asset"),
+    "Requirement Card": ("network.png", "Requirement"),
+    "Scenario Card": ("event.png", "Scenario"),
 }
 
 

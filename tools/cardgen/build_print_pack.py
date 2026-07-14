@@ -37,6 +37,67 @@ DECKS = {
             ("cards/incident-response/expansion-deck/advanced-defenses.md", "Defense Card"),
         ],
     },
+    "hardening-core": {
+        "module": "Hardening",
+        "sources": [
+            ("cards/hardening/core-deck/pentester-tactic-cards.md", "Pentester Tactic"),
+            ("cards/hardening/core-deck/defense-cards.md", "Defense Card"),
+        ],
+    },
+    "hardening-expansion": {
+        "module": "Hardening",
+        "sources": [("cards/hardening/expansion-deck/advanced-tactics.md", "Pentester Tactic")],
+    },
+    "forensics-core": {
+        "module": "Forensics",
+        "sources": [
+            ("cards/forensics/core-deck/investigation-cards.md", "Investigation Card"),
+            ("cards/forensics/core-deck/evidence-cards.md", "Evidence Card"),
+        ],
+    },
+    "disaster-recovery-core": {
+        "module": "Disaster Recovery",
+        "sources": [
+            ("cards/disaster-recovery/core-deck/crisis-action-cards.md", "Crisis Action"),
+            ("cards/disaster-recovery/core-deck/event-cards.md", "Event Card"),
+            ("cards/disaster-recovery/core-deck/stakeholder-cards.md", "Stakeholder Card"),
+        ],
+    },
+    "disaster-recovery-expansion": {
+        "module": "Disaster Recovery",
+        "sources": [("cards/disaster-recovery/expansion-deck/advanced-scenarios.md", "Scenario Card")],
+    },
+    "network-building-core": {
+        "module": "Network Building",
+        "sources": [
+            ("cards/network-building/core-deck/server-cards.md", "Server Card"),
+            ("cards/network-building/core-deck/security-device-cards.md", "Device Card"),
+            ("cards/network-building/core-deck/asset-cards.md", "Asset Card"),
+            ("cards/network-building/core-deck/architecture-cards.md", "Architecture Card"),
+        ],
+    },
+    "network-building-expansion": {
+        "module": "Network Building",
+        "sources": [
+            ("cards/network-building/expansion-deck/cloud-variants.md", "Server Card"),
+            ("cards/network-building/expansion-deck/legacy-systems.md", "Server Card"),
+        ],
+    },
+    "network-building-standalone": {
+        "module": "Network Building",
+        "sources": [
+            ("cards/network-building/standalone/business-requirement-cards.md", "Requirement Card"),
+            ("cards/network-building/standalone/operational-event-cards.md", "Event Card"),
+        ],
+    },
+    "audit-core": {
+        "module": "Audit & Compliance",
+        "sources": [("cards/audit-compliance/core-deck/audit-domain-cards.md", "Audit Domain")],
+    },
+    "audit-expansion": {
+        "module": "Audit & Compliance",
+        "sources": [("cards/audit-compliance/expansion-deck/compliance-frameworks.md", "Framework Card")],
+    },
 }
 
 
