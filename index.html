@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Incident Zero — the cybersecurity board game</title>
 <meta name="description" content="A print-and-play cybersecurity board game for classrooms and training rooms. Six modules covering the full incident lifecycle. Download, print, play — playtesters wanted.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Incident Zero — the cybersecurity board game">
+<meta property="og:description" content="The attacker is already inside. A free print-and-play board game: six modules, one d20, a printer. Playtesters wanted — your name in the credits.">
+<meta property="og:url" content="https://incidentzero.retroverse.studio/">
+<meta property="og:image" content="https://incidentzero.retroverse.studio/assets/art/hero-banner.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Incident Zero — the cybersecurity board game">
+<meta name="twitter:description" content="Free print-and-play cybersecurity board game. Six modules, one d20, a printer. Playtesters wanted.">
+<meta name="twitter:image" content="https://incidentzero.retroverse.studio/assets/art/hero-banner.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -70,6 +81,12 @@ section{padding:2.8rem 0;border-top:1px solid var(--line)}
 .step::before{counter-increment:step;content:"0" counter(step);font-family:'Press Start 2P',monospace;
   color:var(--amber);font-size:.9rem;display:block;margin-bottom:.5rem}
 
+.fan{display:block;width:100%;max-width:960px;margin:0 auto}
+.print-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.1rem;margin-top:1.4rem}
+.print-row figure{background:var(--panel);border:1px solid var(--line);padding:.8rem}
+.print-row img{display:block;width:100%;height:auto}
+.print-row figcaption{color:var(--green-dim);font-size:1.05rem;margin-top:.5rem}
+
 .footer{border-top:1px solid var(--line);padding:1.6rem 0 2.4rem;color:var(--green-dim);font-size:1.1rem}
 .footer a{color:var(--green-dim);text-decoration:underline}
 
@@ -107,10 +124,12 @@ section{padding:2.8rem 0;border-top:1px solid var(--line)}
         <a class="btn btn-ghost" href="docs.html">Browse the docs</a>
       </div>
       <p class="facts" style="margin-top:.8rem">
-        <span>🃏 New: <a href="downloads/print-pack/ir-core.pdf" download>card deck PDFs</a> with pixel-noir backs</span>
-        <span><a href="downloads/print-pack/play-mats.pdf" download>play mats</a></span>
-        <span><a href="downloads/print-pack/network-zone-tiles.pdf" download>network board tiles</a></span>
-        — see <a href="https://github.com/retroverse-studios/incident-zero/tree/main/downloads/print-pack">the full print pack</a>
+        🃏 Print pack:
+        <a href="downloads/print-pack/print-instructions.pdf" download>instructions</a> ·
+        <a href="downloads/print-pack/ir-core.pdf" download>card decks</a> ·
+        <a href="downloads/print-pack/play-mats.pdf" download>play mats</a> ·
+        <a href="downloads/print-pack/network-zone-tiles.pdf" download>board tiles</a> ·
+        <a href="https://github.com/retroverse-studios/incident-zero/tree/main/downloads/print-pack">all 15 PDFs</a>
       </p>
       <p class="facts">
         <span>👥 2–7 players</span><span>⏱ 30–45 min / module</span><span>🎲 one d20</span><span>🖨 a printer</span><span>💸 free (CC BY-NC-SA)</span>
@@ -200,12 +219,32 @@ section{padding:2.8rem 0;border-top:1px solid var(--line)}
   </div>
 </section>
 
+<section id="components">
+  <div class="container">
+    <h2>&gt; WHAT YOU PRINT_</h2>
+    <img class="fan" src="assets/site/components-fan.png"
+         alt="Five printed cards fanned out: a pixel-noir threat card back and four color-coded card faces">
+    <div class="print-row">
+      <figure><img src="assets/site/mat-preview.png" alt="Forensics play mat with progress meters">
+        <figcaption>Play mats — laminate + dry-erase, or move coins</figcaption></figure>
+      <figure><img src="assets/site/tile-preview.png" alt="DMZ network zone tile with card slots">
+        <figcaption>Zone tiles — lay them in a row, build the network</figcaption></figure>
+    </div>
+    <p style="margin-top:1.1rem;color:var(--green-dim)">271 cards across 12 decks, five play mats, five board
+      tiles — all poker-size / A4, cut lines included. Grayscale printing works: every card type reads by
+      icon and text, not just color. Start with
+      <a href="downloads/print-pack/print-instructions.pdf" download>the one-page print instructions</a>.</p>
+  </div>
+</section>
+
 <section id="playtest">
   <div class="container">
     <h2>&gt; WANTED: PLAYTESTERS_</h2>
     <div class="steps">
       <div class="step"><strong style="color:var(--green)">Download &amp; print.</strong><br>
-        Grab a module above (Incident Response is the best first game), print the cards and tracker sheet, find a d20 and 2–6 accomplices.</div>
+        Incident Response is the best first game: print <a href="downloads/print-pack/ir-core.pdf" download>its deck PDF</a> and
+        <a href="downloads/print-pack/play-mats.pdf" download>the play mats</a> (see
+        <a href="downloads/print-pack/print-instructions.pdf" download>print instructions</a>), then find a d20 and 2–6 accomplices.</div>
       <div class="step"><strong style="color:var(--green)">Play it.</strong><br>
         The <a href="docs.html#/docs/HOW_TO_PLAY">How&nbsp;to&nbsp;Play</a> guide scripts your first two turns. One of you reads the <a href="docs.html#/docs/TO_GUIDE">Threat&nbsp;Orchestrator's&nbsp;Guide</a> and becomes the dungeon master.</div>
       <div class="step"><strong style="color:var(--green)">Claim the reward.</strong><br>
