@@ -860,8 +860,8 @@ Add real-time multiplayer — the full tabletop experience online.
 
 Priority order:
 - [x] **Card backs** (10, one per card type; `assets/art/backs/`) — done 2026-07-14
-- [ ] **Card-type + vector icons** (~15 small vectors) — doubles as the colorblind-accessibility fix from #10 (replace color-only coding)
-- [ ] **Hero banner** — README, docsify coverpage, GitHub social preview
+- [x] **Card-type + vector icons** (16, `assets/art/icons/`; on every card face via cardgen) — colorblind fix from #10 — done 2026-07-14
+- [x] **Hero banner** (`assets/art/hero-banner.png`; README + coverpage; upload to GitHub Settings → Social preview) — done 2026-07-14
 - [x] Designed tracker sheets → **play mats** (`downloads/print-pack/`) — done 2026-07-14
 - [ ] Per-card illustrations — lowest priority; optional 2"×2" image space already reserved in card layouts
 

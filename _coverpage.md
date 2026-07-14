@@ -1,3 +1,5 @@
+![Incident Zero](assets/art/hero-banner.png)
+
 # Incident Zero
 
 > A modular cybersecurity board game for educational environments

@@ -1,0 +1,9 @@
+{
+  "prompt": "pixel art film noir, high contrast black and white 8-bit pixel art, dramatic chiaroscuro, venetian blind shadows, single green phosphor glow as the only color, dark moody retro computing aesthetic, no text, no letters, no words, wide cinematic composition: a dark security operations center at night, a lone hooded figure's silhouette reflected in a wall of green CRT monitors, an analyst in a trench coat standing watch, rain on the window, city skyline beyond",
+  "provider": "gemini",
+  "model": "imagen-4.0-fast-generate-001",
+  "size": [
+    1536,
+    864
+  ]
+}

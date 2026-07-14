@@ -41,3 +41,21 @@ One back per card type (deck motifs, all face-down decks get uniform backs):
 
 The deck name is overlaid at render time by `tools/cardgen/render.py` —
 the source art stays text-free.
+
+## icons/
+
+16 one-bit pixel glyphs: 10 card-type icons (header band of every card face)
+and 6 attack-vector icons (drawn beside Vector/Countermeasure fields). The
+vector icons are the colorblind-accessibility fix from FUTURE_WORK #10 —
+vectors are identified by glyph as well as text, never by color alone.
+
+Raw limn output lives in `icons/raw/` (with `.png.json` prompt sidecars);
+`tools/cardgen/build_icons.py` thresholds them into centered 256px RGBA
+glyph masks that `render.py` tints at draw time.
+
+## Hero banner
+
+`hero-banner.png` (1280×640) — README top, docsify coverpage, and sized for
+the GitHub social preview (upload it under repo Settings → Social preview).
+Rebuild with `tools/cardgen/build_hero.py` (composites the title over
+`hero-raw.png`; regenerate the scene from `hero-raw.png.json`).

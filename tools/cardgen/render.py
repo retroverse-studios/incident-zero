@@ -123,7 +123,12 @@ def render_face(card, module=""):
     # frame + header band
     draw.rectangle([10, 10, CARD_W - 11, CARD_H - 11], outline=INK, width=3)
     draw.rectangle([10, 10, CARD_W - 11, 106], fill=color)
-    draw.text((MARGIN, 40), card["card_type"].upper(), font=f["type"], fill=PAPER)
+    tx = MARGIN
+    type_icon = icon(ICON_FOR_TYPE.get(card["card_type"], ""), 56, PAPER)
+    if type_icon:
+        img.paste(type_icon, (MARGIN - 6, 30), type_icon)
+        tx += 68
+    draw.text((tx, 40), card["card_type"].upper(), font=f["type"], fill=PAPER)
     id_w = draw.textlength(card["id"], font=f["type"])
     draw.text((CARD_W - MARGIN - id_w, 40), card["id"], font=f["type"], fill=PAPER)
 
@@ -139,9 +144,18 @@ def render_face(card, module=""):
         label_txt = f"{label.upper()}: "
         draw.text((MARGIN, y), label_txt, font=f["label"], fill=MUTED)
         x = MARGIN + draw.textlength(label_txt, font=f["label"])
-        for line in wrap(draw, value, f["field"], max_w - (x - MARGIN)):
+        lines = wrap(draw, value, f["field"], max_w - (x - MARGIN))
+        for line in lines:
             draw.text((x, y), line, font=f["field"], fill=INK)
             y += round(f["field"].size * 1.5)
+        if label.lower().rstrip("s") in ("vector", "countermeasure"):
+            ix = x + draw.textlength(lines[-1], font=f["field"]) + 18
+            size = f["field"].size + 6
+            for name in vector_icons_for(value):
+                glyph = icon(name, size, INK)
+                if glyph and ix + size < CARD_W - MARGIN:
+                    img.paste(glyph, (int(ix), int(y - size * 1.45)), glyph)
+                    ix += size + 10
     if card["fields"]:
         y += 20
 
@@ -189,6 +203,63 @@ def render_back(art_path, deck_name):
 
 
 BACKS_DIR = Path(__file__).resolve().parents[2] / "assets" / "art" / "backs"
+ICONS_DIR = Path(__file__).resolve().parents[2] / "assets" / "art" / "icons"
+
+ICON_FOR_TYPE = {
+    "Threat Card": "type-threat",
+    "Defense Card": "type-defense",
+    "Pentester Tactic": "type-pentester",
+    "Event Card": "type-event",
+    "Crisis Action": "type-crisis",
+    "Stakeholder Card": "type-stakeholder",
+    "Investigation Card": "type-investigation",
+    "Evidence Card": "type-evidence",
+    "Server Card": "type-network",
+    "Device Card": "type-network",
+    "Architecture Card": "type-network",
+    "Asset Card": "type-network",
+    "Requirement Card": "type-network",
+    "Scenario Card": "type-event",
+    "Audit Domain": "type-audit",
+    "Framework Card": "type-audit",
+}
+
+# attack-vector icons double as the colorblind-accessibility fix: the
+# vector is identified by glyph as well as by text
+VECTOR_ICONS = [
+    ("social", "vector-social"),
+    ("web", "vector-web"),
+    ("credential", "vector-credential"),
+    ("malware", "vector-malware"),
+    ("exfil", "vector-exfil"),
+    ("network", "vector-network"),
+]
+
+_icon_cache = {}
+
+
+def icon(name, size, color):
+    """Return the glyph tinted to color, or None if the asset is missing."""
+    key = (name, size, color)
+    if key not in _icon_cache:
+        path = ICONS_DIR / f"{name}.png"
+        if not path.exists():
+            _icon_cache[key] = None
+        else:
+            mask = Image.open(path).convert("RGBA").getchannel("A").resize(
+                (size, size), Image.LANCZOS)
+            tile = Image.new("RGBA", (size, size), color)
+            tile.putalpha(mask)
+            _icon_cache[key] = tile
+    return _icon_cache[key]
+
+
+def vector_icons_for(value):
+    v = value.lower()
+    hits = [name for kw, name in VECTOR_ICONS if kw in v]
+    # "network" is a substring trap ("social engineering" isn't, but keep
+    # exfil before network so DATA_EXFIL doesn't double-match) — dedupe
+    return list(dict.fromkeys(hits))
 
 BACK_FOR_TYPE = {
     "Threat Card": ("threat.png", "Threat"),
