@@ -34,9 +34,29 @@ If your printer needs more margin, drop to a **2 × 4 grid (8 cards per sheet)**
 
 ---
 
+## Ready-Made PDF Print Pack (Incident Response)
+
+`downloads/print-pack/` has ready-to-print PDFs (3 × 3 cards per A4 page,
+fronts and pixel-noir backs on alternating pages):
+
+- `ir-core.pdf` — 12 Threat + 24 Defense cards (core deck)
+- `ir-expansion.pdf` — 8 advanced Threats + 19 advanced Defenses
+
+**Duplex printer:** print double-sided, flip on long edge — backs land behind
+their fronts. **Single-sided:** print odd pages only for face-up cards, or all
+pages and glue front/back sheets together. Cut along the edge marks.
+
+Regenerate after any card edit (markdown stays the single source of truth):
+
+```
+python3 tools/cardgen/build_print_pack.py
+```
+
+Other modules aren't in the pack yet — for those, use the manual options below.
+
 ## Making Cards From the Markdown Files
 
-Until the PDF print pack ships, the quickest playable approach:
+The quickest playable approach for decks without a PDF yet:
 
 ### Option 1: Table-fold cards (fastest)
 1. Open the card file (e.g., `cards/incident-response/core-deck/threat-defense-cards.md`)

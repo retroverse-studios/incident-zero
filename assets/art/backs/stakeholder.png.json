@@ -1,0 +1,9 @@
+{
+  "prompt": "pixel art film noir, high contrast black and white 8-bit pixel art, dramatic chiaroscuro, venetian blind shadows, single green phosphor glow as the only color, dark moody retro computing aesthetic, ornate playing card back composition with symmetrical border frame, no text, no letters, no words, central emblem: boardroom of silhouetted figures in fedoras around a long table lit by one glowing screen",
+  "provider": "gemini",
+  "model": "imagen-4.0-fast-generate-001",
+  "size": [
+    768,
+    1024
+  ]
+}

@@ -854,7 +854,9 @@ Add real-time multiplayer — the full tabletop experience online.
 
 ### 18. Image Asset Plan (prioritized; execute in the Phase A retro style)
 
-**Rule:** the game is playable text-only, so art is table presence + accessibility, not function. Do NOT generate generic placeholder art — the Phase A visual identity (8-bit pixel, terminal/WarGames, CRT scanlines) is already decided; generate assets once, in that style.
+**Rule:** the game is playable text-only, so art is table presence + accessibility, not function. Do NOT generate generic placeholder art — the visual identity is decided; generate assets once, in that style.
+
+**Style decision (2026-07-14, supersedes the plain "8-bit pixel" note above):** after a four-way generated style test, the locked identity is **pixel noir** — high-contrast black-and-white 8-bit pixel art, chiaroscuro/venetian-blind shadows, a single green phosphor glow as the only color accent, scanlines. It keeps the Phase A retro-terminal identity, adds the investigation mood, and prints cleanly in grayscale (classroom-friendly). The canonical style prompt prefix lives in `assets/art/README.md`; every generated asset must use it. Generated via limn (Gemini/Imagen fallback while the SwarmUI backends are down; prompts + params are committed as `.json` sidecars so assets can be re-rendered with the pixel-art-xl LoRA later).
 
 Priority order:
 - [ ] **Card backs** (~8, one per card type) — the only art with gameplay function: hidden decks (Threat, Pentester Tactic, Event) need uniform backs for face-down play
