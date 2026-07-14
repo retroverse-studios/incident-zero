@@ -1,0 +1,9 @@
+{
+  "prompt": "pixel art film noir, high contrast black and white 8-bit pixel art, dramatic chiaroscuro, single green phosphor glow as the only color, dark moody retro computing aesthetic, simple centered vignette composition, square, no text, no letters, no words: still life of a shiny circular metal hard drive platter standing upright like a vinyl record, green light reflecting off its surface, black background",
+  "provider": "gemini",
+  "model": "imagen-4.0-fast-generate-001",
+  "size": [
+    512,
+    512
+  ]
+}

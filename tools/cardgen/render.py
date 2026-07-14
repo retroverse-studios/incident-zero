@@ -109,6 +109,21 @@ def render_face(card, module=""):
             break
         scale -= 0.05
     f = fonts(scale)
+
+    # illustration: only when the card has slack at FULL text size — art
+    # never costs readability. Fills leftover space as a wide banner,
+    # up to the reserved 2" height.
+    art = None
+    if scale == 1.0:
+        slack = avail - _layout_height(draw, card, f, max_w)
+        if slack >= 240:
+            art_h = min(ILL_SIZE, slack - 40)
+            sq = illustration_for(card, TYPE_COLORS.get(card["card_type"], FALLBACK_COLOR))
+            if sq is not None:
+                crop_h = round(sq.width * art_h / max_w)
+                top = (sq.height - crop_h) // 2
+                art = sq.crop((0, top, sq.width, top + crop_h)).resize(
+                    (max_w, art_h), Image.LANCZOS)
     # last resort: drop trailing sections; the markdown keeps the full text
     truncated = False
     card = dict(card, sections=list(card["sections"]))
@@ -167,6 +182,13 @@ def render_face(card, module=""):
             draw.text((MARGIN, y), line, font=f["body"], fill=INK)
             y += round(f["body"].size * 1.32)
         y += 26
+
+    if art is not None:
+        ax = (CARD_W - art.width) // 2
+        ay = CARD_H - 84 - art.height
+        img.paste(art, (ax, ay))
+        draw.rectangle([ax, ay, ax + art.width, ay + art.height],
+                       outline=TYPE_COLORS.get(card["card_type"], FALLBACK_COLOR), width=3)
 
     if truncated:
         draw.text((MARGIN, CARD_H - 106), "▸ CONTINUED IN MODULE RULES", font=f["label"], fill=GLOW)
@@ -234,6 +256,75 @@ VECTOR_ICONS = [
     ("exfil", "vector-exfil"),
     ("network", "vector-network"),
 ]
+
+ILLUSTRATIONS_DIR = Path(__file__).resolve().parents[2] / "assets" / "art" / "illustrations"
+ILL_SIZE = 600  # 2" x 2" at 300 DPI
+
+# reusable illustration library: one image per concept, shared across
+# modules, duotone-tinted in the card type's color at render time
+ILL_BY_VECTOR = {
+    "social": "vec-social",
+    "web": "vec-web",
+    "credential": "vec-credential",
+    "malware": "vec-malware",
+    "exfil": "vec-exfil",
+    "network": "vec-network",
+}
+ILL_BY_ID_PREFIX = {
+    "DISK": "inv-disk", "MEM": "inv-memory", "LOG": "inv-logs",
+    "NET": "inv-net", "MALW": "vec-malware", "TIMELINE": "inv-timeline",
+    "EVD": "typ-evidence", "SRV": "typ-server", "SEC": "typ-device",
+    "ARCH": "typ-architecture", "LEGACY": "typ-server", "CLOUD": "typ-server",
+}
+ILL_BY_TYPE = {
+    "Threat Card": "typ-threat",
+    "Defense Card": "typ-defense",
+    "Pentester Tactic": "typ-pentester",
+    "Event Card": "typ-event",
+    "Crisis Action": "typ-crisis",
+    "Stakeholder Card": "typ-stakeholder",
+    "Investigation Card": "typ-investigation",
+    "Evidence Card": "typ-evidence",
+    "Server Card": "typ-server",
+    "Device Card": "typ-device",
+    "Architecture Card": "typ-architecture",
+    "Asset Card": "typ-asset",
+    "Requirement Card": "typ-requirement",
+    "Audit Domain": "typ-audit",
+    "Framework Card": "typ-framework",
+    "Scenario Card": "typ-scenario",
+}
+
+_ill_cache = {}
+
+
+def illustration_for(card, color):
+    """Most specific concept wins: attack vector, then ID family, then type."""
+    name = None
+    for label, value in card["fields"].items():
+        if label.lower().rstrip("s") in ("vector", "countermeasure"):
+            hits = vector_icons_for(value)
+            if hits:
+                name = ILL_BY_VECTOR.get(hits[0].replace("vector-", ""))
+            break
+    if not name:
+        prefix = card["id"].split("-")[0]
+        name = ILL_BY_ID_PREFIX.get(prefix) or ILL_BY_TYPE.get(card["card_type"])
+    if not name:
+        return None
+    key = (name, color)
+    if key not in _ill_cache:
+        path = ILLUSTRATIONS_DIR / f"{name}.png"
+        if not path.exists():
+            _ill_cache[key] = None
+        else:
+            from PIL import ImageOps
+            g = Image.open(path).convert("L")
+            g = g.resize((ILL_SIZE, ILL_SIZE), Image.LANCZOS)
+            # duotone: shadows take the card type's color, highlights stay paper
+            _ill_cache[key] = ImageOps.colorize(g, black=color, white=PAPER, mid=None)
+    return _ill_cache[key]
+
 
 _icon_cache = {}
 

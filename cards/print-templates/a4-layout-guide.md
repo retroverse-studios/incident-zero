@@ -55,6 +55,7 @@ fronts and pixel-noir backs on alternating pages):
 | `audit-expansion.pdf` | 19 Framework cards |
 | `play-mats.pdf` | Universal tracker + Forensics/DR/Audit/Network module mats (A4 landscape) |
 | `network-zone-tiles.pdf` | 5 zone tiles that butt together into the network board |
+| `print-instructions.pdf` | One-page printing how-to (start here — covers duplex alignment) |
 
 **Duplex printer:** print double-sided, flip on long edge — backs land behind
 their fronts. **Single-sided:** print odd pages only for face-up cards, or all

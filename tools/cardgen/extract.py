@@ -115,7 +115,7 @@ def _parse_fields(body_lines):
         if m:
             if m.group(2):
                 flush()
-                fields[m.group(1).strip()] = m.group(2).strip()
+                fields[m.group(1).strip()] = m.group(2).strip().replace("**", "")
             else:  # "**Description:**" header for a following paragraph
                 flush()
                 label = m.group(1).strip()

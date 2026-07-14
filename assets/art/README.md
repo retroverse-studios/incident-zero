@@ -53,6 +53,23 @@ Raw limn output lives in `icons/raw/` (with `.png.json` prompt sidecars);
 `tools/cardgen/build_icons.py` thresholds them into centered 256px RGBA
 glyph masks that `render.py` tints at draw time.
 
+## illustrations/
+
+A **reusable, categorized** library — 28 square pixel-noir vignettes keyed by
+concept, not by card, so the same image serves every module:
+
+- `vec-*` (6) — attack vectors: shared by Threat, Defense and Tactic cards
+  (a Threat and the Defense that counters it show the same subject)
+- `inv-*` (6) — forensic technique families, matched by card-ID prefix
+  (DISK/MEM/LOG/NET/TIMELINE; MALW reuses `vec-malware`)
+- `typ-*` (16) — card-type scenes, the fallback when nothing more specific fits
+
+`render.py` picks the most specific match (vector → ID family → type) and
+**duotone-tints** the greyscale art in the card type's color at render time —
+category = subject, module = tint. Art is drawn as a banner only when a card
+has spare space at full text size; text never shrinks to make room. Raw
+prompts are in the `.png.json` sidecars.
+
 ## Hero banner
 
 `hero-banner.png` (1280×640) — README top, docsify coverpage, and sized for

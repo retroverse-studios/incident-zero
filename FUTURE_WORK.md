@@ -863,7 +863,7 @@ Priority order:
 - [x] **Card-type + vector icons** (16, `assets/art/icons/`; on every card face via cardgen) — colorblind fix from #10 — done 2026-07-14
 - [x] **Hero banner** (`assets/art/hero-banner.png`; README + coverpage; upload to GitHub Settings → Social preview) — done 2026-07-14
 - [x] Designed tracker sheets → **play mats** (`downloads/print-pack/`) — done 2026-07-14
-- [ ] Per-card illustrations — lowest priority; optional 2"×2" image space already reserved in card layouts
+- [x] Per-card illustrations — done 2026-07-14 as a **reusable categorized library** (28 concepts in `assets/art/illustrations/`, shared across modules, duotone-tinted in the card type's color; drawn as an adaptive banner only on cards with spare space — text never shrinks for art)
 
 **Direction change (2026-07-14):** the "playtest before building presentation assets" gate is removed — the goal now is that the game as-is looks like a finished product (full print pack, mats, board tiles). Playtesting still informs balance, but no longer blocks production polish.
 
